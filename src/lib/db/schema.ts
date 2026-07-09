@@ -1,4 +1,4 @@
-// Drizzle SQLite 스키마 — bookmarks / github_stars / custom_pages
+// Drizzle SQLite 스키마 — bookmarks / github_stars / custom_pages / oauth_tokens
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 /** 사용자 북마크 */
@@ -42,6 +42,16 @@ export const customPages = sqliteTable("custom_pages", {
   updatedAt: text("updated_at").notNull(),
 });
 
+/** 서버 전용 OAuth 토큰 (암호화된 access_token) */
+export const oauthTokens = sqliteTable("oauth_tokens", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  provider: text("provider").notNull(),
+  accessTokenEnc: text("access_token_enc").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export type BookmarkRow = typeof bookmarks.$inferSelect;
 export type GithubStarRow = typeof githubStars.$inferSelect;
 export type CustomPageRow = typeof customPages.$inferSelect;
+export type OauthTokenRow = typeof oauthTokens.$inferSelect;

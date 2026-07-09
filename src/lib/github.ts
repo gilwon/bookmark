@@ -1,4 +1,4 @@
-// Octokit으로 GitHub Star 목록을 가져와 upsert한다
+// Octokit으로 GitHub Star 목록을 가져와 upsert / unstar 정리한다
 import { and, eq } from "drizzle-orm";
 import { Octokit } from "octokit";
 import { v4 as uuidv4 } from "uuid";
@@ -14,6 +14,12 @@ export type StarRepo = {
   url: string;
 };
 
+export type UpsertStarsResult = {
+  count: number;
+  removed: number;
+  lastSynced: string;
+};
+
 /** GitHub access_token으로 starred 레포를 페이지네이션해 가져온다. */
 export async function fetchStarredRepos(
   accessToken: string
@@ -21,13 +27,11 @@ export async function fetchStarredRepos(
   const octokit = new Octokit({ auth: accessToken });
   const repos: StarRepo[] = [];
 
-  // GET /user/starred 페이지네이션
   for await (const response of octokit.paginate.iterator(
     octokit.rest.activity.listReposStarredByAuthenticatedUser,
     { per_page: 100 }
   )) {
     for (const item of response.data) {
-      // starred 응답은 repo 래핑 또는 repo 자체일 수 있음
       const repo =
         "repo" in item && item.repo
           ? (item.repo as {
@@ -61,9 +65,16 @@ export async function fetchStarredRepos(
   return repos;
 }
 
-/** 사용자 기준으로 Star 목록을 upsert한다. */
-export async function upsertStars(userId: string, repos: StarRepo[]) {
+/**
+ * 사용자 Star 목록을 upsert하고,
+ * 이번 동기화에 없는 레포(unstar)는 삭제한다.
+ */
+export async function upsertStars(
+  userId: string,
+  repos: StarRepo[]
+): Promise<UpsertStarsResult> {
   const now = new Date().toISOString();
+  const seen = new Set(repos.map((r) => r.repoFullName));
 
   for (const repo of repos) {
     const existing = db
@@ -87,7 +98,9 @@ export async function upsertStars(userId: string, repos: StarRepo[]) {
           url: repo.url,
           lastSynced: now,
         })
-        .where(eq(githubStars.id, existing.id))
+        .where(
+          and(eq(githubStars.id, existing.id), eq(githubStars.userId, userId))
+        )
         .run();
     } else {
       db.insert(githubStars)
@@ -107,5 +120,24 @@ export async function upsertStars(userId: string, repos: StarRepo[]) {
     }
   }
 
-  return repos.length;
+  // unstar된 로컬 행 정리 (본인 데이터만)
+  const local = db
+    .select()
+    .from(githubStars)
+    .where(eq(githubStars.userId, userId))
+    .all();
+
+  let removed = 0;
+  for (const row of local) {
+    if (!seen.has(row.repoFullName)) {
+      db.delete(githubStars)
+        .where(
+          and(eq(githubStars.id, row.id), eq(githubStars.userId, userId))
+        )
+        .run();
+      removed += 1;
+    }
+  }
+
+  return { count: repos.length, removed, lastSynced: now };
 }

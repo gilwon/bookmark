@@ -54,6 +54,16 @@
 - `@custom-variant dark (&:where(.dark, .dark *))` 로 class 기반 dark: 유틸 활성화.
 - 사이드바는 `toggleTheme()` 사용.
 
+### 2026-07-09: P1/P2
+- GitHub access_token → `oauth_tokens` AES-GCM 암호 저장. 세션은 hasGithub/githubLogin만.
+- 로그아웃 시 토큰 삭제. scope: read:user user:email.
+- Stars: 자동동기화(empty), 필터, 진행 문구, unstar prune.
+- 사이드바 아바타 + github.com/{login}.
+- API PATCH/DELETE where에 userId 필수. requireUser 헬퍼.
+- Supabase: RLS 정책 + MIGRATION.md (런타임은 여전히 SQLite).
+- 프로덕션 Dev Login 기본 off.
+
+
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.
 - Auth: GitHub provider는 env 있을 때만, Credentials Dev Login 항상 활성.

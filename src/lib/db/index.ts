@@ -53,10 +53,19 @@ function createSqlite() {
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS oauth_tokens (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      provider TEXT NOT NULL,
+      access_token_enc TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
     CREATE INDEX IF NOT EXISTS idx_stars_user ON github_stars(user_id);
     CREATE INDEX IF NOT EXISTS idx_stars_repo ON github_stars(user_id, repo_full_name);
     CREATE INDEX IF NOT EXISTS idx_pages_user ON custom_pages(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_oauth_user_provider
+      ON oauth_tokens(user_id, provider);
   `);
   return sqlite;
 }

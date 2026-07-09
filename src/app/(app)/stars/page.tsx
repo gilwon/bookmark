@@ -1,18 +1,20 @@
 // GitHub Stars 전용 뷰
 import { desc, eq } from "drizzle-orm";
-import { StarCard } from "@/components/stars/star-card";
-import { SyncButton } from "@/components/stars/sync-button";
+import { StarsView } from "@/components/stars/stars-view";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { githubStars } from "@/lib/db/schema";
+import { hasGithubToken } from "@/lib/oauth-tokens";
 import type { GithubStar } from "@/lib/types";
 
 export const runtime = "nodejs";
 
-/** Star 목록과 동기화 버튼을 표시한다. */
+/** Star 목록 서버 로드 후 클라이언트 필터/동기화 UI에 전달 */
 export default async function StarsPage() {
   const session = await auth();
   const userId = session!.user!.id;
+  const hasGithub =
+    Boolean(session?.hasGithub) || hasGithubToken(userId);
 
   const rows = db
     .select()
@@ -42,30 +44,18 @@ export default async function StarsPage() {
     };
   });
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">GitHub Stars</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Star한 레포지토리를 동기화해 관리합니다. (GitHub 로그인 필요)
-          </p>
-        </div>
-        <SyncButton />
-      </div>
+  const lastSynced =
+    list.reduce<string | null>((acc, s) => {
+      if (!acc) return s.lastSynced;
+      return Date.parse(s.lastSynced) > Date.parse(acc) ? s.lastSynced : acc;
+    }, null) ?? null;
 
-      {list.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-          동기화된 Star가 없습니다. GitHub로 로그인한 뒤 동기화 버튼을
-          눌러주세요.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((s) => (
-            <StarCard key={s.id} star={s} />
-          ))}
-        </div>
-      )}
-    </div>
+  return (
+    <StarsView
+      initialStars={list}
+      hasGithub={hasGithub}
+      lastSynced={lastSynced}
+      autoSyncOnEmpty
+    />
   );
 }

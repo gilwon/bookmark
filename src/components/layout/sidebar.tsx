@@ -1,8 +1,9 @@
-// 앱 사이드바 — 네비게이션, 테마 토글, 로그아웃
+// 앱 사이드바 — 네비게이션, 프로필, 테마 토글, 로그아웃
 "use client";
 
 import {
   Bookmark,
+  ExternalLink,
   FileText,
   GitFork,
   LogOut,
@@ -13,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -34,7 +36,6 @@ export function Sidebar() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
-  /** 네비 링크 목록 */
   const Nav = (
     <nav className="flex flex-1 flex-col gap-1 px-3">
       {navItems.map(({ href, label, icon: Icon }) => {
@@ -59,9 +60,18 @@ export function Sidebar() {
     </nav>
   );
 
+  const footerProps = {
+    theme,
+    toggleTheme,
+    name: session?.user?.name,
+    email: session?.user?.email,
+    image: session?.user?.image,
+    githubLogin: session?.githubLogin,
+    hasGithub: Boolean(session?.hasGithub),
+  };
+
   return (
     <>
-      {/* 모바일 상단 바 */}
       <div className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-3 lg:hidden">
         <Link href="/bookmarks" className="text-lg font-bold text-foreground">
           MyMark
@@ -76,7 +86,6 @@ export function Sidebar() {
         </Button>
       </div>
 
-      {/* 모바일 오버레이 메뉴 */}
       {open && (
         <div className="fixed inset-0 z-40 flex lg:hidden">
           <div
@@ -88,16 +97,11 @@ export function Sidebar() {
               MyMark
             </div>
             {Nav}
-            <SidebarFooter
-              theme={theme}
-              toggleTheme={toggleTheme}
-              email={session?.user?.email}
-            />
+            <SidebarFooter {...footerProps} />
           </aside>
         </div>
       )}
 
-      {/* 데스크톱 사이드바 */}
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar py-5 lg:flex">
         <Link
           href="/bookmarks"
@@ -106,37 +110,81 @@ export function Sidebar() {
           MyMark
         </Link>
         {Nav}
-        <SidebarFooter
-          theme={theme}
-          toggleTheme={toggleTheme}
-          email={session?.user?.email}
-        />
+        <SidebarFooter {...footerProps} />
       </aside>
     </>
   );
 }
 
-/** 사이드바 하단 — 유저 정보, 테마, 로그아웃 */
+/** 사이드바 하단 — 프로필·테마·로그아웃 */
 function SidebarFooter({
   theme,
   toggleTheme,
+  name,
   email,
+  image,
+  githubLogin,
+  hasGithub,
 }: {
   theme: "dark" | "light";
   toggleTheme: () => void;
+  name?: string | null;
   email?: string | null;
+  image?: string | null;
+  githubLogin?: string | null;
+  hasGithub?: boolean;
 }) {
+  const profileHref = githubLogin
+    ? `https://github.com/${githubLogin}`
+    : null;
+
   return (
     <div className="mt-auto space-y-2 border-t border-border px-3 pt-3">
-      {email && (
-        <p className="truncate px-3 text-xs text-muted-foreground">{email}</p>
-      )}
+      <div className="flex items-center gap-3 px-2 py-1">
+        {image ? (
+          <Image
+            src={image}
+            alt=""
+            width={36}
+            height={36}
+            className="h-9 w-9 rounded-full border border-border object-cover"
+            unoptimized
+          />
+        ) : (
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
+            {(name ?? email ?? "?").slice(0, 1).toUpperCase()}
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-foreground">
+            {name ?? "사용자"}
+          </p>
+          {githubLogin ? (
+            <a
+              href={profileHref!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex max-w-full items-center gap-1 truncate text-xs text-muted-foreground hover:text-indigo-500"
+            >
+              @{githubLogin}
+              <ExternalLink className="h-3 w-3 shrink-0 opacity-60" />
+            </a>
+          ) : (
+            <p className="truncate text-xs text-muted-foreground">
+              {email ?? (hasGithub ? "GitHub 연동" : "로컬 계정")}
+            </p>
+          )}
+        </div>
+      </div>
+
       <Button
         type="button"
         variant="ghost"
         className="w-full justify-start"
         onClick={toggleTheme}
-        aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
+        aria-label={
+          theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"
+        }
       >
         {theme === "dark" ? (
           <Sun className="h-4 w-4" />

@@ -35,3 +35,16 @@
 - [o] 날짜 필터
 - [o] 반응형 레이아웃
 - [o] README + 빌드 검증
+
+## P1 UX
+- [o] Stars 페이지 진입 시 자동 동기화 (목록 비어 있고 GitHub 연동 시)
+- [o] 동기화 진행 단계 / 마지막 동기화 시각
+- [o] Stars 검색·언어 필터
+- [o] 사이드바 아바타·GitHub 프로필 링크
+
+## P2 보안·데이터
+- [o] access_token 서버 암호 저장 (세션 비노출)
+- [o] API user_id 소유권 강화 + authz 헬퍼
+- [o] unstar 로컬 정리
+- [o] 프로덕션 Dev Login 기본 비활성
+- [o] Supabase 스키마 RLS + 이전 가이드
