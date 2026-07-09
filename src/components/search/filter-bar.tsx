@@ -1,0 +1,84 @@
+// 검색 필터 바 — q, type, tag, category
+"use client";
+
+import { Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+/** 검색 쿼리와 필터를 URL 쿼리스트링으로 반영한다. */
+export function FilterBar() {
+  const router = useRouter();
+  const params = useSearchParams();
+  const [pending, startTransition] = useTransition();
+
+  const [q, setQ] = useState(params.get("q") ?? "");
+  const [type, setType] = useState(params.get("type") ?? "all");
+  const [tag, setTag] = useState(params.get("tag") ?? "");
+  const [category, setCategory] = useState(params.get("category") ?? "");
+
+  /** 필터를 적용해 /search 로 이동한다. */
+  function apply(e?: React.FormEvent) {
+    e?.preventDefault();
+    const sp = new URLSearchParams();
+    if (q.trim()) sp.set("q", q.trim());
+    if (type && type !== "all") sp.set("type", type);
+    if (tag.trim()) sp.set("tag", tag.trim());
+    if (category.trim()) sp.set("category", category.trim());
+    startTransition(() => {
+      router.push(`/search?${sp.toString()}`);
+    });
+  }
+
+  return (
+    <form
+      onSubmit={apply}
+      className="flex flex-col gap-2 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:flex-row sm:flex-wrap sm:items-end"
+    >
+      <div className="flex-1 space-y-1 min-w-[180px]">
+        <label className="text-xs text-zinc-400">검색어</label>
+        <div className="relative">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500" />
+          <Input
+            className="pl-8"
+            placeholder="제목, 설명, URL…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="space-y-1 w-full sm:w-36">
+        <label className="text-xs text-zinc-400">타입</label>
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          className="flex h-9 w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 text-sm text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        >
+          <option value="all">전체</option>
+          <option value="bookmark">북마크</option>
+          <option value="star">GitHub Star</option>
+        </select>
+      </div>
+      <div className="space-y-1 w-full sm:w-32">
+        <label className="text-xs text-zinc-400">태그</label>
+        <Input
+          placeholder="태그"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+        />
+      </div>
+      <div className="space-y-1 w-full sm:w-36">
+        <label className="text-xs text-zinc-400">카테고리</label>
+        <Input
+          placeholder="카테고리"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+      </div>
+      <Button type="submit" disabled={pending}>
+        {pending ? "검색 중…" : "검색"}
+      </Button>
+    </form>
+  );
+}
