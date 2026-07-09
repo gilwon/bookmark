@@ -74,8 +74,8 @@ export default async function PageEditorPage({ params }: Props) {
   });
 
   return (
-    // 상단 네비와 본문 입력 폭을 동일하게 (max-w-3xl)
-    <div className="mx-auto w-full max-w-3xl space-y-4">
+    // 앱 셸 max-w-6xl 전체 폭 사용 — 상단 네비와 본문 입력 모두 동일하게 넓게
+    <div className="w-full space-y-4">
       <div className="flex items-center justify-between gap-3">
         <Link
           href="/pages"
