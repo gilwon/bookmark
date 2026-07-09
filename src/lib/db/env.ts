@@ -13,6 +13,20 @@ export function useSupabaseJs(): boolean {
 
 export type DbBackend = "supabase" | "sqlite";
 
+/** Vercel/서버리스에서는 SQLite 폴백을 막고 Supabase 설정을 강제한다. */
+function isServerless(): boolean {
+  return Boolean(
+    process.env.VERCEL === "1" || process.env.AWS_LAMBDA_FUNCTION_NAME
+  );
+}
+
 export function getDbBackend(): DbBackend {
-  return useSupabaseJs() ? "supabase" : "sqlite";
+  if (useSupabaseJs()) return "supabase";
+  if (isServerless()) {
+    throw new Error(
+      "[db] Vercel에는 NEXT_PUBLIC_SUPABASE_URL 과 SUPABASE_SERVICE_ROLE_KEY 가 필요합니다. " +
+        "로컬 SQLite 폴백은 서버리스에서 동작하지 않습니다."
+    );
+  }
+  return "sqlite";
 }

@@ -1,16 +1,25 @@
-// 로컬 SQLite 전용 Drizzle 인스턴스 (Supabase JS 모드가 아닐 때만 사용)
+// 로컬 SQLite 전용 Drizzle 인스턴스 (Supabase JS 모드가 아닐 때만 로드·초기화)
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import fs from "fs";
 import path from "path";
 import * as schema from "./schema.sqlite";
 
+type SqliteDb = ReturnType<typeof drizzle<typeof schema>>;
+
 const globalForDb = globalThis as unknown as {
-  sqlite?: Database.Database;
-  sqliteDb?: ReturnType<typeof drizzle<typeof schema>>;
+  sqliteDb?: SqliteDb;
 };
 
-function createSqlite() {
+function createSqlite(): SqliteDb {
+  // Vercel 등 read-only 서버리스에서는 사용 불가 — store 가 supabase 경로로 우회해야 함
+  if (process.env.VERCEL === "1" || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    throw new Error(
+      "[db] SQLite는 Vercel/서버리스에서 사용할 수 없습니다. " +
+        "NEXT_PUBLIC_SUPABASE_URL 과 SUPABASE_SERVICE_ROLE_KEY 를 설정하세요."
+    );
+  }
+
   const dataDir = path.join(process.cwd(), "data");
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
@@ -61,7 +70,19 @@ function createSqlite() {
   return drizzle(sqlite, { schema });
 }
 
-export const db = globalForDb.sqliteDb ?? createSqlite();
-if (process.env.NODE_ENV !== "production") {
-  globalForDb.sqliteDb = db;
+/** 첫 접근 시에만 SQLite를 연다 (모듈 import 시 생성하지 않음). */
+export function getSqliteDb(): SqliteDb {
+  if (!globalForDb.sqliteDb) {
+    globalForDb.sqliteDb = createSqlite();
+  }
+  return globalForDb.sqliteDb;
 }
+
+/** sqlite-store 호환용 — 지연 초기화 프록시 */
+export const db = new Proxy({} as SqliteDb, {
+  get(_t, prop, receiver) {
+    const real = getSqliteDb();
+    const value = Reflect.get(real, prop as string | symbol, receiver);
+    return typeof value === "function" ? value.bind(real) : value;
+  },
+});
