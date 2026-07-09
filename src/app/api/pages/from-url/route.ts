@@ -18,10 +18,16 @@ export async function POST(req: Request) {
 
   try {
     const result = await fetchUrlAsMarkdown(url);
+    // partial 스텁도 200 — 클라이언트가 textarea에 채워 편집 가능
     return NextResponse.json(result);
   } catch (err) {
     const message =
       err instanceof Error ? err.message : "URL 불러오기에 실패했습니다.";
-    return NextResponse.json({ error: message }, { status: 422 });
+    // undici "fetch failed" 를 그대로 노출하지 않음
+    const friendly =
+      /fetch failed|redirect count/i.test(message)
+        ? `${message} · Notion 앱 링크·로그인 필요 페이지는 본문 추출이 제한됩니다.`
+        : message;
+    return NextResponse.json({ error: friendly }, { status: 422 });
   }
 }

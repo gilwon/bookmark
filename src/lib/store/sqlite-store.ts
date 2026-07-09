@@ -1,5 +1,5 @@
 // SQLite(Drizzle) 스토어 구현
-import { and, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db/sqlite";
 import {
   agentDocs,
@@ -9,6 +9,11 @@ import {
   oauthTokens,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
+import type {
+  CategoryCount,
+  DashboardCounts,
+  SearchOpts,
+} from "./query-types";
 import type {
   AgentDocRow,
   BookmarkRow,
@@ -305,4 +310,258 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
       .delete(agentDocs)
       .where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId)))
   );
+}
+
+// --- dashboard / search ---
+export async function getDashboardCounts(
+  userId: string
+): Promise<DashboardCounts> {
+  const [b] = await qall(
+    db
+      .select({ c: count() })
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+  );
+  const [s] = await qall(
+    db
+      .select({ c: count() })
+      .from(githubStars)
+      .where(eq(githubStars.userId, userId))
+  );
+  const [p] = await qall(
+    db
+      .select({ c: count() })
+      .from(customPages)
+      .where(eq(customPages.userId, userId))
+  );
+  const [a] = await qall(
+    db
+      .select({ c: count() })
+      .from(agentDocs)
+      .where(eq(agentDocs.userId, userId))
+  );
+  const cats = await qall(
+    db
+      .select({ category: bookmarks.category })
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+  );
+  const catSet = new Set(
+    cats.map((r) => r.category?.trim() || "미분류")
+  );
+  return {
+    bookmarks: Number(b?.c ?? 0),
+    stars: Number(s?.c ?? 0),
+    pages: Number(p?.c ?? 0),
+    agentDocs: Number(a?.c ?? 0),
+    categories: catSet.size,
+  };
+}
+
+export async function listCategoryCounts(
+  userId: string,
+  limit = 8
+): Promise<CategoryCount[]> {
+  const rows = await qall(
+    db
+      .select({ category: bookmarks.category })
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+  );
+  const map = new Map<string, number>();
+  for (const r of rows) {
+    const name = r.category?.trim() || "미분류";
+    map.set(name, (map.get(name) ?? 0) + 1);
+  }
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
+    .slice(0, limit)
+    .map(([name, count]) => ({ name, count }));
+}
+
+export async function listRecentBookmarks(
+  userId: string,
+  limit = 6
+): Promise<BookmarkRow[]> {
+  return qall(
+    db
+      .select()
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+      .orderBy(desc(bookmarks.createdAt))
+      .limit(limit)
+  );
+}
+
+export async function listRecentStars(
+  userId: string,
+  limit = 5
+): Promise<GithubStarRow[]> {
+  return qall(
+    db
+      .select()
+      .from(githubStars)
+      .where(eq(githubStars.userId, userId))
+      .orderBy(desc(githubStars.lastSynced))
+      .limit(limit)
+  );
+}
+
+export async function listRecentPages(
+  userId: string,
+  limit = 5
+): Promise<CustomPageRow[]> {
+  return qall(
+    db
+      .select()
+      .from(customPages)
+      .where(eq(customPages.userId, userId))
+      .orderBy(desc(customPages.updatedAt))
+      .limit(limit)
+  );
+}
+
+export async function searchBookmarks(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<BookmarkRow[]> {
+  const lim = opts.limit ?? 100;
+  const rows = await qall(
+    db
+      .select()
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+      .orderBy(desc(bookmarks.createdAt))
+      .limit(Math.min(lim * 3, 500))
+  );
+  const q = opts.q?.trim().toLowerCase();
+  const cat = opts.category?.trim().toLowerCase();
+  const tag = opts.tag?.trim().toLowerCase();
+  return rows
+    .filter((r) => {
+      if (cat && (r.category ?? "").toLowerCase() !== cat) return false;
+      if (opts.from && r.createdAt < opts.from) return false;
+      if (opts.to && r.createdAt > opts.to + "T23:59:59") return false;
+      if (tag) {
+        try {
+          if (
+            !(JSON.parse(r.tags || "[]") as string[]).some(
+              (t) => t.toLowerCase() === tag
+            )
+          )
+            return false;
+        } catch {
+          if (!(r.tags || "").toLowerCase().includes(tag)) return false;
+        }
+      }
+      if (!q) return true;
+      const hay = [r.title, r.description ?? "", r.url, r.tags, r.category ?? ""]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    })
+    .slice(0, lim);
+}
+
+export async function searchStars(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<GithubStarRow[]> {
+  const lim = opts.limit ?? 100;
+  const rows = await qall(
+    db
+      .select()
+      .from(githubStars)
+      .where(eq(githubStars.userId, userId))
+      .orderBy(desc(githubStars.stars))
+      .limit(Math.min(lim * 3, 500))
+  );
+  const q = opts.q?.trim().toLowerCase();
+  const tag = opts.tag?.trim().toLowerCase();
+  return rows
+    .filter((r) => {
+      if (opts.from && r.createdAt < opts.from) return false;
+      if (opts.to && r.createdAt > opts.to + "T23:59:59") return false;
+      if (tag) {
+        try {
+          if (
+            !(JSON.parse(r.topics || "[]") as string[]).some(
+              (t) => t.toLowerCase() === tag
+            )
+          )
+            return false;
+        } catch {
+          if (!(r.topics || "").toLowerCase().includes(tag)) return false;
+        }
+      }
+      if (!q) return true;
+      const hay = [
+        r.repoFullName,
+        r.description ?? "",
+        r.language ?? "",
+        r.topics,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    })
+    .slice(0, lim);
+}
+
+export async function searchPages(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<CustomPageRow[]> {
+  const lim = opts.limit ?? 50;
+  const rows = await qall(
+    db
+      .select()
+      .from(customPages)
+      .where(eq(customPages.userId, userId))
+      .orderBy(desc(customPages.updatedAt))
+      .limit(Math.min(lim * 3, 300))
+  );
+  const q = opts.q?.trim().toLowerCase();
+  return rows
+    .filter((r) => {
+      if (opts.from && r.updatedAt < opts.from) return false;
+      if (opts.to && r.updatedAt > opts.to + "T23:59:59") return false;
+      if (!q) return true;
+      return `${r.title} ${r.content}`.toLowerCase().includes(q);
+    })
+    .slice(0, lim);
+}
+
+export async function searchAgentDocs(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<AgentDocRow[]> {
+  const lim = opts.limit ?? 50;
+  const rows = await qall(
+    db
+      .select()
+      .from(agentDocs)
+      .where(eq(agentDocs.userId, userId))
+      .orderBy(desc(agentDocs.updatedAt))
+      .limit(Math.min(lim * 3, 300))
+  );
+  const q = opts.q?.trim().toLowerCase();
+  return rows
+    .filter((r) => {
+      if (opts.from && r.updatedAt < opts.from) return false;
+      if (opts.to && r.updatedAt > opts.to + "T23:59:59") return false;
+      if (!q) return true;
+      const hay = [
+        r.title,
+        r.filename,
+        r.description ?? "",
+        r.kind,
+        r.content,
+        r.bundle,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    })
+    .slice(0, lim);
 }

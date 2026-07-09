@@ -45,10 +45,21 @@ export function UrlImportForm() {
       const titleVal = String((data as { title?: string }).title || "");
       const md = String((data as { markdown?: string }).markdown || "");
       const src = String((data as { sourceUrl?: string }).sourceUrl || raw);
+      const warning =
+        typeof (data as { warning?: string }).warning === "string"
+          ? (data as { warning: string }).warning
+          : null;
+      const partial = Boolean((data as { partial?: boolean }).partial);
       setTitle(titleVal);
       setMarkdown(md);
       setSourceUrl(src);
-      setStatus("불러오기 완료 — 내용을 확인한 뒤 저장하세요.");
+      if (partial || warning) {
+        setError(warning || "본문 일부만 가져왔습니다. 내용을 보완하세요.");
+        setStatus("링크 스텁 생성 — 본문을 붙여넣은 뒤 저장할 수 있습니다.");
+      } else {
+        setError(null);
+        setStatus("불러오기 완료 — 내용을 확인한 뒤 저장하세요.");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "불러오기 실패");
       setMarkdown("");

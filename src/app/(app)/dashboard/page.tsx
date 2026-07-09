@@ -1,4 +1,4 @@
-// 홈 대시보드 — 요약·최근 항목·빠른 액션
+// 홈 대시보드 — count 전용 + 최근 N건만 조회
 import type { ComponentType } from "react";
 import {
   Bookmark,
@@ -30,7 +30,9 @@ function parseTags(raw: string): string[] {
   }
 }
 
-function toBookmark(row: Awaited<ReturnType<typeof store.listBookmarks>>[0]): BookmarkType {
+function toBookmark(
+  row: Awaited<ReturnType<typeof store.listRecentBookmarks>>[0]
+): BookmarkType {
   return {
     id: row.id,
     userId: row.userId,
@@ -45,22 +47,6 @@ function toBookmark(row: Awaited<ReturnType<typeof store.listBookmarks>>[0]): Bo
   };
 }
 
-/** 카테고리별 개수 (상위 N) */
-function topCategories(
-  bookmarks: Awaited<ReturnType<typeof store.listBookmarks>>,
-  limit = 8
-) {
-  const map = new Map<string, number>();
-  for (const b of bookmarks) {
-    const key = b.category?.trim() || "미분류";
-    map.set(key, (map.get(key) ?? 0) + 1);
-  }
-  return [...map.entries()]
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
-    .slice(0, limit)
-    .map(([name, count]) => ({ name, count }));
-}
-
 export default async function DashboardPage() {
   const session = await auth();
   const userId = session!.user!.id;
@@ -69,75 +55,50 @@ export default async function DashboardPage() {
     session?.user?.email?.split("@")[0] ||
     "사용자";
 
-  // 대시보드: 에이전트 문서는 본문 없이 메타만 (번들 전체 로드 방지)
-  const [bookmarks, stars, pages, agentDocs] = await Promise.all([
-    store.listBookmarks(userId),
-    store.listStars(userId),
-    store.listPages(userId),
-    store.listAgentDocs(userId, { full: false }),
-  ]);
+  const [counts, categories, recentBookmarkRows, recentStars, recentPages] =
+    await Promise.all([
+      store.getDashboardCounts(userId),
+      store.listCategoryCounts(userId, 8),
+      store.listRecentBookmarks(userId, 6),
+      store.listRecentStars(userId, 5),
+      store.listRecentPages(userId, 5),
+    ]);
 
-  const categories = topCategories(bookmarks);
-  const categoryCount = new Set(
-    bookmarks.map((b) => b.category?.trim() || "미분류")
-  ).size;
-
-  const recentBookmarks = [...bookmarks]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 6)
-    .map(toBookmark);
-
-  const recentStars = [...stars]
-    .sort(
-      (a, b) =>
-        new Date(b.lastSynced).getTime() - new Date(a.lastSynced).getTime()
-    )
-    .slice(0, 5);
-
-  const recentPages = [...pages]
-    .sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    )
-    .slice(0, 5);
-
-  const maxCat = Math.max(1, ...categories.map((c) => c.count));
+  const recentBookmarks = recentBookmarkRows.map(toBookmark);
+  const maxCat = Math.max(1, ...categories.map((c) => c.count), 1);
 
   const stats = [
     {
       label: "북마크",
-      value: bookmarks.length,
+      value: counts.bookmarks,
       href: "/bookmarks",
       icon: Bookmark,
       hint: "저장한 링크",
     },
     {
       label: "카테고리",
-      value: categoryCount,
+      value: counts.categories,
       href: "/bookmarks",
       icon: FolderOpen,
       hint: "분류 개수",
     },
     {
       label: "GitHub Stars",
-      value: stars.length,
+      value: counts.stars,
       href: "/stars",
       icon: GitFork,
       hint: "동기화된 레포",
     },
     {
       label: "페이지",
-      value: pages.length,
+      value: counts.pages,
       href: "/pages",
       icon: FileText,
       hint: "메모 페이지",
     },
     {
       label: "에이전트 문서",
-      value: agentDocs.length,
+      value: counts.agentDocs,
       href: "/agent-docs",
       icon: Bot,
       hint: "SKILL / AGENTS 등",
@@ -146,7 +107,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* 헤더 */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
@@ -174,12 +134,11 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* 요약 카드 */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map(({ label, value, href, icon: Icon, hint }) => (
           <Link key={label} href={href} className="group">
             <Card className="h-full transition-colors group-hover:border-indigo-500/40">
-              <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2 p-4">
+              <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 pb-2">
                 <CardTitle className="text-xs font-medium text-muted-foreground">
                   {label}
                 </CardTitle>
@@ -199,7 +158,6 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* 최근 북마크 */}
         <section className="space-y-3 lg:col-span-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold tracking-tight">
@@ -215,9 +173,7 @@ export default async function DashboardPage() {
           <DashboardRecentBookmarks bookmarks={recentBookmarks} />
         </section>
 
-        {/* 사이드 컬럼 */}
         <div className="space-y-6 lg:col-span-2">
-          {/* 카테고리 Top */}
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold tracking-tight">
@@ -262,7 +218,6 @@ export default async function DashboardPage() {
             </Card>
           </section>
 
-          {/* 최근 Stars */}
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold tracking-tight">
@@ -315,7 +270,6 @@ export default async function DashboardPage() {
             </Card>
           </section>
 
-          {/* 최근 페이지 */}
           <section className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold tracking-tight">
@@ -355,7 +309,6 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* 빠른 액션 */}
       <section className="space-y-3">
         <h2 className="text-sm font-semibold tracking-tight">빠른 액션</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -381,7 +334,7 @@ export default async function DashboardPage() {
             href="/pages"
             icon={FileText}
             title="새 페이지"
-            desc="메모 · 임베드 작성"
+            desc="메모 · URL 불러오기"
           />
         </div>
       </section>
@@ -389,7 +342,6 @@ export default async function DashboardPage() {
   );
 }
 
-/** 대시보드 빠른 액션 타일 */
 function QuickAction({
   href,
   icon: Icon,

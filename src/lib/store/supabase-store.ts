@@ -13,6 +13,11 @@ import {
   tokenToDb,
 } from "./mappers";
 import type {
+  CategoryCount,
+  DashboardCounts,
+  SearchOpts,
+} from "./query-types";
+import type {
   AgentDocRow,
   BookmarkRow,
   CustomPageRow,
@@ -386,4 +391,275 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
     .eq("id", id)
     .eq("user_id", userId);
   throwIfError(error, "deleteAgentDoc");
+}
+
+// --- dashboard / search (가벼운 쿼리) ---
+async function countTable(
+  table: "bookmarks" | "github_stars" | "custom_pages" | "agent_docs",
+  userId: string
+): Promise<number> {
+  const { count, error } = await sb()
+    .from(table)
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId);
+  throwIfError(error, `count:${table}`);
+  return count ?? 0;
+}
+
+/** 대시보드 숫자 요약 (본문 로드 없음) */
+export async function getDashboardCounts(
+  userId: string
+): Promise<DashboardCounts> {
+  const [bookmarks, stars, pages, agentDocs, catRows] = await Promise.all([
+    countTable("bookmarks", userId),
+    countTable("github_stars", userId),
+    countTable("custom_pages", userId),
+    countTable("agent_docs", userId),
+    sb()
+      .from("bookmarks")
+      .select("category")
+      .eq("user_id", userId)
+      .then((r) => {
+        throwIfError(r.error, "count categories");
+        return r.data ?? [];
+      }),
+  ]);
+  const cats = new Set(
+    (catRows as { category: string | null }[]).map(
+      (r) => r.category?.trim() || "미분류"
+    )
+  );
+  return {
+    bookmarks,
+    stars,
+    pages,
+    agentDocs,
+    categories: cats.size,
+  };
+}
+
+/** 카테고리별 개수 (상위 N) */
+export async function listCategoryCounts(
+  userId: string,
+  limit = 8
+): Promise<CategoryCount[]> {
+  const { data, error } = await sb()
+    .from("bookmarks")
+    .select("category")
+    .eq("user_id", userId);
+  throwIfError(error, "listCategoryCounts");
+  const map = new Map<string, number>();
+  for (const r of data ?? []) {
+    const name = (r.category as string | null)?.trim() || "미분류";
+    map.set(name, (map.get(name) ?? 0) + 1);
+  }
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
+    .slice(0, limit)
+    .map(([name, count]) => ({ name, count }));
+}
+
+export async function listRecentBookmarks(
+  userId: string,
+  limit = 6
+): Promise<BookmarkRow[]> {
+  const { data, error } = await sb()
+    .from("bookmarks")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  throwIfError(error, "listRecentBookmarks");
+  return (data ?? []).map(mapBookmark);
+}
+
+export async function listRecentStars(
+  userId: string,
+  limit = 5
+): Promise<GithubStarRow[]> {
+  const { data, error } = await sb()
+    .from("github_stars")
+    .select("*")
+    .eq("user_id", userId)
+    .order("last_synced", { ascending: false })
+    .limit(limit);
+  throwIfError(error, "listRecentStars");
+  return (data ?? []).map(mapStar);
+}
+
+export async function listRecentPages(
+  userId: string,
+  limit = 5
+): Promise<CustomPageRow[]> {
+  const { data, error } = await sb()
+    .from("custom_pages")
+    .select("id, user_id, title, created_at, updated_at")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+  throwIfError(error, "listRecentPages");
+  return (data ?? []).map((r) =>
+    mapPage({ ...r, content: "{}" })
+  );
+}
+
+/** ilike 패턴 이스케이프 */
+function likePat(q: string): string {
+  return `%${q.replace(/[%_]/g, "\\$&")}%`;
+}
+
+function applyDateRange(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  query: any,
+  col: string,
+  from?: string,
+  to?: string
+) {
+  let q = query;
+  if (from) q = q.gte(col, from.length === 10 ? `${from}T00:00:00.000Z` : from);
+  if (to) q = q.lte(col, to.length === 10 ? `${to}T23:59:59.999Z` : to);
+  return q;
+}
+
+/** 북마크 검색 (PostgREST 필터) */
+export async function searchBookmarks(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<BookmarkRow[]> {
+  const lim = opts.limit ?? 100;
+  let query = sb()
+    .from("bookmarks")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(lim);
+
+  if (opts.category?.trim()) {
+    query = query.ilike("category", opts.category.trim());
+  }
+  query = applyDateRange(query, "created_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    const p = likePat(q);
+    query = query.or(
+      `title.ilike.${p},description.ilike.${p},url.ilike.${p},tags.ilike.${p},category.ilike.${p}`
+    );
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchBookmarks");
+  let rows = (data ?? []).map(mapBookmark);
+
+  // tag 는 JSON 배열 문자열 — 서버에서 대략 걸러도 클라이언트와 동일하게 한 번 더
+  if (opts.tag?.trim()) {
+    const t = opts.tag.trim().toLowerCase();
+    rows = rows.filter((r) => {
+      try {
+        return (JSON.parse(r.tags || "[]") as string[]).some(
+          (x) => x.toLowerCase() === t
+        );
+      } catch {
+        return (r.tags || "").toLowerCase().includes(t);
+      }
+    });
+  }
+  return rows;
+}
+
+/** Star 검색 */
+export async function searchStars(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<GithubStarRow[]> {
+  const lim = opts.limit ?? 100;
+  let query = sb()
+    .from("github_stars")
+    .select("*")
+    .eq("user_id", userId)
+    .order("stars", { ascending: false })
+    .limit(lim);
+
+  query = applyDateRange(query, "created_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    const p = likePat(q);
+    query = query.or(
+      `repo_full_name.ilike.${p},description.ilike.${p},language.ilike.${p},topics.ilike.${p}`
+    );
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchStars");
+  let rows = (data ?? []).map(mapStar);
+  if (opts.tag?.trim()) {
+    const t = opts.tag.trim().toLowerCase();
+    rows = rows.filter((r) => {
+      try {
+        return (JSON.parse(r.topics || "[]") as string[]).some(
+          (x) => x.toLowerCase() === t
+        );
+      } catch {
+        return (r.topics || "").toLowerCase().includes(t);
+      }
+    });
+  }
+  return rows;
+}
+
+/** 페이지 검색 (제목; 본문은 로드 후 필요 시 추가 필터) */
+export async function searchPages(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<CustomPageRow[]> {
+  const lim = opts.limit ?? 50;
+  let query = sb()
+    .from("custom_pages")
+    .select("*")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(lim);
+
+  query = applyDateRange(query, "updated_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    // 제목 1차 필터 — 본문 매칭은 호출측에서 content 검사 가능하도록 전체 필드 반환
+    const p = likePat(q);
+    // content 도 text 이므로 ilike 가능
+    query = query.or(`title.ilike.${p},content.ilike.${p}`);
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchPages");
+  return (data ?? []).map(mapPage);
+}
+
+/** 에이전트 문서 검색 */
+export async function searchAgentDocs(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<AgentDocRow[]> {
+  const lim = opts.limit ?? 50;
+  let query = sb()
+    .from("agent_docs")
+    .select("*")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(lim);
+
+  query = applyDateRange(query, "updated_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    const p = likePat(q);
+    query = query.or(
+      `title.ilike.${p},filename.ilike.${p},description.ilike.${p},content.ilike.${p},bundle.ilike.${p},kind.ilike.${p}`
+    );
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchAgentDocs");
+  return (data ?? []).map(mapAgentDoc);
 }

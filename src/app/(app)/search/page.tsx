@@ -1,4 +1,4 @@
-// 통합 검색 페이지 — 북마크 · Star · 페이지 · 에이전트 문서
+// 통합 검색 — DB 필터(search*) 후 결과 표시
 import { Suspense } from "react";
 import { BookmarkCard } from "@/components/bookmarks/bookmark-card";
 import {
@@ -11,9 +11,8 @@ import {
   type PageSearchResult,
 } from "@/components/search/page-result-card";
 import { StarCard } from "@/components/stars/star-card";
+import { parseBundle } from "@/lib/agent-doc-bundle";
 import { auth } from "@/lib/auth";
-import { inDateRange } from "@/lib/date-range";
-import { bundleSearchText, parseBundle } from "@/lib/agent-doc-bundle";
 import { store } from "@/lib/store";
 import { extractTiptapText } from "@/lib/tiptap-text";
 import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
@@ -29,21 +28,20 @@ type SearchParams = Promise<{
   to?: string;
 }>;
 
-/** 본문 미리보기 스니펫을 만든다. */
 function makeSnippet(text: string, q: string, max = 140): string {
   const clean = text.replace(/\s+/g, " ").trim();
   if (!clean) return "";
   if (!q) return clean.slice(0, max) + (clean.length > max ? "…" : "");
   const lower = clean.toLowerCase();
-  const idx = lower.indexOf(q);
+  const idx = lower.indexOf(q.toLowerCase());
   if (idx < 0) return clean.slice(0, max) + (clean.length > max ? "…" : "");
   const start = Math.max(0, idx - 40);
   const end = Math.min(clean.length, idx + q.length + 80);
-  const slice =
+  return (
     (start > 0 ? "…" : "") +
     clean.slice(start, end) +
-    (end < clean.length ? "…" : "");
-  return slice;
+    (end < clean.length ? "…" : "")
+  );
 }
 
 const AGENT_KINDS = new Set<AgentDocKind>([
@@ -53,7 +51,6 @@ const AGENT_KINDS = new Set<AgentDocKind>([
   "other",
 ]);
 
-/** 검색어/필터에 맞는 북마크·Star·페이지·에이전트 문서를 통합 표시한다. */
 export default async function SearchPage({
   searchParams,
 }: {
@@ -63,12 +60,14 @@ export default async function SearchPage({
   const userId = session!.user!.id;
   const sp = await searchParams;
 
-  const q = (sp.q ?? "").trim().toLowerCase();
+  const q = (sp.q ?? "").trim();
   const type = sp.type ?? "all";
-  const tag = (sp.tag ?? "").trim().toLowerCase();
-  const category = (sp.category ?? "").trim().toLowerCase();
+  const tag = (sp.tag ?? "").trim();
+  const category = (sp.category ?? "").trim();
   const from = (sp.from ?? "").trim();
   const to = (sp.to ?? "").trim();
+
+  const opts = { q, tag, category, from, to, limit: 80 };
 
   let bookmarkResults: Bookmark[] = [];
   let starResults: GithubStar[] = [];
@@ -76,153 +75,79 @@ export default async function SearchPage({
   let agentDocResults: AgentDocSearchResult[] = [];
 
   if (type === "all" || type === "bookmark") {
-    const rows = await store.listBookmarks(userId);
-
-    bookmarkResults = rows
-      .map((row) => {
-        let tags: string[] = [];
-        try {
-          tags = JSON.parse(row.tags || "[]");
-        } catch {
-          tags = [];
-        }
-        return {
-          id: row.id,
-          userId: row.userId,
-          url: row.url,
-          title: row.title,
-          description: row.description,
-          image: row.image,
-          favicon: row.favicon,
-          tags,
-          category: row.category,
-          createdAt: row.createdAt,
-        } satisfies Bookmark;
-      })
-      .filter((b) => {
-        if (!inDateRange(b.createdAt, from, to)) return false;
-        if (category && (b.category ?? "").toLowerCase() !== category) {
-          return false;
-        }
-        if (tag && !b.tags.some((t) => t.toLowerCase() === tag)) {
-          return false;
-        }
-        if (!q) return true;
-        const hay = [b.title, b.description ?? "", b.url, ...b.tags]
-          .join(" ")
-          .toLowerCase();
-        return hay.includes(q);
-      });
+    const rows = await store.searchBookmarks(userId, opts);
+    bookmarkResults = rows.map((row) => {
+      let tags: string[] = [];
+      try {
+        tags = JSON.parse(row.tags || "[]");
+      } catch {
+        tags = [];
+      }
+      return {
+        id: row.id,
+        userId: row.userId,
+        url: row.url,
+        title: row.title,
+        description: row.description,
+        image: row.image,
+        favicon: row.favicon,
+        tags,
+        category: row.category,
+        createdAt: row.createdAt,
+      };
+    });
   }
 
-  if (type === "all" || type === "star") {
-    // 카테고리 필터는 북마크 전용
-    if (!category) {
-      const rows = await store.listStars(userId);
-
-      starResults = rows
-        .map((row) => {
-          let topics: string[] = [];
-          try {
-            topics = JSON.parse(row.topics || "[]");
-          } catch {
-            topics = [];
-          }
-          return {
-            id: row.id,
-            userId: row.userId,
-            repoFullName: row.repoFullName,
-            description: row.description,
-            language: row.language,
-            stars: row.stars,
-            topics,
-            url: row.url,
-            lastSynced: row.lastSynced,
-            createdAt: row.createdAt,
-          } satisfies GithubStar;
-        })
-        .filter((s) => {
-          if (!inDateRange(s.createdAt, from, to)) return false;
-          if (tag && !s.topics.some((t) => t.toLowerCase() === tag)) {
-            return false;
-          }
-          if (!q) return true;
-          const hay = [
-            s.repoFullName,
-            s.description ?? "",
-            s.language ?? "",
-            ...s.topics,
-          ]
-            .join(" ")
-            .toLowerCase();
-          return hay.includes(q);
-        });
-    }
+  if ((type === "all" || type === "star") && !category) {
+    const rows = await store.searchStars(userId, opts);
+    starResults = rows.map((row) => {
+      let topics: string[] = [];
+      try {
+        topics = JSON.parse(row.topics || "[]");
+      } catch {
+        topics = [];
+      }
+      return {
+        id: row.id,
+        userId: row.userId,
+        repoFullName: row.repoFullName,
+        description: row.description,
+        language: row.language,
+        stars: row.stars,
+        topics,
+        url: row.url,
+        lastSynced: row.lastSynced,
+        createdAt: row.createdAt,
+      };
+    });
   }
 
-  // 페이지: 태그/카테고리 필터는 해당 없음 → 설정 시 type=all 이면 페이지 제외
   if ((type === "all" || type === "page") && !tag && !category) {
-    const rows = await store.listPages(userId);
-
-    pageResults = rows
-      .map((row) => {
-        let content: unknown = {};
-        try {
-          content = JSON.parse(row.content || "{}");
-        } catch {
-          content = {};
-        }
-        const bodyText = extractTiptapText(content);
-        return {
-          id: row.id,
-          title: row.title,
-          bodyText,
-          createdAt: row.createdAt,
-          updatedAt: row.updatedAt,
-        };
-      })
-      .filter((p) => {
-        // 날짜는 수정일 기준
-        if (!inDateRange(p.updatedAt, from, to)) return false;
-        if (!q) return true;
-        const hay = `${p.title} ${p.bodyText}`.toLowerCase();
-        return hay.includes(q);
-      })
-      .map((p) => ({
-        id: p.id,
-        title: p.title,
-        snippet: makeSnippet(p.bodyText, q),
-        createdAt: p.createdAt,
-        updatedAt: p.updatedAt,
-      }));
+    const rows = await store.searchPages(userId, opts);
+    pageResults = rows.map((row) => {
+      let content: unknown = {};
+      try {
+        content = JSON.parse(row.content || "{}");
+      } catch {
+        content = {};
+      }
+      const bodyText = extractTiptapText(content);
+      return {
+        id: row.id,
+        title: row.title,
+        snippet: makeSnippet(bodyText || row.title, q),
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+      };
+    });
   }
 
-  // 에이전트 문서: 태그/카테고리 없음
   if ((type === "all" || type === "agent-doc") && !tag && !category) {
-    // 검색은 본문 포함 필요
-    const rows = await store.listAgentDocs(userId, { full: true });
-
-    agentDocResults = rows
-      .map((row) => {
-        const files = parseBundle(row.bundle);
-        const searchBody = bundleSearchText(row.content, files);
-        return { row, files, searchBody };
-      })
-      .filter(({ row, searchBody }) => {
-        if (!inDateRange(row.updatedAt, from, to)) return false;
-        if (!q) return true;
-        const hay = [
-          row.title,
-          row.filename,
-          row.description ?? "",
-          row.kind,
-          searchBody,
-        ]
-          .join(" ")
-          .toLowerCase();
-        return hay.includes(q);
-      })
-      .map(({ row, files, searchBody }) => ({
+    const rows = await store.searchAgentDocs(userId, opts);
+    agentDocResults = rows.map((row) => {
+      const files = parseBundle(row.bundle);
+      const body = [row.description ?? "", row.content, row.bundle].join("\n");
+      return {
         id: row.id,
         title: row.title,
         filename:
@@ -233,12 +158,10 @@ export default async function SearchPage({
           ? (row.kind as AgentDocKind)
           : "other",
         fileCount: Math.max(files.length, 1),
-        snippet: makeSnippet(
-          [row.description ?? "", searchBody].join("\n"),
-          q
-        ),
+        snippet: makeSnippet(body, q),
         updatedAt: row.updatedAt,
-      }));
+      };
+    });
   }
 
   const hasQuery = Boolean(
@@ -268,29 +191,24 @@ export default async function SearchPage({
       {hasQuery && (
         <p className="text-sm text-muted-foreground">
           결과 {total}건
-          {bookmarkResults.length > 0 && ` · 북마크 ${bookmarkResults.length}`}
-          {starResults.length > 0 && ` · Star ${starResults.length}`}
-          {pageResults.length > 0 && ` · 페이지 ${pageResults.length}`}
-          {agentDocResults.length > 0 &&
-            ` · 에이전트 문서 ${agentDocResults.length}`}
-          {(from || to) && ` · 기간 ${from || "…"} ~ ${to || "…"}`}
+          {q ? ` · “${q}”` : ""}
         </p>
       )}
 
       {!hasQuery ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           검색어 또는 필터를 입력하세요.
         </div>
       ) : total === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-          검색 결과가 없습니다.
+        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+          일치하는 결과가 없습니다.
         </div>
       ) : (
         <div className="space-y-8">
           {bookmarkResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-muted-foreground">
-                북마크
+              <h2 className="text-sm font-semibold">
+                북마크 ({bookmarkResults.length})
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {bookmarkResults.map((b) => (
@@ -301,8 +219,8 @@ export default async function SearchPage({
           )}
           {starResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-muted-foreground">
-                GitHub Stars
+              <h2 className="text-sm font-semibold">
+                Stars ({starResults.length})
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {starResults.map((s) => (
@@ -313,10 +231,10 @@ export default async function SearchPage({
           )}
           {pageResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-muted-foreground">
-                페이지
+              <h2 className="text-sm font-semibold">
+                페이지 ({pageResults.length})
               </h2>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {pageResults.map((p) => (
                   <PageResultCard key={p.id} page={p} />
                 ))}
@@ -325,10 +243,10 @@ export default async function SearchPage({
           )}
           {agentDocResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-muted-foreground">
-                에이전트 문서
+              <h2 className="text-sm font-semibold">
+                에이전트 문서 ({agentDocResults.length})
               </h2>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {agentDocResults.map((d) => (
                   <AgentDocResultCard key={d.id} doc={d} />
                 ))}
