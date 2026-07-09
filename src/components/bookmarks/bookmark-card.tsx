@@ -39,6 +39,7 @@ export function BookmarkCard({
 
   // 편집 폼 상태
   const [title, setTitle] = useState(bookmark.title);
+  const [url, setUrl] = useState(bookmark.url);
   const [category, setCategory] = useState(bookmark.category ?? "");
   const [tags, setTags] = useState<string[]>(bookmark.tags);
   const [tagInput, setTagInput] = useState("");
@@ -50,6 +51,7 @@ export function BookmarkCard({
   /** 편집 모드 진입 시 현재 값으로 폼 초기화 */
   function startEdit() {
     setTitle(bookmark.title);
+    setUrl(bookmark.url);
     setCategory(bookmark.category ?? "");
     setTags([...bookmark.tags]);
     setTagInput("");
@@ -115,11 +117,26 @@ export function BookmarkCard({
     setTags((prev) => prev.filter((t) => t !== tag));
   }
 
-  /** PATCH로 제목·카테고리·태그 저장 */
+  /** PATCH로 URL·제목·카테고리·태그 저장 */
   async function handleSave() {
     const nextTitle = title.trim();
+    const nextUrl = url.trim();
     if (!nextTitle) {
       setError("제목을 입력하세요.");
+      return;
+    }
+    if (!nextUrl) {
+      setError("URL을 입력하세요.");
+      return;
+    }
+    try {
+      const u = new URL(nextUrl);
+      if (u.protocol !== "http:" && u.protocol !== "https:") {
+        setError("http 또는 https URL만 사용할 수 있습니다.");
+        return;
+      }
+    } catch {
+      setError("올바른 URL 형식이 아닙니다.");
       return;
     }
     setSaving(true);
@@ -130,13 +147,16 @@ export function BookmarkCard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: nextTitle,
+          url: nextUrl,
           category: category.trim(),
           tags,
         }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "저장에 실패했습니다.");
+        throw new Error(
+          (data as { error?: string }).error || "저장에 실패했습니다."
+        );
       }
       setEditing(false);
       setShowCatSuggest(false);
@@ -222,6 +242,20 @@ export function BookmarkCard({
               disabled={saving}
               autoFocus
               aria-label="제목 편집"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs text-muted-foreground">URL</label>
+            <Input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              disabled={saving}
+              placeholder="https://example.com"
+              className="font-mono text-xs"
+              aria-label="URL 편집"
+              inputMode="url"
+              autoComplete="url"
             />
           </div>
 
