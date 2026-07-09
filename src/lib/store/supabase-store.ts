@@ -310,21 +310,24 @@ export async function listAgentDocs(
   opts?: { full?: boolean }
 ): Promise<AgentDocRow[]> {
   const full = opts?.full === true;
-  const { data, error } = await sb()
-    .from("agent_docs")
-    .select(
-      full
-        ? "*"
-        : "id, user_id, kind, filename, title, description, created_at, updated_at"
-    )
-    .eq("user_id", userId)
-    .order("updated_at", { ascending: false });
-  throwIfError(error, "listAgentDocs");
-  return (data ?? []).map((r) => {
-    if (full) return mapAgentDoc(r);
-    const row = r as Record<string, unknown>;
-    return mapAgentDoc({ ...row, content: "", bundle: "[]" });
-  });
+  // 컬럼 목록을 분기해 Supabase 타입 추론 오류 방지
+  const res = full
+    ? await sb()
+        .from("agent_docs")
+        .select("*")
+        .eq("user_id", userId)
+        .order("updated_at", { ascending: false })
+    : await sb()
+        .from("agent_docs")
+        .select(
+          "id, user_id, kind, filename, title, description, created_at, updated_at"
+        )
+        .eq("user_id", userId)
+        .order("updated_at", { ascending: false });
+  throwIfError(res.error, "listAgentDocs");
+  return (res.data ?? []).map((r) =>
+    mapAgentDoc(full ? r : { ...r, content: "", bundle: "[]" })
+  );
 }
 
 export async function getAgentDoc(
