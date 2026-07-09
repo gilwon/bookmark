@@ -39,7 +39,7 @@ export default async function BookmarksPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">북마크</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          URL을 추가하거나 브라우저 북마크 HTML을 가져와 등록할 수 있습니다.
+          URL 추가·HTML 가져오기, 카테고리별로 모아 볼 수 있습니다.
         </p>
       </div>
       <AddBookmarkForm />
