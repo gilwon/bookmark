@@ -7,6 +7,7 @@ import {
   customPages,
   githubStars,
   oauthTokens,
+  prompts,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import type {
@@ -20,6 +21,7 @@ import type {
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
+  PromptRow,
 } from "./types";
 
 // --- bookmarks ---
@@ -344,6 +346,57 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
     db
       .delete(agentDocs)
       .where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId)))
+  );
+}
+
+// --- prompts ---
+export async function listPrompts(userId: string): Promise<PromptRow[]> {
+  return qall(
+    db
+      .select()
+      .from(prompts)
+      .where(eq(prompts.userId, userId))
+      .orderBy(desc(prompts.updatedAt))
+  );
+}
+
+export async function getPrompt(
+  id: string,
+  userId: string
+): Promise<PromptRow | undefined> {
+  return qget(
+    db
+      .select()
+      .from(prompts)
+      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
+  );
+}
+
+export async function insertPrompt(row: PromptRow): Promise<PromptRow> {
+  await qrun(db.insert(prompts).values(row));
+  return (await getPrompt(row.id, row.userId))!;
+}
+
+export async function updatePrompt(
+  id: string,
+  userId: string,
+  patch: Partial<PromptRow>
+): Promise<PromptRow | undefined> {
+  const { id: _i, userId: _u, ...rest } = patch as PromptRow;
+  await qrun(
+    db
+      .update(prompts)
+      .set(rest)
+      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
+  );
+  return getPrompt(id, userId);
+}
+
+export async function deletePrompt(id: string, userId: string): Promise<void> {
+  await qrun(
+    db
+      .delete(prompts)
+      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
   );
 }
 

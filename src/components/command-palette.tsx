@@ -8,6 +8,7 @@ import {
   GitFork,
   LayoutDashboard,
   Bookmark,
+  MessageSquareText,
   Search,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -106,6 +107,13 @@ export function CommandPalette() {
         keywords: "pages",
         icon: <FileText className="h-4 w-4" />,
         run: go("/pages"),
+      },
+      {
+        id: "nav-prompts",
+        label: "프롬프트",
+        keywords: "prompt 프롬프트",
+        icon: <MessageSquareText className="h-4 w-4" />,
+        run: go("/prompts"),
       },
       {
         id: "nav-agent-docs",

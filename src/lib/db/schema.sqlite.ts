@@ -59,3 +59,16 @@ export const agentDocs = sqliteTable("agent_docs", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+/** 프롬프트 라이브러리 (1차/2차 섹션 JSON) */
+export const prompts = sqliteTable("prompts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  title: text("title").notNull(),
+  category: text("category"),
+  summary: text("summary"),
+  whenToUse: text("when_to_use"),
+  sections: text("sections").notNull().default("[]"),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

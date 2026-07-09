@@ -73,6 +73,18 @@ create table if not exists public.agent_docs (
   updated_at text not null
 );
 
+create table if not exists public.prompts (
+  id text primary key,
+  user_id text not null,
+  title text not null,
+  category text,
+  summary text,
+  when_to_use text,
+  sections text not null default '[]',
+  created_at text not null,
+  updated_at text not null
+);
+
 create index if not exists idx_bookmarks_user on public.bookmarks (user_id);
 create index if not exists idx_stars_user on public.github_stars (user_id);
 create index if not exists idx_stars_repo on public.github_stars (user_id, repo_full_name);
@@ -80,6 +92,7 @@ create index if not exists idx_pages_user on public.custom_pages (user_id);
 create index if not exists idx_oauth_user on public.oauth_tokens (user_id);
 create index if not exists idx_agent_docs_user on public.agent_docs (user_id);
 create index if not exists idx_agent_docs_kind on public.agent_docs (user_id, kind);
+create index if not exists idx_prompts_user on public.prompts (user_id);
 
 -- ---------------------------------------------------------------------------
 -- RLS
@@ -93,6 +106,7 @@ alter table public.github_stars enable row level security;
 alter table public.custom_pages enable row level security;
 alter table public.oauth_tokens enable row level security;
 alter table public.agent_docs enable row level security;
+alter table public.prompts enable row level security;
 
 drop policy if exists "bookmarks_select_own" on public.bookmarks;
 drop policy if exists "bookmarks_insert_own" on public.bookmarks;
@@ -149,4 +163,18 @@ create policy "agent_docs_insert_own" on public.agent_docs
 create policy "agent_docs_update_own" on public.agent_docs
   for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
 create policy "agent_docs_delete_own" on public.agent_docs
+  for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+
+drop policy if exists "prompts_select_own" on public.prompts;
+drop policy if exists "prompts_insert_own" on public.prompts;
+drop policy if exists "prompts_update_own" on public.prompts;
+drop policy if exists "prompts_delete_own" on public.prompts;
+
+create policy "prompts_select_own" on public.prompts
+  for select using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "prompts_insert_own" on public.prompts
+  for insert with check (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "prompts_update_own" on public.prompts
+  for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "prompts_delete_own" on public.prompts
   for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));

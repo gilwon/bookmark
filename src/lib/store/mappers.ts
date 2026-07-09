@@ -5,6 +5,7 @@ import type {
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
+  PromptRow,
 } from "./types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -145,6 +146,37 @@ export function agentDocToDb(row: AgentDocRow) {
     description: row.description,
     content: row.content,
     bundle: row.bundle,
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
+  };
+}
+
+export function mapPrompt(r: any): PromptRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    title: r.title,
+    category: r.category ?? null,
+    summary: r.summary ?? null,
+    whenToUse: r.when_to_use ?? r.whenToUse ?? null,
+    sections:
+      typeof r.sections === "string"
+        ? r.sections
+        : JSON.stringify(r.sections ?? []),
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function promptToDb(row: PromptRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    title: row.title,
+    category: row.category,
+    summary: row.summary,
+    when_to_use: row.whenToUse,
+    sections: row.sections,
     created_at: row.createdAt,
     updated_at: row.updatedAt,
   };

@@ -63,3 +63,16 @@ export type AgentDocRow = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** 프롬프트 행 — sections 는 JSON 문자열 */
+export type PromptRow = {
+  id: string;
+  userId: string;
+  title: string;
+  category: string | null;
+  summary: string | null;
+  whenToUse: string | null;
+  sections: string;
+  createdAt: string;
+  updatedAt: string;
+};

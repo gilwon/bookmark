@@ -53,11 +53,18 @@ function createSqlite(): SqliteDb {
       content TEXT NOT NULL DEFAULT '', bundle TEXT NOT NULL DEFAULT '[]',
       created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS prompts (
+      id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
+      category TEXT, summary TEXT, when_to_use TEXT,
+      sections TEXT NOT NULL DEFAULT '[]',
+      created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+    );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
     CREATE INDEX IF NOT EXISTS idx_stars_user ON github_stars(user_id);
     CREATE INDEX IF NOT EXISTS idx_stars_repo ON github_stars(user_id, repo_full_name);
     CREATE INDEX IF NOT EXISTS idx_pages_user ON custom_pages(user_id);
     CREATE INDEX IF NOT EXISTS idx_agent_docs_user ON agent_docs(user_id);
+    CREATE INDEX IF NOT EXISTS idx_prompts_user ON prompts(user_id);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_oauth_user_provider ON oauth_tokens(user_id, provider);
   `);
   const agentCols = sqlite.prepare("PRAGMA table_info(agent_docs)").all() as {

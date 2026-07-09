@@ -6,9 +6,11 @@ import {
   mapAgentDoc,
   mapBookmark,
   mapPage,
+  mapPrompt,
   mapStar,
   mapToken,
   pageToDb,
+  promptToDb,
   starToDb,
   tokenToDb,
 } from "./mappers";
@@ -23,6 +25,7 @@ import type {
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
+  PromptRow,
 } from "./types";
 
 function sb() {
@@ -417,6 +420,74 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
     .eq("id", id)
     .eq("user_id", userId);
   throwIfError(error, "deleteAgentDoc");
+}
+
+// --- prompts ---
+export async function listPrompts(userId: string): Promise<PromptRow[]> {
+  const { data, error } = await sb()
+    .from("prompts")
+    .select("*")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false });
+  throwIfError(error, "listPrompts");
+  return (data ?? []).map(mapPrompt);
+}
+
+export async function getPrompt(
+  id: string,
+  userId: string
+): Promise<PromptRow | undefined> {
+  const { data, error } = await sb()
+    .from("prompts")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", userId)
+    .maybeSingle();
+  throwIfError(error, "getPrompt");
+  return data ? mapPrompt(data) : undefined;
+}
+
+export async function insertPrompt(row: PromptRow): Promise<PromptRow> {
+  const { data, error } = await sb()
+    .from("prompts")
+    .insert(promptToDb(row))
+    .select("*")
+    .single();
+  throwIfError(error, "insertPrompt");
+  return mapPrompt(data);
+}
+
+export async function updatePrompt(
+  id: string,
+  userId: string,
+  patch: Partial<PromptRow>
+): Promise<PromptRow | undefined> {
+  const body: Record<string, unknown> = {};
+  if (patch.title !== undefined) body.title = patch.title;
+  if (patch.category !== undefined) body.category = patch.category;
+  if (patch.summary !== undefined) body.summary = patch.summary;
+  if (patch.whenToUse !== undefined) body.when_to_use = patch.whenToUse;
+  if (patch.sections !== undefined) body.sections = patch.sections;
+  if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
+
+  const { data, error } = await sb()
+    .from("prompts")
+    .update(body)
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select("*")
+    .maybeSingle();
+  throwIfError(error, "updatePrompt");
+  return data ? mapPrompt(data) : undefined;
+}
+
+export async function deletePrompt(id: string, userId: string): Promise<void> {
+  const { error } = await sb()
+    .from("prompts")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  throwIfError(error, "deletePrompt");
 }
 
 // --- dashboard / search (가벼운 쿼리) ---

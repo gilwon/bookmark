@@ -75,3 +75,25 @@ export type AgentDoc = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** 프롬프트 본문 섹션 (1차/2차 등) */
+export type PromptSection = {
+  title: string;
+  body: string;
+};
+
+/** 프롬프트 라이브러리 엔티티 */
+export type Prompt = {
+  id: string;
+  userId: string;
+  title: string;
+  /** 목차/분류 배지 */
+  category: string | null;
+  /** 한 줄 요약 */
+  summary: string | null;
+  /** 이런 상황에 사용 */
+  whenToUse: string | null;
+  sections: PromptSection[];
+  createdAt: string;
+  updatedAt: string;
+};

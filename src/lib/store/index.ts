@@ -45,4 +45,5 @@ export type {
   CustomPageRow,
   AgentDocRow,
   OauthTokenRow,
+  PromptRow,
 } from "./types";

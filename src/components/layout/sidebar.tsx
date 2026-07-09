@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  MessageSquareText,
   Moon,
   Search,
   Sun,
@@ -29,6 +30,7 @@ const navItems = [
   { href: "/bookmarks", label: "북마크", icon: Bookmark },
   { href: "/stars", label: "GitHub Stars", icon: GitFork },
   { href: "/pages", label: "페이지", icon: FileText },
+  { href: "/prompts", label: "프롬프트", icon: MessageSquareText },
   { href: "/agent-docs", label: "에이전트 문서", icon: Bot },
   { href: "/search", label: "검색", icon: Search },
 ];
