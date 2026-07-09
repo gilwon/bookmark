@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import type { CustomPage } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
+import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
@@ -75,6 +76,8 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
           {creating ? "생성 중…" : "새 페이지"}
         </Button>
       </div>
+
+      <UrlImportForm />
 
       {pages.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">

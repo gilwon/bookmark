@@ -33,7 +33,7 @@ export default async function PagesPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">페이지</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Notion처럼 자유롭게 노트를 작성하세요.
+          노트를 작성하거나, URL을 불러와 마크다운으로 저장할 수 있습니다.
         </p>
       </div>
       <PageList pages={list} />
