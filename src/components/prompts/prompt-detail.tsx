@@ -50,7 +50,7 @@ export function PromptDetail({ prompt }: { prompt: Prompt }) {
   }
 
   return (
-    <article className="mx-auto max-w-3xl space-y-8">
+    <article className="w-full min-w-0 space-y-8">
       <header className="space-y-4 border-b border-border pb-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

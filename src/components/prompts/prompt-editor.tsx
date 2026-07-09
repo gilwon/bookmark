@@ -112,7 +112,7 @@ export function PromptEditor({ mode, initial }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="w-full min-w-0 space-y-6">
       <div className="space-y-4 rounded-xl border border-border bg-card/40 p-5">
         <div className="space-y-1">
           <label className="text-xs text-muted-foreground">제목</label>
