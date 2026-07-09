@@ -41,6 +41,7 @@ export const store = new Proxy({} as StoreImpl, {
 
 export type {
   BookmarkRow,
+  CategoryRow,
   GithubStarRow,
   CustomPageRow,
   AgentDocRow,

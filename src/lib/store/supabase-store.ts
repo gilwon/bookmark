@@ -1,10 +1,13 @@
 // Supabase JS (service_role) 스토어 — PostgREST, 직접 DATABASE_URL 없음
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import { v4 as uuidv4 } from "uuid";
 import {
   agentDocToDb,
   bookmarkToDb,
+  categoryToDb,
   mapAgentDoc,
   mapBookmark,
+  mapCategory,
   mapPage,
   mapPrompt,
   mapStar,
@@ -22,6 +25,7 @@ import type {
 import type {
   AgentDocRow,
   BookmarkRow,
+  CategoryRow,
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
@@ -112,6 +116,119 @@ export async function listBookmarkUrls(userId: string): Promise<string[]> {
     .eq("user_id", userId);
   throwIfError(error, "listBookmarkUrls");
   return (data ?? []).map((r: { url: string }) => r.url);
+}
+
+export async function renameBookmarkCategory(
+  userId: string,
+  fromName: string,
+  toName: string | null
+): Promise<number> {
+  const from = fromName.trim();
+  const { data, error } = await sb()
+    .from("bookmarks")
+    .update({ category: toName })
+    .eq("user_id", userId)
+    .eq("category", from)
+    .select("id");
+  throwIfError(error, "renameBookmarkCategory");
+  return data?.length ?? 0;
+}
+
+export async function listCategories(userId: string): Promise<CategoryRow[]> {
+  const { data, error } = await sb()
+    .from("categories")
+    .select("*")
+    .eq("user_id", userId)
+    .order("name", { ascending: true });
+  throwIfError(error, "listCategories");
+  return (data ?? []).map(mapCategory);
+}
+
+export async function getCategory(
+  id: string,
+  userId: string
+): Promise<CategoryRow | undefined> {
+  const { data, error } = await sb()
+    .from("categories")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", userId)
+    .maybeSingle();
+  throwIfError(error, "getCategory");
+  return data ? mapCategory(data) : undefined;
+}
+
+export async function getCategoryByName(
+  userId: string,
+  name: string
+): Promise<CategoryRow | undefined> {
+  const rows = await listCategories(userId);
+  const key = name.trim().toLowerCase();
+  return rows.find((r) => r.name.trim().toLowerCase() === key);
+}
+
+export async function insertCategory(row: CategoryRow): Promise<CategoryRow> {
+  const { data, error } = await sb()
+    .from("categories")
+    .insert(categoryToDb(row))
+    .select("*")
+    .single();
+  throwIfError(error, "insertCategory");
+  return mapCategory(data);
+}
+
+export async function updateCategory(
+  id: string,
+  userId: string,
+  patch: Partial<CategoryRow>
+): Promise<CategoryRow | undefined> {
+  const body: Record<string, unknown> = {};
+  if (patch.name !== undefined) body.name = patch.name;
+  if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
+  const { data, error } = await sb()
+    .from("categories")
+    .update(body)
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select("*")
+    .maybeSingle();
+  throwIfError(error, "updateCategory");
+  return data ? mapCategory(data) : undefined;
+}
+
+export async function deleteCategory(
+  id: string,
+  userId: string
+): Promise<void> {
+  const { error } = await sb()
+    .from("categories")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  throwIfError(error, "deleteCategory");
+}
+
+export async function ensureCategoriesFromBookmarks(
+  userId: string
+): Promise<void> {
+  const rows = await listBookmarks(userId);
+  const existing = await listCategories(userId);
+  const have = new Set(existing.map((c) => c.name.trim().toLowerCase()));
+  const now = new Date().toISOString();
+  for (const r of rows) {
+    const name = r.category?.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (have.has(key)) continue;
+    await insertCategory({
+      id: uuidv4(),
+      userId,
+      name,
+      createdAt: now,
+      updatedAt: now,
+    });
+    have.add(key);
+  }
 }
 
 // --- stars ---

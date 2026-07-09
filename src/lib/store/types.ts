@@ -13,6 +13,15 @@ export type BookmarkRow = {
   createdAt: string;
 };
 
+/** 카테고리 마스터 행 */
+export type CategoryRow = {
+  id: string;
+  userId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 /** 동기화 후 카드 뱃지: 신규 / 업데이트 */
 export type StarChangeKind = "new" | "updated" | null;
 

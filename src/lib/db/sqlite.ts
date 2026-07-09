@@ -32,6 +32,10 @@ function createSqlite(): SqliteDb {
       title TEXT NOT NULL, description TEXT, image TEXT, favicon TEXT,
       tags TEXT NOT NULL DEFAULT '[]', category TEXT, created_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS categories (
+      id TEXT PRIMARY KEY, user_id TEXT NOT NULL, name TEXT NOT NULL,
+      created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+    );
     CREATE TABLE IF NOT EXISTS github_stars (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, repo_full_name TEXT NOT NULL,
       description TEXT, language TEXT, stars INTEGER NOT NULL DEFAULT 0,
@@ -61,6 +65,8 @@ function createSqlite(): SqliteDb {
       created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
+    CREATE INDEX IF NOT EXISTS idx_categories_user ON categories(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_categories_user_name ON categories(user_id, name);
     CREATE INDEX IF NOT EXISTS idx_stars_user ON github_stars(user_id);
     CREATE INDEX IF NOT EXISTS idx_stars_repo ON github_stars(user_id, repo_full_name);
     CREATE INDEX IF NOT EXISTS idx_pages_user ON custom_pages(user_id);

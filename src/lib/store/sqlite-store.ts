@@ -1,9 +1,11 @@
 // SQLite(Drizzle) 스토어 구현
 import { and, count, desc, eq } from "drizzle-orm";
+import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db/sqlite";
 import {
   agentDocs,
   bookmarks,
+  categories,
   customPages,
   githubStars,
   oauthTokens,
@@ -18,6 +20,7 @@ import type {
 import type {
   AgentDocRow,
   BookmarkRow,
+  CategoryRow,
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
@@ -83,6 +86,111 @@ export async function listBookmarkUrls(userId: string): Promise<string[]> {
       .where(eq(bookmarks.userId, userId))
   );
   return rows.map((r) => r.url);
+}
+
+/** 북마크.category 문자열 일괄 변경 */
+export async function renameBookmarkCategory(
+  userId: string,
+  fromName: string,
+  toName: string | null
+): Promise<number> {
+  const rows = await listBookmarks(userId);
+  let n = 0;
+  for (const r of rows) {
+    if ((r.category ?? "").trim() !== fromName.trim()) continue;
+    await updateBookmark(r.id, userId, { category: toName });
+    n += 1;
+  }
+  return n;
+}
+
+// --- categories ---
+export async function listCategories(userId: string): Promise<CategoryRow[]> {
+  return qall(
+    db
+      .select()
+      .from(categories)
+      .where(eq(categories.userId, userId))
+      .orderBy(categories.name)
+  );
+}
+
+export async function getCategory(
+  id: string,
+  userId: string
+): Promise<CategoryRow | undefined> {
+  return qget(
+    db
+      .select()
+      .from(categories)
+      .where(and(eq(categories.id, id), eq(categories.userId, userId)))
+  );
+}
+
+export async function getCategoryByName(
+  userId: string,
+  name: string
+): Promise<CategoryRow | undefined> {
+  const rows = await listCategories(userId);
+  const key = name.trim().toLowerCase();
+  return rows.find((r) => r.name.trim().toLowerCase() === key);
+}
+
+export async function insertCategory(row: CategoryRow): Promise<CategoryRow> {
+  await qrun(db.insert(categories).values(row));
+  return (await getCategory(row.id, row.userId))!;
+}
+
+export async function updateCategory(
+  id: string,
+  userId: string,
+  patch: Partial<CategoryRow>
+): Promise<CategoryRow | undefined> {
+  const { id: _i, userId: _u, ...rest } = patch as CategoryRow;
+  await qrun(
+    db
+      .update(categories)
+      .set(rest)
+      .where(and(eq(categories.id, id), eq(categories.userId, userId)))
+  );
+  return getCategory(id, userId);
+}
+
+export async function deleteCategory(
+  id: string,
+  userId: string
+): Promise<void> {
+  await qrun(
+    db
+      .delete(categories)
+      .where(and(eq(categories.id, id), eq(categories.userId, userId)))
+  );
+}
+
+/**
+ * 북마크에 쓰인 카테고리 이름을 마스터에 동기화 (없을 때만 추가).
+ */
+export async function ensureCategoriesFromBookmarks(
+  userId: string
+): Promise<void> {
+  const rows = await listBookmarks(userId);
+  const existing = await listCategories(userId);
+  const have = new Set(existing.map((c) => c.name.trim().toLowerCase()));
+  const now = new Date().toISOString();
+  for (const r of rows) {
+    const name = r.category?.trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (have.has(key)) continue;
+    await insertCategory({
+      id: uuidv4(),
+      userId,
+      name,
+      createdAt: now,
+      updatedAt: now,
+    });
+    have.add(key);
+  }
 }
 
 // --- stars ---

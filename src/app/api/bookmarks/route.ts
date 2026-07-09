@@ -100,5 +100,19 @@ export async function POST(req: Request) {
     createdAt: now,
   });
 
+  // 새 카테고리면 마스터에 등록
+  if (category?.trim()) {
+    const found = await store.getCategoryByName(session.user.id, category);
+    if (!found) {
+      await store.insertCategory({
+        id: uuidv4(),
+        userId: session.user.id,
+        name: category.trim(),
+        createdAt: now,
+        updatedAt: now,
+      });
+    }
+  }
+
   return NextResponse.json(toBookmark(row), { status: 201 });
 }

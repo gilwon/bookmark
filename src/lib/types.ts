@@ -14,6 +14,17 @@ export type Bookmark = {
   createdAt: string;
 };
 
+/** 북마크 카테고리 */
+export type Category = {
+  id: string;
+  userId: string;
+  name: string;
+  /** 이 카테고리 북마크 수 */
+  count: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 /** GitHub Star 엔티티 */
 export type GithubStar = {
   id: string;

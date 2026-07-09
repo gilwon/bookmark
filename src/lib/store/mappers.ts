@@ -2,6 +2,7 @@
 import type {
   AgentDocRow,
   BookmarkRow,
+  CategoryRow,
   CustomPageRow,
   GithubStarRow,
   OauthTokenRow,
@@ -22,6 +23,26 @@ export function mapBookmark(r: any): BookmarkRow {
     tags: r.tags ?? "[]",
     category: r.category ?? null,
     createdAt: r.created_at ?? r.createdAt,
+  };
+}
+
+export function mapCategory(r: any): CategoryRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    name: r.name,
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function categoryToDb(row: CategoryRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    name: row.name,
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
   };
 }
 

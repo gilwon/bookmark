@@ -20,6 +20,15 @@ create table if not exists public.bookmarks (
   created_at text not null
 );
 
+create table if not exists public.categories (
+  id text primary key,
+  user_id text not null,
+  name text not null,
+  created_at text not null,
+  updated_at text not null,
+  unique (user_id, name)
+);
+
 create table if not exists public.github_stars (
   id text primary key,
   user_id text not null,
@@ -88,6 +97,7 @@ create table if not exists public.prompts (
 );
 
 create index if not exists idx_bookmarks_user on public.bookmarks (user_id);
+create index if not exists idx_categories_user on public.categories (user_id);
 create index if not exists idx_stars_user on public.github_stars (user_id);
 create index if not exists idx_stars_repo on public.github_stars (user_id, repo_full_name);
 create index if not exists idx_pages_user on public.custom_pages (user_id);
@@ -104,6 +114,7 @@ create index if not exists idx_prompts_user on public.prompts (user_id);
 -- ---------------------------------------------------------------------------
 
 alter table public.bookmarks enable row level security;
+alter table public.categories enable row level security;
 alter table public.github_stars enable row level security;
 alter table public.custom_pages enable row level security;
 alter table public.oauth_tokens enable row level security;
@@ -179,4 +190,18 @@ create policy "prompts_insert_own" on public.prompts
 create policy "prompts_update_own" on public.prompts
   for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
 create policy "prompts_delete_own" on public.prompts
+  for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+
+
+drop policy if exists "categories_select_own" on public.categories;
+drop policy if exists "categories_insert_own" on public.categories;
+drop policy if exists "categories_update_own" on public.categories;
+drop policy if exists "categories_delete_own" on public.categories;
+create policy "categories_select_own" on public.categories
+  for select using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "categories_insert_own" on public.categories
+  for insert with check (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "categories_update_own" on public.categories
+  for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "categories_delete_own" on public.categories
   for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));

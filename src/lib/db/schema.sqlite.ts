@@ -14,6 +14,15 @@ export const bookmarks = sqliteTable("bookmarks", {
   createdAt: text("created_at").notNull(),
 });
 
+/** 북마크 카테고리 마스터 (이름 관리) */
+export const categories = sqliteTable("categories", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  name: text("name").notNull(),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export const githubStars = sqliteTable("github_stars", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
