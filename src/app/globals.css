@@ -186,9 +186,76 @@ body {
   border-radius: 0.5rem;
 }
 
-/* 노션형: 빈 문서 클릭 영역 확보 */
+/* ---------- 노션형 페이지 캔버스 ---------- */
+.notion-page {
+  width: 100%;
+}
+
+.notion-page-inner {
+  width: 100%;
+  /* 노션처럼 좌우 여백만 두고 박스는 없음 */
+  padding: 0.25rem 0.15rem 2rem;
+}
+
+/* 제목: 테두리 없는 초대형 타이포 */
+.notion-title-input {
+  display: block;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  padding: 0.15rem 0.15rem 0.35rem;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  outline: none;
+  box-shadow: none;
+}
+
+.notion-title-input::placeholder {
+  color: var(--placeholder);
+  opacity: 0.55;
+  font-weight: 700;
+}
+
+.notion-title-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 본문: 제목 아래 자연스럽게 이어지는 입력면 */
+.notion-body {
+  min-height: 60vh;
+  cursor: text;
+  padding: 0.35rem 0.15rem 3rem;
+  /* 제목과 본문 사이 아주 약한 구분 (박스 아님) */
+  border-top: 1px solid transparent;
+  margin-top: 0.15rem;
+}
+
 .notion-editor {
-  min-height: 50vh;
+  min-height: 60vh;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* 노션: 빈 줄 호버 시 약간의 힌트 */
+.ProseMirror p.is-empty:hover::before,
+.ProseMirror p.is-editor-empty:hover::before {
+  opacity: 1;
+}
+
+.ProseMirror p.is-empty::before,
+.ProseMirror p.is-editor-empty::before {
+  opacity: 0.85;
+}
+
+/* 블록 사이 호흡 */
+.notion-editor > * + * {
+  margin-top: 0.15em;
 }
 
 /* <aside> / callout 블록 — Notion 콜아웃 스타일 */
@@ -196,12 +263,11 @@ body {
 .ProseMirror aside[data-type="callout"],
 .ProseMirror div[data-type="callout"] {
   display: block;
-  margin: 0.85rem 0;
-  padding: 0.85rem 1rem 0.85rem 1rem;
-  border-radius: 0.65rem;
-  border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card));
-  box-shadow: inset 3px 0 0 0 var(--accent);
+  margin: 0.65rem 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: color-mix(in srgb, var(--muted) 85%, var(--accent) 15%);
 }
 
 .ProseMirror aside.notion-callout > *:first-child,
@@ -216,5 +282,5 @@ body {
 
 html.light .ProseMirror aside.notion-callout,
 html.light .ProseMirror aside[data-type="callout"] {
-  background: color-mix(in srgb, var(--accent) 8%, #ffffff);
+  background: color-mix(in srgb, #f4f4f5 88%, var(--accent) 12%);
 }

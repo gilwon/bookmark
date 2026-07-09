@@ -83,7 +83,11 @@ export function TiptapEditor({
         heading: { levels: [1, 2, 3] },
       }),
       Placeholder.configure({
-        placeholder: "내용을 입력하세요. 빈 줄에서 바로 작성하면 됩니다…",
+        placeholder: "글을 입력하거나, 서식 도구로 꾸며 보세요…",
+        emptyEditorClass: "is-editor-empty",
+        emptyNodeClass: "is-empty",
+        showOnlyWhenEditable: true,
+        showOnlyCurrent: true,
       }),
       Link.configure({
         openOnClick: false,
@@ -99,7 +103,7 @@ export function TiptapEditor({
     editorProps: {
       attributes: {
         class:
-          "notion-editor ProseMirror max-w-none min-h-[50vh] focus:outline-none",
+          "notion-editor ProseMirror max-w-none min-h-[60vh] focus:outline-none",
       },
       /**
        * 클립보드에 보이는 <aside> 문자열이 있으면 콜아웃 노드로 삽입.
@@ -418,22 +422,20 @@ export function TiptapEditor({
         </div>
       </div>
 
-      {/* 문서 영역 — 제목 / 본문 시각적 구분 */}
-      <div className="space-y-4 pb-24">
-        {/* 제목 블록 */}
-        <section className="rounded-xl border border-border bg-card/60 px-4 py-3 sm:px-5 sm:py-4">
-          <label
-            htmlFor="page-title-input"
-            className="mb-2 block text-xs font-medium tracking-wide text-muted-foreground"
-          >
-            제목
-          </label>
+      {/*
+        노션형 문서 캔버스
+        - 폼 박스/점선 테두리 없이 연속된 문서 느낌
+        - 제목은 큰 글씨, 본문은 그 아래 자연스럽게 이어짐
+      */}
+      <div className="notion-page pb-32">
+        <div className="notion-page-inner">
           <textarea
             id="page-title-input"
             ref={titleRef}
             value={title}
             rows={1}
-            placeholder="제목 없는 페이지"
+            placeholder="제목 없음"
+            aria-label="페이지 제목"
             onChange={(e) => {
               setTitle(e.target.value);
               markDirty();
@@ -444,29 +446,23 @@ export function TiptapEditor({
                 editor?.chain().focus("start").run();
               }
             }}
-            className="w-full resize-none overflow-hidden border-0 bg-transparent text-2xl font-bold leading-tight tracking-tight text-foreground placeholder:text-muted-foreground/45 focus:outline-none focus:ring-0 sm:text-3xl"
+            className="notion-title-input"
           />
-        </section>
 
-        {/* 본문 블록 */}
-        <section className="rounded-xl border border-border bg-card px-4 py-3 sm:px-5 sm:py-4">
-          <div className="mb-2 flex items-center justify-between gap-2">
-            <span className="text-xs font-medium tracking-wide text-muted-foreground">
-              본문
-            </span>
-            <span className="text-[11px] text-muted-foreground/80">
-              클릭해서 바로 입력 · 서식은 위 툴바
-            </span>
-          </div>
           <div
-            className="min-h-[50vh] cursor-text rounded-lg border border-dashed border-border/70 bg-background/50 px-2 py-2 sm:px-3"
-            onClick={() => {
-              if (!editor?.isFocused) editor?.chain().focus().run();
+            className="notion-body"
+            onClick={(e) => {
+              // 여백 클릭 시에도 본문 포커스 (노션과 유사)
+              if (e.target === e.currentTarget) {
+                editor?.chain().focus("end").run();
+              } else if (!editor?.isFocused) {
+                editor?.chain().focus().run();
+              }
             }}
           >
             <EditorContent editor={editor} />
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );
