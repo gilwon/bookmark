@@ -95,7 +95,7 @@ export const authConfig: NextAuthConfig = {
         account.access_token &&
         token.sub
       ) {
-        saveGithubToken(token.sub, account.access_token);
+        await saveGithubToken(token.sub, account.access_token);
         token.hasGithub = true;
         const login =
           profile &&
@@ -107,7 +107,7 @@ export const authConfig: NextAuthConfig = {
         if (login) token.githubLogin = login;
       } else if (token.sub) {
         // 세션 갱신 시 토큰 존재 여부 재확인
-        token.hasGithub = hasGithubToken(token.sub);
+        token.hasGithub = await hasGithubToken(token.sub);
       }
 
       // 레거시 필드 제거 (이전 세션에 남아 있을 수 있음)
@@ -133,7 +133,7 @@ export const authConfig: NextAuthConfig = {
       const userId = token?.sub;
       if (userId) {
         try {
-          deleteGithubToken(userId);
+          await deleteGithubToken(userId);
         } catch (err) {
           console.error("[auth] 토큰 삭제 실패", err);
         }

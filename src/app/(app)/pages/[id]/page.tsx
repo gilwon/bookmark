@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { bookmarks, customPages, githubStars } from "@/lib/db/schema";
 import type { Bookmark, GithubStar } from "@/lib/types";
+import { qall, qget } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -18,11 +19,7 @@ export default async function PageEditorPage({ params }: Props) {
   const userId = session!.user!.id;
   const { id } = await params;
 
-  const row = db
-    .select()
-    .from(customPages)
-    .where(and(eq(customPages.id, id), eq(customPages.userId, userId)))
-    .get();
+  const row = await qget(db.select().from(customPages)    .where(and(eq(customPages.id, id), eq(customPages.userId, userId))));
 
   if (!row) notFound();
 
@@ -33,19 +30,9 @@ export default async function PageEditorPage({ params }: Props) {
     content = {};
   }
 
-  const bookmarkRows = db
-    .select()
-    .from(bookmarks)
-    .where(eq(bookmarks.userId, userId))
-    .orderBy(desc(bookmarks.createdAt))
-    .all();
+  const bookmarkRows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, userId)).orderBy(desc(bookmarks.createdAt)));
 
-  const starRows = db
-    .select()
-    .from(githubStars)
-    .where(eq(githubStars.userId, userId))
-    .orderBy(desc(githubStars.lastSynced))
-    .all();
+  const starRows = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, userId)).orderBy(desc(githubStars.lastSynced)));
 
   const bookmarkList: Bookmark[] = bookmarkRows.map((b) => {
     let tags: string[] = [];

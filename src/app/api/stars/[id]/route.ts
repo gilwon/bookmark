@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { ownershipError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { githubStars } from "@/lib/db/schema";
+import { qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -15,21 +16,15 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = db
-    .select()
-    .from(githubStars)
-    .where(
-      and(eq(githubStars.id, id), eq(githubStars.userId, gate.user.userId))
-    )
-    .get();
+  const existing = await qget(
+    db.select().from(githubStars).where(and(eq(githubStars.id, id), eq(githubStars.userId, gate.user.userId))));
 
   if (!existing) return ownershipError();
 
-  db.delete(githubStars)
+  await qrun(db.delete(githubStars)
     .where(
       and(eq(githubStars.id, id), eq(githubStars.userId, gate.user.userId))
-    )
-    .run();
+    ));
 
   return NextResponse.json({ ok: true });
 }

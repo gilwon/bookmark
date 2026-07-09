@@ -5,6 +5,7 @@ import { rowToAgentDoc } from "@/lib/agent-doc-mapper";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { agentDocs } from "@/lib/db/schema";
+import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -13,12 +14,7 @@ export default async function AgentDocsPage() {
   const session = await auth();
   const userId = session!.user!.id;
 
-  const rows = db
-    .select()
-    .from(agentDocs)
-    .where(eq(agentDocs.userId, userId))
-    .orderBy(desc(agentDocs.updatedAt))
-    .all();
+  const rows = await qall(db.select().from(agentDocs)    .where(eq(agentDocs.userId, userId)).orderBy(desc(agentDocs.updatedAt)));
 
   const list = rows.map(rowToAgentDoc);
 

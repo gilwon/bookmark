@@ -68,6 +68,12 @@
 - UI: /agent-docs 목록 + 템플릿 생성, /agent-docs/[id] 모노스페이스 Markdown 에디터(자동저장·복사·다운로드).
 - 검색 type=agent-doc 연동.
 
+### 2026-07-09: Supabase 연동
+- `DATABASE_URL` (postgres) 있으면 Drizzle + postgres.js, 없으면 SQLite.
+- 공통 헬퍼 `qall`/`qget`/`qrun` 으로 쿼리 async 통일.
+- 스키마: `schema.pg.ts` / `schema.sqlite.ts`, SQL: `supabase/schema.sql`.
+- 가이드: `supabase/MIGRATION.md`. service_role 은 서버 전용 옵션 클라이언트.
+
 
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.

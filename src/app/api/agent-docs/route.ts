@@ -17,6 +17,7 @@ import { requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { agentDocs } from "@/lib/db/schema";
 import type { AgentDocKind } from "@/lib/types";
+import { qall, qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -46,12 +47,7 @@ export async function GET() {
   const gate = await requireUser();
   if (!gate.ok) return gate.response;
 
-  const rows = db
-    .select()
-    .from(agentDocs)
-    .where(eq(agentDocs.userId, gate.user.userId))
-    .orderBy(desc(agentDocs.updatedAt))
-    .all();
+  const rows = await qall(db.select().from(agentDocs)    .where(eq(agentDocs.userId, gate.user.userId)).orderBy(desc(agentDocs.updatedAt)));
 
   return NextResponse.json(rows.map(rowToAgentDoc));
 }
@@ -138,7 +134,7 @@ export async function POST(req: Request) {
   const now = new Date().toISOString();
   const id = uuidv4();
 
-  db.insert(agentDocs)
+  await qrun(db.insert(agentDocs)
     .values({
       id,
       userId: gate.user.userId,
@@ -150,9 +146,8 @@ export async function POST(req: Request) {
       bundle: stored.bundle,
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    }));
 
-  const row = db.select().from(agentDocs).where(eq(agentDocs.id, id)).get()!;
+  const row = (await qget(db.select().from(agentDocs).where(eq(agentDocs.id, id))))!;
   return NextResponse.json(rowToAgentDoc(row), { status: 201 });
 }

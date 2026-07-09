@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { customPages } from "@/lib/db/schema";
 import type { CustomPage } from "@/lib/types";
+import { qall, qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -34,12 +35,7 @@ export async function GET() {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
 
-  const rows = db
-    .select()
-    .from(customPages)
-    .where(eq(customPages.userId, session.user.id))
-    .orderBy(desc(customPages.updatedAt))
-    .all();
+  const rows = await qall(db.select().from(customPages)    .where(eq(customPages.userId, session.user.id)).orderBy(desc(customPages.updatedAt)));
 
   return NextResponse.json(rows.map(toPage));
 }
@@ -69,7 +65,7 @@ export async function POST(req: Request) {
   const now = new Date().toISOString();
   const id = uuidv4();
 
-  db.insert(customPages)
+  await qrun(db.insert(customPages)
     .values({
       id,
       userId: session.user.id,
@@ -77,9 +73,8 @@ export async function POST(req: Request) {
       content: JSON.stringify(content),
       createdAt: now,
       updatedAt: now,
-    })
-    .run();
+    }));
 
-  const row = db.select().from(customPages).where(eq(customPages.id, id)).get()!;
+  const row = (await qget(db.select().from(customPages).where(eq(customPages.id, id))))!;
   return NextResponse.json(toPage(row), { status: 201 });
 }

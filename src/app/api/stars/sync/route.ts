@@ -11,7 +11,7 @@ export async function POST() {
   const gate = await requireUser();
   if (!gate.ok) return gate.response;
 
-  const accessToken = getGithubAccessToken(gate.user.userId);
+  const accessToken = await getGithubAccessToken(gate.user.userId);
   if (!accessToken) {
     return NextResponse.json(
       {

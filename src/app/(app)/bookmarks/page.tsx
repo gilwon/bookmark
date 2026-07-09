@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { bookmarks } from "@/lib/db/schema";
 import type { Bookmark } from "@/lib/types";
+import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -15,12 +16,7 @@ export default async function BookmarksPage() {
   const session = await auth();
   const userId = session!.user!.id;
 
-  const rows = db
-    .select()
-    .from(bookmarks)
-    .where(eq(bookmarks.userId, userId))
-    .orderBy(desc(bookmarks.createdAt))
-    .all();
+  const rows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, userId)).orderBy(desc(bookmarks.createdAt)));
 
   const list: Bookmark[] = rows.map((row) => {
     let tags: string[] = [];

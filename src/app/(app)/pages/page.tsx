@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { customPages } from "@/lib/db/schema";
 import type { CustomPage } from "@/lib/types";
+import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -13,12 +14,7 @@ export default async function PagesPage() {
   const session = await auth();
   const userId = session!.user!.id;
 
-  const rows = db
-    .select()
-    .from(customPages)
-    .where(eq(customPages.userId, userId))
-    .orderBy(desc(customPages.updatedAt))
-    .all();
+  const rows = await qall(db.select().from(customPages)    .where(eq(customPages.userId, userId)).orderBy(desc(customPages.updatedAt)));
 
   const list: CustomPage[] = rows.map((row) => {
     let content: unknown = {};

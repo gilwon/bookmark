@@ -15,7 +15,7 @@
 
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS v4
 - Auth.js (next-auth v5) — GitHub OAuth + 개발용 Dev Login
-- Drizzle ORM + better-sqlite3 (`data/mymark.db`)
+- Drizzle ORM + **Supabase Postgres** (`DATABASE_URL`) 또는 로컬 SQLite
 - open-graph-scraper, Octokit, Tiptap
 - GitHub access_token은 **서버 DB 암호 저장** (세션 비노출)
 
@@ -43,10 +43,13 @@ npm run dev
 - email: `dev@local` / password: `dev`
 - Star 동기화 불가 (OAuth 토큰 없음)
 
-### DB
+### DB / Supabase
 
-- 로컬: `data/mymark.db` 자동 생성
-- Supabase 이전: `supabase/schema.sql` + `supabase/MIGRATION.md`
+- **기본(로컬)**: `data/mymark.db` (SQLite) 자동 생성  
+  → 터미널에 `[db] driver=sqlite`
+- **Supabase**: `.env.local` 에 `DATABASE_URL` 설정 + `supabase/schema.sql` 실행  
+  → 상세 절차: [`supabase/MIGRATION.md`](./supabase/MIGRATION.md)  
+  → 터미널에 `[db] driver=postgres (Supabase/Postgres)`
 
 ## 환경 변수
 

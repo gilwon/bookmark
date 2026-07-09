@@ -11,6 +11,7 @@ import { ownershipError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { agentDocs } from "@/lib/db/schema";
 import type { AgentDocKind } from "@/lib/types";
+import { qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -18,12 +19,9 @@ type Ctx = { params: Promise<{ id: string }> };
 
 const KINDS = new Set<AgentDocKind>(["skill", "agents", "claude", "other"]);
 
-function getOwned(id: string, userId: string) {
-  return db
-    .select()
-    .from(agentDocs)
-    .where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId)))
-    .get();
+async function getOwned(id: string, userId: string) {
+  return await qget(
+    db.select().from(agentDocs).where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId))));
 }
 
 /** GET /api/agent-docs/:id */
@@ -32,7 +30,7 @@ export async function GET(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const row = getOwned(id, gate.user.userId);
+  const row = await getOwned(id, gate.user.userId);
   if (!row) return ownershipError();
   return NextResponse.json(rowToAgentDoc(row));
 }
@@ -43,7 +41,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
@@ -111,14 +109,13 @@ export async function PATCH(req: Request, ctx: Ctx) {
     updates.kind = inferKindFromFilename(String(updates.filename));
   }
 
-  db.update(agentDocs)
+  await qrun(db.update(agentDocs)
     .set(updates)
     .where(
       and(eq(agentDocs.id, id), eq(agentDocs.userId, gate.user.userId))
-    )
-    .run();
+    ));
 
-  const row = getOwned(id, gate.user.userId)!;
+  const row = await getOwned(id, gate.user.userId)!;
   return NextResponse.json(rowToAgentDoc(row));
 }
 
@@ -128,13 +125,12 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
-  db.delete(agentDocs)
+  await qrun(db.delete(agentDocs)
     .where(
       and(eq(agentDocs.id, id), eq(agentDocs.userId, gate.user.userId))
-    )
-    .run();
+    ));
   return NextResponse.json({ ok: true });
 }

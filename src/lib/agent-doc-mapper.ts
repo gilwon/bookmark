@@ -5,12 +5,12 @@ import {
   serializeBundle,
   type AgentDocFilePart,
 } from "@/lib/agent-doc-bundle";
-import type { agentDocs } from "@/lib/db/schema";
+import type { AgentDocRow } from "@/lib/db";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 
 const KINDS = new Set<AgentDocKind>(["skill", "agents", "claude", "other"]);
 
-type Row = typeof agentDocs.$inferSelect;
+type Row = AgentDocRow;
 
 /** DB 행을 API AgentDoc으로 변환한다. */
 export function rowToAgentDoc(row: Row): AgentDoc {

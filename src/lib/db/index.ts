@@ -1,16 +1,24 @@
-// Drizzle + better-sqlite3 싱글톤 및 테이블 자동 생성
+// DB 싱글톤 — DATABASE_URL 있으면 Supabase Postgres, 없으면 로컬 SQLite
+import { drizzle as drizzleSqlite } from "drizzle-orm/better-sqlite3";
+import { drizzle as drizzlePg } from "drizzle-orm/postgres-js";
 import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
 import fs from "fs";
 import path from "path";
-import * as schema from "./schema";
+import postgres from "postgres";
+import { getDatabaseUrl, usePostgres } from "./env";
+import * as pgSchema from "./schema.pg";
+import * as sqliteSchema from "./schema.sqlite";
 
 const globalForDb = globalThis as unknown as {
   sqlite?: Database.Database;
-  db?: ReturnType<typeof drizzle<typeof schema>>;
+  pgClient?: ReturnType<typeof postgres>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  db?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  schema?: any;
+  dbDriver?: "sqlite" | "postgres";
 };
 
-/** data 디렉터리와 SQLite 파일을 보장한 뒤 연결을 연다. */
 function createSqlite() {
   const dataDir = path.join(process.cwd(), "data");
   if (!fs.existsSync(dataDir)) {
@@ -19,7 +27,6 @@ function createSqlite() {
   const dbPath = path.join(dataDir, "mymark.db");
   const sqlite = new Database(dbPath);
   sqlite.pragma("journal_mode = WAL");
-  // 첫 import 시 테이블 생성 (마이그레이션 없이 MVP 기동)
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS bookmarks (
       id TEXT PRIMARY KEY,
@@ -82,7 +89,6 @@ function createSqlite() {
       ON oauth_tokens(user_id, provider);
   `);
 
-  // 기존 DB에 bundle 컬럼이 없으면 추가
   const cols = sqlite
     .prepare("PRAGMA table_info(agent_docs)")
     .all() as { name: string }[];
@@ -92,15 +98,60 @@ function createSqlite() {
     );
   }
 
-  return sqlite;
+  return drizzleSqlite(sqlite, { schema: sqliteSchema });
 }
 
-const sqlite = globalForDb.sqlite ?? createSqlite();
-const db = globalForDb.db ?? drizzle(sqlite, { schema });
+function createPostgres() {
+  const url = getDatabaseUrl();
+  const client =
+    globalForDb.pgClient ??
+    postgres(url, {
+      prepare: false, // Supabase pooler (transaction mode) 호환
+      max: 10,
+    });
+  if (process.env.NODE_ENV !== "production") {
+    globalForDb.pgClient = client;
+  }
+  return drizzlePg(client, { schema: pgSchema });
+}
+
+const driver: "sqlite" | "postgres" = usePostgres()
+  ? "postgres"
+  : "sqlite";
+
+const schema = driver === "postgres" ? pgSchema : sqliteSchema;
+const db =
+  globalForDb.db && globalForDb.dbDriver === driver
+    ? globalForDb.db
+    : driver === "postgres"
+      ? createPostgres()
+      : createSqlite();
 
 if (process.env.NODE_ENV !== "production") {
-  globalForDb.sqlite = sqlite;
   globalForDb.db = db;
+  globalForDb.dbDriver = driver;
+  globalForDb.schema = schema;
 }
 
-export { db, schema };
+if (typeof console !== "undefined" && process.env.NODE_ENV !== "test") {
+  // 기동 시 한 번 로그
+  if (!(globalThis as { __mymarkDbLogged?: boolean }).__mymarkDbLogged) {
+    console.info(
+      `[db] driver=${driver}${driver === "postgres" ? " (Supabase/Postgres)" : " (local SQLite)"}`
+    );
+    (globalThis as { __mymarkDbLogged?: boolean }).__mymarkDbLogged = true;
+  }
+}
+
+export { db, schema, driver };
+export const bookmarks = schema.bookmarks;
+export const githubStars = schema.githubStars;
+export const customPages = schema.customPages;
+export const oauthTokens = schema.oauthTokens;
+export const agentDocs = schema.agentDocs;
+
+export type BookmarkRow = typeof bookmarks.$inferSelect;
+export type GithubStarRow = typeof githubStars.$inferSelect;
+export type CustomPageRow = typeof customPages.$inferSelect;
+export type OauthTokenRow = typeof oauthTokens.$inferSelect;
+export type AgentDocRow = typeof agentDocs.$inferSelect;

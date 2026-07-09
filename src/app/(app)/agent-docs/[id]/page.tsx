@@ -6,6 +6,7 @@ import { rowToAgentDoc } from "@/lib/agent-doc-mapper";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { agentDocs } from "@/lib/db/schema";
+import { qget } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -17,11 +18,7 @@ export default async function AgentDocEditPage({ params }: Props) {
   const userId = session!.user!.id;
   const { id } = await params;
 
-  const row = db
-    .select()
-    .from(agentDocs)
-    .where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId)))
-    .get();
+  const row = await qget(db.select().from(agentDocs)    .where(and(eq(agentDocs.id, id), eq(agentDocs.userId, userId))));
 
   if (!row) notFound();
 

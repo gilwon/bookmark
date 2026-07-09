@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { bookmarks } from "@/lib/db/schema";
 import { categoryFromUrl, extractMeta } from "@/lib/meta";
 import type { Bookmark } from "@/lib/types";
+import { qall, qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -39,12 +40,7 @@ export async function GET() {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
 
-  const rows = db
-    .select()
-    .from(bookmarks)
-    .where(eq(bookmarks.userId, session.user.id))
-    .orderBy(desc(bookmarks.createdAt))
-    .all();
+  const rows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, session.user.id)).orderBy(desc(bookmarks.createdAt)));
 
   return NextResponse.json(rows.map(toBookmark));
 }
@@ -78,7 +74,7 @@ export async function POST(req: Request) {
   const now = new Date().toISOString();
   const id = uuidv4();
 
-  db.insert(bookmarks)
+  await qrun(db.insert(bookmarks)
     .values({
       id,
       userId: session.user.id,
@@ -90,9 +86,8 @@ export async function POST(req: Request) {
       tags: JSON.stringify(tags),
       category,
       createdAt: now,
-    })
-    .run();
+    }));
 
-  const row = db.select().from(bookmarks).where(eq(bookmarks.id, id)).get()!;
+  const row = (await qget(db.select().from(bookmarks).where(eq(bookmarks.id, id))))!;
   return NextResponse.json(toBookmark(row), { status: 201 });
 }

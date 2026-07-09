@@ -4,6 +4,7 @@ import { Octokit } from "octokit";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "./db";
 import { githubStars } from "./db/schema";
+import { qall, qget, qrun } from "@/lib/db/query";
 
 export type StarRepo = {
   repoFullName: string;
@@ -77,19 +78,10 @@ export async function upsertStars(
   const seen = new Set(repos.map((r) => r.repoFullName));
 
   for (const repo of repos) {
-    const existing = db
-      .select()
-      .from(githubStars)
-      .where(
-        and(
-          eq(githubStars.userId, userId),
-          eq(githubStars.repoFullName, repo.repoFullName)
-        )
-      )
-      .get();
+    const existing = await qget(db.select().from(githubStars)      .where(and(eq(githubStars.userId, userId),eq(githubStars.repoFullName, repo.repoFullName))));
 
     if (existing) {
-      db.update(githubStars)
+      await qrun(db.update(githubStars)
         .set({
           description: repo.description,
           language: repo.language,
@@ -100,10 +92,9 @@ export async function upsertStars(
         })
         .where(
           and(eq(githubStars.id, existing.id), eq(githubStars.userId, userId))
-        )
-        .run();
+        ));
     } else {
-      db.insert(githubStars)
+      await qrun(db.insert(githubStars)
         .values({
           id: uuidv4(),
           userId,
@@ -115,26 +106,20 @@ export async function upsertStars(
           url: repo.url,
           lastSynced: now,
           createdAt: now,
-        })
-        .run();
+        }));
     }
   }
 
   // unstar된 로컬 행 정리 (본인 데이터만)
-  const local = db
-    .select()
-    .from(githubStars)
-    .where(eq(githubStars.userId, userId))
-    .all();
+  const local = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, userId)));
 
   let removed = 0;
   for (const row of local) {
     if (!seen.has(row.repoFullName)) {
-      db.delete(githubStars)
+      await qrun(db.delete(githubStars)
         .where(
           and(eq(githubStars.id, row.id), eq(githubStars.userId, userId))
-        )
-        .run();
+        ));
       removed += 1;
     }
   }

@@ -24,6 +24,7 @@ import {
 } from "@/lib/db/schema";
 import { extractTiptapText } from "@/lib/tiptap-text";
 import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
+import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -83,11 +84,7 @@ export default async function SearchPage({
   let agentDocResults: AgentDocSearchResult[] = [];
 
   if (type === "all" || type === "bookmark") {
-    const rows = db
-      .select()
-      .from(bookmarks)
-      .where(eq(bookmarks.userId, userId))
-      .all();
+    const rows = await qall(db.select().from(bookmarks)      .where(eq(bookmarks.userId, userId)));
 
     bookmarkResults = rows
       .map((row) => {
@@ -129,11 +126,7 @@ export default async function SearchPage({
   if (type === "all" || type === "star") {
     // 카테고리 필터는 북마크 전용
     if (!category) {
-      const rows = db
-        .select()
-        .from(githubStars)
-        .where(eq(githubStars.userId, userId))
-        .all();
+      const rows = await qall(db.select().from(githubStars)        .where(eq(githubStars.userId, userId)));
 
       starResults = rows
         .map((row) => {
@@ -177,11 +170,7 @@ export default async function SearchPage({
 
   // 페이지: 태그/카테고리 필터는 해당 없음 → 설정 시 type=all 이면 페이지 제외
   if ((type === "all" || type === "page") && !tag && !category) {
-    const rows = db
-      .select()
-      .from(customPages)
-      .where(eq(customPages.userId, userId))
-      .all();
+    const rows = await qall(db.select().from(customPages)      .where(eq(customPages.userId, userId)));
 
     pageResults = rows
       .map((row) => {
@@ -218,11 +207,7 @@ export default async function SearchPage({
 
   // 에이전트 문서: 태그/카테고리 없음
   if ((type === "all" || type === "agent-doc") && !tag && !category) {
-    const rows = db
-      .select()
-      .from(agentDocs)
-      .where(eq(agentDocs.userId, userId))
-      .all();
+    const rows = await qall(db.select().from(agentDocs)      .where(eq(agentDocs.userId, userId)));
 
     agentDocResults = rows
       .map((row) => {

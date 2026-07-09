@@ -5,6 +5,7 @@ import { ownershipError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { customPages } from "@/lib/db/schema";
 import type { CustomPage } from "@/lib/types";
+import { qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -29,12 +30,9 @@ function toPage(row: typeof customPages.$inferSelect): CustomPage {
 }
 
 /** 소유자 페이지 조회 */
-function getOwned(id: string, userId: string) {
-  return db
-    .select()
-    .from(customPages)
-    .where(and(eq(customPages.id, id), eq(customPages.userId, userId)))
-    .get();
+async function getOwned(id: string, userId: string) {
+  return await qget(
+    db.select().from(customPages).where(and(eq(customPages.id, id), eq(customPages.userId, userId))));
 }
 
 /** GET /api/pages/:id */
@@ -43,7 +41,7 @@ export async function GET(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const row = getOwned(id, gate.user.userId);
+  const row = await getOwned(id, gate.user.userId);
   if (!row) return ownershipError();
   return NextResponse.json(toPage(row));
 }
@@ -54,7 +52,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
   const body = await req.json().catch(() => ({}));
@@ -66,14 +64,13 @@ export async function PATCH(req: Request, ctx: Ctx) {
     updates.content = JSON.stringify(body.content);
   }
 
-  db.update(customPages)
+  await qrun(db.update(customPages)
     .set(updates)
     .where(
       and(eq(customPages.id, id), eq(customPages.userId, gate.user.userId))
-    )
-    .run();
+    ));
 
-  const row = getOwned(id, gate.user.userId)!;
+  const row = await getOwned(id, gate.user.userId)!;
   return NextResponse.json(toPage(row));
 }
 
@@ -83,13 +80,12 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
-  db.delete(customPages)
+  await qrun(db.delete(customPages)
     .where(
       and(eq(customPages.id, id), eq(customPages.userId, gate.user.userId))
-    )
-    .run();
+    ));
   return NextResponse.json({ ok: true });
 }

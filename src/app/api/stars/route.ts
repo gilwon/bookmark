@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { githubStars } from "@/lib/db/schema";
 import type { GithubStar } from "@/lib/types";
+import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -37,12 +38,7 @@ export async function GET() {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
 
-  const rows = db
-    .select()
-    .from(githubStars)
-    .where(eq(githubStars.userId, session.user.id))
-    .orderBy(desc(githubStars.stars))
-    .all();
+  const rows = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, session.user.id)).orderBy(desc(githubStars.stars)));
 
   return NextResponse.json(rows.map(toStar));
 }

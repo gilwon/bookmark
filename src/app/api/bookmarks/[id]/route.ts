@@ -4,18 +4,16 @@ import { NextResponse } from "next/server";
 import { ownershipError, requireUser } from "@/lib/authz";
 import { db } from "@/lib/db";
 import { bookmarks } from "@/lib/db/schema";
+import { qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
 type Ctx = { params: Promise<{ id: string }> };
 
 /** 소유 북마크 행 조회 */
-function getOwned(id: string, userId: string) {
-  return db
-    .select()
-    .from(bookmarks)
-    .where(and(eq(bookmarks.id, id), eq(bookmarks.userId, userId)))
-    .get();
+async function getOwned(id: string, userId: string) {
+  return await qget(
+    db.select().from(bookmarks).where(and(eq(bookmarks.id, id), eq(bookmarks.userId, userId))));
 }
 
 /** PATCH /api/bookmarks/:id */
@@ -24,7 +22,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
   const body = await req.json().catch(() => ({}));
@@ -37,15 +35,14 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (Array.isArray(body.tags)) updates.tags = JSON.stringify(body.tags);
 
   if (Object.keys(updates).length > 0) {
-    db.update(bookmarks)
+    await qrun(db.update(bookmarks)
       .set(updates)
       .where(
         and(eq(bookmarks.id, id), eq(bookmarks.userId, gate.user.userId))
-      )
-      .run();
+      ));
   }
 
-  const row = getOwned(id, gate.user.userId)!;
+  const row = await getOwned(id, gate.user.userId)!;
   let tags: string[] = [];
   try {
     tags = JSON.parse(row.tags || "[]");
@@ -73,11 +70,10 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = getOwned(id, gate.user.userId);
+  const existing = await getOwned(id, gate.user.userId);
   if (!existing) return ownershipError();
 
-  db.delete(bookmarks)
-    .where(and(eq(bookmarks.id, id), eq(bookmarks.userId, gate.user.userId)))
-    .run();
+  await qrun(db.delete(bookmarks)
+    .where(and(eq(bookmarks.id, id), eq(bookmarks.userId, gate.user.userId))));
   return NextResponse.json({ ok: true });
 }
