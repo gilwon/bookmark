@@ -26,6 +26,7 @@ export function BookmarkCard({
 }: Props) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
+  const hasImage = Boolean(bookmark.image);
 
   async function handleDelete() {
     if (!confirm("이 북마크를 삭제할까요?")) return;
@@ -47,6 +48,25 @@ export function BookmarkCard({
     domain = bookmark.url;
   }
 
+  /** 선택 체크 — 이미지 위(absolute) 또는 제목 옆(inline) */
+  const selectControl = selectable ? (
+    <label
+      className={cn(
+        "flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-background/90 shadow",
+        hasImage && "absolute left-2 top-2 z-10"
+      )}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <input
+        type="checkbox"
+        className="h-4 w-4 accent-indigo-600"
+        checked={Boolean(selected)}
+        onChange={onToggleSelect}
+        aria-label={`${bookmark.title} 선택`}
+      />
+    </label>
+  ) : null;
+
   return (
     <Card
       className={cn(
@@ -54,34 +74,25 @@ export function BookmarkCard({
         selected && "border-indigo-500 ring-1 ring-indigo-500/40"
       )}
     >
-      {selectable && (
-        <label
-          className="absolute left-2 top-2 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-md bg-background/90 shadow border border-border"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <input
-            type="checkbox"
-            className="h-4 w-4 accent-indigo-600"
-            checked={Boolean(selected)}
-            onChange={onToggleSelect}
-            aria-label={`${bookmark.title} 선택`}
+      {hasImage ? (
+        <div className="relative">
+          {selectControl}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={bookmark.image!}
+            alt=""
+            className="h-36 w-full object-cover bg-muted"
           />
-        </label>
-      )}
-      {bookmark.image ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={bookmark.image}
-          alt=""
-          className="h-36 w-full object-cover bg-muted"
-        />
+        </div>
       ) : (
-        <div className="flex h-36 items-center justify-center bg-muted/60 text-muted-foreground text-sm">
+        <div className="relative flex h-28 items-center justify-center bg-muted/60 text-sm text-muted-foreground">
           이미지 없음
         </div>
       )}
       <CardHeader className="pb-2">
         <div className="flex items-start gap-2">
+          {/* 이미지 없을 때 체크박스를 제목 앞에 두어 겹침 방지 */}
+          {!hasImage && selectControl}
           {bookmark.favicon && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -93,7 +104,7 @@ export function BookmarkCard({
               }}
             />
           )}
-          <CardTitle className="line-clamp-2 text-sm leading-snug">
+          <CardTitle className="min-w-0 flex-1 line-clamp-2 text-sm leading-snug">
             <a
               href={bookmark.url}
               target="_blank"

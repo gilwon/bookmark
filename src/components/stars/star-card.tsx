@@ -24,36 +24,39 @@ export function StarCard({
   return (
     <Card
       className={cn(
-        "relative flex flex-col transition-colors hover:border-border",
+        "flex flex-col transition-colors hover:border-border",
         selected && "border-indigo-500 ring-1 ring-indigo-500/40"
       )}
     >
-      {selectable && (
-        <label
-          className="absolute left-2 top-2 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-md bg-background/90 shadow border border-border"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <input
-            type="checkbox"
-            className="h-4 w-4 accent-indigo-600"
-            checked={Boolean(selected)}
-            onChange={onToggleSelect}
-            aria-label={`${star.repoFullName} 선택`}
-          />
-        </label>
-      )}
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm">
-          <a
-            href={star.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 hover:text-indigo-300"
-          >
-            {star.repoFullName}
-            <ExternalLink className="h-3 w-3 opacity-50" />
-          </a>
-        </CardTitle>
+        <div className="flex items-start gap-2">
+          {/* absolute 대신 인라인 배치 — 제목과 겹치지 않음 */}
+          {selectable && (
+            <label
+              className="mt-0.5 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-background shadow"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-indigo-600"
+                checked={Boolean(selected)}
+                onChange={onToggleSelect}
+                aria-label={`${star.repoFullName} 선택`}
+              />
+            </label>
+          )}
+          <CardTitle className="min-w-0 flex-1 text-sm">
+            <a
+              href={star.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 hover:text-indigo-300"
+            >
+              <span className="break-all">{star.repoFullName}</span>
+              <ExternalLink className="h-3 w-3 shrink-0 opacity-50" />
+            </a>
+          </CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">
         {star.description && (
