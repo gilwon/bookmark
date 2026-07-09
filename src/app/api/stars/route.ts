@@ -71,10 +71,16 @@ export async function POST(req: Request) {
     );
   }
 
+  // 1차 중복 검사 (입력 문자열 기준, 대소문자 무시)
   const existing = await store.getStarByRepo(userId, fullName);
   if (existing) {
     return NextResponse.json(
-      { error: "이미 목록에 있는 레포입니다.", id: existing.id },
+      {
+        error: `이미 등록된 레포입니다. (${existing.repoFullName})`,
+        id: existing.id,
+        repoFullName: existing.repoFullName,
+        duplicate: true,
+      },
       { status: 409 }
     );
   }
@@ -82,33 +88,56 @@ export async function POST(req: Request) {
   try {
     const token = await getGithubAccessToken(userId);
     const repo = await fetchRepoByFullName(fullName, token);
-    // 대소문자 정규화 후 재확인
+
+    // 2차: GitHub 정규 full_name 기준 재확인 (vercel/next.js ↔ Vercel/Next.js)
     const again = await store.getStarByRepo(userId, repo.repoFullName);
     if (again) {
       return NextResponse.json(
-        { error: "이미 목록에 있는 레포입니다.", id: again.id },
+        {
+          error: `이미 등록된 레포입니다. (${again.repoFullName})`,
+          id: again.id,
+          repoFullName: again.repoFullName,
+          duplicate: true,
+        },
         { status: 409 }
       );
     }
 
     const now = new Date().toISOString();
     const id = uuidv4();
-    await store.insertStar({
-      id,
-      userId,
-      repoFullName: repo.repoFullName,
-      description: repo.description,
-      language: repo.language,
-      stars: repo.stars,
-      topics: JSON.stringify(repo.topics),
-      url: repo.url,
-      lastSynced: now,
-      createdAt: now,
-      changeKind: "new",
-      starsDelta: 0,
-      changedAt: now,
-      source: "manual",
-    });
+    try {
+      await store.insertStar({
+        id,
+        userId,
+        repoFullName: repo.repoFullName,
+        description: repo.description,
+        language: repo.language,
+        stars: repo.stars,
+        topics: JSON.stringify(repo.topics),
+        url: repo.url,
+        lastSynced: now,
+        createdAt: now,
+        changeKind: "new",
+        starsDelta: 0,
+        changedAt: now,
+        source: "manual",
+      });
+    } catch (insertErr) {
+      // unique 제약 등 레이스 시 중복으로 안내
+      const msg =
+        insertErr instanceof Error ? insertErr.message : String(insertErr);
+      if (/unique|duplicate|conflict/i.test(msg)) {
+        return NextResponse.json(
+          {
+            error: `이미 등록된 레포입니다. (${repo.repoFullName})`,
+            repoFullName: repo.repoFullName,
+            duplicate: true,
+          },
+          { status: 409 }
+        );
+      }
+      throw insertErr;
+    }
 
     const row = await store.getStar(id, userId);
     if (!row) {

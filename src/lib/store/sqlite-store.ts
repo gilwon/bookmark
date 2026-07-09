@@ -122,17 +122,12 @@ export async function getStarByRepo(
   userId: string,
   repoFullName: string
 ): Promise<GithubStarRow | undefined> {
-  return qget(
-    db
-      .select()
-      .from(githubStars)
-      .where(
-        and(
-          eq(githubStars.userId, userId),
-          eq(githubStars.repoFullName, repoFullName)
-        )
-      )
+  // 대소문자 무시 조회 (GitHub full_name 정규화 전후 모두)
+  const rows = await qall(
+    db.select().from(githubStars).where(eq(githubStars.userId, userId))
   );
+  const key = repoFullName.trim().toLowerCase();
+  return rows.find((r) => r.repoFullName.toLowerCase() === key);
 }
 
 export async function insertStar(row: GithubStarRow): Promise<void> {

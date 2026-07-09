@@ -194,8 +194,27 @@ export function StarsView({
     const raw = repoInput.trim();
     if (!raw) {
       setAddError("owner/repo 또는 GitHub URL 을 입력하세요.");
+      setAddMsg(null);
       return;
     }
+
+    // 클라이언트 선검사 — owner/repo 형태면 목록과 대소문자 무시 비교
+    const clientKey = raw
+      .replace(/^(?:https?:\/\/)?(?:www\.)?github\.com\//i, "")
+      .replace(/\.git$/i, "")
+      .replace(/\/$/, "")
+      .toLowerCase();
+    const dupLocal = initialStars.find(
+      (s) => s.repoFullName.toLowerCase() === clientKey
+    );
+    if (dupLocal) {
+      setAddMsg(null);
+      setAddError(
+        `이미 등록된 레포입니다. (${dupLocal.repoFullName})`
+      );
+      return;
+    }
+
     setAdding(true);
     setAddError(null);
     setAddMsg(null);
@@ -207,9 +226,14 @@ export function StarsView({
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(
-          (data as { error?: string }).error || "레포 추가 실패"
-        );
+        // 409 중복 등 — 등록하지 않고 메시지만 표시
+        const errMsg =
+          (data as { error?: string }).error ||
+          (res.status === 409
+            ? "이미 등록된 레포입니다."
+            : "레포 추가 실패");
+        setAddError(errMsg);
+        return;
       }
       const name =
         (data as { repoFullName?: string }).repoFullName || raw;

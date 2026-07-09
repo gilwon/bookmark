@@ -153,11 +153,12 @@ export async function getStarByRepo(
   userId: string,
   repoFullName: string
 ): Promise<GithubStarRow | undefined> {
+  // 대소문자 무시 (ilike 는 와일드카드 없으면 대소문자 무시 완전 일치)
   const { data, error } = await sb()
     .from("github_stars")
     .select("*")
     .eq("user_id", userId)
-    .eq("repo_full_name", repoFullName)
+    .ilike("repo_full_name", repoFullName.trim())
     .maybeSingle();
   throwIfError(error, "getStarByRepo");
   return data ? mapStar(data) : undefined;
