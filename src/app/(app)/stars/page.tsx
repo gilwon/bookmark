@@ -47,7 +47,7 @@ export default async function StarsPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">GitHub Stars</h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Star한 레포지토리를 동기화해 관리합니다. (GitHub 로그인 필요)
           </p>
         </div>
@@ -55,7 +55,7 @@ export default async function StarsPage() {
       </div>
 
       {list.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-800 py-16 text-center text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           동기화된 Star가 없습니다. GitHub로 로그인한 뒤 동기화 버튼을
           눌러주세요.
         </div>

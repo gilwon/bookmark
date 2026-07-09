@@ -19,10 +19,10 @@ export function EmbedNodeView({ node, deleteNode, selected }: NodeViewProps) {
       data-drag-handle
     >
       <div
-        className={`group relative overflow-hidden rounded-xl border bg-zinc-950/80 transition-colors ${
+        className={`group relative overflow-hidden rounded-xl border bg-background/80 transition-colors ${
           selected
             ? "border-indigo-500 ring-1 ring-indigo-500/40"
-            : "border-zinc-700 hover:border-zinc-600"
+            : "border-border hover:border-border"
         }`}
       >
         <div className="flex gap-3 p-3">
@@ -31,10 +31,10 @@ export function EmbedNodeView({ node, deleteNode, selected }: NodeViewProps) {
             <img
               src={attrs.image}
               alt=""
-              className="h-16 w-16 shrink-0 rounded-lg object-cover bg-zinc-800"
+              className="h-16 w-16 shrink-0 rounded-lg object-cover bg-muted"
             />
           ) : (
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-zinc-800 text-zinc-400">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
               {isStar ? (
                 <GitFork className="h-6 w-6" />
               ) : (
@@ -48,7 +48,7 @@ export function EmbedNodeView({ node, deleteNode, selected }: NodeViewProps) {
                 {isStar ? "GitHub Star" : "북마크"}
               </Badge>
               {attrs.subtitle && (
-                <span className="text-xs text-zinc-500 truncate">
+                <span className="text-xs text-muted-foreground truncate">
                   {attrs.subtitle}
                 </span>
               )}
@@ -57,14 +57,14 @@ export function EmbedNodeView({ node, deleteNode, selected }: NodeViewProps) {
               href={attrs.url || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium text-zinc-100 hover:text-indigo-300"
+              className="inline-flex items-center gap-1.5 font-medium text-foreground hover:text-indigo-300"
               onClick={(e) => e.stopPropagation()}
             >
               <span className="truncate">{attrs.title || "제목 없음"}</span>
               <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-60" />
             </a>
             {attrs.description && (
-              <p className="line-clamp-2 text-sm text-zinc-400">
+              <p className="line-clamp-2 text-sm text-muted-foreground">
                 {attrs.description}
               </p>
             )}
@@ -81,7 +81,7 @@ export function EmbedNodeView({ node, deleteNode, selected }: NodeViewProps) {
             }}
             aria-label="임베드 삭제"
           >
-            <Trash2 className="h-4 w-4 text-zinc-400" />
+            <Trash2 className="h-4 w-4 text-muted-foreground" />
           </Button>
         </div>
       </div>

@@ -143,17 +143,17 @@ export default async function SearchPage({
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">검색</h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           북마크와 GitHub Stars를 통합 검색합니다.
         </p>
       </div>
 
-      <Suspense fallback={<div className="text-sm text-zinc-500">로딩…</div>}>
+      <Suspense fallback={<div className="text-sm text-muted-foreground">로딩…</div>}>
         <FilterBar />
       </Suspense>
 
       {hasQuery && (
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           결과 {total}건
           {bookmarkResults.length > 0 && ` · 북마크 ${bookmarkResults.length}`}
           {starResults.length > 0 && ` · Star ${starResults.length}`}
@@ -163,18 +163,18 @@ export default async function SearchPage({
       )}
 
       {!hasQuery ? (
-        <div className="rounded-xl border border-dashed border-zinc-800 py-16 text-center text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           검색어 또는 필터를 입력하세요.
         </div>
       ) : total === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-800 py-16 text-center text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           검색 결과가 없습니다.
         </div>
       ) : (
         <div className="space-y-8">
           {bookmarkResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-zinc-400">북마크</h2>
+              <h2 className="text-sm font-medium text-muted-foreground">북마크</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {bookmarkResults.map((b) => (
                   <BookmarkCard key={b.id} bookmark={b} />
@@ -184,7 +184,7 @@ export default async function SearchPage({
           )}
           {starResults.length > 0 && (
             <section className="space-y-3">
-              <h2 className="text-sm font-medium text-zinc-400">GitHub Stars</h2>
+              <h2 className="text-sm font-medium text-muted-foreground">GitHub Stars</h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {starResults.map((s) => (
                   <StarCard key={s.id} star={s} />

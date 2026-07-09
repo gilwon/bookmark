@@ -28,11 +28,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl">MyMark</CardTitle>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             개인 북마크 · GitHub Stars · 페이지 허브
           </p>
         </CardHeader>
@@ -48,10 +48,10 @@ export default function LoginPage() {
           </Button>
           <div className="relative my-1">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-zinc-800" />
+              <span className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-zinc-900 px-2 text-zinc-500">또는</span>
+              <span className="bg-card px-2 text-muted-foreground">또는</span>
             </div>
           </div>
           <Button
@@ -63,7 +63,7 @@ export default function LoginPage() {
           >
             {loading === "dev" ? "로그인 중…" : "Dev Login (로컬 데모)"}
           </Button>
-          <p className="text-center text-xs text-zinc-500 mt-2">
+          <p className="text-center text-xs text-muted-foreground mt-2">
             GITHUB_ID가 없어도 Dev Login으로 UI를 확인할 수 있습니다.
           </p>
         </CardContent>

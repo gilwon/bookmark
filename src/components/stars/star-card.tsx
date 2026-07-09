@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 /** Star된 레포지토리 정보를 카드로 표시한다. */
 export function StarCard({ star }: { star: GithubStar }) {
   return (
-    <Card className="flex flex-col transition-colors hover:border-zinc-700">
+    <Card className="flex flex-col transition-colors hover:border-border">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm">
           <a
@@ -23,7 +23,7 @@ export function StarCard({ star }: { star: GithubStar }) {
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">
         {star.description && (
-          <p className="line-clamp-2 text-xs text-zinc-400">
+          <p className="line-clamp-2 text-xs text-muted-foreground">
             {star.description}
           </p>
         )}

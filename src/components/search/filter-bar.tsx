@@ -51,12 +51,12 @@ export function FilterBar() {
   return (
     <form
       onSubmit={apply}
-      className="flex flex-col gap-2 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:flex-row sm:flex-wrap sm:items-end"
+      className="flex flex-col gap-2 rounded-xl border border-border bg-card/50 p-4 sm:flex-row sm:flex-wrap sm:items-end"
     >
       <div className="flex-1 space-y-1 min-w-[180px]">
-        <label className="text-xs text-zinc-400">검색어</label>
+        <label className="text-xs text-muted-foreground">검색어</label>
         <div className="relative">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500" />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             className="pl-8"
             placeholder="제목, 설명, URL…"
@@ -66,11 +66,11 @@ export function FilterBar() {
         </div>
       </div>
       <div className="space-y-1 w-full sm:w-36">
-        <label className="text-xs text-zinc-400">타입</label>
+        <label className="text-xs text-muted-foreground">타입</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 text-sm text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="flex h-9 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         >
           <option value="all">전체</option>
           <option value="bookmark">북마크</option>
@@ -78,7 +78,7 @@ export function FilterBar() {
         </select>
       </div>
       <div className="space-y-1 w-full sm:w-32">
-        <label className="text-xs text-zinc-400">태그</label>
+        <label className="text-xs text-muted-foreground">태그</label>
         <Input
           placeholder="태그"
           value={tag}
@@ -86,7 +86,7 @@ export function FilterBar() {
         />
       </div>
       <div className="space-y-1 w-full sm:w-36">
-        <label className="text-xs text-zinc-400">카테고리</label>
+        <label className="text-xs text-muted-foreground">카테고리</label>
         <Input
           placeholder="카테고리"
           value={category}
@@ -94,7 +94,7 @@ export function FilterBar() {
         />
       </div>
       <div className="space-y-1 w-full sm:w-40">
-        <label className="text-xs text-zinc-400">시작일</label>
+        <label className="text-xs text-muted-foreground">시작일</label>
         <Input
           type="date"
           value={from}
@@ -102,7 +102,7 @@ export function FilterBar() {
         />
       </div>
       <div className="space-y-1 w-full sm:w-40">
-        <label className="text-xs text-zinc-400">종료일</label>
+        <label className="text-xs text-muted-foreground">종료일</label>
         <Input
           type="date"
           value={to}

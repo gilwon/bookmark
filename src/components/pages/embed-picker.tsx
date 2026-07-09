@@ -102,14 +102,14 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
             aria-label="피커 닫기"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] rounded-xl border border-zinc-700 bg-zinc-900 shadow-xl">
-            <div className="flex border-b border-zinc-800">
+          <div className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] rounded-xl border border-border bg-card shadow-xl">
+            <div className="flex border-b border-border">
               <button
                 type="button"
                 className={`flex-1 px-3 py-2 text-sm ${
                   tab === "bookmark"
                     ? "text-indigo-300 border-b-2 border-indigo-500"
-                    : "text-zinc-400"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setTab("bookmark")}
               >
@@ -120,7 +120,7 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
                 className={`flex-1 px-3 py-2 text-sm ${
                   tab === "star"
                     ? "text-indigo-300 border-b-2 border-indigo-500"
-                    : "text-zinc-400"
+                    : "text-muted-foreground"
                 }`}
                 onClick={() => setTab("star")}
               >
@@ -140,7 +140,7 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
             <ul className="max-h-64 overflow-y-auto px-1 pb-2">
               {tab === "bookmark" &&
                 (filteredBookmarks.length === 0 ? (
-                  <li className="px-3 py-6 text-center text-xs text-zinc-500">
+                  <li className="px-3 py-6 text-center text-xs text-muted-foreground">
                     삽입할 북마크가 없습니다.
                   </li>
                 ) : (
@@ -148,15 +148,15 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
                     <li key={b.id}>
                       <button
                         type="button"
-                        className="flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left hover:bg-zinc-800"
+                        className="flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left hover:bg-muted"
                         onClick={() => pickBookmark(b)}
                       >
-                        <Bookmark className="mt-0.5 h-4 w-4 shrink-0 text-zinc-500" />
+                        <Bookmark className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                         <span className="min-w-0">
-                          <span className="block truncate text-sm text-zinc-100">
+                          <span className="block truncate text-sm text-foreground">
                             {b.title}
                           </span>
-                          <span className="block truncate text-xs text-zinc-500">
+                          <span className="block truncate text-xs text-muted-foreground">
                             {b.url}
                           </span>
                         </span>
@@ -166,7 +166,7 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
                 ))}
               {tab === "star" &&
                 (filteredStars.length === 0 ? (
-                  <li className="px-3 py-6 text-center text-xs text-zinc-500">
+                  <li className="px-3 py-6 text-center text-xs text-muted-foreground">
                     삽입할 Star가 없습니다.
                   </li>
                 ) : (
@@ -174,15 +174,15 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
                     <li key={s.id}>
                       <button
                         type="button"
-                        className="flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left hover:bg-zinc-800"
+                        className="flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left hover:bg-muted"
                         onClick={() => pickStar(s)}
                       >
-                        <GitFork className="mt-0.5 h-4 w-4 shrink-0 text-zinc-500" />
+                        <GitFork className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
                         <span className="min-w-0">
-                          <span className="block truncate text-sm text-zinc-100">
+                          <span className="block truncate text-sm text-foreground">
                             {s.repoFullName}
                           </span>
-                          <span className="block truncate text-xs text-zinc-500">
+                          <span className="block truncate text-xs text-muted-foreground">
                             {s.description ?? s.language ?? s.url}
                           </span>
                         </span>

@@ -46,7 +46,7 @@ export default async function BookmarksPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">북마크</h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           URL을 추가하면 메타 정보를 자동으로 가져옵니다.
         </p>
       </div>

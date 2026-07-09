@@ -36,16 +36,16 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   }
 
   return (
-    <Card className="group flex flex-col overflow-hidden transition-colors hover:border-zinc-700">
+    <Card className="group flex flex-col overflow-hidden transition-colors hover:border-border">
       {bookmark.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={bookmark.image}
           alt=""
-          className="h-36 w-full object-cover bg-zinc-800"
+          className="h-36 w-full object-cover bg-muted"
         />
       ) : (
-        <div className="flex h-36 items-center justify-center bg-zinc-800/60 text-zinc-600 text-sm">
+        <div className="flex h-36 items-center justify-center bg-muted/60 text-muted-foreground text-sm">
           이미지 없음
         </div>
       )}
@@ -76,7 +76,7 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">
         {bookmark.description && (
-          <p className="line-clamp-2 text-xs text-zinc-400">
+          <p className="line-clamp-2 text-xs text-muted-foreground">
             {bookmark.description}
           </p>
         )}
@@ -91,13 +91,13 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
           ))}
         </div>
         <div className="mt-auto flex items-center justify-between pt-1">
-          <span className="truncate text-xs text-zinc-500">{domain}</span>
+          <span className="truncate text-xs text-muted-foreground">{domain}</span>
           <div className="flex gap-1 opacity-70 group-hover:opacity-100">
             <a
               href={bookmark.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-800"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted"
               aria-label="열기"
             >
               <ExternalLink className="h-3.5 w-3.5" />

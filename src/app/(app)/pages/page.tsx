@@ -41,7 +41,7 @@ export default async function PagesPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">페이지</h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm text-muted-foreground mt-1">
           Notion처럼 자유롭게 노트를 작성하세요.
         </p>
       </div>

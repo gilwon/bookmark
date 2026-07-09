@@ -93,7 +93,7 @@ export default async function PageEditorPage({ params }: Props) {
     <div className="space-y-4">
       <Link
         href="/pages"
-        className="text-sm text-zinc-400 hover:text-zinc-200"
+        className="text-sm text-muted-foreground hover:text-foreground"
       >
         ← 페이지 목록
       </Link>

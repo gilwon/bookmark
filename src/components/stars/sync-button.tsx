@@ -38,7 +38,7 @@ export function SyncButton() {
         {loading ? "동기화 중…" : "Star 동기화"}
       </Button>
       {message && (
-        <p className="text-xs text-zinc-400 max-w-xs text-right">{message}</p>
+        <p className="text-xs text-muted-foreground max-w-xs text-right">{message}</p>
       )}
     </div>
   );

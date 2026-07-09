@@ -16,7 +16,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { useTheme, type Theme } from "@/components/theme-provider";
+import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -30,7 +30,7 @@ const navItems = [
 /** 사이드바 본문 (데스크톱 고정 + 모바일 드로어) */
 export function Sidebar() {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -47,8 +47,8 @@ export function Sidebar() {
             className={cn(
               "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
               active
-                ? "bg-indigo-600/20 text-indigo-300"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+                ? "bg-indigo-600/20 text-indigo-600 dark:text-indigo-300"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
             <Icon className="h-4 w-4" />
@@ -62,8 +62,8 @@ export function Sidebar() {
   return (
     <>
       {/* 모바일 상단 바 */}
-      <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-950 px-4 py-3 lg:hidden">
-        <Link href="/bookmarks" className="text-lg font-bold text-zinc-50">
+      <div className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-3 lg:hidden">
+        <Link href="/bookmarks" className="text-lg font-bold text-foreground">
           MyMark
         </Link>
         <Button
@@ -83,12 +83,14 @@ export function Sidebar() {
             className="absolute inset-0 bg-black/60"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative z-50 flex h-full w-64 flex-col border-r border-zinc-800 bg-zinc-950 py-4">
-            <div className="mb-4 px-5 text-lg font-bold text-zinc-50">MyMark</div>
+          <aside className="relative z-50 flex h-full w-64 flex-col border-r border-border bg-sidebar py-4">
+            <div className="mb-4 px-5 text-lg font-bold text-foreground">
+              MyMark
+            </div>
             {Nav}
             <SidebarFooter
               theme={theme}
-              setTheme={setTheme}
+              toggleTheme={toggleTheme}
               email={session?.user?.email}
             />
           </aside>
@@ -96,17 +98,17 @@ export function Sidebar() {
       )}
 
       {/* 데스크톱 사이드바 */}
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-zinc-800 bg-zinc-950 py-5 lg:flex">
+      <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar py-5 lg:flex">
         <Link
           href="/bookmarks"
-          className="mb-6 px-5 text-xl font-bold tracking-tight text-zinc-50"
+          className="mb-6 px-5 text-xl font-bold tracking-tight text-foreground"
         >
           MyMark
         </Link>
         {Nav}
         <SidebarFooter
           theme={theme}
-          setTheme={setTheme}
+          toggleTheme={toggleTheme}
           email={session?.user?.email}
         />
       </aside>
@@ -117,22 +119,24 @@ export function Sidebar() {
 /** 사이드바 하단 — 유저 정보, 테마, 로그아웃 */
 function SidebarFooter({
   theme,
-  setTheme,
+  toggleTheme,
   email,
 }: {
-  theme: Theme;
-  setTheme: (t: Theme) => void;
+  theme: "dark" | "light";
+  toggleTheme: () => void;
   email?: string | null;
 }) {
   return (
-    <div className="mt-auto space-y-2 border-t border-zinc-800 px-3 pt-3">
+    <div className="mt-auto space-y-2 border-t border-border px-3 pt-3">
       {email && (
-        <p className="truncate px-3 text-xs text-zinc-500">{email}</p>
+        <p className="truncate px-3 text-xs text-muted-foreground">{email}</p>
       )}
       <Button
+        type="button"
         variant="ghost"
         className="w-full justify-start"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        onClick={toggleTheme}
+        aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
       >
         {theme === "dark" ? (
           <Sun className="h-4 w-4" />
@@ -143,7 +147,7 @@ function SidebarFooter({
       </Button>
       <Button
         variant="ghost"
-        className="w-full justify-start text-zinc-400"
+        className="w-full justify-start text-muted-foreground"
         onClick={() => signOut({ callbackUrl: "/login" })}
       >
         <LogOut className="h-4 w-4" />

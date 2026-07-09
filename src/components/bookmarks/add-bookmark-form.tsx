@@ -57,10 +57,10 @@ export function AddBookmarkForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 sm:flex-row sm:items-end"
+      className="flex flex-col gap-2 rounded-xl border border-border bg-card/50 p-4 sm:flex-row sm:items-end"
     >
       <div className="flex-1 space-y-1">
-        <label className="text-xs text-zinc-400">URL</label>
+        <label className="text-xs text-muted-foreground">URL</label>
         <Input
           placeholder="https://example.com"
           value={url}
@@ -70,7 +70,7 @@ export function AddBookmarkForm() {
         />
       </div>
       <div className="w-full space-y-1 sm:w-40">
-        <label className="text-xs text-zinc-400">태그 (쉼표 구분)</label>
+        <label className="text-xs text-muted-foreground">태그 (쉼표 구분)</label>
         <Input
           placeholder="react, 문서"
           value={tags}
@@ -78,7 +78,7 @@ export function AddBookmarkForm() {
         />
       </div>
       <div className="w-full space-y-1 sm:w-36">
-        <label className="text-xs text-zinc-400">카테고리</label>
+        <label className="text-xs text-muted-foreground">카테고리</label>
         <Input
           placeholder="자동"
           value={category}

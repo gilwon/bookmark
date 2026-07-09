@@ -47,6 +47,13 @@
 - next-themes 제거 → 자체 `ThemeProvider` + `useTheme`.
 - FOUC 방지는 루트 layout의 `next/script` `beforeInteractive` 로 처리.
 
+### 2026-07-09: 테마 토글 무반응 수정
+- 원인 1: UI 전반에 `bg-zinc-950` 등 다크 하드코딩 → html.light만 바꿔도 화면 그대로.
+- 원인 2: layout `html` className에 `dark` 고정 → React가 토글을 덮을 수 있음.
+- 해결: CSS 변수 토큰(`background`, `card`, `muted`…) + 시맨틱 Tailwind 클래스.
+- `@custom-variant dark (&:where(.dark, .dark *))` 로 class 기반 dark: 유틸 활성화.
+- 사이드바는 `toggleTheme()` 사용.
+
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.
 - Auth: GitHub provider는 env 있을 때만, Credentials Dev Login 항상 활성.

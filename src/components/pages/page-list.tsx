@@ -51,7 +51,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       </div>
 
       {pages.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-800 py-16 text-center text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           아직 페이지가 없습니다. 새 페이지를 만들어 보세요.
         </div>
       ) : (
@@ -59,7 +59,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
           {pages.map((page) => (
             <Card
               key={page.id}
-              className="group transition-colors hover:border-zinc-700"
+              className="group transition-colors hover:border-border"
             >
               <CardContent className="flex items-center gap-3 p-4">
                 <FileText className="h-5 w-5 shrink-0 text-indigo-400" />
@@ -70,7 +70,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
                   >
                     {page.title}
                   </Link>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-muted-foreground">
                     수정 {new Date(page.updatedAt).toLocaleString("ko-KR")}
                   </p>
                 </div>

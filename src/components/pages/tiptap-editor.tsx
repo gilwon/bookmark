@@ -52,7 +52,7 @@ export function TiptapEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-invert max-w-none min-h-[320px] focus:outline-none px-1 py-2",
+          "prose dark:prose-invert max-w-none min-h-[320px] focus:outline-none px-1 py-2",
       },
     },
     immediatelyRender: false,
@@ -126,7 +126,7 @@ export function TiptapEditor({
             {saving ? "저장 중…" : "저장"}
           </Button>
           {status && (
-            <span className="text-xs text-zinc-500 whitespace-nowrap">
+            <span className="text-xs text-muted-foreground whitespace-nowrap">
               {status}
             </span>
           )}
@@ -139,12 +139,12 @@ export function TiptapEditor({
           stars={stars}
           onPick={handleEmbed}
         />
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs text-muted-foreground">
           북마크 또는 GitHub Star를 페이지에 카드로 삽입합니다.
         </span>
       </div>
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+      <div className="rounded-xl border border-border bg-card p-4">
         <EditorContent editor={editor} />
       </div>
     </div>
