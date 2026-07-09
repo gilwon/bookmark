@@ -99,19 +99,14 @@ export function CodeBlockView({
             aria-expanded={open}
           >
             <span className="truncate">{languageLabel(language)}</span>
-            <ChevronDown
-              className={cn(
-                "h-3.5 w-3.5 shrink-0 opacity-70 transition-transform",
-                open && "rotate-180"
-              )}
-            />
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
           </button>
 
           {open && (
             <div
               className={cn(
-                // 블록 위쪽으로 펼침 — 아래 잘림 방지
-                "absolute bottom-[calc(100%+6px)] left-0 z-[80] w-56 overflow-hidden rounded-xl",
+                // 버튼 아래쪽으로 펼침 (overflow-visible 로 블록 밖 잘림 방지)
+                "absolute left-0 top-[calc(100%+6px)] z-[80] w-56 overflow-hidden rounded-xl",
                 "border border-border bg-card shadow-2xl"
               )}
               role="listbox"
