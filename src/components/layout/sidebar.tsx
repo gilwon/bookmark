@@ -7,6 +7,7 @@ import {
   ExternalLink,
   FileText,
   GitFork,
+  LayoutDashboard,
   LogOut,
   Menu,
   Moon,
@@ -24,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
+  { href: "/dashboard", label: "홈", icon: LayoutDashboard },
   { href: "/bookmarks", label: "북마크", icon: Bookmark },
   { href: "/stars", label: "GitHub Stars", icon: GitFork },
   { href: "/pages", label: "페이지", icon: FileText },
@@ -75,7 +77,7 @@ export function Sidebar() {
   return (
     <>
       <div className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-3 lg:hidden">
-        <Link href="/bookmarks" className="text-lg font-bold text-foreground">
+        <Link href="/dashboard" className="text-lg font-bold text-foreground">
           MyMark
         </Link>
         <Button
@@ -106,7 +108,7 @@ export function Sidebar() {
 
       <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar py-5 lg:flex">
         <Link
-          href="/bookmarks"
+          href="/dashboard"
           className="mb-6 px-5 text-xl font-bold tracking-tight text-foreground"
         >
           MyMark

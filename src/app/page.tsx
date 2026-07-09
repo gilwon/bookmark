@@ -1,7 +1,7 @@
-// 루트 → 북마크 페이지로 리다이렉트
+// 루트 → 대시보드로 리다이렉트
 import { redirect } from "next/navigation";
 
-/** 홈은 북마크 목록으로 보낸다. */
+/** 홈 진입 시 /dashboard 로 보낸다. */
 export default function HomePage() {
-  redirect("/bookmarks");
+  redirect("/dashboard");
 }
