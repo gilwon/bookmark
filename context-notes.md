@@ -42,6 +42,11 @@
 - 검색 `from`/`to`(YYYY-MM-DD) 쿼리, `inDateRange`로 createdAt 포함 범위 필터.
 - 날짜만 넣어도 hasQuery로 결과 목록 표시.
 
+### 2026-07-09: ThemeProvider script 경고
+- React 19 + next-themes: 클라이언트 컴포넌트가 `<script>`를 렌더하면 콘솔 에러.
+- next-themes 제거 → 자체 `ThemeProvider` + `useTheme`.
+- FOUC 방지는 루트 layout의 `next/script` `beforeInteractive` 로 처리.
+
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.
 - Auth: GitHub provider는 env 있을 때만, Credentials Dev Login 항상 활성.

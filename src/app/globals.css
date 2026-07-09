@@ -16,7 +16,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* 라이트 모드 (next-themes class) */
+/* 라이트 모드 (html.light class) */
 html.light {
   --background: #fafafa;
   --foreground: #09090b;

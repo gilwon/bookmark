@@ -13,10 +13,10 @@ import {
   X,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTheme, type Theme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -120,8 +120,8 @@ function SidebarFooter({
   setTheme,
   email,
 }: {
-  theme: string | undefined;
-  setTheme: (t: string) => void;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
   email?: string | null;
 }) {
   return (
