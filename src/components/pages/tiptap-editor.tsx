@@ -15,6 +15,7 @@ import {
   Italic,
   List,
   ListOrdered,
+  MessageSquareWarning,
   Quote,
   Redo2,
   Save,
@@ -23,6 +24,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Bookmark, GithubStar } from "@/lib/types";
+import { CalloutBlock } from "@/components/pages/extensions/callout-block";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
 import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
 import { EmbedPicker } from "@/components/pages/embed-picker";
@@ -71,6 +73,7 @@ export function TiptapEditor({
         openOnClick: false,
         HTMLAttributes: { class: "text-indigo-500 underline underline-offset-2" },
       }),
+      CalloutBlock,
       EmbedBlock,
     ],
     content:
@@ -82,7 +85,11 @@ export function TiptapEditor({
         class:
           "notion-editor ProseMirror max-w-none min-h-[50vh] focus:outline-none",
       },
-      // 노션처럼 본문에서 위 화살표로 제목으로 이동은 제목 포커스로 대체
+      // Notion 등에서 복사한 <aside> 가 콜아웃으로 파싱되도록 유지
+      transformPastedHTML(html) {
+        // 일부 환경에서 aside 가 div 로 감싸여 와도 그대로 전달
+        return html;
+      },
     },
     immediatelyRender: false,
   });
@@ -323,6 +330,15 @@ export function TiptapEditor({
             }
           >
             <Quote className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="콜아웃 (aside)"
+            active={editor?.isActive("callout")}
+            onClick={() =>
+              runFormat(() => editor?.chain().focus().toggleCallout().run())
+            }
+          >
+            <MessageSquareWarning className="h-4 w-4" />
           </ToolbarBtn>
           <Sep />
           <EmbedPicker

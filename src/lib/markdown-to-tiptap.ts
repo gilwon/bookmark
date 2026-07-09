@@ -74,6 +74,34 @@ export function markdownToTiptapDoc(md: string): TipTapNode {
       continue;
     }
 
+    // :::callout 펜스 → TipTap callout 노드 (<aside> 대응)
+    if (/^:::callout\s*$/i.test(line.trim())) {
+      i += 1;
+      const calloutLines: string[] = [];
+      while (i < lines.length && !/^:::\s*$/.test((lines[i] ?? "").trim())) {
+        calloutLines.push(lines[i] ?? "");
+        i += 1;
+      }
+      if (i < lines.length) i += 1; // closing :::
+      const inner: TipTapNode[] = [];
+      const body = calloutLines.join("\n").trim();
+      if (!body) {
+        inner.push({ type: "paragraph" });
+      } else {
+        for (const para of body.split(/\n{2,}/)) {
+          const t = para.replace(/\n/g, " ").trim();
+          if (!t) continue;
+          inner.push({
+            type: "paragraph",
+            content: parseInline(t),
+          });
+        }
+        if (inner.length === 0) inner.push({ type: "paragraph" });
+      }
+      content.push({ type: "callout", content: inner });
+      continue;
+    }
+
     // fenced code
     if (/^```/.test(line)) {
       const lang = line.replace(/^```/, "").trim() || null;

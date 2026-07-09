@@ -25,8 +25,8 @@ function decodeEntities(s: string): string {
 }
 
 /**
- * Notion/복사본에 흔한 <aside> 콜아웃 → 마크다운 인용.
- * 예: <aside>💡 설명</aside> → > 💡 설명
+ * Notion/복사본 <aside> 콜아웃 → 펜스 문법 (에디터 callout 노드로 복원).
+ * 예: <aside>💡 설명</aside> → :::callout\n💡 설명\n:::
  */
 function convertAsideBlocks(text: string): string {
   return text.replace(
@@ -43,11 +43,7 @@ function convertAsideBlocks(text: string): string {
           .trim()
       );
       if (!body) return "";
-      const quoted = body
-        .split("\n")
-        .map((line) => `> ${line.trimEnd()}`)
-        .join("\n");
-      return `\n\n${quoted}\n\n`;
+      return `\n\n:::callout\n${body}\n:::\n\n`;
     }
   );
 }

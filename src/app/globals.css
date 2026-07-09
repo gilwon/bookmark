@@ -190,3 +190,31 @@ body {
 .notion-editor {
   min-height: 50vh;
 }
+
+/* <aside> / callout 블록 — Notion 콜아웃 스타일 */
+.ProseMirror aside.notion-callout,
+.ProseMirror aside[data-type="callout"],
+.ProseMirror div[data-type="callout"] {
+  display: block;
+  margin: 0.85rem 0;
+  padding: 0.85rem 1rem 0.85rem 1rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  box-shadow: inset 3px 0 0 0 var(--accent);
+}
+
+.ProseMirror aside.notion-callout > *:first-child,
+.ProseMirror aside[data-type="callout"] > *:first-child {
+  margin-top: 0;
+}
+
+.ProseMirror aside.notion-callout > *:last-child,
+.ProseMirror aside[data-type="callout"] > *:last-child {
+  margin-bottom: 0;
+}
+
+html.light .ProseMirror aside.notion-callout,
+html.light .ProseMirror aside[data-type="callout"] {
+  background: color-mix(in srgb, var(--accent) 8%, #ffffff);
+}
