@@ -138,6 +138,37 @@ function isListLine(s: string): boolean {
   );
 }
 
+/**
+ * 페이지 번호/라벨 줄 — 본문에 넣지 않음.
+ * 예: 1, - 2 -, 3/12, Page 1, 1페이지, 페이지 2, ## 1페이지
+ */
+function isPageMarker(raw: string): boolean {
+  const t = raw
+    .trim()
+    .replace(/^#{1,6}\s+/, "") // 마크다운 제목 접두 제거 후 판별
+    .trim();
+  if (!t || t.length > 40) return false;
+
+  return (
+    // 숫자만 / 로마 숫자
+    /^(?:\d{1,4}|[ivxlcdm]{1,8})$/i.test(t) ||
+    // - 1 -  ·  · 1 ·
+    /^[-–—·.•]\s*\d{1,4}\s*[-–—·.•]?$/.test(t) ||
+    // 1/10  1 | 10
+    /^\d{1,4}\s*[/|]\s*\d{1,4}$/.test(t) ||
+    // Page 1  ·  p. 3  ·  pp. 1-2
+    /^(?:pages?|pp?\.?)\s*\d{1,4}(?:\s*[-–—]\s*\d{1,4})?$/i.test(t) ||
+    // 1 of 10
+    /^\d{1,4}\s+of\s+\d{1,4}$/i.test(t) ||
+    // 1페이지  ·  페이지 1  ·  제1쪽  ·  1 쪽
+    /^(?:\d{1,4}\s*페이지|페이지\s*\d{1,4}|\d{1,4}\s*쪽|제?\s*\d{1,4}\s*쪽)$/i.test(
+      t
+    ) ||
+    // 1 page
+    /^\d{1,4}\s*pages?$/i.test(t)
+  );
+}
+
 /** 제목 후보 (짧은 줄, 큰 글씨, 또는 짧은 전각/강조) */
 function isHeadingCandidate(
   line: LineGeom,
@@ -147,6 +178,8 @@ function isHeadingCandidate(
   const t = line.text.trim();
   if (t.length < 2 || t.length > 80) return false;
   if (isListLine(t)) return false;
+  // 페이지 번호는 절대 제목 취급하지 않음
+  if (isPageMarker(t)) return false;
   // 본문보다 확실히 큰 글씨
   if (bodyHeight > 0 && line.height >= bodyHeight * 1.25) return true;
   // 짧은 줄 + 다음 줄과 간격이 크면 소제목
@@ -154,8 +187,13 @@ function isHeadingCandidate(
     const gap = line.y - next.y;
     if (gap > line.height * 1.8) return true;
   }
-  // ALL CAPS 짧은 영문
-  if (t.length <= 48 && /^[A-Z0-9][A-Z0-9\s\-/&:]+$/.test(t) && t.length > 3) {
+  // ALL CAPS 짧은 영문 (숫자만으로 이뤄진 줄 제외)
+  if (
+    t.length <= 48 &&
+    /^[A-Z0-9][A-Z0-9\s\-/&:]+$/.test(t) &&
+    t.length > 3 &&
+    !/^\d+$/.test(t)
+  ) {
     return true;
   }
   return false;
@@ -167,25 +205,15 @@ function isHeadingCandidate(
  */
 function reflowLinesToBlocks(
   lines: LineGeom[],
-  pageHeight: number
+  _pageHeight: number
 ): string[] {
   if (lines.length === 0) return [];
 
   const heights = lines.map((l) => l.height).filter((h) => h > 0);
   const bodyHeight = median(heights) || 12;
 
-  // 페이지 상·하단 10% 근처의 짧은 반복 헤더/푸터 후보 제거
-  const filtered = lines.filter((l) => {
-    const topBand = pageHeight > 0 && l.y > pageHeight * 0.92;
-    const botBand = pageHeight > 0 && l.y < pageHeight * 0.06;
-    if ((topBand || botBand) && l.text.length <= 40) {
-      // 순수 페이지 번호
-      if (/^(?:\d+|[ivxlcdm]+|page\s*\d+)$/i.test(l.text.trim())) {
-        return false;
-      }
-    }
-    return true;
-  });
+  // 페이지 번호·「N페이지」라벨은 위치 무관하게 제거
+  const filtered = lines.filter((l) => !isPageMarker(l.text));
 
   const blocks: string[] = [];
   let paraBuf: string[] = [];
@@ -197,7 +225,9 @@ function reflowLinesToBlocks(
     p = p.replace(/(\w)-\s+(\w)/g, "$1$2");
     // 연속 공백
     p = p.replace(/[ \t]{2,}/g, " ").trim();
-    if (p) blocks.push(p);
+    // 문단 끝에 붙은 페이지 표기 제거
+    p = p.replace(/\s+(?:\d{1,4}\s*페이지|페이지\s*\d{1,4})$/i, "").trim();
+    if (p && !isPageMarker(p)) blocks.push(p);
     paraBuf = [];
   };
 
@@ -205,7 +235,7 @@ function reflowLinesToBlocks(
     const line = filtered[i]!;
     const next = filtered[i + 1];
     const t = line.text.trim();
-    if (!t) continue;
+    if (!t || isPageMarker(t)) continue;
 
     // 목록
     if (isListLine(t)) {
@@ -404,7 +434,9 @@ export async function extractPdfToMarkdown(
     reflowLinesToBlocks(p.lines, p.pageHeight)
   );
   const merged = mergeAcrossPages(pageBlocks);
-  let markdown = blocksToMarkdown(merged);
+  // 최종 마크다운에서도 페이지 라벨 블록 제거 (제목으로 승격된 경우 포함)
+  const cleanedBlocks = merged.filter((b) => !isPageMarker(b));
+  let markdown = blocksToMarkdown(cleanedBlocks);
 
   const title = titleFromPdfName(fileName);
   const charCount = markdown.replace(/\s/g, "").length;
@@ -434,4 +466,5 @@ export const __pdfReflow = {
   reflowLinesToBlocks,
   mergeAcrossPages,
   blocksToMarkdown,
+  isPageMarker,
 };
