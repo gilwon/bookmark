@@ -27,6 +27,8 @@ import { extractMetaFromFiles } from "@/lib/agent-doc-meta";
 import {
   AGENT_DOC_KIND_COLOR,
   AGENT_DOC_KIND_LABEL,
+  AGENT_DOC_KIND_ORDER,
+  AGENT_DOC_KIND_SHORT,
   getAgentDocTemplates,
   inferKindFromFilename,
   normalizeFilename,
@@ -89,6 +91,20 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   const [deleting, setDeleting] = useState(false);
   const templates = getAgentDocTemplates();
 
+  /** 카테고리(kind)별 건수 — 검색어와 무관, 전체 문서 기준 */
+  const kindCounts = useMemo(() => {
+    const counts: Record<AgentDocKind, number> = {
+      skill: 0,
+      agents: 0,
+      claude: 0,
+      other: 0,
+    };
+    for (const d of docs) {
+      counts[d.kind] = (counts[d.kind] ?? 0) + 1;
+    }
+    return counts;
+  }, [docs]);
+
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return docs.filter((d) => {
@@ -109,6 +125,11 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
 
   const filteredIds = useMemo(() => filtered.map((d) => d.id), [filtered]);
   const selection = useSelection(filteredIds);
+
+  /** 카테고리 칩 클릭 — 같은 칩 재클릭 시 전체로 */
+  function selectKind(next: AgentDocKind | "all") {
+    setFilter((prev) => (prev === next ? "all" : next));
+  }
 
   /** 템플릿 → 초안 편집 (DB 저장 안 함, 파일명은 템플릿 그대로) */
   function createFromTemplate(kind: AgentDocKind) {
@@ -389,34 +410,83 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
 
       {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-        <div className="flex-1 space-y-1">
-          <label className="text-xs text-muted-foreground">검색</label>
-          <Input
-            placeholder="파일명, 제목, 본문…"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
-        </div>
-        <div className="space-y-1 w-full sm:w-40">
-          <label className="text-xs text-muted-foreground">종류</label>
-          <select
-            value={filter}
-            onChange={(e) =>
-              setFilter(e.target.value as AgentDocKind | "all")
-            }
-            className="flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <option value="all">전체</option>
-            {(Object.keys(AGENT_DOC_KIND_LABEL) as AgentDocKind[]).map(
-              (k) => (
-                <option key={k} value={k}>
-                  {AGENT_DOC_KIND_LABEL[k]}
-                </option>
-              )
+      {/* 카테고리 칩 — skill (N건) 형태, 클릭 시 해당 kind만 */}
+      <div className="space-y-2">
+        <p className="text-xs text-muted-foreground">카테고리</p>
+        <div
+          className="flex flex-wrap gap-2"
+          role="tablist"
+          aria-label="에이전트 문서 카테고리"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={filter === "all"}
+            onClick={() => setFilter("all")}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+              filter === "all"
+                ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 ring-1 ring-indigo-500/40 dark:text-indigo-300"
+                : "border-border bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
-          </select>
+          >
+            전체
+            <span className="tabular-nums text-xs opacity-80">
+              ({docs.length}건)
+            </span>
+          </button>
+          {AGENT_DOC_KIND_ORDER.map((kind) => {
+            const count = kindCounts[kind] ?? 0;
+            const colors = AGENT_DOC_KIND_COLOR[kind];
+            const active = filter === kind;
+            return (
+              <button
+                key={kind}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                disabled={count === 0}
+                title={
+                  count === 0
+                    ? `${AGENT_DOC_KIND_LABEL[kind]} 문서 없음`
+                    : `${AGENT_DOC_KIND_LABEL[kind]}만 보기`
+                }
+                onClick={() => selectKind(kind)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  count === 0 && "cursor-not-allowed opacity-40",
+                  active
+                    ? cn(colors.badge, "ring-1 ring-black/5 dark:ring-white/10")
+                    : "border-border bg-background text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-2 w-2 shrink-0 rounded-full",
+                    kind === "skill" && "bg-violet-500",
+                    kind === "agents" && "bg-sky-500",
+                    kind === "claude" && "bg-amber-500",
+                    kind === "other" && "bg-slate-500"
+                  )}
+                  aria-hidden
+                />
+                {AGENT_DOC_KIND_SHORT[kind]}
+                <span className="tabular-nums text-xs opacity-80">
+                  ({count}건)
+                </span>
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-xs text-muted-foreground">검색</label>
+        <Input
+          placeholder="파일명, 제목, 본문…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
       </div>
 
       {filtered.length === 0 ? (

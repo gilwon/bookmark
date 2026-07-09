@@ -17,6 +17,22 @@ export const AGENT_DOC_KIND_LABEL: Record<AgentDocKind, string> = {
   other: "기타",
 };
 
+/** 필터 칩용 짧은 라벨 */
+export const AGENT_DOC_KIND_SHORT: Record<AgentDocKind, string> = {
+  skill: "skill",
+  agents: "agents",
+  claude: "claude",
+  other: "기타",
+};
+
+/** 고정 표시 순서 */
+export const AGENT_DOC_KIND_ORDER: AgentDocKind[] = [
+  "skill",
+  "agents",
+  "claude",
+  "other",
+];
+
 /** kind별 아이콘·배지 색 (리스트에서 카테고리 구분) */
 export const AGENT_DOC_KIND_COLOR: Record<
   AgentDocKind,
