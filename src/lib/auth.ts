@@ -95,8 +95,13 @@ export const authConfig: NextAuthConfig = {
         account.access_token &&
         token.sub
       ) {
-        await saveGithubToken(token.sub, account.access_token);
-        token.hasGithub = true;
+        try {
+          await saveGithubToken(token.sub, account.access_token);
+          token.hasGithub = true;
+        } catch (err) {
+          console.error("[auth] GitHub 토큰 저장 실패", err);
+          token.hasGithub = false;
+        }
         const login =
           profile &&
           typeof profile === "object" &&
@@ -106,8 +111,13 @@ export const authConfig: NextAuthConfig = {
             : undefined;
         if (login) token.githubLogin = login;
       } else if (token.sub) {
-        // 세션 갱신 시 토큰 존재 여부 재확인
-        token.hasGithub = await hasGithubToken(token.sub);
+        // 세션 갱신 시 토큰 존재 여부 재확인 (DB 오류 시 로그인 자체는 유지)
+        try {
+          token.hasGithub = await hasGithubToken(token.sub);
+        } catch (err) {
+          console.error("[auth] hasGithubToken 실패", err);
+          token.hasGithub = false;
+        }
       }
 
       // 레거시 필드 제거 (이전 세션에 남아 있을 수 있음)
@@ -117,12 +127,22 @@ export const authConfig: NextAuthConfig = {
     },
     /** 클라이언트 세션에는 토큰 평문을 절대 실지 않는다. */
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = (token.sub as string) ?? "unknown";
+      // Auth.js 일부 경로에서 session 이 null 로 올 수 있음
+      if (!session) {
+        return {
+          user: { id: (token?.sub as string) ?? "unknown" },
+          expires: new Date(0).toISOString(),
+          hasGithub: false,
+        };
       }
-      session.hasGithub = Boolean(token.hasGithub);
+      if (!session.user) {
+        session.user = { id: (token?.sub as string) ?? "unknown" };
+      } else {
+        session.user.id = (token?.sub as string) ?? "unknown";
+      }
+      session.hasGithub = Boolean(token?.hasGithub);
       session.githubLogin =
-        typeof token.githubLogin === "string" ? token.githubLogin : undefined;
+        typeof token?.githubLogin === "string" ? token.githubLogin : undefined;
       return session;
     },
   },
