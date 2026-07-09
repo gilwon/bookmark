@@ -336,7 +336,7 @@ export function TiptapEditor({
 
           <div
             ref={bodyWrapRef}
-            className="notion-body relative pl-10 sm:pl-12"
+            className="notion-body"
             onClick={(e) => {
               // 여백 클릭 시에도 본문 포커스 (노션과 유사)
               if (e.target === e.currentTarget) {

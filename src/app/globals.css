@@ -228,15 +228,28 @@ body {
 
 /* 본문: 제목 아래 자연스럽게 이어지는 입력면 + 왼쪽 핸들 거터 */
 .notion-body {
+  position: relative;
   min-height: 60vh;
   cursor: text;
-  /* 왼쪽 패딩 = 핸들 클릭 영역 (텍스트 밖으로 나가도 호버 유지) */
-  padding: 0.35rem 0.15rem 3rem 0;
+  /*
+   * 왼쪽 거터: + / ⋮⋮ 전용 공간 (텍스트와 겹치지 않음)
+   * padding 단축으로 pl-* 를 덮어쓰지 않도록 left 만 명시
+   */
+  padding-top: 0.35rem;
+  padding-right: 0.15rem;
+  padding-bottom: 3rem;
+  padding-left: 2.75rem; /* 44px — 핸들 2칸 */
   border-top: 1px solid transparent;
   margin-top: 0.15rem;
 }
 
-/* 거터 히트 영역 시각 힌트 (아주 연하게) */
+@media (min-width: 640px) {
+  .notion-body {
+    padding-left: 3rem; /* 48px */
+  }
+}
+
+/* 거터 영역 표시용 (투명 히트존, 포인터는 본문 이벤트로 통과) */
 .notion-body::before {
   content: "";
   position: absolute;
@@ -245,6 +258,13 @@ body {
   bottom: 0;
   width: 2.75rem;
   pointer-events: none;
+  z-index: 0;
+}
+
+@media (min-width: 640px) {
+  .notion-body::before {
+    width: 3rem;
+  }
 }
 
 .notion-editor {
@@ -276,11 +296,6 @@ body {
 .ProseMirror u {
   text-decoration: underline;
   text-underline-offset: 2px;
-}
-
-/* 슬래시 메뉴 위치 기준 */
-.notion-body {
-  position: relative;
 }
 
 /* 노션: 빈 줄 호버 시 약간의 힌트 */

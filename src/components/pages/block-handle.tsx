@@ -1,4 +1,4 @@
-// 노션형 블록 호버 핸들 — + / 드래그 순서 변경 (포인터 + 인덱스 기반)
+// 노션형 블록 호버 핸들 — 왼쪽 거터에 + / ⋮⋮ (텍스트와 분리)
 "use client";
 
 import type { Editor } from "@tiptap/react";
@@ -15,17 +15,17 @@ type Props = {
 
 type HandleState = {
   visible: boolean;
+  /** container 기준 첫 줄 상단 Y */
   top: number;
-  /** 최상위 블록 시작 pos */
   blockStart: number;
-  /** 최상위 블록 인덱스 */
   blockIndex: number;
-  height: number;
 };
+
+/** 숨김 지연 — 텍스트 → 거터 이동 시 깜빡임 방지 (노션 유사) */
+const HIDE_DELAY_MS = 320;
 
 /**
  * pos 가 속한 최상위 블록 정보.
- * start = 문서 내 블록 시작 위치, index = doc.child 인덱스.
  */
 function topLevelBlockInfo(
   editor: Editor,
@@ -54,10 +54,6 @@ function topLevelBlockInfo(
   }
 }
 
-/**
- * fromIndex 블록을 toGap 위치(0=맨 앞, n=맨 뒤)로 이동.
- * toGap === fromIndex 또는 fromIndex+1 이면 변화 없음.
- */
 function moveBlockToGap(
   editor: Editor,
   fromIndex: number,
@@ -67,7 +63,6 @@ function moveBlockToGap(
   const n = doc.childCount;
   if (fromIndex < 0 || fromIndex >= n) return false;
   if (toGap < 0 || toGap > n) return false;
-  // 제자리 (앞 갭 / 뒤 갭)
   if (toGap === fromIndex || toGap === fromIndex + 1) return false;
 
   let start = 0;
@@ -90,7 +85,6 @@ function moveBlockToGap(
   }
 }
 
-/** clientY → 드롭 갭 인덱스 + 인디케이터 Y (container 상대) */
 function dropGapAt(
   editor: Editor,
   container: HTMLElement,
@@ -123,7 +117,10 @@ function dropGapAt(
   };
 }
 
-/** clientY 로 최상위 블록 DOM (에디터 직계 자식) */
+/**
+ * clientY 로 최상위 블록 DOM.
+ * 좌우 제한 없음 — 거터에 있어도 Y 만 맞으면 해당 블록.
+ */
 function findBlockAtY(
   editor: Editor,
   clientY: number
@@ -132,22 +129,20 @@ function findBlockAtY(
   const children = Array.from(root.children) as HTMLElement[];
   for (const el of children) {
     const r = el.getBoundingClientRect();
-    if (clientY >= r.top - 8 && clientY <= r.bottom + 8) return el;
+    // 블록 위·아래 약간의 여유 (노션처럼 살짝 벗어나도 유지)
+    if (clientY >= r.top - 6 && clientY <= r.bottom + 6) return el;
   }
   return null;
 }
 
-/** DOM 요소 → 최상위 블록 인덱스 (형제 순서 기준, PM childCount 와 1:1 가정) */
 function domBlockIndex(editor: Editor, blockEl: HTMLElement): number {
-  const root = editor.view.dom;
-  const children = Array.from(root.children);
-  const idx = children.indexOf(blockEl);
-  return idx;
+  return Array.from(editor.view.dom.children).indexOf(blockEl);
 }
 
 /**
  * 블록 왼쪽 거터에 + · 드래그 핸들.
- * 드래그는 HTML5 대신 pointer 이벤트 + 갭 인덱스 이동.
+ * - 텍스트 영역과 겹치지 않게 absolute left 고정
+ * - 본문/거터 어디서든 Y 매칭 시 표시, 벗어난 뒤에도 잠시 유지
  */
 export function BlockHandle({ editor, containerRef, onDirty }: Props) {
   const [handle, setHandle] = useState<HandleState>({
@@ -155,7 +150,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
     top: 0,
     blockStart: 0,
     blockIndex: 0,
-    height: 28,
   });
   const [dragging, setDragging] = useState(false);
   const [indicatorTop, setIndicatorTop] = useState<number | null>(null);
@@ -163,7 +157,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pinnedRef = useRef(false);
   const draggingRef = useRef(false);
-  /** 드래그 중 동기 상태 (React 배치와 무관) */
   const dragSession = useRef<{
     fromIndex: number;
     gapIndex: number;
@@ -187,7 +180,7 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
       if (!pinnedRef.current && !draggingRef.current) {
         setHandle((h) => ({ ...h, visible: false }));
       }
-    }, 150);
+    }, HIDE_DELAY_MS);
   }, [clearHideTimer]);
 
   const showForDom = useCallback(
@@ -208,7 +201,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
         }
       } catch {
         if (blockIndex < 0) return;
-        // posAtDOM 실패 시 DOM 순서만 사용
         let s = 0;
         for (let i = 0; i < blockIndex; i++) {
           s += editor.state.doc.child(i).nodeSize;
@@ -218,21 +210,28 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
 
       if (blockIndex < 0) return;
 
+      // 첫 줄 높이 기준 세로 중앙 (블록 전체가 아니라 한 줄)
+      const lineH = Math.min(
+        parseFloat(getComputedStyle(blockEl).lineHeight) || 28,
+        36
+      );
+      const top =
+        bRect.top -
+        cRect.top +
+        (containerRef.current.scrollTop || 0) +
+        Math.max(0, (Math.min(bRect.height, lineH + 8) - 28) / 2);
+
       setHandle({
         visible: true,
-        top:
-          bRect.top -
-          cRect.top +
-          (containerRef.current.scrollTop || 0),
+        top,
         blockStart,
         blockIndex,
-        height: Math.max(bRect.height, 28),
       });
     },
     [editor, containerRef, clearHideTimer]
   );
 
-  // 호버 추적
+  // 호버 추적 — container 전체(거터 포함). 텍스트를 벗어나도 Y 매칭이면 유지
   useEffect(() => {
     if (!editor) return;
     const container = containerRef.current;
@@ -240,21 +239,28 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
 
     const onMove = (e: MouseEvent) => {
       if (draggingRef.current) return;
+
+      // 핸들 자체 위면 고정
       if ((e.target as HTMLElement | null)?.closest?.("[data-block-handle]")) {
         pinnedRef.current = true;
         clearHideTimer();
         setHandle((h) => (h.visible ? h : { ...h, visible: true }));
         return;
       }
+
       pinnedRef.current = false;
       const block = findBlockAtY(editor, e.clientY);
-      if (block) showForDom(block);
-      else hideSoon();
+      if (block) {
+        showForDom(block);
+      } else {
+        hideSoon();
+      }
     };
 
     const onLeave = (e: MouseEvent) => {
       if (draggingRef.current) return;
       const related = e.relatedTarget as Node | null;
+      // 컨테이너 안 자식으로 이동하면 무시
       if (related && container.contains(related)) return;
       pinnedRef.current = false;
       hideSoon();
@@ -269,33 +275,29 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
     };
   }, [editor, containerRef, showForDom, hideSoon, clearHideTimer]);
 
-  /** 드래그 종료 — 리스너 정리 + 블록 이동 */
-  const endDrag = useCallback(
-    (editorInstance: Editor) => {
-      const session = dragSession.current;
-      dragSession.current = null;
-      draggingRef.current = false;
+  const endDrag = useCallback((editorInstance: Editor) => {
+    const session = dragSession.current;
+    dragSession.current = null;
+    draggingRef.current = false;
 
-      editorInstance.view.dom
-        .querySelectorAll(".is-dragging-block")
-        .forEach((n) => n.classList.remove("is-dragging-block"));
-      document.body.classList.remove("block-dragging");
-      document.body.style.removeProperty("user-select");
-      document.body.style.removeProperty("cursor");
+    editorInstance.view.dom
+      .querySelectorAll(".is-dragging-block")
+      .forEach((n) => n.classList.remove("is-dragging-block"));
+    document.body.classList.remove("block-dragging");
+    document.body.style.removeProperty("user-select");
+    document.body.style.removeProperty("cursor");
 
-      setDragging(false);
-      setIndicatorTop(null);
-      pinnedRef.current = false;
+    setDragging(false);
+    setIndicatorTop(null);
+    pinnedRef.current = false;
 
-      if (
-        session &&
-        moveBlockToGap(editorInstance, session.fromIndex, session.gapIndex)
-      ) {
-        onDirtyRef.current?.();
-      }
-    },
-    []
-  );
+    if (
+      session &&
+      moveBlockToGap(editorInstance, session.fromIndex, session.gapIndex)
+    ) {
+      onDirtyRef.current?.();
+    }
+  }, []);
 
   function startDrag(e: React.PointerEvent<HTMLButtonElement>) {
     if (!editor) return;
@@ -308,7 +310,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
     const btn = e.currentTarget;
     const pointerId = e.pointerId;
 
-    // 시각 피드백
     try {
       const info = topLevelBlockInfo(editor, handleRef.current.blockStart + 1);
       if (info) {
@@ -328,7 +329,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
     document.body.style.userSelect = "none";
     document.body.style.cursor = "grabbing";
 
-    // 포인터 캡처 — 버튼 밖으로 나가도 move/up 이 버튼으로 전달
     try {
       btn.setPointerCapture(pointerId);
     } catch {
@@ -369,7 +369,6 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
       endDrag(ed);
     };
 
-    // 캡처 대상(버튼) + window 둘 다 — 환경별 누락 방지, 동기 등록
     btn.addEventListener("pointermove", onMove);
     btn.addEventListener("pointerup", onUp);
     btn.addEventListener("pointercancel", onUp);
@@ -405,7 +404,7 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
     <>
       {dragging && indicatorTop != null && (
         <div
-          className="pointer-events-none absolute left-10 right-0 z-40 h-0.5 rounded-full bg-indigo-500 shadow-[0_0_0_2px_rgba(99,102,241,0.25)]"
+          className="pointer-events-none absolute left-12 right-0 z-40 h-0.5 rounded-full bg-indigo-500 shadow-[0_0_0_2px_rgba(99,102,241,0.25)]"
           style={{ top: indicatorTop }}
         />
       )}
@@ -414,14 +413,15 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
         <div
           data-block-handle
           className={cn(
-            "absolute z-30 flex items-center gap-0.5 rounded-md bg-background/95 p-0.5 shadow-sm ring-1 ring-border/60",
+            // 왼쪽 거터 고정 — 텍스트 영역(padding-left) 안쪽에 겹치지 않음
+            "absolute z-30 flex items-center gap-0",
             "pointer-events-auto",
             dragging && "opacity-90"
           )}
           style={{
-            top: handle.top + 2,
+            top: handle.top,
             left: 2,
-            minHeight: Math.min(Math.max(handle.height, 32), 48),
+            width: "2.5rem",
           }}
           onMouseEnter={() => {
             pinnedRef.current = true;
@@ -439,7 +439,7 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
             type="button"
             title="아래에 블록 추가 (/)"
             aria-label="아래에 블록 추가"
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="flex h-7 w-6 shrink-0 items-center justify-center rounded text-muted-foreground/80 hover:bg-muted hover:text-foreground"
             onMouseDown={(ev) => {
               ev.preventDefault();
               ev.stopPropagation();
@@ -450,21 +450,20 @@ export function BlockHandle({ editor, containerRef, onDirty }: Props) {
               addBelow();
             }}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-3.5 w-3.5" />
           </button>
           <button
             type="button"
             title="드래그하여 순서 변경"
             aria-label="드래그하여 순서 변경"
-            className="flex h-7 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground active:cursor-grabbing touch-none"
+            className="flex h-7 w-6 shrink-0 cursor-grab items-center justify-center rounded text-muted-foreground/80 hover:bg-muted hover:text-foreground active:cursor-grabbing touch-none"
             onPointerDown={startDrag}
             onClick={(ev) => {
-              // 드래그 후 클릭 포커스 방지
               ev.preventDefault();
               ev.stopPropagation();
             }}
           >
-            <GripVertical className="h-4 w-4" />
+            <GripVertical className="h-3.5 w-3.5" />
           </button>
         </div>
       )}
@@ -477,5 +476,5 @@ export function useBlockDragDrop(
   _editor: Editor | null,
   _onDirty?: () => void
 ) {
-  // no-op (로직을 BlockHandle 로 통합)
+  // no-op
 }
