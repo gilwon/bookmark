@@ -69,7 +69,17 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Tiptap 에디터 보조 스타일 */
+/* Tiptap / 노션형 에디터 */
+.ProseMirror {
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.35em;
+}
+
 .ProseMirror p.is-editor-empty:first-child::before {
   color: var(--placeholder);
   content: attr(data-placeholder);
@@ -82,64 +92,101 @@ body {
   outline: none;
 }
 
+.ProseMirror p {
+  margin: 0.15em 0;
+}
+
 .ProseMirror h1 {
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 700;
-  margin: 0.75rem 0;
+  line-height: 1.3;
+  margin: 1.25rem 0 0.5rem;
+  letter-spacing: -0.02em;
 }
 
 .ProseMirror h2 {
-  font-size: 1.35rem;
-  font-weight: 600;
-  margin: 0.6rem 0;
+  font-size: 1.5rem;
+  font-weight: 650;
+  line-height: 1.35;
+  margin: 1.1rem 0 0.4rem;
+  letter-spacing: -0.015em;
 }
 
 .ProseMirror h3 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin: 0.5rem 0;
+  line-height: 1.4;
+  margin: 0.9rem 0 0.35rem;
 }
 
 .ProseMirror ul {
   list-style: disc;
-  padding-left: 1.25rem;
-  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  margin: 0.4rem 0;
 }
 
 .ProseMirror ol {
   list-style: decimal;
-  padding-left: 1.25rem;
-  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  margin: 0.4rem 0;
+}
+
+.ProseMirror li {
+  margin: 0.15em 0;
+}
+
+.ProseMirror li p {
+  margin: 0;
 }
 
 .ProseMirror code {
   background: var(--code-bg);
   border-radius: 0.25rem;
-  padding: 0.1rem 0.35rem;
+  padding: 0.12rem 0.4rem;
   font-size: 0.875em;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 .ProseMirror pre {
   background: var(--pre-bg);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
   overflow-x: auto;
-  margin: 0.75rem 0;
+  margin: 0.85rem 0;
+}
+
+.ProseMirror pre code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.875rem;
 }
 
 .ProseMirror blockquote {
   border-left: 3px solid var(--accent);
-  padding-left: 0.75rem;
+  padding: 0.15rem 0 0.15rem 0.9rem;
   color: var(--muted-foreground);
   margin: 0.75rem 0;
+}
+
+.ProseMirror hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.25rem 0;
 }
 
 .ProseMirror a {
   color: var(--accent);
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-html.light .ProseMirror {
-  color: var(--foreground);
+.ProseMirror img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+}
+
+/* 노션형: 빈 문서 클릭 영역 확보 */
+.notion-editor {
+  min-height: 50vh;
 }

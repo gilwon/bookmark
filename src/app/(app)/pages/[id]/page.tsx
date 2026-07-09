@@ -1,4 +1,4 @@
-// 커스텀 페이지 에디터
+// 커스텀 페이지 에디터 (노션형 입력·수정·저장)
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TiptapEditor } from "@/components/pages/tiptap-editor";
@@ -25,8 +25,11 @@ export default async function PageEditorPage({ params }: Props) {
     content = {};
   }
 
-  const bookmarkRows = await store.listBookmarks(userId);
-  const starRows = await store.listStarsBySynced(userId);
+  // 임베드 피커용 — 목록만 (본문 전체 불필요)
+  const [bookmarkRows, starRows] = await Promise.all([
+    store.listBookmarks(userId),
+    store.listStarsBySynced(userId),
+  ]);
 
   const bookmarkList: Bookmark[] = bookmarkRows.map((b) => {
     let tags: string[] = [];
@@ -72,16 +75,22 @@ export default async function PageEditorPage({ params }: Props) {
 
   return (
     <div className="space-y-4">
-      <Link
-        href="/pages"
-        className="text-sm text-muted-foreground hover:text-foreground"
-      >
-        ← 페이지 목록
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link
+          href="/pages"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          ← 페이지 목록
+        </Link>
+        <p className="text-[11px] text-muted-foreground">
+          입력하면 자동 저장 · ⌘/Ctrl+S
+        </p>
+      </div>
       <TiptapEditor
         pageId={row.id}
         initialTitle={row.title}
         initialContent={content}
+        initialUpdatedAt={row.updatedAt}
         bookmarks={bookmarkList}
         stars={starList}
       />

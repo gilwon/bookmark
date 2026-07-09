@@ -1,47 +1,75 @@
-// Tiptap 리치 텍스트 에디터 — StarterKit + 임베드 블록 + 자동 저장
+// 노션형 페이지 에디터 — 제목·본문 연속 입력, 서식 툴바, 자동/수동 저장
 "use client";
 
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Bold,
+  Check,
+  Code,
+  Heading1,
+  Heading2,
+  Heading3,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Redo2,
+  Save,
+  Strikethrough,
+  Undo2,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Bookmark, GithubStar } from "@/lib/types";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
 import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
 import { EmbedPicker } from "@/components/pages/embed-picker";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 type Props = {
   pageId: string;
   initialTitle: string;
   initialContent: unknown;
+  initialUpdatedAt?: string;
   bookmarks: Bookmark[];
   stars: GithubStar[];
 };
 
-/** 페이지 제목/본문을 편집하고 저장한다. */
+type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
+
+/** 페이지 제목/본문을 노션처럼 편집·자동 저장한다. */
 export function TiptapEditor({
   pageId,
   initialTitle,
   initialContent,
+  initialUpdatedAt,
   bookmarks,
   stars,
 }: Props) {
   const [title, setTitle] = useState(initialTitle);
-  const [saving, setSaving] = useState(false);
-  const [status, setStatus] = useState<string | null>(null);
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(
+    initialUpdatedAt ?? null
+  );
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+  const dirtyRef = useRef(false);
+  const titleValueRef = useRef(title);
+  titleValueRef.current = title;
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: { levels: [1, 2, 3] },
+      }),
       Placeholder.configure({
-        placeholder: "내용을 입력하세요…  /  툴바의 「임베드」로 북마크·Star 삽입",
+        placeholder: "내용을 입력하세요. 빈 줄에서 바로 작성하면 됩니다…",
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { class: "text-indigo-400 underline" },
+        HTMLAttributes: { class: "text-indigo-500 underline underline-offset-2" },
       }),
       EmbedBlock,
     ],
@@ -52,101 +80,349 @@ export function TiptapEditor({
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert max-w-none min-h-[320px] focus:outline-none px-1 py-2",
+          "notion-editor ProseMirror max-w-none min-h-[50vh] focus:outline-none",
       },
+      // 노션처럼 본문에서 위 화살표로 제목으로 이동은 제목 포커스로 대체
     },
     immediatelyRender: false,
   });
 
-  /** 제목과 에디터 JSON을 서버에 저장한다. */
-  const save = useCallback(async () => {
-    if (!editor) return;
-    setSaving(true);
-    setStatus(null);
-    try {
-      const res = await fetch(`/api/pages/${pageId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title.trim() || "제목 없는 페이지",
-          content: editor.getJSON(),
-        }),
-      });
-      if (!res.ok) throw new Error("저장 실패");
-      setStatus("저장됨");
-    } catch {
-      setStatus("저장 실패");
-    } finally {
-      setSaving(false);
-    }
-  }, [editor, pageId, title]);
+  /** 제목 높이 자동 조절 */
+  useEffect(() => {
+    const el = titleRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.max(el.scrollHeight, 48)}px`;
+  }, [title]);
 
-  // 편집 표시
+  const markDirty = useCallback(() => {
+    dirtyRef.current = true;
+    setSaveState((s) => (s === "saving" ? s : "dirty"));
+  }, []);
+
+  /** 제목 + 본문 저장 */
+  const save = useCallback(
+    async (opts?: { silent?: boolean }) => {
+      if (!editor) return;
+      if (!dirtyRef.current && opts?.silent) return;
+
+      setSaveState("saving");
+      try {
+        const res = await fetch(`/api/pages/${pageId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: titleValueRef.current.trim() || "제목 없는 페이지",
+            content: editor.getJSON(),
+          }),
+        });
+        if (!res.ok) throw new Error("저장 실패");
+        dirtyRef.current = false;
+        const now = new Date().toISOString();
+        setLastSavedAt(now);
+        setSaveState("saved");
+      } catch {
+        setSaveState("error");
+      }
+    },
+    [editor, pageId]
+  );
+
+  // 본문 변경 → dirty
   useEffect(() => {
     if (!editor) return;
-    const handler = () => {
-      setStatus("수정됨…");
-    };
-    editor.on("update", handler);
+    const onUpdate = () => markDirty();
+    editor.on("update", onUpdate);
     return () => {
-      editor.off("update", handler);
+      editor.off("update", onUpdate);
     };
-  }, [editor]);
+  }, [editor, markDirty]);
 
-  // 1.5초 debounce 자동 저장
+  // dirty 후 1.2초 debounce 자동 저장
   useEffect(() => {
-    if (status !== "수정됨…") return;
+    if (saveState !== "dirty") return;
     const t = setTimeout(() => {
-      void save();
-    }, 1500);
+      void save({ silent: false });
+    }, 1200);
     return () => clearTimeout(t);
-  }, [status, save]);
+  }, [saveState, save, title]);
 
-  /** 선택한 항목을 임베드 노드로 삽입한다. */
+  // Cmd/Ctrl+S 수동 저장
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        dirtyRef.current = true;
+        void save();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [save]);
+
+  // 페이지 이탈 전 저장 유도
+  useEffect(() => {
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (!dirtyRef.current) return;
+      e.preventDefault();
+      e.returnValue = "";
+    }
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
+
   function handleEmbed(attrs: EmbedAttrs) {
     if (!editor) return;
     editor.chain().focus().insertEmbed(attrs).run();
-    setStatus("수정됨…");
+    markDirty();
   }
 
+  function runFormat(cmd: () => void) {
+    cmd();
+    markDirty();
+  }
+
+  const statusLabel =
+    saveState === "saving"
+      ? "저장 중…"
+      : saveState === "saved"
+        ? "저장됨"
+        : saveState === "dirty"
+          ? "수정됨"
+          : saveState === "error"
+            ? "저장 실패"
+            : lastSavedAt
+              ? `저장 ${new Date(lastSavedAt).toLocaleString("ko-KR", {
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}`
+              : "준비됨";
+
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Input
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-            setStatus("수정됨…");
-          }}
-          className="text-lg font-semibold h-11"
-          placeholder="페이지 제목"
-        />
-        <div className="flex items-center gap-2 shrink-0">
-          <Button onClick={() => void save()} disabled={saving}>
-            {saving ? "저장 중…" : "저장"}
-          </Button>
-          {status && (
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {status}
+    <div className="mx-auto w-full max-w-3xl">
+      {/* 상단 고정 툴바 */}
+      <div className="sticky top-0 z-20 -mx-1 mb-6 border-b border-border/80 bg-background/90 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+        <div className="flex flex-wrap items-center gap-1">
+          <ToolbarBtn
+            label="실행 취소"
+            onClick={() => editor?.chain().focus().undo().run()}
+            disabled={!editor?.can().undo()}
+          >
+            <Undo2 className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="다시 실행"
+            onClick={() => editor?.chain().focus().redo().run()}
+            disabled={!editor?.can().redo()}
+          >
+            <Redo2 className="h-4 w-4" />
+          </ToolbarBtn>
+          <Sep />
+          <ToolbarBtn
+            label="굵게"
+            active={editor?.isActive("bold")}
+            onClick={() =>
+              runFormat(() => editor?.chain().focus().toggleBold().run())
+            }
+          >
+            <Bold className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="기울임"
+            active={editor?.isActive("italic")}
+            onClick={() =>
+              runFormat(() => editor?.chain().focus().toggleItalic().run())
+            }
+          >
+            <Italic className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="취소선"
+            active={editor?.isActive("strike")}
+            onClick={() =>
+              runFormat(() => editor?.chain().focus().toggleStrike().run())
+            }
+          >
+            <Strikethrough className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="인라인 코드"
+            active={editor?.isActive("code")}
+            onClick={() =>
+              runFormat(() => editor?.chain().focus().toggleCode().run())
+            }
+          >
+            <Code className="h-4 w-4" />
+          </ToolbarBtn>
+          <Sep />
+          <ToolbarBtn
+            label="제목 1"
+            active={editor?.isActive("heading", { level: 1 })}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleHeading({ level: 1 }).run()
+              )
+            }
+          >
+            <Heading1 className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="제목 2"
+            active={editor?.isActive("heading", { level: 2 })}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleHeading({ level: 2 }).run()
+              )
+            }
+          >
+            <Heading2 className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="제목 3"
+            active={editor?.isActive("heading", { level: 3 })}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleHeading({ level: 3 }).run()
+              )
+            }
+          >
+            <Heading3 className="h-4 w-4" />
+          </ToolbarBtn>
+          <Sep />
+          <ToolbarBtn
+            label="글머리 목록"
+            active={editor?.isActive("bulletList")}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleBulletList().run()
+              )
+            }
+          >
+            <List className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="번호 목록"
+            active={editor?.isActive("orderedList")}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleOrderedList().run()
+              )
+            }
+          >
+            <ListOrdered className="h-4 w-4" />
+          </ToolbarBtn>
+          <ToolbarBtn
+            label="인용"
+            active={editor?.isActive("blockquote")}
+            onClick={() =>
+              runFormat(() =>
+                editor?.chain().focus().toggleBlockquote().run()
+              )
+            }
+          >
+            <Quote className="h-4 w-4" />
+          </ToolbarBtn>
+          <Sep />
+          <EmbedPicker
+            bookmarks={bookmarks}
+            stars={stars}
+            onPick={handleEmbed}
+          />
+          <div className="ml-auto flex items-center gap-2 pl-2">
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 text-xs",
+                saveState === "error"
+                  ? "text-red-400"
+                  : saveState === "saved"
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-muted-foreground"
+              )}
+            >
+              {saveState === "saved" && <Check className="h-3.5 w-3.5" />}
+              {statusLabel}
             </span>
-          )}
+            <Button
+              size="sm"
+              variant={saveState === "dirty" ? "default" : "secondary"}
+              disabled={saveState === "saving" || !editor}
+              onClick={() => {
+                dirtyRef.current = true;
+                void save();
+              }}
+            >
+              <Save className="h-3.5 w-3.5" />
+              {saveState === "saving" ? "저장 중" : "저장"}
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <EmbedPicker
-          bookmarks={bookmarks}
-          stars={stars}
-          onPick={handleEmbed}
+      {/* 문서 영역 */}
+      <div className="space-y-1 pb-24">
+        <textarea
+          ref={titleRef}
+          value={title}
+          rows={1}
+          placeholder="제목 없는 페이지"
+          onChange={(e) => {
+            setTitle(e.target.value);
+            markDirty();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              editor?.chain().focus("start").run();
+            }
+          }}
+          className="w-full resize-none overflow-hidden border-0 bg-transparent text-3xl font-bold leading-tight tracking-tight text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-0 sm:text-4xl"
         />
-        <span className="text-xs text-muted-foreground">
-          북마크 또는 GitHub Star를 페이지에 카드로 삽입합니다.
-        </span>
-      </div>
 
-      <div className="rounded-xl border border-border bg-card p-4">
-        <EditorContent editor={editor} />
+        <div
+          className="min-h-[50vh] cursor-text pt-2"
+          onClick={() => {
+            if (!editor?.isFocused) editor?.chain().focus().run();
+          }}
+        >
+          <EditorContent editor={editor} />
+        </div>
       </div>
     </div>
+  );
+}
+
+function Sep() {
+  return <span className="mx-0.5 h-5 w-px bg-border" aria-hidden />;
+}
+
+function ToolbarBtn({
+  children,
+  label,
+  onClick,
+  active,
+  disabled,
+}: {
+  children: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+  active?: boolean;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn(
+        "inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40",
+        active && "bg-indigo-600/15 text-indigo-600 dark:text-indigo-300"
+      )}
+    >
+      {children}
+    </button>
   );
 }
