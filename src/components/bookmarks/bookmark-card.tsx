@@ -1,4 +1,4 @@
-// 북마크 카드 — OG 이미지, 제목, 태그, 삭제
+// 북마크 카드 — OG 이미지, 제목, 태그, 선택/삭제
 "use client";
 
 import { ExternalLink, Trash2 } from "lucide-react";
@@ -8,13 +8,25 @@ import type { Bookmark } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+type Props = {
+  bookmark: Bookmark;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
+};
 
 /** 단일 북마크를 카드로 렌더링한다. */
-export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
+export function BookmarkCard({
+  bookmark,
+  selectable,
+  selected,
+  onToggleSelect,
+}: Props) {
   const router = useRouter();
   const [deleting, setDeleting] = useState(false);
 
-  /** 북마크 삭제 API 호출 */
   async function handleDelete() {
     if (!confirm("이 북마크를 삭제할까요?")) return;
     setDeleting(true);
@@ -36,7 +48,26 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   }
 
   return (
-    <Card className="group flex flex-col overflow-hidden transition-colors hover:border-border">
+    <Card
+      className={cn(
+        "group relative flex flex-col overflow-hidden transition-colors hover:border-border",
+        selected && "border-indigo-500 ring-1 ring-indigo-500/40"
+      )}
+    >
+      {selectable && (
+        <label
+          className="absolute left-2 top-2 z-10 flex h-7 w-7 cursor-pointer items-center justify-center rounded-md bg-background/90 shadow border border-border"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <input
+            type="checkbox"
+            className="h-4 w-4 accent-indigo-600"
+            checked={Boolean(selected)}
+            onChange={onToggleSelect}
+            aria-label={`${bookmark.title} 선택`}
+          />
+        </label>
+      )}
       {bookmark.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

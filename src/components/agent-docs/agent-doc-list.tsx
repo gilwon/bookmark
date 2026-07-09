@@ -37,10 +37,13 @@ import {
   tryExtractZipFile,
 } from "@/lib/zip-agent-docs";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
+import { useSelection } from "@/hooks/use-selection";
+import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
@@ -81,6 +84,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [filter, setFilter] = useState<AgentDocKind | "all">("all");
   const [q, setQ] = useState("");
+  const [deleting, setDeleting] = useState(false);
   const templates = getAgentDocTemplates();
 
   const filtered = useMemo(() => {
@@ -100,6 +104,9 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       return hay.includes(needle);
     });
   }, [docs, filter, q]);
+
+  const filteredIds = useMemo(() => filtered.map((d) => d.id), [filtered]);
+  const selection = useSelection(filteredIds);
 
   /** 템플릿 → 초안 편집 (DB 저장 안 함, 파일명은 템플릿 그대로) */
   function createFromTemplate(kind: AgentDocKind) {
@@ -235,6 +242,29 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     if (!confirm("이 에이전트 문서를 삭제할까요?")) return;
     const res = await fetch(`/api/agent-docs/${id}`, { method: "DELETE" });
     if (res.ok) router.refresh();
+  }
+
+  async function deleteSelected() {
+    if (selection.selectedCount === 0) return;
+    if (
+      !confirm(
+        `선택한 에이전트 문서 ${selection.selectedCount}개를 삭제할까요?`
+      )
+    ) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      const { ok, fail } = await bulkDeleteByIds(
+        selection.selectedIds,
+        (id) => `/api/agent-docs/${id}`
+      );
+      selection.clear();
+      router.refresh();
+      if (fail > 0) alert(`${ok}개 삭제, ${fail}개 실패`);
+    } finally {
+      setDeleting(false);
+    }
   }
 
   function downloadMd(doc: AgentDoc) {
@@ -385,75 +415,99 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             : "필터 조건에 맞는 문서가 없습니다."}
         </div>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {filtered.map((doc) => {
-            const fileCount = doc.files?.length || 1;
-            return (
-              <Card
-                key={doc.id}
-                className="group transition-colors hover:border-border"
-              >
-                <CardContent className="flex items-start gap-3 p-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
-                    {fileCount > 1 ? (
-                      <Layers className="h-5 w-5" />
-                    ) : doc.kind === "other" ? (
-                      <FileCode2 className="h-5 w-5" />
-                    ) : (
-                      <Bot className="h-5 w-5" />
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1 space-y-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="secondary">
-                        {AGENT_DOC_KIND_LABEL[doc.kind]}
-                      </Badge>
-                      {fileCount > 1 && (
-                        <Badge variant="outline">번들 · {fileCount}파일</Badge>
+        <div className="space-y-3">
+          <SelectionToolbar
+            total={filtered.length}
+            selectedCount={selection.selectedCount}
+            allSelected={selection.allSelected}
+            someSelected={selection.someSelected}
+            deleting={deleting}
+            onToggleAll={selection.toggleAll}
+            onDeleteSelected={() => void deleteSelected()}
+          />
+          <div className="grid gap-3 sm:grid-cols-2">
+            {filtered.map((doc) => {
+              const fileCount = doc.files?.length || 1;
+              const selected = selection.isSelected(doc.id);
+              return (
+                <Card
+                  key={doc.id}
+                  className={cn(
+                    "group transition-colors hover:border-border",
+                    selected && "border-indigo-500 ring-1 ring-indigo-500/40"
+                  )}
+                >
+                  <CardContent className="flex items-start gap-3 p-4">
+                    <input
+                      type="checkbox"
+                      className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                      checked={selected}
+                      onChange={() => selection.toggle(doc.id)}
+                      aria-label={`${doc.title} 선택`}
+                    />
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
+                      {fileCount > 1 ? (
+                        <Layers className="h-5 w-5" />
+                      ) : doc.kind === "other" ? (
+                        <FileCode2 className="h-5 w-5" />
+                      ) : (
+                        <Bot className="h-5 w-5" />
                       )}
-                      <code className="truncate text-xs text-muted-foreground">
-                        {doc.files?.map((f) => f.filename).join(" + ") ||
-                          doc.filename}
-                      </code>
                     </div>
-                    <Link
-                      href={`/agent-docs/${doc.id}`}
-                      className="block truncate font-medium hover:text-indigo-500"
-                    >
-                      {doc.title}
-                    </Link>
-                    {doc.description && (
-                      <p className="line-clamp-2 text-xs text-muted-foreground">
-                        {doc.description}
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant="secondary">
+                          {AGENT_DOC_KIND_LABEL[doc.kind]}
+                        </Badge>
+                        {fileCount > 1 && (
+                          <Badge variant="outline">
+                            번들 · {fileCount}파일
+                          </Badge>
+                        )}
+                        <code className="truncate text-xs text-muted-foreground">
+                          {doc.files?.map((f) => f.filename).join(" + ") ||
+                            doc.filename}
+                        </code>
+                      </div>
+                      <Link
+                        href={`/agent-docs/${doc.id}`}
+                        className="block truncate font-medium hover:text-indigo-500"
+                      >
+                        {doc.title}
+                      </Link>
+                      {doc.description && (
+                        <p className="line-clamp-2 text-xs text-muted-foreground">
+                          {doc.description}
+                        </p>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        수정 {new Date(doc.updatedAt).toLocaleString("ko-KR")}
                       </p>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                      수정 {new Date(doc.updatedAt).toLocaleString("ko-KR")}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => downloadMd(doc)}
-                      aria-label="다운로드"
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-400"
-                      onClick={() => void handleDelete(doc.id)}
-                      aria-label="삭제"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                    </div>
+                    <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => downloadMd(doc)}
+                        aria-label="다운로드"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-red-400"
+                        onClick={() => void handleDelete(doc.id)}
+                        aria-label="삭제"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

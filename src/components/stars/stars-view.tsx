@@ -1,29 +1,34 @@
-// Stars 페이지 클라이언트 — 검색/언어 필터 + 자동 동기화
+// Stars 페이지 — 필터 + 동기화 + 전체 선택 / 선택 삭제
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { GithubStar } from "@/lib/types";
+import { useSelection } from "@/hooks/use-selection";
+import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { StarCard } from "@/components/stars/star-card";
 import { SyncButton } from "@/components/stars/sync-button";
 import { Input } from "@/components/ui/input";
+import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 
 type Props = {
   initialStars: GithubStar[];
   hasGithub: boolean;
   lastSynced: string | null;
-  /** 목록이 비어 있고 GitHub 연동 시 자동 동기화 */
   autoSyncOnEmpty: boolean;
 };
 
-/** Star 목록 UI + 필터 + 동기화 컨트롤 */
+/** Star 목록 UI + 필터 + 동기화 + 선택 삭제 */
 export function StarsView({
   initialStars,
   hasGithub,
   lastSynced,
   autoSyncOnEmpty,
 }: Props) {
+  const router = useRouter();
   const [q, setQ] = useState("");
   const [language, setLanguage] = useState("all");
+  const [deleting, setDeleting] = useState(false);
 
   const languages = useMemo(() => {
     const set = new Set<string>();
@@ -49,6 +54,32 @@ export function StarsView({
       return hay.includes(needle);
     });
   }, [initialStars, language, q]);
+
+  const filteredIds = useMemo(() => filtered.map((s) => s.id), [filtered]);
+  const selection = useSelection(filteredIds);
+
+  async function deleteSelected() {
+    if (selection.selectedCount === 0) return;
+    if (
+      !confirm(
+        `선택한 Star ${selection.selectedCount}개를 로컬 목록에서 삭제할까요?\n(GitHub unstar는 하지 않습니다. 다시 동기화하면 돌아올 수 있습니다.)`
+      )
+    ) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      const { ok, fail } = await bulkDeleteByIds(
+        selection.selectedIds,
+        (id) => `/api/stars/${id}`
+      );
+      selection.clear();
+      router.refresh();
+      if (fail > 0) alert(`${ok}개 삭제, ${fail}개 실패`);
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -106,7 +137,16 @@ export function StarsView({
           필터 조건에 맞는 레포가 없습니다.
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
+          <SelectionToolbar
+            total={filtered.length}
+            selectedCount={selection.selectedCount}
+            allSelected={selection.allSelected}
+            someSelected={selection.someSelected}
+            deleting={deleting}
+            onToggleAll={selection.toggleAll}
+            onDeleteSelected={() => void deleteSelected()}
+          />
           <p className="text-xs text-muted-foreground">
             표시 {filtered.length}
             {filtered.length !== initialStars.length &&
@@ -115,7 +155,13 @@ export function StarsView({
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((s) => (
-              <StarCard key={s.id} star={s} />
+              <StarCard
+                key={s.id}
+                star={s}
+                selectable
+                selected={selection.isSelected(s.id)}
+                onToggleSelect={() => selection.toggle(s.id)}
+              />
             ))}
           </div>
         </div>
