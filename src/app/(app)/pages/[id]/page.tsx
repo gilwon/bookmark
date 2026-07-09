@@ -74,7 +74,8 @@ export default async function PageEditorPage({ params }: Props) {
   });
 
   return (
-    <div className="space-y-4">
+    // 상단 네비와 본문 입력 폭을 동일하게 (max-w-3xl)
+    <div className="mx-auto w-full max-w-3xl space-y-4">
       <div className="flex items-center justify-between gap-3">
         <Link
           href="/pages"

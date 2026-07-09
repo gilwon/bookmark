@@ -249,7 +249,8 @@ export function TiptapEditor({
               : "준비됨";
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
+    // 폭 제한은 페이지 레이아웃(max-w-3xl)과 맞춤
+    <div className="w-full">
       {/* 상단 고정 툴바 */}
       <div className="sticky top-0 z-20 -mx-1 mb-6 border-b border-border/80 bg-background/90 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/75">
         <div className="flex flex-wrap items-center gap-1">
