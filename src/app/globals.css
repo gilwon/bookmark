@@ -231,7 +231,6 @@ body {
   min-height: 60vh;
   cursor: text;
   padding: 0.35rem 0.15rem 3rem;
-  /* 제목과 본문 사이 아주 약한 구분 (박스 아님) */
   border-top: 1px solid transparent;
   margin-top: 0.15rem;
 }
@@ -240,6 +239,26 @@ body {
   min-height: 60vh;
   font-size: 1rem;
   line-height: 1.75;
+}
+
+/* 블록 호버 시 살짝 하이라이트 (노션 유사) */
+.notion-editor > * {
+  border-radius: 0.25rem;
+  transition: background-color 0.12s ease;
+}
+
+.notion-editor > *:hover {
+  background: color-mix(in srgb, var(--muted) 35%, transparent);
+}
+
+.notion-editor > *.is-dragging-block {
+  opacity: 0.45;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* 슬래시 메뉴 위치 기준 */
+.notion-body {
+  position: relative;
 }
 
 /* 노션: 빈 줄 호버 시 약간의 힌트 */

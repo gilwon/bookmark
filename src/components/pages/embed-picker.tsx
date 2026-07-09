@@ -12,11 +12,29 @@ type Props = {
   bookmarks: BookmarkType[];
   stars: GithubStar[];
   onPick: (attrs: EmbedAttrs) => void;
+  /** 외부에서 피커 열기 (슬래시 메뉴 등) */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** 툴바 트리거 버튼 숨김 */
+  hideTrigger?: boolean;
 };
 
 /** 북마크/Star 목록에서 하나를 골라 임베드 속성으로 반환한다. */
-export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
-  const [open, setOpen] = useState(false);
+export function EmbedPicker({
+  bookmarks,
+  stars,
+  onPick,
+  open: openProp,
+  onOpenChange,
+  hideTrigger,
+}: Props) {
+  const [innerOpen, setInnerOpen] = useState(false);
+  const open = openProp ?? innerOpen;
+  const setOpen = (v: boolean | ((p: boolean) => boolean)) => {
+    const next = typeof v === "function" ? v(open) : v;
+    onOpenChange?.(next);
+    if (openProp === undefined) setInnerOpen(next);
+  };
   const [tab, setTab] = useState<"bookmark" | "star">("bookmark");
   const [q, setQ] = useState("");
 
@@ -84,15 +102,17 @@ export function EmbedPicker({ bookmarks, stars, onPick }: Props) {
 
   return (
     <div className="relative">
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <Plus className="h-4 w-4 mr-1" />
-        임베드
-      </Button>
+      {!hideTrigger && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <Plus className="h-4 w-4 mr-1" />
+          임베드
+        </Button>
+      )}
 
       {open && (
         <>

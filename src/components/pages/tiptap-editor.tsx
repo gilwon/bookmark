@@ -33,7 +33,12 @@ import { hasLiteralAside } from "@/lib/normalize-to-markdown";
 import { CalloutBlock } from "@/components/pages/extensions/callout-block";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
 import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
+import {
+  BlockHandle,
+  useBlockDragDrop,
+} from "@/components/pages/block-handle";
 import { EmbedPicker } from "@/components/pages/embed-picker";
+import { SlashMenu } from "@/components/pages/slash-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -63,10 +68,12 @@ export function TiptapEditor({
     initialUpdatedAt ?? null
   );
   const titleRef = useRef<HTMLTextAreaElement>(null);
+  const bodyWrapRef = useRef<HTMLDivElement>(null);
   const dirtyRef = useRef(false);
   const titleValueRef = useRef(title);
   titleValueRef.current = title;
   const editorRef = useRef<Editor | null>(null);
+  const [embedOpen, setEmbedOpen] = useState(false);
 
   /** 저장된 문서 안 리터럴 <aside> 를 callout 노드로 승격 */
   const seed = useMemo(() => {
@@ -151,6 +158,9 @@ export function TiptapEditor({
     dirtyRef.current = true;
     setSaveState((s) => (s === "saving" ? s : "dirty"));
   }, []);
+
+  // 블록 드래그 앤 드롭
+  useBlockDragDrop(editor, markDirty);
 
   /** 제목 + 본문 저장 */
   const save = useCallback(
@@ -391,6 +401,8 @@ export function TiptapEditor({
             bookmarks={bookmarks}
             stars={stars}
             onPick={handleEmbed}
+            open={embedOpen}
+            onOpenChange={setEmbedOpen}
           />
           <div className="ml-auto flex items-center gap-2 pl-2">
             <span
@@ -450,7 +462,8 @@ export function TiptapEditor({
           />
 
           <div
-            className="notion-body"
+            ref={bodyWrapRef}
+            className="notion-body relative pl-10 sm:pl-12"
             onClick={(e) => {
               // 여백 클릭 시에도 본문 포커스 (노션과 유사)
               if (e.target === e.currentTarget) {
@@ -460,7 +473,17 @@ export function TiptapEditor({
               }
             }}
           >
+            <BlockHandle
+              editor={editor}
+              containerRef={bodyWrapRef}
+              onDirty={markDirty}
+            />
             <EditorContent editor={editor} />
+            <SlashMenu
+              editor={editor}
+              onRequestEmbed={() => setEmbedOpen(true)}
+              onRanCommand={markDirty}
+            />
           </div>
         </div>
       </div>
