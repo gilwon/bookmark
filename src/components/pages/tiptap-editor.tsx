@@ -1,12 +1,15 @@
 // 노션형 페이지 에디터 — 선택 버블 메뉴·슬래시·자동 저장
 "use client";
 
+import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Check, Redo2, Save, Undo2 } from "lucide-react";
+import { Check, FileDown, Redo2, Save, Undo2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Editor } from "@tiptap/react";
 import type { Bookmark, GithubStar } from "@/lib/types";
@@ -15,6 +18,10 @@ import {
   pastedAsideToNodes,
 } from "@/lib/migrate-aside-content";
 import { hasLiteralAside } from "@/lib/normalize-to-markdown";
+import {
+  downloadMarkdown,
+  tiptapToMarkdown,
+} from "@/lib/tiptap-to-markdown";
 import { CalloutBlock } from "@/components/pages/extensions/callout-block";
 import { CodeBlockNode } from "@/components/pages/extensions/code-block-node";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
@@ -28,6 +35,31 @@ import { NotionBubbleMenu } from "@/components/pages/notion-bubble-menu";
 import { SlashMenu } from "@/components/pages/slash-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+/** 클립보드/드롭 FileList 에서 image/* 만 data URL 로 읽어 삽입 */
+function insertImagesFromFiles(
+  editor: Editor | null,
+  files: FileList | File[] | null | undefined
+): boolean {
+  if (!editor || !files?.length) return false;
+  const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
+  if (images.length === 0) return false;
+
+  for (const file of images) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const src = typeof reader.result === "string" ? reader.result : null;
+      if (!src) return;
+      editor
+        .chain()
+        .focus()
+        .setImage({ src, alt: file.name || "image" })
+        .run();
+    };
+    reader.readAsDataURL(file);
+  }
+  return true;
+}
 
 type Props = {
   pageId: string;
@@ -84,6 +116,14 @@ export function TiptapEditor({
         enableTabIndentation: true,
         tabSize: 2,
       }),
+      // 붙여넣기 base64 이미지 허용 (블록 레벨)
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+        HTMLAttributes: {
+          class: "notion-editor-image",
+        },
+      }),
       Underline,
       Placeholder.configure({
         placeholder: "글을 쓰거나 / 를 입력해 블록을 추가하세요…",
@@ -100,7 +140,12 @@ export function TiptapEditor({
       }),
       CalloutBlock,
       EmbedBlock,
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
     ],
+
     content: seed.content as object,
     onCreate: ({ editor: ed }) => {
       editorRef.current = ed;
@@ -111,10 +156,19 @@ export function TiptapEditor({
           "notion-editor ProseMirror max-w-none min-h-[60vh] focus:outline-none",
       },
       /**
-       * 클립보드에 보이는 <aside> 문자열이 있으면 콜아웃 노드로 삽입.
-       * (plain text / HTML 모두 처리)
+       * 1) 클립보드 image/* → data URL 이미지 삽입
+       * 2) 리터럴 <aside> → 콜아웃 노드 삽입
        */
       handlePaste(_view, event) {
+        const ed = editorRef.current;
+        // 이미지 파일 우선 처리
+        if (insertImagesFromFiles(ed, event.clipboardData?.files)) {
+          event.preventDefault();
+          dirtyRef.current = true;
+          setSaveState("dirty");
+          return true;
+        }
+
         const html = event.clipboardData?.getData("text/html") ?? "";
         const text = event.clipboardData?.getData("text/plain") ?? "";
         const raw = html.trim() || text;
@@ -124,13 +178,22 @@ export function TiptapEditor({
 
         event.preventDefault();
         const nodes = pastedAsideToNodes(raw);
-        const ed = editorRef.current;
         if (ed && nodes.length > 0) {
           ed.chain().focus().insertContent(nodes).run();
           dirtyRef.current = true;
           setSaveState("dirty");
         }
         return true;
+      },
+      /** 드래그 앤 드롭 이미지도 data URL 로 삽입 */
+      handleDrop(_view, event) {
+        if (insertImagesFromFiles(editorRef.current, event.dataTransfer?.files)) {
+          event.preventDefault();
+          dirtyRef.current = true;
+          setSaveState("dirty");
+          return true;
+        }
+        return false;
       },
     },
     immediatelyRender: false,
@@ -237,6 +300,15 @@ export function TiptapEditor({
     markDirty();
   }
 
+  /** 현재 본문을 Markdown 파일로 내려받는다. */
+  function handleExportMd() {
+    if (!editor) return;
+    const md = tiptapToMarkdown(editor.getJSON());
+    const base = titleValueRef.current.trim() || "제목 없는 페이지";
+    downloadMarkdown(base, md);
+  }
+
+
   const statusLabel =
     saveState === "saving"
       ? "저장 중…"
@@ -300,6 +372,15 @@ export function TiptapEditor({
               {saveState === "saved" && <Check className="h-3.5 w-3.5" />}
               {statusLabel}
             </span>
+            <Button
+              size="sm"
+              variant="secondary"
+              disabled={!editor}
+              onClick={handleExportMd}
+            >
+              <FileDown className="h-3.5 w-3.5" />
+              MD 내보내기
+            </Button>
             <Button
               size="sm"
               variant={saveState === "dirty" ? "default" : "secondary"}

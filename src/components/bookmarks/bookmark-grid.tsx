@@ -122,6 +122,28 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
     }));
   }, [filtered, active]);
 
+  /** 전체 북마크에서 unique 카테고리 (편집 suggest용) */
+  const categorySuggestions = useMemo(() => {
+    const set = new Set<string>();
+    for (const b of bookmarks) {
+      const c = b.category?.trim();
+      if (c) set.add(c);
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, "ko"));
+  }, [bookmarks]);
+
+  /** 전체 북마크에서 unique 태그 (편집 suggest용) */
+  const tagSuggestions = useMemo(() => {
+    const set = new Set<string>();
+    for (const b of bookmarks) {
+      for (const t of b.tags) {
+        const tag = t.trim();
+        if (tag) set.add(tag);
+      }
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, "ko"));
+  }, [bookmarks]);
+
   const ids = useMemo(() => filtered.map((b) => b.id), [filtered]);
   const selection = useSelection(ids);
 
@@ -232,6 +254,8 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                     selectable
                     selected={selection.isSelected(b.id)}
                     onToggleSelect={() => selection.toggle(b.id)}
+                    categorySuggestions={categorySuggestions}
+                    tagSuggestions={tagSuggestions}
                   />
                 ))}
               </div>
@@ -247,6 +271,8 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
               selectable
               selected={selection.isSelected(b.id)}
               onToggleSelect={() => selection.toggle(b.id)}
+              categorySuggestions={categorySuggestions}
+              tagSuggestions={tagSuggestions}
             />
           ))}
         </div>

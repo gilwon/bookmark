@@ -139,6 +139,48 @@ body {
   margin: 0;
 }
 
+/* 할 일 목록 (TaskList) — 노션형 체크박스 */
+.ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.15rem;
+  margin: 0.4rem 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.2em 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.3em;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li > label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--accent, #6366f1);
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.ProseMirror ul[data-type="taskList"] li > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
 .ProseMirror code {
   background: var(--code-bg);
   border-radius: 0.25rem;
@@ -202,9 +244,122 @@ body {
   text-underline-offset: 2px;
 }
 
-.ProseMirror img {
+.ProseMirror img,
+.ProseMirror .notion-editor-image {
   max-width: 100%;
+  height: auto;
   border-radius: 0.5rem;
+  display: block;
+  margin: 0.75rem 0;
+}
+
+/* lowlight / highlight.js 토큰 색 — 다크 기본 */
+.ProseMirror .hljs-comment,
+.ProseMirror .hljs-quote {
+  color: #71717a;
+  font-style: italic;
+}
+.ProseMirror .hljs-keyword,
+.ProseMirror .hljs-selector-tag,
+.ProseMirror .hljs-addition {
+  color: #c084fc;
+}
+.ProseMirror .hljs-number,
+.ProseMirror .hljs-string,
+.ProseMirror .hljs-meta .hljs-meta-string,
+.ProseMirror .hljs-literal,
+.ProseMirror .hljs-doctag,
+.ProseMirror .hljs-regexp {
+  color: #86efac;
+}
+.ProseMirror .hljs-title,
+.ProseMirror .hljs-section,
+.ProseMirror .hljs-name,
+.ProseMirror .hljs-selector-id,
+.ProseMirror .hljs-selector-class {
+  color: #93c5fd;
+}
+.ProseMirror .hljs-attribute,
+.ProseMirror .hljs-attr,
+.ProseMirror .hljs-variable,
+.ProseMirror .hljs-template-variable,
+.ProseMirror .hljs-class .hljs-title,
+.ProseMirror .hljs-type {
+  color: #fcd34d;
+}
+.ProseMirror .hljs-symbol,
+.ProseMirror .hljs-bullet,
+.ProseMirror .hljs-subst,
+.ProseMirror .hljs-meta,
+.ProseMirror .hljs-meta .hljs-keyword,
+.ProseMirror .hljs-selector-attr,
+.ProseMirror .hljs-selector-pseudo,
+.ProseMirror .hljs-link {
+  color: #67e8f9;
+}
+.ProseMirror .hljs-built_in,
+.ProseMirror .hljs-deletion {
+  color: #fca5a5;
+}
+.ProseMirror .hljs-formula {
+  background: rgba(255, 255, 255, 0.06);
+}
+.ProseMirror .hljs-emphasis {
+  font-style: italic;
+}
+.ProseMirror .hljs-strong {
+  font-weight: 700;
+}
+
+/* 라이트 모드 토큰 색 */
+html.light .ProseMirror .hljs-comment,
+html.light .ProseMirror .hljs-quote {
+  color: #71717a;
+}
+html.light .ProseMirror .hljs-keyword,
+html.light .ProseMirror .hljs-selector-tag,
+html.light .ProseMirror .hljs-addition {
+  color: #7c3aed;
+}
+html.light .ProseMirror .hljs-number,
+html.light .ProseMirror .hljs-string,
+html.light .ProseMirror .hljs-meta .hljs-meta-string,
+html.light .ProseMirror .hljs-literal,
+html.light .ProseMirror .hljs-doctag,
+html.light .ProseMirror .hljs-regexp {
+  color: #15803d;
+}
+html.light .ProseMirror .hljs-title,
+html.light .ProseMirror .hljs-section,
+html.light .ProseMirror .hljs-name,
+html.light .ProseMirror .hljs-selector-id,
+html.light .ProseMirror .hljs-selector-class {
+  color: #1d4ed8;
+}
+html.light .ProseMirror .hljs-attribute,
+html.light .ProseMirror .hljs-attr,
+html.light .ProseMirror .hljs-variable,
+html.light .ProseMirror .hljs-template-variable,
+html.light .ProseMirror .hljs-class .hljs-title,
+html.light .ProseMirror .hljs-type {
+  color: #b45309;
+}
+html.light .ProseMirror .hljs-symbol,
+html.light .ProseMirror .hljs-bullet,
+html.light .ProseMirror .hljs-subst,
+html.light .ProseMirror .hljs-meta,
+html.light .ProseMirror .hljs-meta .hljs-keyword,
+html.light .ProseMirror .hljs-selector-attr,
+html.light .ProseMirror .hljs-selector-pseudo,
+html.light .ProseMirror .hljs-link {
+  color: #0e7490;
+}
+html.light .ProseMirror .hljs-built_in,
+html.light .ProseMirror .hljs-deletion {
+  color: #dc2626;
+}
+html.light .ProseMirror .hljs-formula {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 /* ---------- 노션형 페이지 캔버스 ---------- */

@@ -1,4 +1,5 @@
-// 인증된 앱 레이아웃 셸 — 사이드바 + 메인
+// 인증된 앱 레이아웃 셸 — 사이드바 + 메인 + 커맨드 팔레트
+import { CommandPalette } from "@/components/command-palette";
 import { Sidebar } from "./sidebar";
 
 /** 사이드바와 메인 콘텐츠 영역을 배치한다. */
@@ -11,6 +12,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </main>
+      {/* ⌘K 전역 검색 팔레트 */}
+      <CommandPalette />
     </div>
   );
 }

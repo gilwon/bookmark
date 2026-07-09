@@ -14,6 +14,7 @@ import {
   Italic,
   Link2,
   List,
+  ListChecks,
   ListOrdered,
   MessageSquareWarning,
   Quote,
@@ -31,6 +32,7 @@ type BlockKind =
   | "h3"
   | "bullet"
   | "ordered"
+  | "task"
   | "quote"
   | "callout"
   | "code";
@@ -50,6 +52,7 @@ const BLOCK_OPTIONS: BlockOption[] = [
   { id: "h3", label: "제목3", icon: Heading3, mark: "H3" },
   { id: "bullet", label: "글머리 기호 목록", icon: List, mark: "•" },
   { id: "ordered", label: "번호 매기기 목록", icon: ListOrdered, mark: "1." },
+  { id: "task", label: "할 일 목록", icon: ListChecks, mark: "☑" },
   { id: "quote", label: "인용", icon: Quote, mark: "“" },
   { id: "callout", label: "콜아웃", icon: MessageSquareWarning, mark: "!" },
   { id: "code", label: "코드", icon: Code2, mark: "</>" },
@@ -61,9 +64,10 @@ function currentBlock(editor: Editor): BlockOption {
   if (editor.isActive("heading", { level: 3 })) return BLOCK_OPTIONS[3]!;
   if (editor.isActive("bulletList")) return BLOCK_OPTIONS[4]!;
   if (editor.isActive("orderedList")) return BLOCK_OPTIONS[5]!;
-  if (editor.isActive("blockquote")) return BLOCK_OPTIONS[6]!;
-  if (editor.isActive("callout")) return BLOCK_OPTIONS[7]!;
-  if (editor.isActive("codeBlock")) return BLOCK_OPTIONS[8]!;
+  if (editor.isActive("taskList")) return BLOCK_OPTIONS[6]!;
+  if (editor.isActive("blockquote")) return BLOCK_OPTIONS[7]!;
+  if (editor.isActive("callout")) return BLOCK_OPTIONS[8]!;
+  if (editor.isActive("codeBlock")) return BLOCK_OPTIONS[9]!;
   return BLOCK_OPTIONS[0]!;
 }
 
@@ -87,6 +91,9 @@ function applyBlock(editor: Editor, id: BlockKind) {
       break;
     case "ordered":
       chain.toggleOrderedList().run();
+      break;
+    case "task":
+      chain.toggleTaskList().run();
       break;
     case "quote":
       chain.toggleBlockquote().run();

@@ -7,7 +7,9 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  ImageIcon,
   List,
+  ListChecks,
   ListOrdered,
   MessageSquareWarning,
   Minus,
@@ -25,9 +27,11 @@ export type SlashCommandId =
   | "h3"
   | "bullet"
   | "ordered"
+  | "task"
   | "quote"
   | "callout"
   | "code"
+  | "image"
   | "hr"
   | "embed";
 
@@ -83,6 +87,13 @@ const ITEMS: SlashItem[] = [
     icon: ListOrdered,
   },
   {
+    id: "task",
+    title: "할 일 목록",
+    desc: "체크박스가 있는 할 일",
+    keywords: "todo task checklist 할일 할 일 체크",
+    icon: ListChecks,
+  },
+  {
     id: "quote",
     title: "인용",
     desc: "인용문을 담은 블록",
@@ -102,6 +113,13 @@ const ITEMS: SlashItem[] = [
     desc: "코드 스니펫 블록",
     keywords: "code codeblock 코드",
     icon: Code2,
+  },
+  {
+    id: "image",
+    title: "이미지",
+    desc: "URL로 이미지 삽입",
+    keywords: "image img picture 이미지 사진",
+    icon: ImageIcon,
   },
   {
     id: "hr",
@@ -196,6 +214,9 @@ export function SlashMenu({ editor, onRequestEmbed, onRanCommand }: Props) {
         case "ordered":
           editor.chain().focus().toggleOrderedList().run();
           break;
+        case "task":
+          editor.chain().focus().toggleTaskList().run();
+          break;
         case "quote":
           editor.chain().focus().toggleBlockquote().run();
           break;
@@ -205,6 +226,18 @@ export function SlashMenu({ editor, onRequestEmbed, onRanCommand }: Props) {
         case "code":
           editor.chain().focus().toggleCodeBlock().run();
           break;
+        case "image": {
+          // 간단한 URL 프롬프트로 이미지 삽입
+          const url = window.prompt("이미지 URL을 입력하세요");
+          if (url?.trim()) {
+            editor
+              .chain()
+              .focus()
+              .setImage({ src: url.trim() })
+              .run();
+          }
+          break;
+        }
         case "hr":
           editor.chain().focus().setHorizontalRule().run();
           break;

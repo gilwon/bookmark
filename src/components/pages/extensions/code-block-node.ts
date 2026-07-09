@@ -1,14 +1,18 @@
-// 언어 속성이 있는 코드 블록 — 노션형 NodeView 연결
-import CodeBlock from "@tiptap/extension-code-block";
+// 언어 선택 NodeView + lowlight 문법 하이라이트 코드 블록
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { ReactNodeViewRenderer } from "@tiptap/react";
+import { common, createLowlight } from "lowlight";
 import { CodeBlockView } from "@/components/pages/code-block-view";
 import { normalizeLanguageId } from "@/components/pages/extensions/code-languages";
 
+/** common 언어 묶음 (전체 all 은 번들 비대) */
+const lowlight = createLowlight(common);
+
 /**
  * StarterKit 기본 codeBlock 대신 사용.
- * language 속성 + 검색 가능한 언어 선택 UI.
+ * language 속성 + 검색 가능한 언어 선택 UI + lowlight 하이라이트.
  */
-export const CodeBlockNode = CodeBlock.extend({
+export const CodeBlockNode = CodeBlockLowlight.extend({
   addAttributes() {
     return {
       ...this.parent?.(),
@@ -38,4 +42,6 @@ export const CodeBlockNode = CodeBlock.extend({
   addNodeView() {
     return ReactNodeViewRenderer(CodeBlockView);
   },
+}).configure({
+  lowlight,
 });

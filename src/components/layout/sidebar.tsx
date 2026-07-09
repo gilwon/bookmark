@@ -99,6 +99,12 @@ export function Sidebar() {
             </div>
             <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
               {navLinks}
+              <p className="mt-3 px-3 text-[11px] text-muted-foreground/70">
+                검색{" "}
+                <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+                  ⌘K
+                </kbd>
+              </p>
             </nav>
             <SidebarFooter {...footerProps} />
           </aside>
@@ -115,6 +121,12 @@ export function Sidebar() {
         </Link>
         <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
           {navLinks}
+          <p className="mt-3 px-3 text-[11px] text-muted-foreground/70">
+            검색{" "}
+            <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+              ⌘K
+            </kbd>
+          </p>
         </nav>
         <SidebarFooter {...footerProps} />
       </aside>
