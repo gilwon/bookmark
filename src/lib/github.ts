@@ -70,6 +70,73 @@ export async function fetchStarredRepos(
   return repos;
 }
 
+/**
+ * owner/repo 또는 GitHub URL 을 정규화한다.
+ * @returns full_name 또는 null
+ */
+export function parseGithubRepoRef(raw: string): string | null {
+  const s = raw.trim();
+  if (!s) return null;
+  // https://github.com/owner/repo(.git)?
+  const urlMatch =
+    /^(?:https?:\/\/)?(?:www\.)?github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/i.exec(
+      s
+    );
+  if (urlMatch) {
+    return `${urlMatch[1]}/${urlMatch[2]!.replace(/\.git$/i, "")}`;
+  }
+  // owner/repo
+  const plain = /^([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)$/.exec(s);
+  if (plain) return `${plain[1]}/${plain[2]}`;
+  return null;
+}
+
+/** 공개 레포 메타를 GitHub API 로 조회 (토큰 있으면 인증) */
+export async function fetchRepoByFullName(
+  fullName: string,
+  accessToken?: string | null
+): Promise<StarRepo> {
+  const [owner, repo] = fullName.split("/");
+  if (!owner || !repo) throw new Error("잘못된 레포 형식입니다.");
+
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github+json",
+    "User-Agent": "MyMark-bookmark-hub",
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+  if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+
+  const res = await fetch(
+    `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`,
+    { headers, cache: "no-store" }
+  );
+  if (res.status === 404) {
+    throw new Error("레포를 찾을 수 없습니다. (비공개이거나 존재하지 않음)");
+  }
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `GitHub API 오류 (${res.status})${body ? `: ${body.slice(0, 120)}` : ""}`
+    );
+  }
+  const data = (await res.json()) as {
+    full_name: string;
+    description: string | null;
+    language: string | null;
+    stargazers_count: number;
+    topics?: string[];
+    html_url: string;
+  };
+  return {
+    repoFullName: data.full_name,
+    description: data.description ?? null,
+    language: data.language ?? null,
+    stars: data.stargazers_count ?? 0,
+    topics: data.topics ?? [],
+    url: data.html_url,
+  };
+}
+
 function topicsEqual(a: string, bTopics: string[]): boolean {
   try {
     const parsed = JSON.parse(a || "[]") as string[];
@@ -146,6 +213,7 @@ export async function upsertStars(
         changeKind: kind,
         starsDelta: 0,
         changedAt: kind ? now : null,
+        source: "sync",
       });
     }
   }
@@ -154,6 +222,8 @@ export async function upsertStars(
   let removed = 0;
   const removedRepos: string[] = [];
   for (const row of local) {
+    // 수동 추가 레포는 동기화 시 유지
+    if (row.source === "manual") continue;
     if (!seen.has(row.repoFullName)) {
       removedRepos.push(row.repoFullName);
       await store.deleteStar(row.id, userId);

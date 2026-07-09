@@ -30,6 +30,8 @@ export type GithubStar = {
   changeKind?: "new" | "updated" | null;
   starsDelta?: number;
   changedAt?: string | null;
+  /** sync | manual — 수동 추가 여부 */
+  source?: "sync" | "manual";
 };
 
 /** 커스텀 페이지 엔티티 */

@@ -28,6 +28,8 @@ export const githubStars = pgTable("github_stars", {
   changeKind: text("change_kind"),
   starsDelta: integer("stars_delta").notNull().default(0),
   changedAt: text("changed_at"),
+  /** sync | manual */
+  source: text("source").notNull().default("sync"),
 });
 
 export const customPages = pgTable("custom_pages", {

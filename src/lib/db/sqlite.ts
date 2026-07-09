@@ -37,7 +37,8 @@ function createSqlite(): SqliteDb {
       description TEXT, language TEXT, stars INTEGER NOT NULL DEFAULT 0,
       topics TEXT NOT NULL DEFAULT '[]', url TEXT NOT NULL,
       last_synced TEXT NOT NULL, created_at TEXT NOT NULL,
-      change_kind TEXT, stars_delta INTEGER NOT NULL DEFAULT 0, changed_at TEXT
+      change_kind TEXT, stars_delta INTEGER NOT NULL DEFAULT 0, changed_at TEXT,
+      source TEXT NOT NULL DEFAULT 'sync'
     );
     CREATE TABLE IF NOT EXISTS custom_pages (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
@@ -85,6 +86,11 @@ function createSqlite(): SqliteDb {
       ALTER TABLE github_stars ADD COLUMN stars_delta INTEGER NOT NULL DEFAULT 0;
       ALTER TABLE github_stars ADD COLUMN changed_at TEXT;
     `);
+  }
+  if (starCols.length && !starCols.some((c) => c.name === "source")) {
+    sqlite.exec(
+      `ALTER TABLE github_stars ADD COLUMN source TEXT NOT NULL DEFAULT 'sync'`
+    );
   }
   return drizzle(sqlite, { schema });
 }

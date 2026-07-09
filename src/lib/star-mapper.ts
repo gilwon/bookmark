@@ -24,5 +24,6 @@ export function rowToGithubStar(row: GithubStarRow): GithubStar {
     changeKind: row.changeKind ?? null,
     starsDelta: row.starsDelta ?? 0,
     changedAt: row.changedAt ?? null,
+    source: row.source === "manual" ? "manual" : "sync",
   };
 }

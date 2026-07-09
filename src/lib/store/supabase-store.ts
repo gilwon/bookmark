@@ -184,6 +184,7 @@ export async function updateStar(
   if (patch.changeKind !== undefined) body.change_kind = patch.changeKind;
   if (patch.starsDelta !== undefined) body.stars_delta = patch.starsDelta;
   if (patch.changedAt !== undefined) body.changed_at = patch.changedAt;
+  if (patch.source !== undefined) body.source = patch.source;
 
   const { error } = await sb()
     .from("github_stars")

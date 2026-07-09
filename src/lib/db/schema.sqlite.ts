@@ -28,6 +28,8 @@ export const githubStars = sqliteTable("github_stars", {
   changeKind: text("change_kind"),
   starsDelta: integer("stars_delta").notNull().default(0),
   changedAt: text("changed_at"),
+  /** sync | manual — 수동 추가 레포는 동기화 시 삭제하지 않음 */
+  source: text("source").notNull().default("sync"),
 });
 
 export const customPages = sqliteTable("custom_pages", {

@@ -43,6 +43,7 @@ export function mapStar(r: any): GithubStarRow {
     changeKind,
     starsDelta: Number(r.stars_delta ?? r.starsDelta ?? 0) || 0,
     changedAt: r.changed_at ?? r.changedAt ?? null,
+    source: r.source === "manual" ? "manual" : "sync",
   };
 }
 
@@ -112,6 +113,7 @@ export function starToDb(row: GithubStarRow) {
     change_kind: row.changeKind ?? null,
     stars_delta: row.starsDelta ?? 0,
     changed_at: row.changedAt ?? null,
+    source: row.source === "manual" ? "manual" : "sync",
   };
 }
 

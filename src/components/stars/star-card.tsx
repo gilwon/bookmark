@@ -62,6 +62,11 @@ export function StarCard({
                   업데이트
                 </Badge>
               )}
+              {star.source === "manual" && (
+                <Badge variant="outline" className="text-[10px]">
+                  수동
+                </Badge>
+              )}
               {delta !== 0 && (
                 <Badge variant="outline" className="tabular-nums">
                   ⭐ {delta > 0 ? `+${delta}` : delta}

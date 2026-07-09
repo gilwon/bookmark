@@ -1,6 +1,7 @@
-// Stars 페이지 — 필터 + 동기화 + 변경 뱃지 + 선택 삭제
+// Stars 페이지 — 정렬·수동 추가·필터·동기화·선택 삭제
 "use client";
 
+import { Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { GithubStar } from "@/lib/types";
@@ -9,6 +10,7 @@ import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { StarCard } from "@/components/stars/star-card";
 import { SyncButton } from "@/components/stars/sync-button";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
@@ -22,7 +24,12 @@ type Props = {
   autoSyncOnEmpty: boolean;
 };
 
-/** Star 목록 UI + 변경 필터 + 확인 처리 */
+type SortKey = "name" | "stars" | "created";
+
+const selectClass =
+  "flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+/** Star 목록 UI + 정렬·수동 추가 + 변경 필터 */
 export function StarsView({
   initialStars,
   hasGithub,
@@ -35,8 +42,13 @@ export function StarsView({
   const [changeFilter, setChangeFilter] = useState<
     "all" | "changed" | "new" | "updated"
   >("all");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
   const [deleting, setDeleting] = useState(false);
   const [acking, setAcking] = useState(false);
+  const [repoInput, setRepoInput] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
+  const [addMsg, setAddMsg] = useState<string | null>(null);
 
   const changeCount = useMemo(
     () =>
@@ -62,7 +74,6 @@ export function StarsView({
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [initialStars]);
 
-  /** 검색 suggest — 레포 · 언어 · 토픽 */
   const searchSuggestions = useMemo((): SearchSuggestItem[] => {
     const items: SearchSuggestItem[] = [];
     for (const s of initialStars) {
@@ -92,7 +103,7 @@ export function StarsView({
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return initialStars.filter((s) => {
+    const list = initialStars.filter((s) => {
       if (language !== "all" && s.language !== language) return false;
       if (changeFilter === "changed") {
         if (s.changeKind !== "new" && s.changeKind !== "updated") return false;
@@ -112,7 +123,32 @@ export function StarsView({
         .toLowerCase();
       return hay.includes(needle);
     });
-  }, [initialStars, language, q, changeFilter]);
+
+    const sorted = [...list];
+    sorted.sort((a, b) => {
+      // 변경 뱃지 우선은 유지하되, 같은 그룹 안에서 선택 정렬
+      const aw = a.changeKind ? 1 : 0;
+      const bw = b.changeKind ? 1 : 0;
+      if (aw !== bw) return bw - aw;
+
+      if (sortKey === "name") {
+        return a.repoFullName.localeCompare(b.repoFullName, "en", {
+          sensitivity: "base",
+        });
+      }
+      if (sortKey === "stars") {
+        const d = (b.stars ?? 0) - (a.stars ?? 0);
+        if (d !== 0) return d;
+        return a.repoFullName.localeCompare(b.repoFullName, "en");
+      }
+      // 등록순 (createdAt 최신 먼저)
+      const ta = Date.parse(a.createdAt) || 0;
+      const tb = Date.parse(b.createdAt) || 0;
+      if (tb !== ta) return tb - ta;
+      return a.repoFullName.localeCompare(b.repoFullName, "en");
+    });
+    return sorted;
+  }, [initialStars, language, q, changeFilter, sortKey]);
 
   const filteredIds = useMemo(() => filtered.map((s) => s.id), [filtered]);
   const selection = useSelection(filteredIds);
@@ -121,7 +157,7 @@ export function StarsView({
     if (selection.selectedCount === 0) return;
     if (
       !confirm(
-        `선택한 Star ${selection.selectedCount}개를 로컬 목록에서 삭제할까요?\n(GitHub unstar는 하지 않습니다. 다시 동기화하면 돌아올 수 있습니다.)`
+        `선택한 Star ${selection.selectedCount}개를 로컬 목록에서 삭제할까요?\n(GitHub unstar는 하지 않습니다. 수동 추가 레포는 동기화해도 다시 생기지 않습니다.)`
       )
     ) {
       return;
@@ -154,13 +190,48 @@ export function StarsView({
     }
   }
 
+  async function handleAddRepo() {
+    const raw = repoInput.trim();
+    if (!raw) {
+      setAddError("owner/repo 또는 GitHub URL 을 입력하세요.");
+      return;
+    }
+    setAdding(true);
+    setAddError(null);
+    setAddMsg(null);
+    try {
+      const res = await fetch("/api/stars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repo: raw }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          (data as { error?: string }).error || "레포 추가 실패"
+        );
+      }
+      const name =
+        (data as { repoFullName?: string }).repoFullName || raw;
+      setRepoInput("");
+      setAddMsg(`「${name}」을(를) 목록에 추가했습니다.`);
+      router.refresh();
+    } catch (err) {
+      setAddError(err instanceof Error ? err.message : "레포 추가 실패");
+    } finally {
+      setAdding(false);
+    }
+  }
+
+  const showFilters = initialStars.length > 0;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">GitHub Stars</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Star한 레포지토리를 동기화해 관리합니다.
+            Star 동기화 또는 레포 직접 추가로로 관리합니다.
             {initialStars.length > 0 && ` · 총 ${initialStars.length}개`}
             {changeCount > 0 && (
               <span className="text-indigo-600 dark:text-indigo-300">
@@ -189,6 +260,45 @@ export function StarsView({
         </div>
       </div>
 
+      {/* 레포 직접 추가 */}
+      <div className="space-y-2 rounded-xl border border-border bg-card/40 p-4">
+        <p className="text-sm font-medium">레포 직접 추가</p>
+        <p className="text-xs text-muted-foreground">
+          <code className="text-[11px]">owner/repo</code> 또는 GitHub URL.
+          수동 추가는 동기화 시 목록에서 지워지지 않습니다.
+        </p>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Input
+            value={repoInput}
+            onChange={(e) => setRepoInput(e.target.value)}
+            placeholder="vercel/next.js 또는 https://github.com/vercel/next.js"
+            className="flex-1 font-mono text-sm"
+            disabled={adding}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                void handleAddRepo();
+              }
+            }}
+          />
+          <Button
+            type="button"
+            disabled={adding}
+            onClick={() => void handleAddRepo()}
+            className="shrink-0"
+          >
+            <Plus className="h-4 w-4" />
+            {adding ? "추가 중…" : "추가"}
+          </Button>
+        </div>
+        {addError && <p className="text-sm text-red-400">{addError}</p>}
+        {addMsg && (
+          <p className="text-sm text-emerald-600 dark:text-emerald-400">
+            {addMsg}
+          </p>
+        )}
+      </div>
+
       {changeCount > 0 && (
         <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-sm text-indigo-900 dark:text-indigo-100">
           신규 {newCount} · 업데이트 {updatedCount}. 카드를 확인한 뒤 「모두
@@ -196,9 +306,9 @@ export function StarsView({
         </div>
       )}
 
-      {initialStars.length > 0 && (
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-          <div className="flex-1 space-y-1">
+      {showFilters && (
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end">
+          <div className="min-w-[200px] flex-1 space-y-1">
             <label className="text-xs text-muted-foreground">검색</label>
             <SearchSuggestInput
               placeholder="레포 이름, 설명, 토픽…"
@@ -206,6 +316,18 @@ export function StarsView({
               onChange={setQ}
               suggestions={searchSuggestions}
             />
+          </div>
+          <div className="w-full space-y-1 sm:w-36">
+            <label className="text-xs text-muted-foreground">정렬</label>
+            <select
+              value={sortKey}
+              onChange={(e) => setSortKey(e.target.value as SortKey)}
+              className={selectClass}
+            >
+              <option value="name">이름순</option>
+              <option value="stars">Stars 순</option>
+              <option value="created">등록순</option>
+            </select>
           </div>
           <div className="w-full space-y-1 sm:w-40">
             <label className="text-xs text-muted-foreground">변경</label>
@@ -216,7 +338,7 @@ export function StarsView({
                   e.target.value as "all" | "changed" | "new" | "updated"
                 )
               }
-              className="flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className={selectClass}
             >
               <option value="all">전체</option>
               <option value="changed">변경만 ({changeCount})</option>
@@ -229,7 +351,7 @@ export function StarsView({
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className={selectClass}
             >
               <option value="all">전체 언어</option>
               {languages.map((lang) => (
@@ -243,10 +365,10 @@ export function StarsView({
       )}
 
       {initialStars.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {hasGithub
-            ? "동기화 버튼을 눌러 Star 목록을 불러오세요."
-            : "GitHub로 로그인한 뒤 동기화하면 Star 목록이 표시됩니다."}
+            ? "동기화하거나 위에서 레포를 직접 추가해 보세요."
+            : "GitHub 로그인 후 동기화하거나, 공개 레포를 직접 추가할 수 있습니다."}
         </div>
       ) : (
         <div className="space-y-3">

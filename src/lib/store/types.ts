@@ -32,6 +32,8 @@ export type GithubStarRow = {
   /** 직전 동기화 대비 stargazer 수 변화 */
   starsDelta: number;
   changedAt: string | null;
+  /** sync | manual */
+  source: "sync" | "manual";
 };
 
 export type CustomPageRow = {
