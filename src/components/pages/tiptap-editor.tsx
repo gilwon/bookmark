@@ -36,16 +36,59 @@ import { SlashMenu } from "@/components/pages/slash-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-/** 클립보드/드롭 FileList 에서 image/* 만 data URL 로 읽어 삽입 */
-function insertImagesFromFiles(
-  editor: Editor | null,
-  files: FileList | File[] | null | undefined
-): boolean {
-  if (!editor || !files?.length) return false;
-  const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
-  if (images.length === 0) return false;
+/**
+ * 클립보드/드롭에서 이미지 File 수집.
+ * - files 만 보면 웹 복사·일부 스크린샷이 빈 배열이라 실패함
+ * - items(kind=file, image/*) 도 함께 본다
+ */
+function collectImageFiles(
+  data: DataTransfer | null | undefined
+): File[] {
+  if (!data) return [];
+  const out: File[] = [];
+  const seen = new Set<string>();
 
-  for (const file of images) {
+  const push = (file: File | null) => {
+    if (!file || !file.type.startsWith("image/")) return;
+    // 동일 바이너리 중복 삽입 방지 (name+size+type)
+    const key = `${file.name}:${file.size}:${file.type}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push(file);
+  };
+
+  for (const file of Array.from(data.files ?? [])) push(file);
+
+  // Safari/Chrome: 스크린샷·앱 복사는 items 에만 있는 경우가 많음
+  if (data.items) {
+    for (const item of Array.from(data.items)) {
+      if (item.kind === "file" && item.type.startsWith("image/")) {
+        push(item.getAsFile());
+      }
+    }
+  }
+
+  return out;
+}
+
+/** HTML 문자열에서 <img src> 추출 (웹 페이지 이미지 복사) */
+function collectImageSrcsFromHtml(html: string): string[] {
+  if (!html) return [];
+  const srcs: string[] = [];
+  const re = /<img\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    const src = (m[1] ?? "").trim();
+    // 추적 픽셀·빈 src 제외
+    if (!src || src.startsWith("cid:")) continue;
+    if (!srcs.includes(src)) srcs.push(src);
+  }
+  return srcs;
+}
+
+/** File → data URL 이미지 노드 삽입 */
+function insertImageFiles(editor: Editor, files: File[]): void {
+  for (const file of files) {
     const reader = new FileReader();
     reader.onload = () => {
       const src = typeof reader.result === "string" ? reader.result : null;
@@ -58,7 +101,50 @@ function insertImagesFromFiles(
     };
     reader.readAsDataURL(file);
   }
-  return true;
+}
+
+/** src URL/data URL 로 이미지 노드 삽입 */
+function insertImageSrcs(editor: Editor, srcs: string[]): void {
+  for (const src of srcs) {
+    editor
+      .chain()
+      .focus()
+      .setImage({ src, alt: "image" })
+      .run();
+  }
+}
+
+/**
+ * 붙여넣기/드롭 DataTransfer 에서 이미지를 찾아 삽입.
+ * 성공하면 true (기본 붙여넣기 중단).
+ */
+function insertImagesFromDataTransfer(
+  editor: Editor | null,
+  data: DataTransfer | null | undefined
+): boolean {
+  if (!editor || !data) return false;
+
+  const files = collectImageFiles(data);
+  if (files.length > 0) {
+    insertImageFiles(editor, files);
+    return true;
+  }
+
+  // 파일 없이 HTML 만 오는 경우 (웹 이미지 우클릭 복사 등)
+  const html = data.getData("text/html") ?? "";
+  const srcs = collectImageSrcsFromHtml(html);
+  // 순수 이미지만 있는 페이스트인지: 텍스트가 거의 없을 때
+  if (srcs.length > 0) {
+    const plain = (data.getData("text/plain") ?? "").trim();
+    // 긴 본문+인라인 이미지 복사는 기본 HTML 파서로 넘김
+    // 이미지 위주(짧은 plain 또는 plain 이 URL/파일명 수준)면 직접 삽입
+    if (plain.length < 80 || srcs.some((s) => plain.includes(s))) {
+      insertImageSrcs(editor, srcs);
+      return true;
+    }
+  }
+
+  return false;
 }
 
 type Props = {
@@ -156,13 +242,12 @@ export function TiptapEditor({
           "notion-editor ProseMirror max-w-none min-h-[60vh] focus:outline-none",
       },
       /**
-       * 1) 클립보드 image/* → data URL 이미지 삽입
-       * 2) 리터럴 <aside> → 콜아웃 노드 삽입
+       * 1) 클립보드 이미지 (files / items / HTML img)
+       * 2) 리터럴 <aside> → 콜아웃
        */
       handlePaste(_view, event) {
         const ed = editorRef.current;
-        // 이미지 파일 우선 처리
-        if (insertImagesFromFiles(ed, event.clipboardData?.files)) {
+        if (insertImagesFromDataTransfer(ed, event.clipboardData)) {
           event.preventDefault();
           dirtyRef.current = true;
           setSaveState("dirty");
@@ -185,9 +270,9 @@ export function TiptapEditor({
         }
         return true;
       },
-      /** 드래그 앤 드롭 이미지도 data URL 로 삽입 */
+      /** 드래그 앤 드롭 이미지 */
       handleDrop(_view, event) {
-        if (insertImagesFromFiles(editorRef.current, event.dataTransfer?.files)) {
+        if (insertImagesFromDataTransfer(editorRef.current, event.dataTransfer)) {
           event.preventDefault();
           dirtyRef.current = true;
           setSaveState("dirty");
