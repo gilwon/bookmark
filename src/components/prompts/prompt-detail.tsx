@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  ArrowLeft,
   BookOpen,
   Copy,
   MessageSquareText,
@@ -51,31 +52,39 @@ export function PromptDetail({ prompt }: { prompt: Prompt }) {
 
   return (
     <article className="w-full min-w-0 space-y-8">
-      <header className="space-y-4 border-b border-border pb-6">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {prompt.title}
-          </h1>
-          <div className="flex shrink-0 gap-2">
-            <Link
-              href={`/prompts/${prompt.id}/edit`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-secondary px-3 text-xs font-medium hover:bg-muted"
-            >
-              <Pencil className="h-3.5 w-3.5" />
-              수정
-            </Link>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-red-400"
-              disabled={deleting}
-              onClick={() => void handleDelete()}
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              삭제
-            </Button>
-          </div>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <Link
+          href="/prompts"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          목록으로
+        </Link>
+        <div className="flex shrink-0 gap-2">
+          <Link
+            href={`/prompts/${prompt.id}/edit`}
+            className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-secondary px-3 text-xs font-medium hover:bg-muted"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+            수정
+          </Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-red-400"
+            disabled={deleting}
+            onClick={() => void handleDelete()}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            삭제
+          </Button>
         </div>
+      </div>
+
+      <header className="space-y-4 border-b border-border pb-6">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          {prompt.title}
+        </h1>
 
         <dl className="space-y-2.5 text-sm">
           {prompt.category && (
