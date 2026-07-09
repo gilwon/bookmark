@@ -1,4 +1,4 @@
-// 북마크 반응형 그리드 — 카테고리 필터/그룹 + 선택 삭제
+// 북마크 반응형 그리드 — 검색 + 카테고리 필터/그룹 + 선택 삭제
 "use client";
 
 import { useMemo, useState } from "react";
@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import type { Bookmark } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
+import { Input } from "@/components/ui/input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 import { BookmarkCard } from "./bookmark-card";
@@ -23,9 +24,25 @@ function categoryLabel(key: string): string {
   return key === UNCATEGORIZED ? "미분류" : key;
 }
 
-/** 1/2/3 컬럼 그리드 + 카테고리별 필터·섹션 보기 */
+/** 제목·URL·설명·태그·카테고리 텍스트 매칭 */
+function matchesBookmarkQuery(b: Bookmark, needle: string): boolean {
+  if (!needle) return true;
+  const hay = [
+    b.title,
+    b.url,
+    b.description ?? "",
+    b.category ?? "",
+    ...b.tags,
+  ]
+    .join(" ")
+    .toLowerCase();
+  return hay.includes(needle);
+}
+
+/** 1/2/3 컬럼 그리드 + 검색 + 카테고리별 필터·섹션 보기 */
 export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
   const router = useRouter();
+  const [q, setQ] = useState("");
   const [active, setActive] = useState<string>(ALL);
   const [deleting, setDeleting] = useState(false);
 
@@ -41,14 +58,21 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
       if (b === UNCATEGORIZED) return -1;
       return a.localeCompare(b, "ko");
     });
-    return keys.map((key) => ({ key, label: categoryLabel(key), count: map.get(key)! }));
+    return keys.map((key) => ({
+      key,
+      label: categoryLabel(key),
+      count: map.get(key)!,
+    }));
   }, [bookmarks]);
 
-  /** 현재 필터에 맞는 목록 */
+  /** 검색 + 카테고리 필터 */
   const filtered = useMemo(() => {
-    if (active === ALL) return bookmarks;
-    return bookmarks.filter((b) => categoryKey(b) === active);
-  }, [bookmarks, active]);
+    const needle = q.trim().toLowerCase();
+    return bookmarks.filter((b) => {
+      if (active !== ALL && categoryKey(b) !== active) return false;
+      return matchesBookmarkQuery(b, needle);
+    });
+  }, [bookmarks, active, q]);
 
   /** 전체 보기일 때 카테고리 섹션 그룹 */
   const groups = useMemo(() => {
@@ -106,6 +130,18 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
 
   return (
     <div className="space-y-4">
+      {/* Stars 와 동일한 검색 입력 */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+        <div className="flex-1 space-y-1">
+          <label className="text-xs text-muted-foreground">검색</label>
+          <Input
+            placeholder="제목, URL, 설명, 태그, 카테고리…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
+      </div>
+
       {/* 카테고리 칩 */}
       <div className="space-y-2">
         <p className="text-xs font-medium text-muted-foreground">카테고리</p>
@@ -146,7 +182,9 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
 
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          이 카테고리에 북마크가 없습니다.
+          {q.trim()
+            ? "검색 조건에 맞는 북마크가 없습니다."
+            : "이 카테고리에 북마크가 없습니다."}
         </div>
       ) : groups ? (
         <div className="space-y-8">

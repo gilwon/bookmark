@@ -410,84 +410,94 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
 
       {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
 
-      {/* 카테고리 칩 — skill (N건) 형태, 클릭 시 해당 kind만 */}
-      <div className="space-y-2">
-        <p className="text-xs text-muted-foreground">카테고리</p>
-        <div
-          className="flex flex-wrap gap-2"
-          role="tablist"
-          aria-label="에이전트 문서 카테고리"
-        >
-          <button
-            type="button"
-            role="tab"
-            aria-selected={filter === "all"}
-            onClick={() => setFilter("all")}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-              filter === "all"
-                ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 ring-1 ring-indigo-500/40 dark:text-indigo-300"
-                : "border-border bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-          >
-            전체
-            <span className="tabular-nums text-xs opacity-80">
-              ({docs.length}건)
-            </span>
-          </button>
-          {AGENT_DOC_KIND_ORDER.map((kind) => {
-            const count = kindCounts[kind] ?? 0;
-            const colors = AGENT_DOC_KIND_COLOR[kind];
-            const active = filter === kind;
-            return (
+      {docs.length > 0 && (
+        <>
+          {/* Stars 와 동일한 검색 입력 */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+            <div className="flex-1 space-y-1">
+              <label className="text-xs text-muted-foreground">검색</label>
+              <Input
+                placeholder="파일명, 제목, 본문…"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* 카테고리 칩 — skill (N건) 형태, 클릭 시 해당 kind만 */}
+          <div className="space-y-2">
+            <p className="text-xs text-muted-foreground">카테고리</p>
+            <div
+              className="flex flex-wrap gap-2"
+              role="tablist"
+              aria-label="에이전트 문서 카테고리"
+            >
               <button
-                key={kind}
                 type="button"
                 role="tab"
-                aria-selected={active}
-                disabled={count === 0}
-                title={
-                  count === 0
-                    ? `${AGENT_DOC_KIND_LABEL[kind]} 문서 없음`
-                    : `${AGENT_DOC_KIND_LABEL[kind]}만 보기`
-                }
-                onClick={() => selectKind(kind)}
+                aria-selected={filter === "all"}
+                onClick={() => setFilter("all")}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-                  count === 0 && "cursor-not-allowed opacity-40",
-                  active
-                    ? cn(colors.badge, "ring-1 ring-black/5 dark:ring-white/10")
-                    : "border-border bg-background text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                  filter === "all"
+                    ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 ring-1 ring-indigo-500/40 dark:text-indigo-300"
+                    : "border-border bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
-                <span
-                  className={cn(
-                    "h-2 w-2 shrink-0 rounded-full",
-                    kind === "skill" && "bg-violet-500",
-                    kind === "agents" && "bg-sky-500",
-                    kind === "claude" && "bg-amber-500",
-                    kind === "other" && "bg-slate-500"
-                  )}
-                  aria-hidden
-                />
-                {AGENT_DOC_KIND_SHORT[kind]}
+                전체
                 <span className="tabular-nums text-xs opacity-80">
-                  ({count}건)
+                  ({docs.length}건)
                 </span>
               </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="space-y-1">
-        <label className="text-xs text-muted-foreground">검색</label>
-        <Input
-          placeholder="파일명, 제목, 본문…"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-      </div>
+              {AGENT_DOC_KIND_ORDER.map((kind) => {
+                const count = kindCounts[kind] ?? 0;
+                const colors = AGENT_DOC_KIND_COLOR[kind];
+                const active = filter === kind;
+                return (
+                  <button
+                    key={kind}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    disabled={count === 0}
+                    title={
+                      count === 0
+                        ? `${AGENT_DOC_KIND_LABEL[kind]} 문서 없음`
+                        : `${AGENT_DOC_KIND_LABEL[kind]}만 보기`
+                    }
+                    onClick={() => selectKind(kind)}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                      count === 0 && "cursor-not-allowed opacity-40",
+                      active
+                        ? cn(
+                            colors.badge,
+                            "ring-1 ring-black/5 dark:ring-white/10"
+                          )
+                        : "border-border bg-background text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "h-2 w-2 shrink-0 rounded-full",
+                        kind === "skill" && "bg-violet-500",
+                        kind === "agents" && "bg-sky-500",
+                        kind === "claude" && "bg-amber-500",
+                        kind === "other" && "bg-slate-500"
+                      )}
+                      aria-hidden
+                    />
+                    {AGENT_DOC_KIND_SHORT[kind]}
+                    <span className="tabular-nums text-xs opacity-80">
+                      ({count}건)
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
