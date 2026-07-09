@@ -140,13 +140,13 @@ export function PromptDetail({ prompt }: { prompt: Prompt }) {
             <pre
               className={cn(
                 "max-h-[min(70vh,640px)] overflow-auto whitespace-pre-wrap break-words",
-                "rounded-xl border border-border bg-zinc-950 px-4 py-4",
-                "font-mono text-[13px] leading-relaxed text-zinc-100",
+                "rounded-xl border border-border bg-input px-4 py-4",
+                "font-mono text-[13px] leading-relaxed text-foreground",
                 "shadow-inner"
               )}
             >
               {sec.body || (
-                <span className="text-zinc-500">(내용 없음)</span>
+                <span className="text-muted-foreground">(내용 없음)</span>
               )}
             </pre>
           </section>

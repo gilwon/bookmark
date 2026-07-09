@@ -220,9 +220,10 @@ export function PromptEditor({ mode, initial }: Props) {
               onChange={(e) => updateSection(i, { body: e.target.value })}
               placeholder="프롬프트 본문을 입력하세요…"
               className={cn(
-                "min-h-[200px] resize-y rounded-none border-0 bg-zinc-950/90 px-4 py-3",
-                "font-mono text-sm leading-relaxed text-zinc-100",
-                "focus-visible:ring-0 dark:bg-zinc-950"
+                // Input 과 동일 토큰 (bg-input / text-foreground) — 라이트·다크 공통
+                "min-h-[200px] resize-y rounded-none border-0 bg-input px-4 py-3",
+                "font-mono text-sm leading-relaxed text-foreground",
+                "shadow-none focus-visible:ring-0"
               )}
               disabled={saving}
             />
