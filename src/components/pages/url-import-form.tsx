@@ -1,10 +1,11 @@
 // URL 불러오기 → 마크다운 textarea 편집 → 페이지 저장
 "use client";
 
-import { Download, Save } from "lucide-react";
+import { Download, Save, Wand2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { markdownToTiptapDoc } from "@/lib/markdown-to-tiptap";
+import { normalizePasteToMarkdown } from "@/lib/normalize-to-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,6 +70,15 @@ export function UrlImportForm() {
     }
   }
 
+  /** 붙여넣은 HTML/aside 를 마크다운으로 정리 */
+  function handleNormalize() {
+    if (!markdown.trim()) return;
+    const next = normalizePasteToMarkdown(markdown);
+    setMarkdown(next);
+    setError(null);
+    setStatus("마크다운으로 정리했습니다. 확인 후 저장하세요.");
+  }
+
   async function handleSave() {
     if (!markdown.trim()) {
       setError("저장할 마크다운 내용이 없습니다. 먼저 불러오기를 하세요.");
@@ -78,7 +88,10 @@ export function UrlImportForm() {
     setError(null);
     setStatus(null);
     try {
-      const content = markdownToTiptapDoc(markdown);
+      // 저장 직전 HTML 잔여물 정리
+      const cleaned = normalizePasteToMarkdown(markdown);
+      if (cleaned !== markdown) setMarkdown(cleaned);
+      const content = markdownToTiptapDoc(cleaned);
       const res = await fetch("/api/pages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -164,10 +177,39 @@ export function UrlImportForm() {
             <Textarea
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
+              onPaste={(e) => {
+                // 클립보드가 HTML이면 마크다운으로 바꿔 붙여넣기
+                const html = e.clipboardData.getData("text/html");
+                const plain = e.clipboardData.getData("text/plain");
+                const raw = html?.trim() ? html : plain;
+                if (!raw) return;
+                if (
+                  /<aside\b/i.test(raw) ||
+                  /<\/?(p|div|h[1-6]|ul|ol|li|a)\b/i.test(raw)
+                ) {
+                  e.preventDefault();
+                  const md = normalizePasteToMarkdown(raw);
+                  const el = e.currentTarget;
+                  const start = el.selectionStart ?? markdown.length;
+                  const end = el.selectionEnd ?? markdown.length;
+                  const next =
+                    markdown.slice(0, start) + md + markdown.slice(end);
+                  setMarkdown(next);
+                  setStatus(
+                    "HTML/콜아웃을 마크다운으로 변환해 붙여넣었습니다."
+                  );
+                }
+              }}
               className="min-h-[280px] font-mono text-xs leading-relaxed"
-              placeholder="불러오기 후 마크다운이 여기에 표시됩니다…"
+              placeholder="불러오기 후 마크다운이 여기에 표시됩니다… Notion 복사본 붙여넣기 가능"
               disabled={saving}
             />
+            <p className="text-[11px] text-muted-foreground">
+              Notion에서 복사하면{" "}
+              <code className="text-[10px]">&lt;aside&gt;</code> 같은 HTML이
+              섞일 수 있습니다. 붙여넣기 시 자동 변환하거나 「MD 정리」를
+              누르세요.
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button
@@ -177,6 +219,15 @@ export function UrlImportForm() {
             >
               <Save className="h-4 w-4" />
               {saving ? "저장 중…" : "저장"}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleNormalize}
+              disabled={saving || !markdown.trim()}
+            >
+              <Wand2 className="h-4 w-4" />
+              MD 정리
             </Button>
             {sourceUrl && (
               <a

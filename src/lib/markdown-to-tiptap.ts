@@ -1,4 +1,5 @@
 // 간단한 Markdown → Tiptap JSON 변환 (저장·에디터 호환용)
+import { normalizePasteToMarkdown } from "@/lib/normalize-to-markdown";
 
 type TipTapNode = {
   type: string;
@@ -58,7 +59,9 @@ function parseInline(text: string): TipTapNode[] {
  * 헤딩·리스트·코드블록·인용·단락 위주.
  */
 export function markdownToTiptapDoc(md: string): TipTapNode {
-  const lines = md.replace(/\r\n/g, "\n").split("\n");
+  // 붙여넣기 HTML·<aside> 등을 먼저 마크다운으로
+  const normalized = normalizePasteToMarkdown(md);
+  const lines = normalized.replace(/\r\n/g, "\n").split("\n");
   const content: TipTapNode[] = [];
   let i = 0;
 
