@@ -25,10 +25,7 @@ export function PromptEditor({ mode, initial }: Props) {
   const [sections, setSections] = useState<PromptSection[]>(
     initial?.sections?.length
       ? initial.sections
-      : [
-          { title: "1차 프롬프트", body: "" },
-          { title: "2차 프롬프트", body: "" },
-        ]
+      : [{ title: "1차 프롬프트", body: "" }]
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);

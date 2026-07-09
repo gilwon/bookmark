@@ -9,7 +9,8 @@ import type { PromptSection } from "@/lib/types";
 export const runtime = "nodejs";
 
 function parseSectionsBody(body: Record<string, unknown>): PromptSection[] {
-  if (!Array.isArray(body.sections)) {
+  // 기본 섹션 1개 (필요 시 클라이언트에서 추가)
+  if (!Array.isArray(body.sections) || body.sections.length === 0) {
     return [{ title: "1차 프롬프트", body: "" }];
   }
   return normalizeSections(
