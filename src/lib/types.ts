@@ -49,15 +49,25 @@ export type UrlMeta = {
 /** 에이전트 문서 종류 */
 export type AgentDocKind = "skill" | "agents" | "claude" | "other";
 
-/** SKILL.md / AGENTS.md / CLAUDE.md 등 에이전트 지시 문서 */
+/** 번들 내 개별 파일 (.md / .skill) */
+export type AgentDocFile = {
+  filename: string;
+  content: string;
+};
+
+/** SKILL.md / AGENTS.md / CLAUDE.md / .skill 번들 문서 */
 export type AgentDoc = {
   id: string;
   userId: string;
   kind: AgentDocKind;
+  /** 대표 파일명 (보통 SKILL.md) */
   filename: string;
   title: string;
   description: string | null;
+  /** 대표 파일 본문 */
   content: string;
+  /** 전체 번들 파일 (skill.md + .skill 등) */
+  files: AgentDocFile[];
   createdAt: string;
   updatedAt: string;
 };

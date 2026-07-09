@@ -19,10 +19,11 @@ export const AGENT_DOC_KIND_LABEL: Record<AgentDocKind, string> = {
 
 /** 파일명에서 kind를 추론한다. */
 export function inferKindFromFilename(filename: string): AgentDocKind {
-  const base = filename.trim().toLowerCase();
-  if (base === "skill.md" || base.endsWith("/skill.md")) return "skill";
-  if (base === "agents.md" || base.endsWith("/agents.md")) return "agents";
-  if (base === "claude.md" || base.endsWith("/claude.md")) return "claude";
+  const base = filename.trim().replace(/\\/g, "/").split("/").pop() || "";
+  const lower = base.toLowerCase();
+  if (lower === "skill.md" || lower.endsWith(".skill")) return "skill";
+  if (lower === "agents.md") return "agents";
+  if (lower === "claude.md") return "claude";
   return "other";
 }
 
@@ -112,11 +113,13 @@ npm test
   ];
 }
 
-/** 파일명 정규화 (.md 보장, 경로 구분자 제거) */
+/**
+ * 파일명 정규화 (경로 제거).
+ * .skill 은 유지, 그 외 확장자 없으면 .md 부여.
+ */
 export function normalizeFilename(raw: string): string {
   let name = raw.trim().replace(/\\/g, "/").split("/").pop() || "NOTES.md";
-  if (!name.toLowerCase().endsWith(".md")) {
-    name = `${name}.md`;
-  }
-  return name;
+  if (/\.skill$/i.test(name)) return name;
+  if (/\.(md|markdown|mdx|txt)$/i.test(name)) return name;
+  return `${name}.md`;
 }

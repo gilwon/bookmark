@@ -64,8 +64,10 @@ export const agentDocs = sqliteTable("agent_docs", {
   filename: text("filename").notNull(),
   title: text("title").notNull(),
   description: text("description"),
-  // Markdown 원문
+  // 대표 파일 원문 (보통 SKILL.md) — 검색·미리보기용
   content: text("content").notNull().default(""),
+  // 번들 파일 목록 JSON: [{ filename, content }, ...] (.skill + skill.md)
+  bundle: text("bundle").notNull().default("[]"),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

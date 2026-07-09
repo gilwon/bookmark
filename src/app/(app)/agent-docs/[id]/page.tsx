@@ -1,17 +1,15 @@
-// 에이전트 문서 편집
+// 에이전트 문서 편집 (번들 탭)
 import { and, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { AgentDocEditor } from "@/components/agent-docs/agent-doc-editor";
+import { rowToAgentDoc } from "@/lib/agent-doc-mapper";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { agentDocs } from "@/lib/db/schema";
-import type { AgentDoc, AgentDocKind } from "@/lib/types";
 
 export const runtime = "nodejs";
 
 type Props = { params: Promise<{ id: string }> };
-
-const KINDS = new Set<AgentDocKind>(["skill", "agents", "claude", "other"]);
 
 /** 단건 문서 편집 화면 */
 export default async function AgentDocEditPage({ params }: Props) {
@@ -27,19 +25,5 @@ export default async function AgentDocEditPage({ params }: Props) {
 
   if (!row) notFound();
 
-  const doc: AgentDoc = {
-    id: row.id,
-    userId: row.userId,
-    kind: KINDS.has(row.kind as AgentDocKind)
-      ? (row.kind as AgentDocKind)
-      : "other",
-    filename: row.filename,
-    title: row.title,
-    description: row.description,
-    content: row.content,
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
-  };
-
-  return <AgentDocEditor doc={doc} />;
+  return <AgentDocEditor doc={rowToAgentDoc(row)} />;
 }

@@ -11,6 +11,7 @@ export type AgentDocSearchResult = {
   title: string;
   filename: string;
   kind: AgentDocKind;
+  fileCount?: number;
   snippet: string;
   updatedAt: string;
 };
@@ -32,6 +33,9 @@ export function AgentDocResultCard({
             <Badge variant="secondary">
               {AGENT_DOC_KIND_LABEL[doc.kind] ?? "문서"}
             </Badge>
+            {(doc.fileCount ?? 1) > 1 && (
+              <Badge variant="outline">번들 · {doc.fileCount}파일</Badge>
+            )}
             <code className="truncate text-xs text-muted-foreground">
               {doc.filename}
             </code>

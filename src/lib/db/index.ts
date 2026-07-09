@@ -68,6 +68,7 @@ function createSqlite() {
       title TEXT NOT NULL,
       description TEXT,
       content TEXT NOT NULL DEFAULT '',
+      bundle TEXT NOT NULL DEFAULT '[]',
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
@@ -80,6 +81,17 @@ function createSqlite() {
     CREATE UNIQUE INDEX IF NOT EXISTS idx_oauth_user_provider
       ON oauth_tokens(user_id, provider);
   `);
+
+  // 기존 DB에 bundle 컬럼이 없으면 추가
+  const cols = sqlite
+    .prepare("PRAGMA table_info(agent_docs)")
+    .all() as { name: string }[];
+  if (cols.length > 0 && !cols.some((c) => c.name === "bundle")) {
+    sqlite.exec(
+      "ALTER TABLE agent_docs ADD COLUMN bundle TEXT NOT NULL DEFAULT '[]'"
+    );
+  }
+
   return sqlite;
 }
 

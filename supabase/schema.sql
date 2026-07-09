@@ -53,7 +53,7 @@ create table if not exists public.oauth_tokens (
   unique (user_id, provider)
 );
 
--- SKILL.md / AGENTS.md / CLAUDE.md 등 에이전트 지시 문서
+-- SKILL.md / AGENTS.md / CLAUDE.md / .skill 번들 등 에이전트 지시 문서
 create table if not exists public.agent_docs (
   id uuid primary key default gen_random_uuid(),
   user_id text not null,
@@ -62,6 +62,8 @@ create table if not exists public.agent_docs (
   title text not null,
   description text,
   content text not null default '',
+  -- [{ "filename": "SKILL.md", "content": "..." }, { "filename": "x.skill", "content": "..." }]
+  bundle jsonb not null default '[]'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

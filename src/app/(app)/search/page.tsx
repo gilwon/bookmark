@@ -15,6 +15,7 @@ import { StarCard } from "@/components/stars/star-card";
 import { auth } from "@/lib/auth";
 import { inDateRange } from "@/lib/date-range";
 import { db } from "@/lib/db";
+import { bundleSearchText, parseBundle } from "@/lib/agent-doc-bundle";
 import {
   agentDocs,
   bookmarks,
@@ -224,29 +225,38 @@ export default async function SearchPage({
       .all();
 
     agentDocResults = rows
-      .filter((row) => {
+      .map((row) => {
+        const files = parseBundle(row.bundle);
+        const searchBody = bundleSearchText(row.content, files);
+        return { row, files, searchBody };
+      })
+      .filter(({ row, searchBody }) => {
         if (!inDateRange(row.updatedAt, from, to)) return false;
         if (!q) return true;
         const hay = [
           row.title,
           row.filename,
           row.description ?? "",
-          row.content,
           row.kind,
+          searchBody,
         ]
           .join(" ")
           .toLowerCase();
         return hay.includes(q);
       })
-      .map((row) => ({
+      .map(({ row, files, searchBody }) => ({
         id: row.id,
         title: row.title,
-        filename: row.filename,
+        filename:
+          files.length > 1
+            ? files.map((f) => f.filename).join(" + ")
+            : row.filename,
         kind: AGENT_KINDS.has(row.kind as AgentDocKind)
           ? (row.kind as AgentDocKind)
           : "other",
+        fileCount: Math.max(files.length, 1),
         snippet: makeSnippet(
-          [row.description ?? "", row.content].join("\n"),
+          [row.description ?? "", searchBody].join("\n"),
           q
         ),
         updatedAt: row.updatedAt,

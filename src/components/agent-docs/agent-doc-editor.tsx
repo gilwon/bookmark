@@ -1,9 +1,14 @@
-// 에이전트 문서 Markdown 에디터 — 자동 저장 / 복사 / 다운로드 / 드롭 교체
+// 에이전트 문서 에디터 — 번들 탭(.md / .skill) · 자동 저장 · 드롭
 "use client";
 
-import { Check, Copy, Download, Save } from "lucide-react";
+import { Check, Copy, Download, Plus, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  isAllowedAgentDocName,
+  isSkillExtName,
+  type AgentDocFilePart,
+} from "@/lib/agent-doc-bundle";
 import {
   AGENT_DOC_KIND_LABEL,
   inferKindFromFilename,
@@ -13,23 +18,36 @@ import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 type Props = {
   doc: AgentDoc;
 };
 
-/** 에이전트 문서 메타·본문 편집 */
+/** 에이전트 문서 메타·번들 파일 편집 */
 export function AgentDocEditor({ doc }: Props) {
+  const initialFiles: AgentDocFilePart[] =
+    doc.files?.length > 0
+      ? doc.files
+      : [{ filename: doc.filename, content: doc.content }];
+
   const [title, setTitle] = useState(doc.title);
-  const [filename, setFilename] = useState(doc.filename);
   const [kind, setKind] = useState<AgentDocKind>(doc.kind);
   const [description, setDescription] = useState(doc.description ?? "");
-  const [content, setContent] = useState(doc.content);
+  const [files, setFiles] = useState<AgentDocFilePart[]>(initialFiles);
+  const [activeIdx, setActiveIdx] = useState(0);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  /** 서버 저장 */
+  const active = files[activeIdx] ?? files[0];
+
+  const fileNames = useMemo(
+    () => files.map((f) => f.filename).join(", "),
+    [files]
+  );
+
+  /** 서버 저장 (전체 번들) */
   const save = useCallback(async () => {
     setSaving(true);
     setStatus(null);
@@ -38,11 +56,10 @@ export function AgentDocEditor({ doc }: Props) {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: title.trim() || filename,
-          filename,
+          title: title.trim() || files[0]?.filename || "문서",
           kind,
           description,
-          content,
+          files,
         }),
       });
       if (!res.ok) throw new Error("저장 실패");
@@ -52,9 +69,8 @@ export function AgentDocEditor({ doc }: Props) {
     } finally {
       setSaving(false);
     }
-  }, [content, description, doc.id, filename, kind, title]);
+  }, [description, doc.id, files, kind, title]);
 
-  // debounce 자동 저장
   useEffect(() => {
     if (status !== "수정됨…") return;
     const t = setTimeout(() => {
@@ -67,9 +83,49 @@ export function AgentDocEditor({ doc }: Props) {
     setStatus("수정됨…");
   }
 
+  function updateActiveContent(text: string) {
+    setFiles((prev) =>
+      prev.map((f, i) => (i === activeIdx ? { ...f, content: text } : f))
+    );
+    markDirty();
+  }
+
+  function updateActiveFilename(name: string) {
+    setFiles((prev) =>
+      prev.map((f, i) =>
+        i === activeIdx ? { ...f, filename: normalizeFilename(name) } : f
+      )
+    );
+    markDirty();
+  }
+
+  function addEmptyFile(ext: "md" | "skill") {
+    const base =
+      ext === "skill"
+        ? `part-${files.length + 1}.skill`
+        : files.some((f) => /^skill\.md$/i.test(f.filename))
+          ? `NOTES-${files.length + 1}.md`
+          : "SKILL.md";
+    setFiles((prev) => [...prev, { filename: base, content: "" }]);
+    setActiveIdx(files.length);
+    if (ext === "skill") setKind("skill");
+    markDirty();
+  }
+
+  function removeActiveFile() {
+    if (files.length <= 1) {
+      alert("최소 1개 파일이 필요합니다.");
+      return;
+    }
+    if (!confirm(`「${active?.filename}」을(를) 번들에서 제거할까요?`)) return;
+    setFiles((prev) => prev.filter((_, i) => i !== activeIdx));
+    setActiveIdx((i) => Math.max(0, i - 1));
+    markDirty();
+  }
+
   async function copyContent() {
     try {
-      await navigator.clipboard.writeText(content);
+      await navigator.clipboard.writeText(active?.content ?? "");
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -77,37 +133,71 @@ export function AgentDocEditor({ doc }: Props) {
     }
   }
 
-  function downloadMd() {
-    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+  function downloadActive() {
+    const name = active?.filename || "NOTES.md";
+    const blob = new Blob([active?.content ?? ""], {
+      type: isSkillExtName(name)
+        ? "text/plain;charset=utf-8"
+        : "text/markdown;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename || "NOTES.md";
+    a.download = name;
     a.click();
     URL.revokeObjectURL(url);
   }
 
-  /** 본문 영역에 파일 드롭 시 내용 교체 */
-  async function onDropFile(e: React.DragEvent) {
+  /** 파일 드롭: 활성 교체 또는 번들에 추가 */
+  async function onDropFiles(e: React.DragEvent) {
     e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      alert("2MB 이하 파일만 가능합니다.");
-      return;
+    const list = Array.from(e.dataTransfer.files || []);
+    if (list.length === 0) return;
+
+    const next: AgentDocFilePart[] = [];
+    for (const file of list) {
+      if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
+        // 확장자 없는 텍스트도 .skill 강제하지 않음
+        if (!file.type.startsWith("text/") && file.type !== "") continue;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        alert(`${file.name}: 2MB 초과`);
+        continue;
+      }
+      try {
+        const text = await file.text();
+        next.push({
+          filename: normalizeFilename(file.name),
+          content: text,
+        });
+      } catch {
+        alert(`${file.name}: 읽기 실패`);
+      }
     }
-    try {
-      const text = await file.text();
-      const name = normalizeFilename(file.name);
-      setContent(text);
-      setFilename(name);
-      setTitle(name.replace(/\.md$/i, "") || name);
-      setKind(inferKindFromFilename(name));
-      setDescription(`파일에서 가져옴 · ${file.name}`);
-      setStatus("수정됨…");
-    } catch {
-      alert("파일을 읽지 못했습니다.");
+    if (next.length === 0) return;
+
+    if (list.length === 1 && files.length === 1) {
+      // 단일 파일 드롭 → 현재 파일 교체
+      setFiles(next);
+      setActiveIdx(0);
+      setTitle(next[0]!.filename.replace(/\.(md|skill)$/i, "") || next[0]!.filename);
+      setKind(inferKindFromFilename(next[0]!.filename));
+      setDescription(`파일에서 가져옴 · ${list[0]!.name}`);
+    } else {
+      // 여러 개 또는 기존 번들에 합치기 (같은 이름이면 덮어쓰기)
+      setFiles((prev) => {
+        const map = new Map(prev.map((f) => [f.filename.toLowerCase(), f]));
+        for (const n of next) {
+          map.set(n.filename.toLowerCase(), n);
+        }
+        return Array.from(map.values());
+      });
+      if (next.some((n) => isSkillExtName(n.filename) || /^skill\.md$/i.test(n.filename))) {
+        setKind("skill");
+      }
+      setDescription((d) => d || `번들 · ${fileNames}`);
     }
+    markDirty();
   }
 
   return (
@@ -132,18 +222,6 @@ export function AgentDocEditor({ doc }: Props) {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs text-muted-foreground">파일명</label>
-          <Input
-            value={filename}
-            onChange={(e) => {
-              setFilename(e.target.value);
-              markDirty();
-            }}
-            placeholder="SKILL.md"
-            className="font-mono text-sm"
-          />
-        </div>
-        <div className="space-y-1">
           <label className="text-xs text-muted-foreground">종류</label>
           <select
             value={kind}
@@ -160,7 +238,7 @@ export function AgentDocEditor({ doc }: Props) {
             ))}
           </select>
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1 sm:col-span-2">
           <label className="text-xs text-muted-foreground">설명</label>
           <Input
             value={description}
@@ -173,22 +251,75 @@ export function AgentDocEditor({ doc }: Props) {
         </div>
       </div>
 
+      {/* 번들 파일 탭 */}
+      <div className="space-y-2">
+        <div className="flex flex-wrap items-center gap-1 border-b border-border pb-2">
+          {files.map((f, i) => (
+            <button
+              key={`${f.filename}-${i}`}
+              type="button"
+              onClick={() => setActiveIdx(i)}
+              className={cn(
+                "rounded-md px-3 py-1.5 text-xs font-mono transition-colors",
+                i === activeIdx
+                  ? "bg-indigo-600/20 text-indigo-600 dark:text-indigo-300"
+                  : "text-muted-foreground hover:bg-muted"
+              )}
+            >
+              {f.filename}
+              {isSkillExtName(f.filename) && (
+                <span className="ml-1 opacity-70">·skill</span>
+              )}
+            </button>
+          ))}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8"
+            onClick={() => addEmptyFile("md")}
+          >
+            <Plus className="h-3.5 w-3.5" />
+            .md
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-8"
+            onClick={() => addEmptyFile("skill")}
+          >
+            <Plus className="h-3.5 w-3.5" />
+            .skill
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          번들 {files.length}개 파일
+          {files.length > 1 && " · skill.md 와 .skill 을 한 문서에서 함께 봅니다"}
+        </p>
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
         <Button onClick={() => void save()} disabled={saving}>
           <Save className="h-4 w-4" />
           {saving ? "저장 중…" : "저장"}
         </Button>
         <Button variant="secondary" onClick={() => void copyContent()}>
-          {copied ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            <Copy className="h-4 w-4" />
-          )}
-          {copied ? "복사됨" : "본문 복사"}
+          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copied ? "복사됨" : "현재 파일 복사"}
         </Button>
-        <Button variant="outline" onClick={downloadMd}>
+        <Button variant="outline" onClick={downloadActive}>
           <Download className="h-4 w-4" />
-          .md 다운로드
+          현재 파일 다운로드
+        </Button>
+        <Button
+          variant="ghost"
+          className="text-red-400"
+          onClick={removeActiveFile}
+          disabled={files.length <= 1}
+        >
+          <Trash2 className="h-4 w-4" />
+          탭 제거
         </Button>
         {status && (
           <span className="text-xs text-muted-foreground">{status}</span>
@@ -196,19 +327,30 @@ export function AgentDocEditor({ doc }: Props) {
       </div>
 
       <div className="space-y-1">
+        <label className="text-xs text-muted-foreground">현재 파일명</label>
+        <Input
+          value={active?.filename ?? ""}
+          onChange={(e) => updateActiveFilename(e.target.value)}
+          className="font-mono text-sm"
+          placeholder="SKILL.md 또는 foo.skill"
+        />
+      </div>
+
+      <div className="space-y-1">
         <label className="text-xs text-muted-foreground">
-          Markdown 본문 (파일 드롭으로 내용 교체 가능)
+          본문 (파일 드롭: 1개면 교체, 여러 개면 번들에 병합)
         </label>
         <Textarea
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-            markDirty();
-          }}
+          value={active?.content ?? ""}
+          onChange={(e) => updateActiveContent(e.target.value)}
           onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => void onDropFile(e)}
+          onDrop={(e) => void onDropFiles(e)}
           className="min-h-[480px] font-mono text-sm leading-relaxed"
-          placeholder="# CLAUDE.md / AGENTS.md / SKILL.md …"
+          placeholder={
+            isSkillExtName(active?.filename ?? "")
+              ? "# .skill 파일 내용…"
+              : "# SKILL.md / AGENTS.md / CLAUDE.md …"
+          }
           spellCheck={false}
         />
       </div>

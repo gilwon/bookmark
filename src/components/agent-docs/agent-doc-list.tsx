@@ -1,10 +1,11 @@
-// 에이전트 문서 목록 — 템플릿 생성 / 드래그앤드롭 업로드 / 삭제
+// 에이전트 문서 목록 — 템플릿 / 드래그앤드롭(번들) / 삭제
 "use client";
 
 import {
   Bot,
   Download,
   FileCode2,
+  Layers,
   Plus,
   Trash2,
   Upload,
@@ -12,6 +13,12 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import {
+  groupUploadParts,
+  isAllowedAgentDocName,
+  isSkillExtName,
+  type AgentDocFilePart,
+} from "@/lib/agent-doc-bundle";
 import {
   AGENT_DOC_KIND_LABEL,
   getAgentDocTemplates,
@@ -25,24 +32,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-/** 허용 확장자·MIME */
-const TEXT_EXT = /\.(md|markdown|mdx|txt)$/i;
-const MAX_BYTES = 2 * 1024 * 1024; // 2MB
-
-/** 텍스트 파일 여부 */
-function isTextLikeFile(file: File): boolean {
-  if (TEXT_EXT.test(file.name)) return true;
-  if (
-    file.type.startsWith("text/") ||
-    file.type === "application/x-markdown" ||
-    file.type === ""
-  ) {
-    // 확장자가 있으면 확장자로 한 번 더 확인
-    if (file.name.includes(".") && !TEXT_EXT.test(file.name)) return false;
-    return true;
-  }
-  return false;
-}
+const MAX_BYTES = 2 * 1024 * 1024;
 
 /** 에이전트 문서 목록 UI */
 export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
@@ -61,14 +51,19 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     return docs.filter((d) => {
       if (filter !== "all" && d.kind !== filter) return false;
       if (!needle) return true;
-      return [d.title, d.filename, d.description ?? "", d.content]
+      const hay = [
+        d.title,
+        d.filename,
+        d.description ?? "",
+        d.content,
+        ...d.files.flatMap((f) => [f.filename, f.content]),
+      ]
         .join(" ")
-        .toLowerCase()
-        .includes(needle);
+        .toLowerCase();
+      return hay.includes(needle);
     });
   }, [docs, filter, q]);
 
-  /** 템플릿으로 새 문서 생성 후 에디터로 이동 */
   async function createFromTemplate(kind: AgentDocKind) {
     setCreating(true);
     try {
@@ -89,52 +84,78 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   }
 
   /**
-   * FileList / File[] 을 읽어 API로 저장한다.
-   * 성공 시 마지막 문서로 이동(1개) 또는 목록 갱신(여러 개).
+   * 파일들을 읽어 skill.md + .skill 은 한 문서로 묶고 나머지는 단독 저장.
    */
   async function importFiles(fileList: FileList | File[]) {
-    const files = Array.from(fileList);
-    if (files.length === 0) return;
+    const raw = Array.from(fileList);
+    if (raw.length === 0) return;
 
     setUploading(true);
     setUploadMsg(null);
 
-    const results: { ok: boolean; name: string; error?: string; id?: string }[] =
-      [];
+    const parts: AgentDocFilePart[] = [];
+    const errors: string[] = [];
 
-    for (const file of files) {
-      if (!isTextLikeFile(file)) {
-        results.push({
-          ok: false,
-          name: file.name,
-          error: "지원하지 않는 형식 (.md / .txt)",
-        });
-        continue;
+    for (const file of raw) {
+      if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
+        // 확장자 허용 목록 밖
+        if (
+          !file.type.startsWith("text/") &&
+          file.type !== "" &&
+          !file.name.toLowerCase().endsWith(".skill")
+        ) {
+          errors.push(`${file.name}: 미지원 형식`);
+          continue;
+        }
       }
       if (file.size > MAX_BYTES) {
-        results.push({
-          ok: false,
-          name: file.name,
-          error: "2MB 초과",
-        });
+        errors.push(`${file.name}: 2MB 초과`);
         continue;
       }
-
       try {
         const content = await file.text();
-        const filename = normalizeFilename(file.name);
-        const kind = inferKindFromFilename(filename);
-        const title = filename.replace(/\.md$/i, "") || filename;
+        parts.push({
+          filename: normalizeFilename(file.name),
+          content,
+        });
+      } catch {
+        errors.push(`${file.name}: 읽기 실패`);
+      }
+    }
 
+    if (parts.length === 0) {
+      setUploadMsg(errors.join(" · ") || "가져올 파일이 없습니다.");
+      setUploading(false);
+      return;
+    }
+
+    const groups = groupUploadParts(parts);
+    const createdIds: string[] = [];
+    let ok = 0;
+
+    for (const group of groups) {
+      try {
+        const hasSkill =
+          group.some((f) => /^skill\.md$/i.test(f.filename)) ||
+          group.some((f) => isSkillExtName(f.filename));
+        const primary =
+          group.find((f) => /^skill\.md$/i.test(f.filename)) ?? group[0]!;
+        const names = group.map((f) => f.filename).join(", ");
         const res = await fetch("/api/agent-docs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            filename,
-            title,
-            kind,
-            description: `파일에서 가져옴 · ${file.name}`,
-            content,
+            title: primary.filename
+              .replace(/\.md$/i, "")
+              .replace(/\.skill$/i, ""),
+            kind: hasSkill
+              ? "skill"
+              : inferKindFromFilename(primary.filename),
+            description:
+              group.length > 1
+                ? `번들 · ${names}`
+                : `파일에서 가져옴 · ${primary.filename}`,
+            files: group,
           }),
         });
         if (!res.ok) {
@@ -142,31 +163,34 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
           throw new Error(data.error || "저장 실패");
         }
         const doc = (await res.json()) as AgentDoc;
-        results.push({ ok: true, name: file.name, id: doc.id });
+        createdIds.push(doc.id);
+        ok += 1;
       } catch (err) {
-        results.push({
-          ok: false,
-          name: file.name,
-          error: err instanceof Error ? err.message : "읽기 실패",
-        });
+        errors.push(
+          `${group.map((g) => g.filename).join("+")}: ${
+            err instanceof Error ? err.message : "실패"
+          }`
+        );
       }
     }
 
-    const okCount = results.filter((r) => r.ok).length;
-    const fail = results.filter((r) => !r.ok);
+    const bundleNote = groups.some((g) => g.length > 1)
+      ? " (skill.md + .skill 번들 포함)"
+      : "";
 
-    if (okCount === 1 && fail.length === 0 && results[0]?.id) {
-      setUploadMsg(`「${results[0].name}」 저장됨`);
-      router.push(`/agent-docs/${results[0].id}`);
+    if (ok === 1 && errors.length === 0 && createdIds[0]) {
+      setUploadMsg(`저장됨${bundleNote}`);
+      router.push(`/agent-docs/${createdIds[0]}`);
       router.refresh();
     } else {
-      const parts = [`${okCount}개 저장`];
-      if (fail.length > 0) {
-        parts.push(
-          `실패 ${fail.length}: ${fail.map((f) => `${f.name}(${f.error})`).join(", ")}`
-        );
-      }
-      setUploadMsg(parts.join(" · "));
+      setUploadMsg(
+        [
+          `${ok}개 문서 저장${bundleNote}`,
+          errors.length ? `문제: ${errors.join("; ")}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · ")
+      );
       router.refresh();
     }
 
@@ -180,47 +204,32 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     if (res.ok) router.refresh();
   }
 
-  /** 브라우저에서 .md 다운로드 */
   function downloadMd(doc: AgentDoc) {
-    const blob = new Blob([doc.content], {
-      type: "text/markdown;charset=utf-8",
+    // 번들이면 대표 파일만 다운로드 (편집기에서 개별 다운로드 권장)
+    const primary = doc.files[0] ?? {
+      filename: doc.filename,
+      content: doc.content,
+    };
+    const blob = new Blob([primary.content], {
+      type: "text/plain;charset=utf-8",
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = doc.filename || "NOTES.md";
+    a.download = primary.filename || "NOTES.md";
     a.click();
     URL.revokeObjectURL(url);
-  }
-
-  /** 드롭 영역 이벤트 */
-  function onDragOver(e: React.DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(true);
-  }
-
-  function onDragLeave(e: React.DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(false);
-  }
-
-  function onDrop(e: React.DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(false);
-    if (uploading || creating) return;
-    const files = e.dataTransfer.files;
-    if (files?.length) void importFiles(files);
   }
 
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card/50 p-4 space-y-3">
         <p className="text-sm text-muted-foreground">
-          템플릿으로 만들거나, 로컬 Markdown 파일을 드래그앤드롭·선택해
-          가져오세요.
+          템플릿으로 만들거나,{" "}
+          <strong className="font-medium text-foreground">
+            skill.md 와 .skill 파일을 함께 드롭
+          </strong>
+          하면 하나의 스킬 번들로 묶입니다.
         </p>
         <div className="flex flex-wrap gap-2">
           {templates.map((t) => (
@@ -238,7 +247,6 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         </div>
       </div>
 
-      {/* 드래그앤드롭 업로드 존 */}
       <div
         role="button"
         tabIndex={0}
@@ -248,10 +256,25 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             fileInputRef.current?.click();
           }
         }}
-        onDragOver={onDragOver}
-        onDragEnter={onDragOver}
-        onDragLeave={onDragLeave}
-        onDrop={onDrop}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragEnter={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          if (!uploading && e.dataTransfer.files?.length) {
+            void importFiles(e.dataTransfer.files);
+          }
+        }}
         onClick={() => !uploading && fileInputRef.current?.click()}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-10 text-center transition-colors",
@@ -276,13 +299,14 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                 : "파일을 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            .md · .markdown · .mdx · .txt · 여러 파일 가능 · 파일당 최대 2MB
+            .md · .skill · .txt · 여러 파일 · skill.md + .skill 은 자동 번들 ·
+            파일당 2MB
           </p>
         </div>
         <input
           ref={fileInputRef}
           type="file"
-          accept=".md,.markdown,.mdx,.txt,text/markdown,text/plain"
+          accept=".md,.markdown,.mdx,.txt,.skill,text/markdown,text/plain"
           multiple
           className="hidden"
           onChange={(e) => {
@@ -299,7 +323,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         <div className="flex-1 space-y-1">
           <label className="text-xs text-muted-foreground">검색</label>
           <Input
-            placeholder="파일명, 제목, 본문…"
+            placeholder="파일명, 제목, 본문, .skill…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
@@ -328,70 +352,79 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           {docs.length === 0
-            ? "아직 저장된 에이전트 문서가 없습니다. 템플릿 또는 파일 드롭으로 시작하세요."
+            ? "아직 문서가 없습니다. skill.md 와 .skill 을 함께 드롭해 보세요."
             : "필터 조건에 맞는 문서가 없습니다."}
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
-          {filtered.map((doc) => (
-            <Card
-              key={doc.id}
-              className="group transition-colors hover:border-border"
-            >
-              <CardContent className="flex items-start gap-3 p-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
-                  {doc.kind === "other" ? (
-                    <FileCode2 className="h-5 w-5" />
-                  ) : (
-                    <Bot className="h-5 w-5" />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1 space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="secondary">
-                      {AGENT_DOC_KIND_LABEL[doc.kind]}
-                    </Badge>
-                    <code className="truncate text-xs text-muted-foreground">
-                      {doc.filename}
-                    </code>
+          {filtered.map((doc) => {
+            const fileCount = doc.files?.length || 1;
+            return (
+              <Card
+                key={doc.id}
+                className="group transition-colors hover:border-border"
+              >
+                <CardContent className="flex items-start gap-3 p-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
+                    {fileCount > 1 ? (
+                      <Layers className="h-5 w-5" />
+                    ) : doc.kind === "other" ? (
+                      <FileCode2 className="h-5 w-5" />
+                    ) : (
+                      <Bot className="h-5 w-5" />
+                    )}
                   </div>
-                  <Link
-                    href={`/agent-docs/${doc.id}`}
-                    className="block truncate font-medium hover:text-indigo-500"
-                  >
-                    {doc.title}
-                  </Link>
-                  {doc.description && (
-                    <p className="line-clamp-2 text-xs text-muted-foreground">
-                      {doc.description}
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="secondary">
+                        {AGENT_DOC_KIND_LABEL[doc.kind]}
+                      </Badge>
+                      {fileCount > 1 && (
+                        <Badge variant="outline">번들 · {fileCount}파일</Badge>
+                      )}
+                      <code className="truncate text-xs text-muted-foreground">
+                        {doc.files?.map((f) => f.filename).join(" + ") ||
+                          doc.filename}
+                      </code>
+                    </div>
+                    <Link
+                      href={`/agent-docs/${doc.id}`}
+                      className="block truncate font-medium hover:text-indigo-500"
+                    >
+                      {doc.title}
+                    </Link>
+                    {doc.description && (
+                      <p className="line-clamp-2 text-xs text-muted-foreground">
+                        {doc.description}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      수정 {new Date(doc.updatedAt).toLocaleString("ko-KR")}
                     </p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    수정 {new Date(doc.updatedAt).toLocaleString("ko-KR")}
-                  </p>
-                </div>
-                <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => downloadMd(doc)}
-                    aria-label="다운로드"
-                  >
-                    <Download className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-red-400"
-                    onClick={() => void handleDelete(doc.id)}
-                    aria-label="삭제"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </div>
+                  <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => downloadMd(doc)}
+                      aria-label="다운로드"
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-400"
+                      onClick={() => void handleDelete(doc.id)}
+                      aria-label="삭제"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>
