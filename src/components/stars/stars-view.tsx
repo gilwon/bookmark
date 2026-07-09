@@ -9,7 +9,10 @@ import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { StarCard } from "@/components/stars/star-card";
 import { SyncButton } from "@/components/stars/sync-button";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  SearchSuggestInput,
+  type SearchSuggestItem,
+} from "@/components/ui/search-suggest-input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 
 type Props = {
@@ -57,6 +60,34 @@ export function StarsView({
       if (s.language) set.add(s.language);
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [initialStars]);
+
+  /** 검색 suggest — 레포 · 언어 · 토픽 */
+  const searchSuggestions = useMemo((): SearchSuggestItem[] => {
+    const items: SearchSuggestItem[] = [];
+    for (const s of initialStars) {
+      if (s.repoFullName?.trim()) {
+        items.push({
+          value: s.repoFullName.trim(),
+          label: s.repoFullName.trim(),
+          group: "레포",
+        });
+      }
+      if (s.language?.trim()) {
+        items.push({
+          value: s.language.trim(),
+          label: s.language.trim(),
+          group: "언어",
+        });
+      }
+      for (const t of s.topics ?? []) {
+        const topic = t.trim();
+        if (topic) {
+          items.push({ value: topic, label: topic, group: "토픽" });
+        }
+      }
+    }
+    return items;
   }, [initialStars]);
 
   const filtered = useMemo(() => {
@@ -169,10 +200,11 @@ export function StarsView({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
           <div className="flex-1 space-y-1">
             <label className="text-xs text-muted-foreground">검색</label>
-            <Input
+            <SearchSuggestInput
               placeholder="레포 이름, 설명, 토픽…"
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={setQ}
+              suggestions={searchSuggestions}
             />
           </div>
           <div className="w-full space-y-1 sm:w-40">

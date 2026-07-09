@@ -6,7 +6,10 @@ import { useRouter } from "next/navigation";
 import type { Bookmark } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
-import { Input } from "@/components/ui/input";
+import {
+  SearchSuggestInput,
+  type SearchSuggestItem,
+} from "@/components/ui/search-suggest-input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 import { BookmarkCard } from "./bookmark-card";
@@ -63,6 +66,29 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
       label: categoryLabel(key),
       count: map.get(key)!,
     }));
+  }, [bookmarks]);
+
+  /** 검색 suggest — 제목 · 카테고리 · 태그 · 도메인 */
+  const searchSuggestions = useMemo((): SearchSuggestItem[] => {
+    const items: SearchSuggestItem[] = [];
+    for (const b of bookmarks) {
+      if (b.title?.trim()) {
+        items.push({ value: b.title.trim(), label: b.title.trim(), group: "제목" });
+      }
+      const cat = b.category?.trim();
+      if (cat) items.push({ value: cat, label: cat, group: "카테고리" });
+      for (const tag of b.tags) {
+        const t = tag.trim();
+        if (t) items.push({ value: t, label: t, group: "태그" });
+      }
+      try {
+        const host = new URL(b.url).hostname.replace(/^www\./, "");
+        if (host) items.push({ value: host, label: host, group: "도메인" });
+      } catch {
+        /* ignore */
+      }
+    }
+    return items;
   }, [bookmarks]);
 
   /** 검색 + 카테고리 필터 */
@@ -130,14 +156,14 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
 
   return (
     <div className="space-y-4">
-      {/* Stars 와 동일한 검색 입력 */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
         <div className="flex-1 space-y-1">
           <label className="text-xs text-muted-foreground">검색</label>
-          <Input
+          <SearchSuggestInput
             placeholder="제목, URL, 설명, 태그, 카테고리…"
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            onChange={setQ}
+            suggestions={searchSuggestions}
           />
         </div>
       </div>

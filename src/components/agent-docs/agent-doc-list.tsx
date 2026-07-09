@@ -46,7 +46,10 @@ import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  SearchSuggestInput,
+  type SearchSuggestItem,
+} from "@/components/ui/search-suggest-input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
@@ -103,6 +106,42 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       counts[d.kind] = (counts[d.kind] ?? 0) + 1;
     }
     return counts;
+  }, [docs]);
+
+  /** 검색 suggest — 제목 · 파일명 · 종류 */
+  const searchSuggestions = useMemo((): SearchSuggestItem[] => {
+    const items: SearchSuggestItem[] = [];
+    for (const d of docs) {
+      if (d.title?.trim()) {
+        items.push({
+          value: d.title.trim(),
+          label: d.title.trim(),
+          group: "제목",
+        });
+      }
+      if (d.filename?.trim()) {
+        items.push({
+          value: d.filename.trim(),
+          label: d.filename.trim(),
+          group: "파일",
+        });
+      }
+      for (const f of d.files ?? []) {
+        if (f.filename?.trim()) {
+          items.push({
+            value: f.filename.trim(),
+            label: f.filename.trim(),
+            group: "파일",
+          });
+        }
+      }
+      items.push({
+        value: AGENT_DOC_KIND_SHORT[d.kind],
+        label: AGENT_DOC_KIND_LABEL[d.kind],
+        group: "카테고리",
+      });
+    }
+    return items;
   }, [docs]);
 
   const filtered = useMemo(() => {
@@ -412,14 +451,14 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
 
       {docs.length > 0 && (
         <>
-          {/* Stars 와 동일한 검색 입력 */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="flex-1 space-y-1">
               <label className="text-xs text-muted-foreground">검색</label>
-              <Input
+              <SearchSuggestInput
                 placeholder="파일명, 제목, 본문…"
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={setQ}
+                suggestions={searchSuggestions}
               />
             </div>
           </div>

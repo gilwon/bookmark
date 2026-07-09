@@ -12,7 +12,10 @@ import { extractTiptapText } from "@/lib/tiptap-text";
 import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  SearchSuggestInput,
+  type SearchSuggestItem,
+} from "@/components/ui/search-suggest-input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +36,14 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       return hay.includes(needle);
     });
   }, [pages, q]);
+
+  /** 검색 suggest — 페이지 제목 */
+  const searchSuggestions = useMemo((): SearchSuggestItem[] => {
+    return pages
+      .map((p) => p.title?.trim())
+      .filter((t): t is string => Boolean(t))
+      .map((title) => ({ value: title, label: title, group: "제목" }));
+  }, [pages]);
 
   const ids = useMemo(() => filtered.map((p) => p.id), [filtered]);
   const selection = useSelection(ids);
@@ -100,14 +111,14 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
         </div>
       ) : (
         <div className="space-y-3">
-          {/* Stars 와 동일한 검색 입력 */}
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="flex-1 space-y-1">
               <label className="text-xs text-muted-foreground">검색</label>
-              <Input
+              <SearchSuggestInput
                 placeholder="제목, 본문…"
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={setQ}
+                suggestions={searchSuggestions}
               />
             </div>
           </div>
