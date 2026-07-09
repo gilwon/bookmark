@@ -40,29 +40,25 @@ export function Sidebar() {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
-  const Nav = (
-    <nav className="flex flex-1 flex-col gap-1 px-3">
-      {navItems.map(({ href, label, icon: Icon }) => {
-        const active = pathname === href || pathname.startsWith(href + "/");
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={() => setOpen(false)}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-              active
-                ? "bg-indigo-600/20 text-indigo-600 dark:text-indigo-300"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-          >
-            <Icon className="h-4 w-4" />
-            {label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
+  const navLinks = navItems.map(({ href, label, icon: Icon }) => {
+    const active = pathname === href || pathname.startsWith(href + "/");
+    return (
+      <Link
+        key={href}
+        href={href}
+        onClick={() => setOpen(false)}
+        className={cn(
+          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+          active
+            ? "bg-indigo-600/20 text-indigo-600 dark:text-indigo-300"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        )}
+      >
+        <Icon className="h-4 w-4" />
+        {label}
+      </Link>
+    );
+  });
 
   const footerProps = {
     theme,
@@ -96,24 +92,30 @@ export function Sidebar() {
             className="absolute inset-0 bg-black/60"
             onClick={() => setOpen(false)}
           />
-          <aside className="relative z-50 flex h-full w-64 flex-col border-r border-border bg-sidebar py-4">
-            <div className="mb-4 px-5 text-lg font-bold text-foreground">
+          {/* 모바일: 하단 프로필 고정, 메뉴만 스크롤 */}
+          <aside className="relative z-50 flex h-full w-64 flex-col border-r border-border bg-sidebar">
+            <div className="shrink-0 px-5 py-4 text-lg font-bold text-foreground">
               MyMark
             </div>
-            {Nav}
+            <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
+              {navLinks}
+            </nav>
             <SidebarFooter {...footerProps} />
           </aside>
         </div>
       )}
 
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar py-5 lg:flex">
+      {/* 데스크톱: 뷰포트 높이 고정 + 하단 푸터 sticky */}
+      <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-border bg-sidebar lg:flex">
         <Link
           href="/dashboard"
-          className="mb-6 px-5 text-xl font-bold tracking-tight text-foreground"
+          className="shrink-0 px-5 py-5 text-xl font-bold tracking-tight text-foreground"
         >
           MyMark
         </Link>
-        {Nav}
+        <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
+          {navLinks}
+        </nav>
         <SidebarFooter {...footerProps} />
       </aside>
     </>
@@ -143,7 +145,7 @@ function SidebarFooter({
     : null;
 
   return (
-    <div className="mt-auto space-y-2 border-t border-border px-3 pt-3">
+    <div className="mt-auto shrink-0 space-y-2 border-t border-border bg-sidebar px-3 pb-4 pt-3">
       <div className="flex items-center gap-3 px-2 py-1">
         {image ? (
           <Image
