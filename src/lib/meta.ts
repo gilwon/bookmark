@@ -21,7 +21,11 @@ function guessFavicon(url: string): string {
 }
 
 /** open-graph-scraper로 메타를 추출하고, 실패 시 호스트 기반 폴백을 반환한다. */
-export async function extractMeta(url: string): Promise<UrlMeta> {
+export async function extractMeta(
+  url: string,
+  options?: { timeoutSec?: number }
+): Promise<UrlMeta> {
+  const timeoutSec = options?.timeoutSec ?? 8;
   const fallback: UrlMeta = {
     title: hostnameOf(url),
     description: null,
@@ -34,7 +38,7 @@ export async function extractMeta(url: string): Promise<UrlMeta> {
     const ogs = (await import("open-graph-scraper")).default;
     const { result, error } = await ogs({
       url,
-      timeout: 8,
+      timeout: timeoutSec,
       fetchOptions: {
         headers: {
           "user-agent":
@@ -89,4 +93,31 @@ export function categoryFromUrl(url: string): string {
   } catch {
     return "기타";
   }
+}
+
+/**
+ * 제한된 동시성으로 작업을 처리한다.
+ * HTML import 등 대량 메타 추출에 사용.
+ */
+export async function mapPool<T, R>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T, index: number) => Promise<R>
+): Promise<R[]> {
+  if (items.length === 0) return [];
+  const results = new Array<R>(items.length);
+  let next = 0;
+  const workers = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    async () => {
+      while (true) {
+        const i = next;
+        next += 1;
+        if (i >= items.length) break;
+        results[i] = await fn(items[i], i);
+      }
+    }
+  );
+  await Promise.all(workers);
+  return results;
 }

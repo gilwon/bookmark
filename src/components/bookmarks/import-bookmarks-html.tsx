@@ -1,4 +1,4 @@
-// 브라우저 북마크 HTML export 업로드 / 드래그앤드롭 import
+// 브라우저 북마크 HTML export 업로드 — 배치 import + OG 메타 추출
 "use client";
 
 import { FileUp, Upload } from "lucide-react";
@@ -12,13 +12,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const MAX_HTML_BYTES = 15 * 1024 * 1024;
+/** 서버 메타 추출 한도에 맞춘 배치 크기 */
+const BATCH_SIZE = 25;
 
-/** HTML 북마크 파일을 파싱해 일괄 등록한다. */
+/** HTML 북마크 파일을 파싱해 OG 메타와 함께 일괄 등록한다. */
 export function ImportBookmarksHtml() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,6 +31,7 @@ export function ImportBookmarksHtml() {
 
     setError(null);
     setMessage(null);
+    setProgress(null);
 
     if (!/\.html?$/i.test(file.name) && file.type && !file.type.includes("html")) {
       setError("HTML 북마크 파일(.html)을 선택하세요.");
@@ -56,31 +60,55 @@ export function ImportBookmarksHtml() {
         return;
       }
 
-      const res = await fetch("/api/bookmarks/import", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: parsed.map((p) => ({
-            url: p.url,
-            title: p.title,
-            category: p.category,
-            addDate: p.addDate,
-          })),
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data.error || "import 실패");
+      const items = parsed.map((p) => ({
+        url: p.url,
+        title: p.title,
+        category: p.category,
+        addDate: p.addDate,
+      }));
+
+      let imported = 0;
+      let enriched = 0;
+      let skipped = 0;
+      let invalid = 0;
+      const batches = Math.ceil(items.length / BATCH_SIZE);
+
+      for (let i = 0; i < items.length; i += BATCH_SIZE) {
+        const batch = items.slice(i, i + BATCH_SIZE);
+        const batchNo = Math.floor(i / BATCH_SIZE) + 1;
+        setProgress(
+          `메타·이미지 가져오는 중… ${Math.min(i + batch.length, items.length)}/${items.length} (배치 ${batchNo}/${batches})`
+        );
+
+        const res = await fetch("/api/bookmarks/import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: batch, fetchMeta: true }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(
+            (data as { error?: string }).error ||
+              `import 실패 (배치 ${batchNo})`
+          );
+        }
+        imported += Number((data as { imported?: number }).imported ?? 0);
+        enriched += Number((data as { enriched?: number }).enriched ?? 0);
+        skipped += Number((data as { skipped?: number }).skipped ?? 0);
+        invalid += Number((data as { invalid?: number }).invalid ?? 0);
       }
 
+      setProgress(null);
       setMessage(
-        `가져오기 완료 · 추가 ${data.imported ?? 0}개` +
-          (data.skipped ? ` · 중복 스킵 ${data.skipped}` : "") +
-          (data.invalid ? ` · 무효 ${data.invalid}` : "") +
-          ` (파일 내 ${parsed.length}개 링크)`
+        `가져오기 완료 · 추가 ${imported}개` +
+          (enriched ? ` · 메타 보강 ${enriched}개` : "") +
+          (skipped ? ` · 스킵 ${skipped}` : "") +
+          (invalid ? ` · 무효 ${invalid}` : "") +
+          ` (파일 내 ${parsed.length}개 · OG 이미지/설명 포함)`
       );
       router.refresh();
     } catch (err) {
+      setProgress(null);
       setError(err instanceof Error ? err.message : "가져오기 실패");
     } finally {
       setLoading(false);
@@ -137,14 +165,14 @@ export function ImportBookmarksHtml() {
           <div>
             <p className="text-sm font-medium text-foreground">
               {loading
-                ? "가져오는 중…"
+                ? progress || "가져오는 중…"
                 : dragOver
                   ? "여기에 놓으면 가져옵니다"
                   : "북마크 HTML 가져오기"}
             </p>
             <p className="text-xs text-muted-foreground">
-              Chrome / Edge / Firefox 내보내기 파일 (예: bookmarks_….html) ·
-              폴더는 카테고리로 저장 · 중복 URL 스킵
+              Chrome / Edge / Firefox 내보내기 · 폴더는 카테고리 · 사이트 OG
+              이미지·설명 자동 추출 · 중복 URL 스킵
             </p>
           </div>
         </div>
@@ -172,6 +200,9 @@ export function ImportBookmarksHtml() {
           }}
         />
       </div>
+      {progress && loading && (
+        <p className="text-sm text-muted-foreground">{progress}</p>
+      )}
       {message && (
         <p className="text-sm text-emerald-600 dark:text-emerald-400">{message}</p>
       )}
