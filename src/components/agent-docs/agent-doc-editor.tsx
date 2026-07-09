@@ -1,10 +1,14 @@
-// 에이전트 문서 Markdown 에디터 — 자동 저장 / 복사 / 다운로드
+// 에이전트 문서 Markdown 에디터 — 자동 저장 / 복사 / 다운로드 / 드롭 교체
 "use client";
 
 import { Check, Copy, Download, Save } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { AGENT_DOC_KIND_LABEL } from "@/lib/agent-doc-templates";
+import {
+  AGENT_DOC_KIND_LABEL,
+  inferKindFromFilename,
+  normalizeFilename,
+} from "@/lib/agent-doc-templates";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +85,29 @@ export function AgentDocEditor({ doc }: Props) {
     a.download = filename || "NOTES.md";
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  /** 본문 영역에 파일 드롭 시 내용 교체 */
+  async function onDropFile(e: React.DragEvent) {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("2MB 이하 파일만 가능합니다.");
+      return;
+    }
+    try {
+      const text = await file.text();
+      const name = normalizeFilename(file.name);
+      setContent(text);
+      setFilename(name);
+      setTitle(name.replace(/\.md$/i, "") || name);
+      setKind(inferKindFromFilename(name));
+      setDescription(`파일에서 가져옴 · ${file.name}`);
+      setStatus("수정됨…");
+    } catch {
+      alert("파일을 읽지 못했습니다.");
+    }
   }
 
   return (
@@ -169,13 +196,17 @@ export function AgentDocEditor({ doc }: Props) {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs text-muted-foreground">Markdown 본문</label>
+        <label className="text-xs text-muted-foreground">
+          Markdown 본문 (파일 드롭으로 내용 교체 가능)
+        </label>
         <Textarea
           value={content}
           onChange={(e) => {
             setContent(e.target.value);
             markDirty();
           }}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => void onDropFile(e)}
           className="min-h-[480px] font-mono text-sm leading-relaxed"
           placeholder="# CLAUDE.md / AGENTS.md / SKILL.md …"
           spellCheck={false}
