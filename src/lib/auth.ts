@@ -127,19 +127,25 @@ export const authConfig: NextAuthConfig = {
     },
     /** 클라이언트 세션에는 토큰 평문을 절대 실지 않는다. */
     async session({ session, token }) {
-      // Auth.js 일부 경로에서 session 이 null 로 올 수 있음
-      if (!session) {
+      // Auth.js 일부 경로에서 session/user 가 비어 올 수 있음
+      if (!session?.user) {
         return {
-          user: { id: (token?.sub as string) ?? "unknown" },
-          expires: new Date(0).toISOString(),
-          hasGithub: false,
+          ...session,
+          user: {
+            id: (token?.sub as string) ?? "unknown",
+            name: null,
+            email: null,
+            image: null,
+          },
+          expires: session?.expires ?? new Date(0).toISOString(),
+          hasGithub: Boolean(token?.hasGithub),
+          githubLogin:
+            typeof token?.githubLogin === "string"
+              ? token.githubLogin
+              : undefined,
         };
       }
-      if (!session.user) {
-        session.user = { id: (token?.sub as string) ?? "unknown" };
-      } else {
-        session.user.id = (token?.sub as string) ?? "unknown";
-      }
+      session.user.id = (token?.sub as string) ?? "unknown";
       session.hasGithub = Boolean(token?.hasGithub);
       session.githubLogin =
         typeof token?.githubLogin === "string" ? token.githubLogin : undefined;
