@@ -1,0 +1,142 @@
+// snake_case (Supabase) ↔ camelCase (앱) 매핑
+import type {
+  AgentDocRow,
+  BookmarkRow,
+  CustomPageRow,
+  GithubStarRow,
+  OauthTokenRow,
+} from "./types";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export function mapBookmark(r: any): BookmarkRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    url: r.url,
+    title: r.title,
+    description: r.description ?? null,
+    image: r.image ?? null,
+    favicon: r.favicon ?? null,
+    tags: r.tags ?? "[]",
+    category: r.category ?? null,
+    createdAt: r.created_at ?? r.createdAt,
+  };
+}
+
+export function mapStar(r: any): GithubStarRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    repoFullName: r.repo_full_name ?? r.repoFullName,
+    description: r.description ?? null,
+    language: r.language ?? null,
+    stars: r.stars ?? 0,
+    topics: r.topics ?? "[]",
+    url: r.url,
+    lastSynced: r.last_synced ?? r.lastSynced,
+    createdAt: r.created_at ?? r.createdAt,
+  };
+}
+
+export function mapPage(r: any): CustomPageRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    title: r.title,
+    content: r.content ?? "{}",
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function mapToken(r: any): OauthTokenRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    provider: r.provider,
+    accessTokenEnc: r.access_token_enc ?? r.accessTokenEnc,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function mapAgentDoc(r: any): AgentDocRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    kind: r.kind,
+    filename: r.filename,
+    title: r.title,
+    description: r.description ?? null,
+    content: r.content ?? "",
+    bundle: typeof r.bundle === "string" ? r.bundle : JSON.stringify(r.bundle ?? []),
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function bookmarkToDb(row: Partial<BookmarkRow> & { id: string; userId: string; url: string; title: string; createdAt: string }) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    url: row.url,
+    title: row.title,
+    description: row.description ?? null,
+    image: row.image ?? null,
+    favicon: row.favicon ?? null,
+    tags: row.tags ?? "[]",
+    category: row.category ?? null,
+    created_at: row.createdAt,
+  };
+}
+
+export function starToDb(row: GithubStarRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    repo_full_name: row.repoFullName,
+    description: row.description,
+    language: row.language,
+    stars: row.stars,
+    topics: row.topics,
+    url: row.url,
+    last_synced: row.lastSynced,
+    created_at: row.createdAt,
+  };
+}
+
+export function pageToDb(row: CustomPageRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    title: row.title,
+    content: row.content,
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
+  };
+}
+
+export function tokenToDb(row: OauthTokenRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    provider: row.provider,
+    access_token_enc: row.accessTokenEnc,
+    updated_at: row.updatedAt,
+  };
+}
+
+export function agentDocToDb(row: AgentDocRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    kind: row.kind,
+    filename: row.filename,
+    title: row.title,
+    description: row.description,
+    content: row.content,
+    bundle: row.bundle,
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
+  };
+}

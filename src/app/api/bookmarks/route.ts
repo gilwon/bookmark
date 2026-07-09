@@ -1,18 +1,14 @@
 // 북마크 목록 조회 / 생성 API
-import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { bookmarks } from "@/lib/db/schema";
 import { categoryFromUrl, extractMeta } from "@/lib/meta";
+import { store } from "@/lib/store";
 import type { Bookmark } from "@/lib/types";
-import { qall, qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
-/** DB 행을 API 응답용 Bookmark로 변환한다. */
-function toBookmark(row: typeof bookmarks.$inferSelect): Bookmark {
+function toBookmark(row: Awaited<ReturnType<typeof store.listBookmarks>>[0]): Bookmark {
   let tags: string[] = [];
   try {
     tags = JSON.parse(row.tags || "[]");
@@ -33,19 +29,17 @@ function toBookmark(row: typeof bookmarks.$inferSelect): Bookmark {
   };
 }
 
-/** GET /api/bookmarks — 현재 사용자 북마크 목록 */
+/** GET /api/bookmarks */
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
-
-  const rows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, session.user.id)).orderBy(desc(bookmarks.createdAt)));
-
+  const rows = await store.listBookmarks(session.user.id);
   return NextResponse.json(rows.map(toBookmark));
 }
 
-/** POST /api/bookmarks — 메타 추출 후 북마크 생성 */
+/** POST /api/bookmarks */
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -58,9 +52,7 @@ export async function POST(req: Request) {
   }
 
   let url = body.url.trim();
-  if (!/^https?:\/\//i.test(url)) {
-    url = `https://${url}`;
-  }
+  if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
 
   const tags: string[] = Array.isArray(body.tags)
     ? body.tags.map(String).filter(Boolean)
@@ -72,22 +64,18 @@ export async function POST(req: Request) {
 
   const meta = await extractMeta(url);
   const now = new Date().toISOString();
-  const id = uuidv4();
+  const row = await store.insertBookmark({
+    id: uuidv4(),
+    userId: session.user.id,
+    url,
+    title: meta.title,
+    description: meta.description,
+    image: meta.image,
+    favicon: meta.favicon,
+    tags: JSON.stringify(tags),
+    category,
+    createdAt: now,
+  });
 
-  await qrun(db.insert(bookmarks)
-    .values({
-      id,
-      userId: session.user.id,
-      url,
-      title: meta.title,
-      description: meta.description,
-      image: meta.image,
-      favicon: meta.favicon,
-      tags: JSON.stringify(tags),
-      category,
-      createdAt: now,
-    }));
-
-  const row = (await qget(db.select().from(bookmarks).where(eq(bookmarks.id, id))))!;
   return NextResponse.json(toBookmark(row), { status: 201 });
 }

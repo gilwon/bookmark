@@ -44,3 +44,10 @@ next-env.d.ts
 
 # local SQLite data
 /data
+
+
+CLAUDE.md
+AGENTS.md
+SKILL.md
+GEMINI.md
+plan.md

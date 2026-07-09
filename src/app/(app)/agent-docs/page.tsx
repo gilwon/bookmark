@@ -1,21 +1,15 @@
-// 에이전트 문서 목록 (SKILL.md / AGENTS.md / CLAUDE.md / .skill 번들)
-import { desc, eq } from "drizzle-orm";
+// 에이전트 문서 목록
 import { AgentDocList } from "@/components/agent-docs/agent-doc-list";
 import { rowToAgentDoc } from "@/lib/agent-doc-mapper";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { agentDocs } from "@/lib/db/schema";
-import { qall } from "@/lib/db/query";
+import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
 
-/** 에이전트 지시 문서 보관함 */
 export default async function AgentDocsPage() {
   const session = await auth();
   const userId = session!.user!.id;
-
-  const rows = await qall(db.select().from(agentDocs)    .where(eq(agentDocs.userId, userId)).orderBy(desc(agentDocs.updatedAt)));
-
+  const rows = await store.listAgentDocs(userId);
   const list = rows.map(rowToAgentDoc);
 
   return (

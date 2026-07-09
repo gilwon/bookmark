@@ -1,11 +1,9 @@
-// 북마크 HTML 일괄 import API (메타 크롤링 생략 — 속도)
-import { eq } from "drizzle-orm";
+// 북마크 HTML 일괄 import
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { requireUser } from "@/lib/authz";
-import { bookmarks, db } from "@/lib/db";
-import { qall, qrun } from "@/lib/db/query";
 import { categoryFromUrl } from "@/lib/meta";
+import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
 
@@ -19,7 +17,6 @@ type ImportItem = {
 
 const MAX_ITEMS = 5000;
 
-/** POST /api/bookmarks/import — 여러 URL 일괄 저장 */
 export async function POST(req: Request) {
   const gate = await requireUser();
   if (!gate.ok) return gate.response;
@@ -31,7 +28,6 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
-
   if (body.items.length > MAX_ITEMS) {
     return NextResponse.json(
       { error: `한 번에 최대 ${MAX_ITEMS}개까지 import 할 수 있습니다.` },
@@ -39,14 +35,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const existing = await qall(
-    db
-      .select({ url: bookmarks.url })
-      .from(bookmarks)
-      .where(eq(bookmarks.userId, gate.user.userId))
-  );
   const existingUrls = new Set(
-    existing.map((r: { url: string }) => r.url.toLowerCase())
+    (await store.listBookmarkUrls(gate.user.userId)).map((u) => u.toLowerCase())
   );
 
   let imported = 0;
@@ -104,24 +94,19 @@ export async function POST(req: Request) {
       ? raw.tags.map(String).filter(Boolean)
       : [];
 
-    const createdAt =
-      typeof raw.addDate === "string" && raw.addDate ? raw.addDate : now;
-
-    const id = uuidv4();
-    await qrun(
-      db.insert(bookmarks).values({
-        id,
-        userId: gate.user.userId,
-        url,
-        title,
-        description: null,
-        image: null,
-        favicon: null,
-        tags: JSON.stringify(tags),
-        category,
-        createdAt,
-      })
-    );
+    await store.insertBookmark({
+      id: uuidv4(),
+      userId: gate.user.userId,
+      url,
+      title,
+      description: null,
+      image: null,
+      favicon: null,
+      tags: JSON.stringify(tags),
+      category,
+      createdAt:
+        typeof raw.addDate === "string" && raw.addDate ? raw.addDate : now,
+    });
 
     existingUrls.add(key);
     imported += 1;

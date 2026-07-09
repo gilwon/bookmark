@@ -15,7 +15,7 @@
 
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS v4
 - Auth.js (next-auth v5) — GitHub OAuth + 개발용 Dev Login
-- Drizzle ORM + **Supabase Postgres** (`DATABASE_URL`) 또는 로컬 SQLite
+- 데이터: **Supabase JS** (`service_role`) 또는 로컬 SQLite
 - open-graph-scraper, Octokit, Tiptap
 - GitHub access_token은 **서버 DB 암호 저장** (세션 비노출)
 
@@ -43,13 +43,15 @@ npm run dev
 - email: `dev@local` / password: `dev`
 - Star 동기화 불가 (OAuth 토큰 없음)
 
-### DB / Supabase
+### DB / Supabase (방식 B — JS 클라이언트)
 
-- **기본(로컬)**: `data/mymark.db` (SQLite) 자동 생성  
-  → 터미널에 `[db] driver=sqlite`
-- **Supabase**: `.env.local` 에 `DATABASE_URL` 설정 + `supabase/schema.sql` 실행  
-  → 상세 절차: [`supabase/MIGRATION.md`](./supabase/MIGRATION.md)  
-  → 터미널에 `[db] driver=postgres (Supabase/Postgres)`
+- **기본(로컬)**: SQLite (`data/mymark.db`)  
+  → `[db] backend=sqlite`
+- **Supabase**: `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`  
+  → `DATABASE_URL` **불필요** (PostgREST API 사용)  
+  → SQL: `supabase/schema.sql`  
+  → 가이드: [`supabase/MIGRATION.md`](./supabase/MIGRATION.md)  
+  → `[db] backend=supabase (Supabase JS)`
 
 ## 환경 변수
 
@@ -60,6 +62,9 @@ npm run dev
 | `GITHUB_SECRET` | Star 연동 시 | OAuth Client Secret |
 | `AUTH_URL` | 권장 | 예: `http://localhost:3000` |
 | `ENABLE_DEV_LOGIN` | 선택 | `true`/`false` — 프로덕션 Dev Login |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 모드 | Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase 모드 | 서버 전용 secret (절대 클라이언트 노출 금지) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 선택 | 공개 anon key (현재 앱 서버 경로는 service_role 사용) |
 
 ## 보안 메모
 

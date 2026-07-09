@@ -1,24 +1,19 @@
 // GitHub Stars 전용 뷰
-import { desc, eq } from "drizzle-orm";
 import { StarsView } from "@/components/stars/stars-view";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { githubStars } from "@/lib/db/schema";
 import { hasGithubToken } from "@/lib/oauth-tokens";
+import { store } from "@/lib/store";
 import type { GithubStar } from "@/lib/types";
-import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
-/** Star 목록 서버 로드 후 클라이언트 필터/동기화 UI에 전달 */
 export default async function StarsPage() {
   const session = await auth();
   const userId = session!.user!.id;
   const hasGithub =
     Boolean(session?.hasGithub) || (await hasGithubToken(userId));
 
-  const rows = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, userId)).orderBy(desc(githubStars.stars)));
-
+  const rows = await store.listStars(userId);
   const list: GithubStar[] = rows.map((row) => {
     let topics: string[] = [];
     try {

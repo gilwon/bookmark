@@ -1,16 +1,12 @@
-// GitHub Star 목록 조회 API
-import { desc, eq } from "drizzle-orm";
+// GitHub Star 목록
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { githubStars } from "@/lib/db/schema";
+import { store } from "@/lib/store";
 import type { GithubStar } from "@/lib/types";
-import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
-/** DB 행을 GithubStar로 변환한다. */
-function toStar(row: typeof githubStars.$inferSelect): GithubStar {
+function toStar(row: Awaited<ReturnType<typeof store.listStars>>[0]): GithubStar {
   let topics: string[] = [];
   try {
     topics = JSON.parse(row.topics || "[]");
@@ -31,14 +27,11 @@ function toStar(row: typeof githubStars.$inferSelect): GithubStar {
   };
 }
 
-/** GET /api/stars */
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
-
-  const rows = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, session.user.id)).orderBy(desc(githubStars.stars)));
-
+  const rows = await store.listStars(session.user.id);
   return NextResponse.json(rows.map(toStar));
 }

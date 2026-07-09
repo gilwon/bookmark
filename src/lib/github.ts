@@ -1,10 +1,7 @@
-// Octokit으로 GitHub Star 목록을 가져와 upsert / unstar 정리한다
-import { and, eq } from "drizzle-orm";
-import { Octokit } from "octokit";
+// Octokit으로 GitHub Star 목록을 가져와 upsert / unstar 정리
 import { v4 as uuidv4 } from "uuid";
-import { db } from "./db";
-import { githubStars } from "./db/schema";
-import { qall, qget, qrun } from "@/lib/db/query";
+import { store } from "@/lib/store";
+import { Octokit } from "octokit";
 
 export type StarRepo = {
   repoFullName: string;
@@ -66,10 +63,7 @@ export async function fetchStarredRepos(
   return repos;
 }
 
-/**
- * 사용자 Star 목록을 upsert하고,
- * 이번 동기화에 없는 레포(unstar)는 삭제한다.
- */
+/** 사용자 Star 목록 upsert + unstar 로컬 삭제 */
 export async function upsertStars(
   userId: string,
   repos: StarRepo[]
@@ -78,48 +72,37 @@ export async function upsertStars(
   const seen = new Set(repos.map((r) => r.repoFullName));
 
   for (const repo of repos) {
-    const existing = await qget(db.select().from(githubStars)      .where(and(eq(githubStars.userId, userId),eq(githubStars.repoFullName, repo.repoFullName))));
-
+    const existing = await store.getStarByRepo(userId, repo.repoFullName);
     if (existing) {
-      await qrun(db.update(githubStars)
-        .set({
-          description: repo.description,
-          language: repo.language,
-          stars: repo.stars,
-          topics: JSON.stringify(repo.topics),
-          url: repo.url,
-          lastSynced: now,
-        })
-        .where(
-          and(eq(githubStars.id, existing.id), eq(githubStars.userId, userId))
-        ));
+      await store.updateStar(existing.id, userId, {
+        description: repo.description,
+        language: repo.language,
+        stars: repo.stars,
+        topics: JSON.stringify(repo.topics),
+        url: repo.url,
+        lastSynced: now,
+      });
     } else {
-      await qrun(db.insert(githubStars)
-        .values({
-          id: uuidv4(),
-          userId,
-          repoFullName: repo.repoFullName,
-          description: repo.description,
-          language: repo.language,
-          stars: repo.stars,
-          topics: JSON.stringify(repo.topics),
-          url: repo.url,
-          lastSynced: now,
-          createdAt: now,
-        }));
+      await store.insertStar({
+        id: uuidv4(),
+        userId,
+        repoFullName: repo.repoFullName,
+        description: repo.description,
+        language: repo.language,
+        stars: repo.stars,
+        topics: JSON.stringify(repo.topics),
+        url: repo.url,
+        lastSynced: now,
+        createdAt: now,
+      });
     }
   }
 
-  // unstar된 로컬 행 정리 (본인 데이터만)
-  const local = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, userId)));
-
+  const local = await store.listStars(userId);
   let removed = 0;
   for (const row of local) {
     if (!seen.has(row.repoFullName)) {
-      await qrun(db.delete(githubStars)
-        .where(
-          and(eq(githubStars.id, row.id), eq(githubStars.userId, userId))
-        ));
+      await store.deleteStar(row.id, userId);
       removed += 1;
     }
   }

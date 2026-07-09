@@ -1,17 +1,13 @@
-// 커스텀 페이지 목록 / 생성 API
-import { desc, eq } from "drizzle-orm";
+// 커스텀 페이지 목록 / 생성
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { customPages } from "@/lib/db/schema";
+import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
-import { qall, qget, qrun } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
-/** DB 행을 CustomPage로 변환한다. */
-function toPage(row: typeof customPages.$inferSelect): CustomPage {
+function toPage(row: Awaited<ReturnType<typeof store.listPages>>[0]): CustomPage {
   let content: unknown = {};
   try {
     content = JSON.parse(row.content || "{}");
@@ -28,19 +24,15 @@ function toPage(row: typeof customPages.$inferSelect): CustomPage {
   };
 }
 
-/** GET /api/pages */
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
-
-  const rows = await qall(db.select().from(customPages)    .where(eq(customPages.userId, session.user.id)).orderBy(desc(customPages.updatedAt)));
-
+  const rows = await store.listPages(session.user.id);
   return NextResponse.json(rows.map(toPage));
 }
 
-/** POST /api/pages — 새 페이지 생성 */
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user?.id) {
@@ -63,18 +55,14 @@ export async function POST(req: Request) {
       : emptyDoc;
 
   const now = new Date().toISOString();
-  const id = uuidv4();
+  const row = await store.insertPage({
+    id: uuidv4(),
+    userId: session.user.id,
+    title,
+    content: JSON.stringify(content),
+    createdAt: now,
+    updatedAt: now,
+  });
 
-  await qrun(db.insert(customPages)
-    .values({
-      id,
-      userId: session.user.id,
-      title,
-      content: JSON.stringify(content),
-      createdAt: now,
-      updatedAt: now,
-    }));
-
-  const row = (await qget(db.select().from(customPages).where(eq(customPages.id, id))))!;
   return NextResponse.json(toPage(row), { status: 201 });
 }

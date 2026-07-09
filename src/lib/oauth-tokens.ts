@@ -1,7 +1,5 @@
-// 서버 전용 OAuth 토큰 저장소 (세션/클라이언트에 평문 노출 금지)
-import { and, eq } from "drizzle-orm";
-import { db, oauthTokens } from "@/lib/db";
-import { qget, qrun } from "@/lib/db/query";
+// 서버 전용 OAuth 토큰 (store 경유 — Supabase JS 또는 SQLite)
+import { store } from "@/lib/store";
 import { decryptToken, encryptToken } from "@/lib/token-crypto";
 
 const GITHUB = "github";
@@ -12,47 +10,18 @@ export async function saveGithubToken(
   accessToken: string
 ): Promise<void> {
   const now = new Date().toISOString();
-  const encrypted = encryptToken(accessToken);
-  const existing = await qget(
-    db
-      .select()
-      .from(oauthTokens)
-      .where(
-        and(eq(oauthTokens.userId, userId), eq(oauthTokens.provider, GITHUB))
-      )
-  );
-
-  if (existing) {
-    await qrun(
-      db
-        .update(oauthTokens)
-        .set({ accessTokenEnc: encrypted, updatedAt: now })
-        .where(eq(oauthTokens.id, existing.id))
-    );
-    return;
-  }
-
-  await qrun(
-    db.insert(oauthTokens).values({
-      id: `${userId}:${GITHUB}`,
-      userId,
-      provider: GITHUB,
-      accessTokenEnc: encrypted,
-      updatedAt: now,
-    })
-  );
+  await store.upsertToken({
+    id: `${userId}:${GITHUB}`,
+    userId,
+    provider: GITHUB,
+    accessTokenEnc: encryptToken(accessToken),
+    updatedAt: now,
+  });
 }
 
 /** 사용자 GitHub 토큰 존재 여부. */
 export async function hasGithubToken(userId: string): Promise<boolean> {
-  const row = await qget(
-    db
-      .select({ id: oauthTokens.id })
-      .from(oauthTokens)
-      .where(
-        and(eq(oauthTokens.userId, userId), eq(oauthTokens.provider, GITHUB))
-      )
-  );
+  const row = await store.getToken(userId, GITHUB);
   return Boolean(row);
 }
 
@@ -60,14 +29,7 @@ export async function hasGithubToken(userId: string): Promise<boolean> {
 export async function getGithubAccessToken(
   userId: string
 ): Promise<string | null> {
-  const row = await qget(
-    db
-      .select()
-      .from(oauthTokens)
-      .where(
-        and(eq(oauthTokens.userId, userId), eq(oauthTokens.provider, GITHUB))
-      )
-  );
+  const row = await store.getToken(userId, GITHUB);
   if (!row) return null;
   try {
     return decryptToken(row.accessTokenEnc);
@@ -77,13 +39,7 @@ export async function getGithubAccessToken(
   }
 }
 
-/** GitHub 토큰 삭제 (로그아웃 등). */
+/** GitHub 토큰 삭제. */
 export async function deleteGithubToken(userId: string): Promise<void> {
-  await qrun(
-    db
-      .delete(oauthTokens)
-      .where(
-        and(eq(oauthTokens.userId, userId), eq(oauthTokens.provider, GITHUB))
-      )
-  );
+  await store.deleteToken(userId, GITHUB);
 }

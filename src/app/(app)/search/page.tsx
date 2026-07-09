@@ -1,6 +1,5 @@
 // 통합 검색 페이지 — 북마크 · Star · 페이지 · 에이전트 문서
 import { Suspense } from "react";
-import { eq } from "drizzle-orm";
 import { BookmarkCard } from "@/components/bookmarks/bookmark-card";
 import {
   AgentDocResultCard,
@@ -14,17 +13,10 @@ import {
 import { StarCard } from "@/components/stars/star-card";
 import { auth } from "@/lib/auth";
 import { inDateRange } from "@/lib/date-range";
-import { db } from "@/lib/db";
 import { bundleSearchText, parseBundle } from "@/lib/agent-doc-bundle";
-import {
-  agentDocs,
-  bookmarks,
-  customPages,
-  githubStars,
-} from "@/lib/db/schema";
+import { store } from "@/lib/store";
 import { extractTiptapText } from "@/lib/tiptap-text";
 import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
-import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
@@ -84,7 +76,7 @@ export default async function SearchPage({
   let agentDocResults: AgentDocSearchResult[] = [];
 
   if (type === "all" || type === "bookmark") {
-    const rows = await qall(db.select().from(bookmarks)      .where(eq(bookmarks.userId, userId)));
+    const rows = await store.listBookmarks(userId);
 
     bookmarkResults = rows
       .map((row) => {
@@ -126,7 +118,7 @@ export default async function SearchPage({
   if (type === "all" || type === "star") {
     // 카테고리 필터는 북마크 전용
     if (!category) {
-      const rows = await qall(db.select().from(githubStars)        .where(eq(githubStars.userId, userId)));
+      const rows = await store.listStars(userId);
 
       starResults = rows
         .map((row) => {
@@ -170,7 +162,7 @@ export default async function SearchPage({
 
   // 페이지: 태그/카테고리 필터는 해당 없음 → 설정 시 type=all 이면 페이지 제외
   if ((type === "all" || type === "page") && !tag && !category) {
-    const rows = await qall(db.select().from(customPages)      .where(eq(customPages.userId, userId)));
+    const rows = await store.listPages(userId);
 
     pageResults = rows
       .map((row) => {
@@ -207,7 +199,7 @@ export default async function SearchPage({
 
   // 에이전트 문서: 태그/카테고리 없음
   if ((type === "all" || type === "agent-doc") && !tag && !category) {
-    const rows = await qall(db.select().from(agentDocs)      .where(eq(agentDocs.userId, userId)));
+    const rows = await store.listAgentDocs(userId);
 
     agentDocResults = rows
       .map((row) => {

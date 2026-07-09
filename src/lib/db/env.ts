@@ -1,29 +1,18 @@
-// DB 드라이버 선택 (Supabase Postgres vs 로컬 SQLite)
+// 백엔드 선택: Supabase JS (B) vs 로컬 SQLite
 
-/** DATABASE_URL 이 postgres 이면 Supabase/Postgres 사용 */
-export function usePostgres(): boolean {
-  const url =
-    process.env.DATABASE_URL ||
-    process.env.SUPABASE_DB_URL ||
-    process.env.POSTGRES_URL ||
-    "";
-  return (
-    url.startsWith("postgres://") ||
-    url.startsWith("postgresql://")
+/**
+ * Supabase JS 모드 — URL + service_role 이 있으면 활성화.
+ * DATABASE_URL(직접 Postgres) 은 사용하지 않는다.
+ */
+export function useSupabaseJs(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 }
 
-/** Postgres 연결 문자열 */
-export function getDatabaseUrl(): string {
-  return (
-    process.env.DATABASE_URL ||
-    process.env.SUPABASE_DB_URL ||
-    process.env.POSTGRES_URL ||
-    ""
-  );
-}
+export type DbBackend = "supabase" | "sqlite";
 
-/** Supabase 프로젝트 URL 이 설정되어 있는지 */
-export function hasSupabaseProject(): boolean {
-  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL);
+export function getDbBackend(): DbBackend {
+  return useSupabaseJs() ? "supabase" : "sqlite";
 }

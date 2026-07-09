@@ -9,7 +9,7 @@
     "lint": "eslint",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:check": "node -e \"const u=process.env.DATABASE_URL||''; console.log(u.startsWith('postgres')?'postgres':'sqlite')\""
+    "db:check": "node -e \"const u=process.env.NEXT_PUBLIC_SUPABASE_URL; const k=process.env.SUPABASE_SERVICE_ROLE_KEY; console.log(u&&k?'supabase-js':'sqlite')\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.1",

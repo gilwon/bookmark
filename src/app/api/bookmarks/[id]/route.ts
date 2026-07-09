@@ -1,48 +1,30 @@
-// 북마크 수정 / 삭제 API — user_id 소유권 필수
-import { and, eq } from "drizzle-orm";
+// 북마크 수정 / 삭제
 import { NextResponse } from "next/server";
 import { ownershipError, requireUser } from "@/lib/authz";
-import { db } from "@/lib/db";
-import { bookmarks } from "@/lib/db/schema";
-import { qget, qrun } from "@/lib/db/query";
+import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/** 소유 북마크 행 조회 */
-async function getOwned(id: string, userId: string) {
-  return await qget(
-    db.select().from(bookmarks).where(and(eq(bookmarks.id, id), eq(bookmarks.userId, userId))));
-}
-
-/** PATCH /api/bookmarks/:id */
 export async function PATCH(req: Request, ctx: Ctx) {
   const gate = await requireUser();
   if (!gate.ok) return gate.response;
 
   const { id } = await ctx.params;
-  const existing = await getOwned(id, gate.user.userId);
+  const existing = await store.getBookmark(id, gate.user.userId);
   if (!existing) return ownershipError();
 
   const body = await req.json().catch(() => ({}));
-  const updates: Partial<typeof bookmarks.$inferInsert> = {};
+  const patch: Record<string, unknown> = {};
+  if (typeof body.title === "string") patch.title = body.title;
+  if (typeof body.description === "string") patch.description = body.description;
+  if (typeof body.category === "string") patch.category = body.category;
+  if (Array.isArray(body.tags)) patch.tags = JSON.stringify(body.tags);
 
-  if (typeof body.title === "string") updates.title = body.title;
-  if (typeof body.description === "string")
-    updates.description = body.description;
-  if (typeof body.category === "string") updates.category = body.category;
-  if (Array.isArray(body.tags)) updates.tags = JSON.stringify(body.tags);
+  const row = await store.updateBookmark(id, gate.user.userId, patch);
+  if (!row) return ownershipError();
 
-  if (Object.keys(updates).length > 0) {
-    await qrun(db.update(bookmarks)
-      .set(updates)
-      .where(
-        and(eq(bookmarks.id, id), eq(bookmarks.userId, gate.user.userId))
-      ));
-  }
-
-  const row = await getOwned(id, gate.user.userId)!;
   let tags: string[] = [];
   try {
     tags = JSON.parse(row.tags || "[]");
@@ -64,16 +46,12 @@ export async function PATCH(req: Request, ctx: Ctx) {
   });
 }
 
-/** DELETE /api/bookmarks/:id */
 export async function DELETE(_req: Request, ctx: Ctx) {
   const gate = await requireUser();
   if (!gate.ok) return gate.response;
-
   const { id } = await ctx.params;
-  const existing = await getOwned(id, gate.user.userId);
+  const existing = await store.getBookmark(id, gate.user.userId);
   if (!existing) return ownershipError();
-
-  await qrun(db.delete(bookmarks)
-    .where(and(eq(bookmarks.id, id), eq(bookmarks.userId, gate.user.userId))));
+  await store.deleteBookmark(id, gate.user.userId);
   return NextResponse.json({ ok: true });
 }

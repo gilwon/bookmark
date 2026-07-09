@@ -1,26 +1,21 @@
-// 커스텀 페이지 에디터 (임베드용 북마크·Star 목록 포함)
-import { and, desc, eq } from "drizzle-orm";
+// 커스텀 페이지 에디터
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TiptapEditor } from "@/components/pages/tiptap-editor";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { bookmarks, customPages, githubStars } from "@/lib/db/schema";
+import { store } from "@/lib/store";
 import type { Bookmark, GithubStar } from "@/lib/types";
-import { qall, qget } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
 type Props = { params: Promise<{ id: string }> };
 
-/** 단일 페이지 편집 화면 */
 export default async function PageEditorPage({ params }: Props) {
   const session = await auth();
   const userId = session!.user!.id;
   const { id } = await params;
 
-  const row = await qget(db.select().from(customPages)    .where(and(eq(customPages.id, id), eq(customPages.userId, userId))));
-
+  const row = await store.getPage(id, userId);
   if (!row) notFound();
 
   let content: unknown = {};
@@ -30,9 +25,8 @@ export default async function PageEditorPage({ params }: Props) {
     content = {};
   }
 
-  const bookmarkRows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, userId)).orderBy(desc(bookmarks.createdAt)));
-
-  const starRows = await qall(db.select().from(githubStars)    .where(eq(githubStars.userId, userId)).orderBy(desc(githubStars.lastSynced)));
+  const bookmarkRows = await store.listBookmarks(userId);
+  const starRows = await store.listStarsBySynced(userId);
 
   const bookmarkList: Bookmark[] = bookmarkRows.map((b) => {
     let tags: string[] = [];

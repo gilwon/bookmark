@@ -1,22 +1,17 @@
 // 북마크 목록 페이지
-import { desc, eq } from "drizzle-orm";
 import { AddBookmarkForm } from "@/components/bookmarks/add-bookmark-form";
 import { BookmarkGrid } from "@/components/bookmarks/bookmark-grid";
 import { ImportBookmarksHtml } from "@/components/bookmarks/import-bookmarks-html";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { bookmarks } from "@/lib/db/schema";
+import { store } from "@/lib/store";
 import type { Bookmark } from "@/lib/types";
-import { qall } from "@/lib/db/query";
 
 export const runtime = "nodejs";
 
-/** 북마크 관리 메인 화면 */
 export default async function BookmarksPage() {
   const session = await auth();
   const userId = session!.user!.id;
-
-  const rows = await qall(db.select().from(bookmarks)    .where(eq(bookmarks.userId, userId)).orderBy(desc(bookmarks.createdAt)));
+  const rows = await store.listBookmarks(userId);
 
   const list: Bookmark[] = rows.map((row) => {
     let tags: string[] = [];
