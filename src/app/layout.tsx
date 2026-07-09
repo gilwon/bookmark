@@ -17,6 +17,23 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "MyMark — Personal Bookmark Hub",
   description: "북마크 · GitHub Stars · 커스텀 페이지를 한곳에서 관리",
+  applicationName: "MyMark",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "MyMark",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 /**
@@ -40,6 +57,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <meta name="theme-color" content="#4f46e5" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- 테마 FOUC 방지, React 19 next/script 경고 회피 */}
         <script
           id="theme-init"
