@@ -91,7 +91,10 @@ export function bundleSearchText(
 /**
  * 업로드 파일 묶음을 문서 단위로 그룹화한다.
  * - skill.md + *.skill 이 함께 있으면 하나의 skill 번들
+ * - skill.md 여러 개 + .skill 여러 개면: 첫 skill.md 에 모든 .skill 연결
  * - 그 외 파일은 각각 단독 문서
+ *
+ * zip 폴더 단위 분리는 groupZipExtractParts 에서 처리한다.
  */
 export function groupUploadParts(
   parts: AgentDocFilePart[]

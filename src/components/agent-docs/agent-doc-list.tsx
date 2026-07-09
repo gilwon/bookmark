@@ -25,6 +25,11 @@ import {
   inferKindFromFilename,
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
+import {
+  extractAgentDocsFromZip,
+  groupZipExtractParts,
+  isZipFile,
+} from "@/lib/zip-agent-docs";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,7 +37,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-const MAX_BYTES = 2 * 1024 * 1024;
+const MAX_FILE_BYTES = 2 * 1024 * 1024;
+const MAX_ZIP_BYTES = 12 * 1024 * 1024;
 
 /** 에이전트 문서 목록 UI */
 export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
@@ -84,7 +90,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   }
 
   /**
-   * 파일들을 읽어 skill.md + .skill 은 한 문서로 묶고 나머지는 단독 저장.
+   * 일반 파일 + zip 해제분을 모아 skill.md/.skill 번들로 저장한다.
    */
   async function importFiles(fileList: FileList | File[]) {
     const raw = Array.from(fileList);
@@ -93,12 +99,40 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     setUploading(true);
     setUploadMsg(null);
 
-    const parts: AgentDocFilePart[] = [];
+    const flatParts: AgentDocFilePart[] = [];
+    /** zip 에서 나온 부분 (폴더 단위 그룹용) */
+    const zipGroups: AgentDocFilePart[][] = [];
     const errors: string[] = [];
+    let zipCount = 0;
 
     for (const file of raw) {
+      // --- zip ---
+      if (isZipFile(file)) {
+        if (file.size > MAX_ZIP_BYTES) {
+          errors.push(`${file.name}: zip 12MB 초과`);
+          continue;
+        }
+        try {
+          const buf = new Uint8Array(await file.arrayBuffer());
+          const extracted = extractAgentDocsFromZip(buf, file.name);
+          errors.push(...extracted.warnings);
+          zipCount += 1;
+          if (extracted.parts.length === 0) continue;
+          const groups = groupZipExtractParts(
+            extracted.parts,
+            groupUploadParts
+          );
+          zipGroups.push(...groups);
+        } catch (err) {
+          errors.push(
+            `${file.name}: ${err instanceof Error ? err.message : "zip 실패"}`
+          );
+        }
+        continue;
+      }
+
+      // --- 일반 텍스트 / .skill ---
       if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
-        // 확장자 허용 목록 밖
         if (
           !file.type.startsWith("text/") &&
           file.type !== "" &&
@@ -108,13 +142,13 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
           continue;
         }
       }
-      if (file.size > MAX_BYTES) {
+      if (file.size > MAX_FILE_BYTES) {
         errors.push(`${file.name}: 2MB 초과`);
         continue;
       }
       try {
         const content = await file.text();
-        parts.push({
+        flatParts.push({
           filename: normalizeFilename(file.name),
           content,
         });
@@ -123,13 +157,17 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       }
     }
 
-    if (parts.length === 0) {
+    const groups: AgentDocFilePart[][] = [
+      ...groupUploadParts(flatParts),
+      ...zipGroups,
+    ];
+
+    if (groups.length === 0) {
       setUploadMsg(errors.join(" · ") || "가져올 파일이 없습니다.");
       setUploading(false);
       return;
     }
 
-    const groups = groupUploadParts(parts);
     const createdIds: string[] = [];
     let ok = 0;
 
@@ -174,18 +212,21 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       }
     }
 
-    const bundleNote = groups.some((g) => g.length > 1)
-      ? " (skill.md + .skill 번들 포함)"
-      : "";
+    const notes = [
+      groups.some((g) => g.length > 1) ? "skill 번들 포함" : null,
+      zipCount > 0 ? `zip ${zipCount}개 해제` : null,
+    ].filter(Boolean);
 
     if (ok === 1 && errors.length === 0 && createdIds[0]) {
-      setUploadMsg(`저장됨${bundleNote}`);
+      setUploadMsg(
+        `저장됨${notes.length ? ` (${notes.join(", ")})` : ""}`
+      );
       router.push(`/agent-docs/${createdIds[0]}`);
       router.refresh();
     } else {
       setUploadMsg(
         [
-          `${ok}개 문서 저장${bundleNote}`,
+          `${ok}개 문서 저장${notes.length ? ` · ${notes.join(", ")}` : ""}`,
           errors.length ? `문제: ${errors.join("; ")}` : null,
         ]
           .filter(Boolean)
@@ -225,11 +266,13 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card/50 p-4 space-y-3">
         <p className="text-sm text-muted-foreground">
-          템플릿으로 만들거나,{" "}
+          템플릿·개별 파일·{" "}
+          <strong className="font-medium text-foreground">.zip</strong> 을
+          드롭할 수 있습니다. zip 은 자동 해제되며, 안의{" "}
           <strong className="font-medium text-foreground">
-            skill.md 와 .skill 파일을 함께 드롭
+            skill.md + .skill
           </strong>
-          하면 하나의 스킬 번들로 묶입니다.
+          은 폴더 단위로 한 번들로 묶입니다.
         </p>
         <div className="flex flex-wrap gap-2">
           {templates.map((t) => (
@@ -299,14 +342,14 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                 : "파일을 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            .md · .skill · .txt · 여러 파일 · skill.md + .skill 은 자동 번들 ·
-            파일당 2MB
+            .md · .skill · .txt · .zip · zip 최대 12MB · 항목당 2MB · skill.md +
+            .skill 자동 번들
           </p>
         </div>
         <input
           ref={fileInputRef}
           type="file"
-          accept=".md,.markdown,.mdx,.txt,.skill,text/markdown,text/plain"
+          accept=".md,.markdown,.mdx,.txt,.skill,.zip,text/markdown,text/plain,application/zip"
           multiple
           className="hidden"
           onChange={(e) => {
@@ -352,7 +395,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           {docs.length === 0
-            ? "아직 문서가 없습니다. skill.md 와 .skill 을 함께 드롭해 보세요."
+            ? "아직 문서가 없습니다. skill 폴더 zip 또는 skill.md + .skill 을 드롭해 보세요."
             : "필터 조건에 맞는 문서가 없습니다."}
         </div>
       ) : (
