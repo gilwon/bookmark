@@ -31,10 +31,11 @@ import {
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
 import {
-  groupZipExtractParts,
+  downloadFilesAsZip,
   isZipBytes,
   isZipFile,
   tryExtractZipFile,
+  zipPartsToBundleFiles,
 } from "@/lib/zip-agent-docs";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
@@ -173,16 +174,14 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             errors.push(...extracted.warnings);
             archiveCount += 1;
             if (extracted.parts.length === 0) continue;
-            const groups = groupZipExtractParts(
-              extracted.parts,
-              groupUploadParts
-            );
+            // 한 압축 파일 = 한 문서, 내부 파일은 탭으로 분류
             const pkg =
               extracted.packageName ||
               file.name.replace(/\.skill$/i, "").replace(/\.zip$/i, "");
-            for (const g of groups) {
-              zipGroups.push({ group: g, packageName: pkg });
-            }
+            zipGroups.push({
+              group: zipPartsToBundleFiles(extracted.parts),
+              packageName: pkg,
+            });
             continue;
           }
         }
@@ -222,10 +221,12 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       return;
     }
 
+    const fileTabs = drafts.reduce((n, d) => n + d.files.length, 0);
     setDraftQueue(drafts);
     setMsg(
       [
-        `${drafts.length}개 초안 준비`,
+        `${drafts.length}개 문서 초안` +
+          (fileTabs > drafts.length ? ` · 탭 ${fileTabs}개 파일` : ""),
         archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
         "저장 버튼을 눌러야 등록됩니다",
         errors.length ? `참고: ${errors.join("; ")}` : null,
@@ -267,11 +268,20 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     }
   }
 
-  function downloadMd(doc: AgentDoc) {
-    const primary = doc.files[0] ?? {
-      filename: doc.filename,
-      content: doc.content,
-    };
+  /** 단일 파일이면 .md, 여러 파일이면 ZIP 으로 다운로드 */
+  function downloadDoc(doc: AgentDoc) {
+    const files =
+      doc.files?.length > 0
+        ? doc.files
+        : [{ filename: doc.filename, content: doc.content }];
+    if (files.length > 1) {
+      downloadFilesAsZip(
+        files,
+        doc.title || doc.filename.replace(/\.[^.]+$/, "") || "agent-doc"
+      );
+      return;
+    }
+    const primary = files[0]!;
     const blob = new Blob([primary.content], {
       type: "text/plain;charset=utf-8",
     });
@@ -361,7 +371,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                 : "파일을 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            .md · .skill(ZIP) · .zip · 자동 저장 없음 · 저장 버튼 필요
+            .md · .skill(ZIP) · .zip · 압축 1개=문서 1개(탭) · 저장 버튼 필요
           </p>
         </div>
         <input
@@ -488,8 +498,12 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => downloadMd(doc)}
-                        aria-label="다운로드"
+                        onClick={() => downloadDoc(doc)}
+                        aria-label={
+                          (doc.files?.length || 0) > 1
+                            ? "ZIP 다운로드"
+                            : "다운로드"
+                        }
                       >
                         <Download className="h-4 w-4" />
                       </Button>

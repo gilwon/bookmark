@@ -1,5 +1,5 @@
-// zip / .skill(ZIP 패키지) 해제 후 skill.md · 텍스트 추출 (브라우저·fflate)
-import { unzipSync, strFromU8 } from "fflate";
+// zip / .skill(ZIP 패키지) 해제·재압축 (브라우저·fflate)
+import { strFromU8, strToU8, unzipSync, zipSync } from "fflate";
 import {
   isAllowedAgentDocName,
   isSkillExtName,
@@ -226,42 +226,47 @@ export function extractAgentDocsFromZip(
 }
 
 /**
- * zip 추출 결과를 문서 그룹으로 나눈다.
- * - 같은 폴더 안의 skill.md + 기타 → 한 번들
- * - 폴더가 다르면 폴더별 독립 그룹
+ * zip 추출 파일명 충돌을 피해 단일 문서용 파일 목록으로 만든다.
+ * 한 압축 패키지 = 한 에이전트 문서(탭으로 파일 분류).
+ */
+export function zipPartsToBundleFiles(
+  parts: ZipExtractPart[]
+): AgentDocFilePart[] {
+  const used = new Set<string>();
+  const out: AgentDocFilePart[] = [];
+
+  for (const p of parts) {
+    let base = p.filename;
+    if (used.has(base.toLowerCase()) && p.dir) {
+      base = normalizeFilename(
+        `${p.dir.replace(/\//g, "-")}-${p.filename}`
+      );
+    }
+    let name = base;
+    let n = 2;
+    while (used.has(name.toLowerCase())) {
+      const m = base.match(/^(.*?)(\.[^.]+)?$/);
+      name = normalizeFilename(
+        `${m?.[1] || base}-${n}${m?.[2] || ""}`
+      );
+      n += 1;
+    }
+    used.add(name.toLowerCase());
+    out.push({ filename: name, content: p.content });
+  }
+  return out;
+}
+
+/**
+ * @deprecated 한 zip = 한 문서로 통일. zipPartsToBundleFiles 사용.
+ * 호환용: 전체 파일을 단일 그룹으로 반환.
  */
 export function groupZipExtractParts(
   parts: ZipExtractPart[],
-  groupUploadParts: (files: AgentDocFilePart[]) => AgentDocFilePart[][]
+  _groupUploadParts?: (files: AgentDocFilePart[]) => AgentDocFilePart[][]
 ): AgentDocFilePart[][] {
-  const byDir = new Map<string, AgentDocFilePart[]>();
-
-  for (const p of parts) {
-    const key = p.dir || "__root__";
-    const list = byDir.get(key) ?? [];
-    const nameTaken = list.some(
-      (x) => x.filename.toLowerCase() === p.filename.toLowerCase()
-    );
-    const filename = nameTaken
-      ? normalizeFilename(
-          `${p.dir.replace(/\//g, "-") || "item"}-${p.filename}`
-        )
-      : p.filename;
-    list.push({ filename, content: p.content });
-    byDir.set(key, list);
-  }
-
-  const groups: AgentDocFilePart[][] = [];
-  for (const files of byDir.values()) {
-    // 폴더 안 파일은 전부 한 문서로 묶는 편이 스킬 패키지에 맞음
-    // (skill.md + 부가 md 등)
-    if (files.some((f) => /^skill\.md$/i.test(f.filename))) {
-      groups.push(files);
-    } else {
-      groups.push(...groupUploadParts(files));
-    }
-  }
-  return groups;
+  const files = zipPartsToBundleFiles(parts);
+  return files.length > 0 ? [files] : [];
 }
 
 /**
@@ -290,4 +295,41 @@ export async function tryExtractZipFile(
     };
   }
   return extractAgentDocsFromZip(buf, file.name);
+}
+
+/**
+ * 번들 파일들을 ZIP 으로 묶어 브라우저 다운로드한다.
+ */
+export function downloadFilesAsZip(
+  files: AgentDocFilePart[],
+  zipName: string
+): void {
+  if (files.length === 0) return;
+  const data: Record<string, Uint8Array> = {};
+  const used = new Set<string>();
+  for (const f of files) {
+    let name = f.filename || "file.md";
+    let n = 2;
+    while (used.has(name.toLowerCase())) {
+      const m = name.match(/^(.*?)(\.[^.]+)?$/);
+      name = `${m?.[1] || "file"}-${n}${m?.[2] || ""}`;
+      n += 1;
+    }
+    used.add(name.toLowerCase());
+    data[name] = strToU8(f.content ?? "");
+  }
+  const zipped = zipSync(data, { level: 6 });
+  // Uint8Array 를 Blob 으로 (복사해 shared buffer 오프셋 이슈 방지)
+  const copy = new Uint8Array(zipped.byteLength);
+  copy.set(zipped);
+  const blob = new Blob([copy], { type: "application/zip" });
+  const safe =
+    zipName.replace(/[^\w.\-가-힣]+/g, "_").replace(/\.zip$/i, "") ||
+    "agent-doc";
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${safe}.zip`;
+  a.click();
+  URL.revokeObjectURL(url);
 }

@@ -89,34 +89,18 @@ export function bundleSearchText(
 }
 
 /**
- * 업로드 파일 묶음을 문서 단위로 그룹화한다.
- * - skill.md + *.skill 이 함께 있으면 하나의 skill 번들
- * - skill.md 여러 개 + .skill 여러 개면: 첫 skill.md 에 모든 .skill 연결
- * - 그 외 파일은 각각 단독 문서
- *
- * zip 폴더 단위 분리는 groupZipExtractParts 에서 처리한다.
+ * 한 번에 올린 파일 묶음을 문서 단위로 그룹화한다.
+ * - 여러 파일이면 전부 한 문서(탭)로 묶음 (skill + md 패키지)
+ * - 파일 1개면 단독 문서
  */
 export function groupUploadParts(
   parts: AgentDocFilePart[]
 ): AgentDocFilePart[][] {
-  const skillMds = parts.filter((p) => isSkillMdName(p.filename));
-  const skillExts = parts.filter((p) => isSkillExtName(p.filename));
-  const others = parts.filter(
-    (p) => !isSkillMdName(p.filename) && !isSkillExtName(p.filename)
-  );
-
-  const groups: AgentDocFilePart[][] = [];
-
-  if (skillMds.length > 0 && skillExts.length > 0) {
-    // skill.md 여러 개면 첫 번째를 번들 코어로, 나머지 skill.md는 단독
-    const [primaryMd, ...restMd] = skillMds;
-    groups.push([primaryMd!, ...skillExts]);
-    for (const m of restMd) groups.push([m]);
-  } else {
-    for (const m of skillMds) groups.push([m]);
-    for (const s of skillExts) groups.push([s]);
+  if (parts.length === 0) return [];
+  // 동일 파일명 병합(마지막 우선)
+  const map = new Map<string, AgentDocFilePart>();
+  for (const p of parts) {
+    map.set(p.filename.toLowerCase(), p);
   }
-
-  for (const o of others) groups.push([o]);
-  return groups;
+  return [Array.from(map.values())];
 }

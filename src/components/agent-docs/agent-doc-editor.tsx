@@ -23,6 +23,7 @@ import {
   AGENT_DOC_KIND_LABEL,
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
+import { downloadFilesAsZip } from "@/lib/zip-agent-docs";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -296,6 +297,14 @@ export function AgentDocEditor(props: Props) {
     URL.revokeObjectURL(url);
   }
 
+  /** 번들 전체 ZIP 다운로드 */
+  function downloadAllZip() {
+    downloadFilesAsZip(
+      files,
+      title.trim() || files[0]?.filename.replace(/\.[^.]+$/, "") || "agent-doc"
+    );
+  }
+
   async function onDropFiles(e: React.DragEvent) {
     e.preventDefault();
     const list = Array.from(e.dataTransfer.files || []);
@@ -313,11 +322,10 @@ export function AgentDocEditor(props: Props) {
         const { tryExtractZipFile, isZipBytes } = await import(
           "@/lib/zip-agent-docs"
         );
+        const { zipPartsToBundleFiles } = await import("@/lib/zip-agent-docs");
         const extracted = await tryExtractZipFile(file);
         if (extracted && extracted.parts.length > 0) {
-          for (const p of extracted.parts) {
-            next.push({ filename: p.filename, content: p.content });
-          }
+          next.push(...zipPartsToBundleFiles(extracted.parts));
           packageTitle = extracted.packageName;
           setKind("skill");
           continue;
@@ -494,7 +502,15 @@ export function AgentDocEditor(props: Props) {
         </Button>
         <Button variant="outline" onClick={downloadActive}>
           <Download className="h-4 w-4" />
-          다운로드
+          현재 탭
+        </Button>
+        <Button
+          variant="outline"
+          onClick={downloadAllZip}
+          disabled={files.length === 0}
+        >
+          <Download className="h-4 w-4" />
+          전체 ZIP
         </Button>
         <Button
           variant="ghost"

@@ -17,8 +17,8 @@ export default async function AgentDocsPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">에이전트 문서</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          SKILL.md, AGENTS.md, CLAUDE.md, .skill 파일을 저장합니다. skill.md 와
-          .skill 을 함께 올리면 한 번들로 묶입니다.
+          SKILL.md, AGENTS.md, CLAUDE.md, .skill / .zip 을 저장합니다. 압축
+          패키지는 한 문서로 등록되고 내부 파일은 탭으로 나뉩니다.
         </p>
       </div>
       <AgentDocList docs={list} />
