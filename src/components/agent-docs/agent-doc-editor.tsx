@@ -3,7 +3,7 @@
 
 import { Check, Copy, Download, Plus, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   isAllowedAgentDocName,
   isSkillExtName,
@@ -11,7 +11,6 @@ import {
 } from "@/lib/agent-doc-bundle";
 import {
   AGENT_DOC_KIND_LABEL,
-  inferKindFromFilename,
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
@@ -41,11 +40,6 @@ export function AgentDocEditor({ doc }: Props) {
   const [copied, setCopied] = useState(false);
 
   const active = files[activeIdx] ?? files[0];
-
-  const fileNames = useMemo(
-    () => files.map((f) => f.filename).join(", "),
-    [files]
-  );
 
   /** 서버 저장 (전체 번들) */
   const save = useCallback(async () => {
@@ -148,24 +142,42 @@ export function AgentDocEditor({ doc }: Props) {
     URL.revokeObjectURL(url);
   }
 
-  /** 파일 드롭: 활성 교체 또는 번들에 추가 */
+  /** 파일 드롭: ZIP/.skill 패키지는 해제, 텍스트는 병합 */
   async function onDropFiles(e: React.DragEvent) {
     e.preventDefault();
     const list = Array.from(e.dataTransfer.files || []);
     if (list.length === 0) return;
 
     const next: AgentDocFilePart[] = [];
+    let packageTitle: string | undefined;
+
     for (const file of list) {
-      if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
-        // 확장자 없는 텍스트도 .skill 강제하지 않음
-        if (!file.type.startsWith("text/") && file.type !== "") continue;
-      }
-      if (file.size > 2 * 1024 * 1024) {
-        alert(`${file.name}: 2MB 초과`);
+      if (file.size > 12 * 1024 * 1024) {
+        alert(`${file.name}: 용량 초과`);
         continue;
       }
       try {
-        const text = await file.text();
+        const { tryExtractZipFile, isZipBytes } = await import(
+          "@/lib/zip-agent-docs"
+        );
+        const extracted = await tryExtractZipFile(file);
+        if (extracted && extracted.parts.length > 0) {
+          for (const p of extracted.parts) {
+            next.push({ filename: p.filename, content: p.content });
+          }
+          packageTitle = extracted.packageName;
+          setKind("skill");
+          continue;
+        }
+        const buf = new Uint8Array(await file.arrayBuffer());
+        if (isZipBytes(buf)) {
+          alert(`${file.name}: ZIP 해제 실패`);
+          continue;
+        }
+        if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
+          if (!file.type.startsWith("text/") && file.type !== "") continue;
+        }
+        const text = new TextDecoder("utf-8", { fatal: false }).decode(buf);
         next.push({
           filename: normalizeFilename(file.name),
           content: text,
@@ -176,27 +188,20 @@ export function AgentDocEditor({ doc }: Props) {
     }
     if (next.length === 0) return;
 
-    if (list.length === 1 && files.length === 1) {
-      // 단일 파일 드롭 → 현재 파일 교체
-      setFiles(next);
-      setActiveIdx(0);
-      setTitle(next[0]!.filename.replace(/\.(md|skill)$/i, "") || next[0]!.filename);
-      setKind(inferKindFromFilename(next[0]!.filename));
-      setDescription(`파일에서 가져옴 · ${list[0]!.name}`);
-    } else {
-      // 여러 개 또는 기존 번들에 합치기 (같은 이름이면 덮어쓰기)
-      setFiles((prev) => {
-        const map = new Map(prev.map((f) => [f.filename.toLowerCase(), f]));
-        for (const n of next) {
-          map.set(n.filename.toLowerCase(), n);
-        }
-        return Array.from(map.values());
-      });
-      if (next.some((n) => isSkillExtName(n.filename) || /^skill\.md$/i.test(n.filename))) {
-        setKind("skill");
+    setFiles((prev) => {
+      const map = new Map(prev.map((f) => [f.filename.toLowerCase(), f]));
+      for (const n of next) {
+        map.set(n.filename.toLowerCase(), n);
       }
-      setDescription((d) => d || `번들 · ${fileNames}`);
+      return Array.from(map.values());
+    });
+    if (packageTitle) {
+      setTitle(packageTitle);
+      setDescription(`패키지에서 가져옴 · ${list.map((f) => f.name).join(", ")}`);
+    } else if (next.some((n) => isSkillExtName(n.filename) || /^skill\.md$/i.test(n.filename))) {
+      setKind("skill");
     }
+    setActiveIdx(0);
     markDirty();
   }
 

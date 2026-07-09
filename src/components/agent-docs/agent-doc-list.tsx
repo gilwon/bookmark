@@ -26,9 +26,10 @@ import {
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
 import {
-  extractAgentDocsFromZip,
   groupZipExtractParts,
+  isZipBytes,
   isZipFile,
+  tryExtractZipFile,
 } from "@/lib/zip-agent-docs";
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -90,7 +91,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   }
 
   /**
-   * 일반 파일 + zip 해제분을 모아 skill.md/.skill 번들로 저장한다.
+   * 일반 텍스트 + .zip + .skill(ZIP 패키지) 를 처리한다.
+   * .skill 이 PK 헤더(ZIP)면 자동 해제 후 SKILL.md 번들로 저장.
    */
   async function importFiles(fileList: FileList | File[]) {
     const raw = Array.from(fileList);
@@ -100,66 +102,85 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     setUploadMsg(null);
 
     const flatParts: AgentDocFilePart[] = [];
-    /** zip 에서 나온 부분 (폴더 단위 그룹용) */
     const zipGroups: AgentDocFilePart[][] = [];
+    /** 그룹별 표시 제목 (패키지 폴더명) */
+    const groupTitles: (string | undefined)[] = [];
     const errors: string[] = [];
-    let zipCount = 0;
+    let archiveCount = 0;
 
     for (const file of raw) {
-      // --- zip ---
-      if (isZipFile(file)) {
-        if (file.size > MAX_ZIP_BYTES) {
-          errors.push(`${file.name}: zip 12MB 초과`);
-          continue;
-        }
-        try {
-          const buf = new Uint8Array(await file.arrayBuffer());
-          const extracted = extractAgentDocsFromZip(buf, file.name);
-          errors.push(...extracted.warnings);
-          zipCount += 1;
-          if (extracted.parts.length === 0) continue;
-          const groups = groupZipExtractParts(
-            extracted.parts,
-            groupUploadParts
-          );
-          zipGroups.push(...groups);
-        } catch (err) {
-          errors.push(
-            `${file.name}: ${err instanceof Error ? err.message : "zip 실패"}`
-          );
-        }
+      const sizeLimit =
+        isZipFile(file) || isSkillExtName(file.name)
+          ? MAX_ZIP_BYTES
+          : MAX_FILE_BYTES;
+      if (file.size > sizeLimit) {
+        errors.push(
+          `${file.name}: ${isZipFile(file) || isSkillExtName(file.name) ? "12MB" : "2MB"} 초과`
+        );
         continue;
       }
 
-      // --- 일반 텍스트 / .skill ---
-      if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
-        if (
-          !file.type.startsWith("text/") &&
-          file.type !== "" &&
-          !file.name.toLowerCase().endsWith(".skill")
-        ) {
-          errors.push(`${file.name}: 미지원 형식`);
+      // --- zip / .skill(ZIP) ---
+      try {
+        const buf = new Uint8Array(await file.arrayBuffer());
+        const looksZip =
+          isZipFile(file) ||
+          isZipBytes(buf) ||
+          (isSkillExtName(file.name) && isZipBytes(buf));
+
+        if (looksZip) {
+          const extracted = await tryExtractZipFile(file);
+          // tryExtractZipFile 이 null 이면 아래에서 텍스트 시도
+          if (extracted) {
+            errors.push(...extracted.warnings);
+            archiveCount += 1;
+            if (extracted.parts.length === 0) continue;
+            const groups = groupZipExtractParts(
+              extracted.parts,
+              groupUploadParts
+            );
+            for (const g of groups) {
+              zipGroups.push(g);
+              groupTitles.push(
+                extracted.packageName ||
+                  file.name.replace(/\.skill$/i, "").replace(/\.zip$/i, "")
+              );
+            }
+            continue;
+          }
+        }
+
+        // --- 일반 텍스트 (.md / 텍스트 .skill) ---
+        if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
+          if (!file.type.startsWith("text/") && file.type !== "") {
+            errors.push(`${file.name}: 미지원 형식`);
+            continue;
+          }
+        }
+        // ZIP 시그니처인데 여기까지 온 경우 텍스트로 저장 금지
+        if (isZipBytes(buf)) {
+          errors.push(
+            `${file.name}: ZIP 패키지 해제에 실패했습니다. 파일이 손상됐을 수 있습니다.`
+          );
           continue;
         }
-      }
-      if (file.size > MAX_FILE_BYTES) {
-        errors.push(`${file.name}: 2MB 초과`);
-        continue;
-      }
-      try {
-        const content = await file.text();
+        const content = new TextDecoder("utf-8", { fatal: false }).decode(buf);
         flatParts.push({
           filename: normalizeFilename(file.name),
           content,
         });
-      } catch {
-        errors.push(`${file.name}: 읽기 실패`);
+      } catch (err) {
+        errors.push(
+          `${file.name}: ${err instanceof Error ? err.message : "읽기 실패"}`
+        );
       }
     }
 
-    const groups: AgentDocFilePart[][] = [
-      ...groupUploadParts(flatParts),
-      ...zipGroups,
+    const flatGroups = groupUploadParts(flatParts);
+    const groups: AgentDocFilePart[][] = [...flatGroups, ...zipGroups];
+    const titles: (string | undefined)[] = [
+      ...flatGroups.map(() => undefined),
+      ...groupTitles,
     ];
 
     if (groups.length === 0) {
@@ -171,7 +192,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     const createdIds: string[] = [];
     let ok = 0;
 
-    for (const group of groups) {
+    for (let gi = 0; gi < groups.length; gi++) {
+      const group = groups[gi]!;
       try {
         const hasSkill =
           group.some((f) => /^skill\.md$/i.test(f.filename)) ||
@@ -179,16 +201,20 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         const primary =
           group.find((f) => /^skill\.md$/i.test(f.filename)) ?? group[0]!;
         const names = group.map((f) => f.filename).join(", ");
+        const titleFromPkg = titles[gi];
+        const title =
+          titleFromPkg ||
+          primary.filename.replace(/\.md$/i, "").replace(/\.skill$/i, "");
+
         const res = await fetch("/api/agent-docs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: primary.filename
-              .replace(/\.md$/i, "")
-              .replace(/\.skill$/i, ""),
-            kind: hasSkill
-              ? "skill"
-              : inferKindFromFilename(primary.filename),
+            title,
+            kind:
+              hasSkill || titleFromPkg
+                ? "skill"
+                : inferKindFromFilename(primary.filename),
             description:
               group.length > 1
                 ? `번들 · ${names}`
@@ -213,8 +239,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     }
 
     const notes = [
-      groups.some((g) => g.length > 1) ? "skill 번들 포함" : null,
-      zipCount > 0 ? `zip ${zipCount}개 해제` : null,
+      groups.some((g) => g.length > 1) ? "skill 번들" : null,
+      archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
     ].filter(Boolean);
 
     if (ok === 1 && errors.length === 0 && createdIds[0]) {
@@ -266,13 +292,12 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card/50 p-4 space-y-3">
         <p className="text-sm text-muted-foreground">
-          템플릿·개별 파일·{" "}
-          <strong className="font-medium text-foreground">.zip</strong> 을
-          드롭할 수 있습니다. zip 은 자동 해제되며, 안의{" "}
+          템플릿·.md·{" "}
           <strong className="font-medium text-foreground">
-            skill.md + .skill
+            .skill 패키지(ZIP)
           </strong>
-          은 폴더 단위로 한 번들로 묶입니다.
+          ·.zip 을 드롭할 수 있습니다. .skill 이 ZIP이면 자동 해제하고 안의
+          SKILL.md 를 저장합니다.
         </p>
         <div className="flex flex-wrap gap-2">
           {templates.map((t) => (
@@ -342,8 +367,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                 : "파일을 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            .md · .skill · .txt · .zip · zip 최대 12MB · 항목당 2MB · skill.md +
-            .skill 자동 번들
+            .md · .skill(ZIP 패키지) · .zip · 패키지 최대 12MB · 내부 파일 2MB
           </p>
         </div>
         <input
