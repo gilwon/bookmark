@@ -301,14 +301,30 @@ export async function deleteToken(
 }
 
 // --- agent docs ---
-export async function listAgentDocs(userId: string): Promise<AgentDocRow[]> {
+/**
+ * 목록용. full=false 이면 content/bundle 제외(용량·속도).
+ * 검색·본문 미리보기가 필요하면 full: true.
+ */
+export async function listAgentDocs(
+  userId: string,
+  opts?: { full?: boolean }
+): Promise<AgentDocRow[]> {
+  const full = opts?.full === true;
   const { data, error } = await sb()
     .from("agent_docs")
-    .select("*")
+    .select(
+      full
+        ? "*"
+        : "id, user_id, kind, filename, title, description, created_at, updated_at"
+    )
     .eq("user_id", userId)
     .order("updated_at", { ascending: false });
   throwIfError(error, "listAgentDocs");
-  return (data ?? []).map(mapAgentDoc);
+  return (data ?? []).map((r) => {
+    if (full) return mapAgentDoc(r);
+    const row = r as Record<string, unknown>;
+    return mapAgentDoc({ ...row, content: "", bundle: "[]" });
+  });
 }
 
 export async function getAgentDoc(

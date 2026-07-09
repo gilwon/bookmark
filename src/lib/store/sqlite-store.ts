@@ -251,14 +251,20 @@ export async function deleteToken(
 }
 
 // --- agent docs ---
-export async function listAgentDocs(userId: string): Promise<AgentDocRow[]> {
-  return qall(
+/** 목록용. full=false 이면 content/bundle 비움(속도). */
+export async function listAgentDocs(
+  userId: string,
+  opts?: { full?: boolean }
+): Promise<AgentDocRow[]> {
+  const rows = await qall(
     db
       .select()
       .from(agentDocs)
       .where(eq(agentDocs.userId, userId))
       .orderBy(desc(agentDocs.updatedAt))
   );
+  if (opts?.full === true) return rows;
+  return rows.map((r) => ({ ...r, content: "", bundle: "[]" }));
 }
 
 export async function getAgentDoc(

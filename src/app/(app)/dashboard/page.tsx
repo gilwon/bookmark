@@ -69,11 +69,12 @@ export default async function DashboardPage() {
     session?.user?.email?.split("@")[0] ||
     "사용자";
 
+  // 대시보드: 에이전트 문서는 본문 없이 메타만 (번들 전체 로드 방지)
   const [bookmarks, stars, pages, agentDocs] = await Promise.all([
     store.listBookmarks(userId),
     store.listStars(userId),
     store.listPages(userId),
-    store.listAgentDocs(userId),
+    store.listAgentDocs(userId, { full: false }),
   ]);
 
   const categories = topCategories(bookmarks);

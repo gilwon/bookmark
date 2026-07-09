@@ -199,7 +199,8 @@ export default async function SearchPage({
 
   // 에이전트 문서: 태그/카테고리 없음
   if ((type === "all" || type === "agent-doc") && !tag && !category) {
-    const rows = await store.listAgentDocs(userId);
+    // 검색은 본문 포함 필요
+    const rows = await store.listAgentDocs(userId, { full: true });
 
     agentDocResults = rows
       .map((row) => {

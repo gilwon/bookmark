@@ -110,8 +110,8 @@ export const authConfig: NextAuthConfig = {
             ? (profile as { login: string }).login
             : undefined;
         if (login) token.githubLogin = login;
-      } else if (token.sub) {
-        // 세션 갱신 시 토큰 존재 여부 재확인 (DB 오류 시 로그인 자체는 유지)
+      } else if (token.sub && typeof token.hasGithub !== "boolean") {
+        // 매 요청 DB 조회 방지 — 최초 1회만 확인 후 JWT에 캐시
         try {
           token.hasGithub = await hasGithubToken(token.sub);
         } catch (err) {
