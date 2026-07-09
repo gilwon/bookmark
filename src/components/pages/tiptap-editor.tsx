@@ -16,6 +16,7 @@ import {
 } from "@/lib/migrate-aside-content";
 import { hasLiteralAside } from "@/lib/normalize-to-markdown";
 import { CalloutBlock } from "@/components/pages/extensions/callout-block";
+import { CodeBlockNode } from "@/components/pages/extensions/code-block-node";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
 import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
 import {
@@ -74,6 +75,14 @@ export function TiptapEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
+        // 커스텀 언어 선택 NodeView 사용
+        codeBlock: false,
+      }),
+      CodeBlockNode.configure({
+        defaultLanguage: null,
+        languageClassPrefix: "language-",
+        enableTabIndentation: true,
+        tabSize: 2,
       }),
       Underline,
       Placeholder.configure({

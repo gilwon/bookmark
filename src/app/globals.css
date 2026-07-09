@@ -162,6 +162,22 @@ body {
   font-size: 0.875rem;
 }
 
+/* 노션형 코드 블록 NodeView — 바깥 래퍼가 스타일 담당 */
+.ProseMirror .notion-code-block pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.85rem 1rem;
+}
+
+.ProseMirror .notion-code-block code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.875rem;
+  white-space: pre;
+}
+
 .ProseMirror blockquote {
   border-left: 3px solid var(--accent);
   padding: 0.15rem 0 0.15rem 0.9rem;
