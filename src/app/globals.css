@@ -226,13 +226,25 @@ body {
   box-shadow: none;
 }
 
-/* 본문: 제목 아래 자연스럽게 이어지는 입력면 */
+/* 본문: 제목 아래 자연스럽게 이어지는 입력면 + 왼쪽 핸들 거터 */
 .notion-body {
   min-height: 60vh;
   cursor: text;
-  padding: 0.35rem 0.15rem 3rem;
+  /* 왼쪽 패딩 = 핸들 클릭 영역 (텍스트 밖으로 나가도 호버 유지) */
+  padding: 0.35rem 0.15rem 3rem 0;
   border-top: 1px solid transparent;
   margin-top: 0.15rem;
+}
+
+/* 거터 히트 영역 시각 힌트 (아주 연하게) */
+.notion-body::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.75rem;
+  pointer-events: none;
 }
 
 .notion-editor {
