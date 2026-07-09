@@ -1,4 +1,4 @@
-// 검색 필터 바 — q, type, tag, category
+// 검색 필터 바 — q, type, tag, category, from, to
 "use client";
 
 import { Search } from "lucide-react";
@@ -17,6 +17,8 @@ export function FilterBar() {
   const [type, setType] = useState(params.get("type") ?? "all");
   const [tag, setTag] = useState(params.get("tag") ?? "");
   const [category, setCategory] = useState(params.get("category") ?? "");
+  const [from, setFrom] = useState(params.get("from") ?? "");
+  const [to, setTo] = useState(params.get("to") ?? "");
 
   /** 필터를 적용해 /search 로 이동한다. */
   function apply(e?: React.FormEvent) {
@@ -26,8 +28,23 @@ export function FilterBar() {
     if (type && type !== "all") sp.set("type", type);
     if (tag.trim()) sp.set("tag", tag.trim());
     if (category.trim()) sp.set("category", category.trim());
+    if (from) sp.set("from", from);
+    if (to) sp.set("to", to);
     startTransition(() => {
       router.push(`/search?${sp.toString()}`);
+    });
+  }
+
+  /** 모든 필터를 초기화한다. */
+  function reset() {
+    setQ("");
+    setType("all");
+    setTag("");
+    setCategory("");
+    setFrom("");
+    setTo("");
+    startTransition(() => {
+      router.push("/search");
     });
   }
 
@@ -76,9 +93,30 @@ export function FilterBar() {
           onChange={(e) => setCategory(e.target.value)}
         />
       </div>
-      <Button type="submit" disabled={pending}>
-        {pending ? "검색 중…" : "검색"}
-      </Button>
+      <div className="space-y-1 w-full sm:w-40">
+        <label className="text-xs text-zinc-400">시작일</label>
+        <Input
+          type="date"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+        />
+      </div>
+      <div className="space-y-1 w-full sm:w-40">
+        <label className="text-xs text-zinc-400">종료일</label>
+        <Input
+          type="date"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+        />
+      </div>
+      <div className="flex gap-2">
+        <Button type="submit" disabled={pending}>
+          {pending ? "검색 중…" : "검색"}
+        </Button>
+        <Button type="button" variant="outline" onClick={reset} disabled={pending}>
+          초기화
+        </Button>
+      </div>
     </form>
   );
 }

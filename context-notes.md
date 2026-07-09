@@ -35,6 +35,13 @@
   - Star sync는 GitHub OAuth 세션의 access_token 필요.
 - package name: `mymark`.
 
+### 2026-07-09: 임베드 블록 + 날짜 필터
+- Tiptap `embedBlock` atom 노드 + React NodeView 카드.
+- 속성은 스냅샷(title/url/description/image/subtitle)으로 저장 → 원본 삭제 후에도 표시 유지.
+- 에디터 툴바「임베드」피커로 북마크/Star 선택 삽입.
+- 검색 `from`/`to`(YYYY-MM-DD) 쿼리, `inDateRange`로 createdAt 포함 범위 필터.
+- 날짜만 넣어도 hasQuery로 결과 목록 표시.
+
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.
 - Auth: GitHub provider는 env 있을 때만, Credentials Dev Login 항상 활성.

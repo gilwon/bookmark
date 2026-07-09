@@ -1,10 +1,11 @@
-// 통합 검색 페이지
+// 통합 검색 페이지 (날짜 필터 포함)
 import { Suspense } from "react";
 import { eq } from "drizzle-orm";
 import { BookmarkCard } from "@/components/bookmarks/bookmark-card";
 import { FilterBar } from "@/components/search/filter-bar";
 import { StarCard } from "@/components/stars/star-card";
 import { auth } from "@/lib/auth";
+import { inDateRange } from "@/lib/date-range";
 import { db } from "@/lib/db";
 import { bookmarks, githubStars } from "@/lib/db/schema";
 import type { Bookmark, GithubStar } from "@/lib/types";
@@ -16,6 +17,8 @@ type SearchParams = Promise<{
   type?: string;
   tag?: string;
   category?: string;
+  from?: string;
+  to?: string;
 }>;
 
 /** 검색어/필터에 맞는 북마크·Star를 통합 표시한다. */
@@ -32,6 +35,8 @@ export default async function SearchPage({
   const type = sp.type ?? "all";
   const tag = (sp.tag ?? "").trim().toLowerCase();
   const category = (sp.category ?? "").trim().toLowerCase();
+  const from = (sp.from ?? "").trim();
+  const to = (sp.to ?? "").trim();
 
   let bookmarkResults: Bookmark[] = [];
   let starResults: GithubStar[] = [];
@@ -65,6 +70,7 @@ export default async function SearchPage({
         } satisfies Bookmark;
       })
       .filter((b) => {
+        if (!inDateRange(b.createdAt, from, to)) return false;
         if (category && (b.category ?? "").toLowerCase() !== category) {
           return false;
         }
@@ -110,6 +116,7 @@ export default async function SearchPage({
           } satisfies GithubStar;
         })
         .filter((s) => {
+          if (!inDateRange(s.createdAt, from, to)) return false;
           if (tag && !s.topics.some((t) => t.toLowerCase() === tag)) {
             return false;
           }
@@ -127,7 +134,9 @@ export default async function SearchPage({
     }
   }
 
-  const hasQuery = Boolean(q || tag || category || (type && type !== "all"));
+  const hasQuery = Boolean(
+    q || tag || category || from || to || (type && type !== "all")
+  );
   const total = bookmarkResults.length + starResults.length;
 
   return (
@@ -148,6 +157,8 @@ export default async function SearchPage({
           결과 {total}건
           {bookmarkResults.length > 0 && ` · 북마크 ${bookmarkResults.length}`}
           {starResults.length > 0 && ` · Star ${starResults.length}`}
+          {(from || to) &&
+            ` · 기간 ${from || "…"} ~ ${to || "…"}`}
         </p>
       )}
 

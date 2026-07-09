@@ -1,4 +1,4 @@
-// Tiptap 리치 텍스트 에디터 — StarterKit + Placeholder + Link
+// Tiptap 리치 텍스트 에디터 — StarterKit + 임베드 블록 + 자동 저장
 "use client";
 
 import Link from "@tiptap/extension-link";
@@ -6,6 +6,10 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useEffect, useState } from "react";
+import type { Bookmark, GithubStar } from "@/lib/types";
+import { EmbedBlock } from "@/components/pages/extensions/embed-block";
+import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
+import { EmbedPicker } from "@/components/pages/embed-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -13,10 +17,18 @@ type Props = {
   pageId: string;
   initialTitle: string;
   initialContent: unknown;
+  bookmarks: Bookmark[];
+  stars: GithubStar[];
 };
 
 /** 페이지 제목/본문을 편집하고 저장한다. */
-export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
+export function TiptapEditor({
+  pageId,
+  initialTitle,
+  initialContent,
+  bookmarks,
+  stars,
+}: Props) {
   const [title, setTitle] = useState(initialTitle);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
@@ -25,12 +37,13 @@ export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
     extensions: [
       StarterKit,
       Placeholder.configure({
-        placeholder: "내용을 입력하세요…",
+        placeholder: "내용을 입력하세요…  /  툴바의 「임베드」로 북마크·Star 삽입",
       }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: { class: "text-indigo-400 underline" },
       }),
+      EmbedBlock,
     ],
     content:
       initialContent && typeof initialContent === "object"
@@ -68,7 +81,7 @@ export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
     }
   }, [editor, pageId, title]);
 
-  // 2초 debounce 자동 저장
+  // 편집 표시
   useEffect(() => {
     if (!editor) return;
     const handler = () => {
@@ -80,6 +93,7 @@ export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
     };
   }, [editor]);
 
+  // 1.5초 debounce 자동 저장
   useEffect(() => {
     if (status !== "수정됨…") return;
     const t = setTimeout(() => {
@@ -87,6 +101,13 @@ export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
     }, 1500);
     return () => clearTimeout(t);
   }, [status, save]);
+
+  /** 선택한 항목을 임베드 노드로 삽입한다. */
+  function handleEmbed(attrs: EmbedAttrs) {
+    if (!editor) return;
+    editor.chain().focus().insertEmbed(attrs).run();
+    setStatus("수정됨…");
+  }
 
   return (
     <div className="space-y-4">
@@ -111,6 +132,18 @@ export function TiptapEditor({ pageId, initialTitle, initialContent }: Props) {
           )}
         </div>
       </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <EmbedPicker
+          bookmarks={bookmarks}
+          stars={stars}
+          onPick={handleEmbed}
+        />
+        <span className="text-xs text-zinc-500">
+          북마크 또는 GitHub Star를 페이지에 카드로 삽입합니다.
+        </span>
+      </div>
+
       <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
         <EditorContent editor={editor} />
       </div>
