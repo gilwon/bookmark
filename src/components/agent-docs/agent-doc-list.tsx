@@ -25,6 +25,7 @@ import {
 } from "@/lib/agent-doc-draft";
 import { extractMetaFromFiles } from "@/lib/agent-doc-meta";
 import {
+  AGENT_DOC_KIND_COLOR,
   AGENT_DOC_KIND_LABEL,
   getAgentDocTemplates,
   inferKindFromFilename,
@@ -439,6 +440,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             {filtered.map((doc) => {
               const fileCount = doc.files?.length || 1;
               const selected = selection.isSelected(doc.id);
+              const kindColor =
+                AGENT_DOC_KIND_COLOR[doc.kind] ?? AGENT_DOC_KIND_COLOR.other;
               return (
                 <Card
                   key={doc.id}
@@ -455,7 +458,12 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                       onChange={() => selection.toggle(doc.id)}
                       aria-label={`${doc.title} 선택`}
                     />
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
+                    <div
+                      className={cn(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+                        kindColor.icon
+                      )}
+                    >
                       {fileCount > 1 ? (
                         <Layers className="h-5 w-5" />
                       ) : doc.kind === "other" ? (
@@ -466,7 +474,10 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                     </div>
                     <div className="min-w-0 flex-1 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <Badge variant="secondary">
+                        <Badge
+                          variant="outline"
+                          className={kindColor.badge}
+                        >
                           {AGENT_DOC_KIND_LABEL[doc.kind]}
                         </Badge>
                         {fileCount > 1 && (

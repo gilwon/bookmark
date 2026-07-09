@@ -17,6 +17,33 @@ export const AGENT_DOC_KIND_LABEL: Record<AgentDocKind, string> = {
   other: "기타",
 };
 
+/** kind별 아이콘·배지 색 (리스트에서 카테고리 구분) */
+export const AGENT_DOC_KIND_COLOR: Record<
+  AgentDocKind,
+  { icon: string; badge: string }
+> = {
+  skill: {
+    icon: "bg-violet-600/15 text-violet-600 dark:text-violet-300",
+    badge:
+      "border-violet-500/30 bg-violet-600/15 text-violet-700 dark:text-violet-300",
+  },
+  agents: {
+    icon: "bg-sky-600/15 text-sky-600 dark:text-sky-300",
+    badge:
+      "border-sky-500/30 bg-sky-600/15 text-sky-700 dark:text-sky-300",
+  },
+  claude: {
+    icon: "bg-amber-600/15 text-amber-700 dark:text-amber-300",
+    badge:
+      "border-amber-500/30 bg-amber-600/15 text-amber-800 dark:text-amber-300",
+  },
+  other: {
+    icon: "bg-slate-600/15 text-slate-600 dark:text-slate-300",
+    badge:
+      "border-slate-500/30 bg-slate-600/15 text-slate-700 dark:text-slate-300",
+  },
+};
+
 /** 파일명에서 kind를 추론한다. */
 export function inferKindFromFilename(filename: string): AgentDocKind {
   const base = filename.trim().replace(/\\/g, "/").split("/").pop() || "";

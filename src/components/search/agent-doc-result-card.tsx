@@ -1,10 +1,14 @@
 // 검색 결과용 에이전트 문서 카드
 import { Bot } from "lucide-react";
 import Link from "next/link";
-import { AGENT_DOC_KIND_LABEL } from "@/lib/agent-doc-templates";
+import {
+  AGENT_DOC_KIND_COLOR,
+  AGENT_DOC_KIND_LABEL,
+} from "@/lib/agent-doc-templates";
 import type { AgentDocKind } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export type AgentDocSearchResult = {
   id: string;
@@ -22,15 +26,23 @@ export function AgentDocResultCard({
 }: {
   doc: AgentDocSearchResult;
 }) {
+  const kindColor =
+    AGENT_DOC_KIND_COLOR[doc.kind] ?? AGENT_DOC_KIND_COLOR.other;
+
   return (
     <Card className="transition-colors hover:border-border">
       <CardContent className="flex items-start gap-3 p-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-600/15 text-indigo-600 dark:text-indigo-300">
+        <div
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+            kindColor.icon
+          )}
+        >
           <Bot className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">
+            <Badge variant="outline" className={kindColor.badge}>
               {AGENT_DOC_KIND_LABEL[doc.kind] ?? "문서"}
             </Badge>
             {(doc.fileCount ?? 1) > 1 && (
