@@ -45,3 +45,19 @@ export type UrlMeta = {
   image: string | null;
   favicon: string | null;
 };
+
+/** 에이전트 문서 종류 */
+export type AgentDocKind = "skill" | "agents" | "claude" | "other";
+
+/** SKILL.md / AGENTS.md / CLAUDE.md 등 에이전트 지시 문서 */
+export type AgentDoc = {
+  id: string;
+  userId: string;
+  kind: AgentDocKind;
+  filename: string;
+  title: string;
+  description: string | null;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+};

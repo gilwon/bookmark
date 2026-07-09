@@ -1,7 +1,11 @@
-// 통합 검색 페이지 — 북마크 · Star · 커스텀 페이지
+// 통합 검색 페이지 — 북마크 · Star · 페이지 · 에이전트 문서
 import { Suspense } from "react";
 import { eq } from "drizzle-orm";
 import { BookmarkCard } from "@/components/bookmarks/bookmark-card";
+import {
+  AgentDocResultCard,
+  type AgentDocSearchResult,
+} from "@/components/search/agent-doc-result-card";
 import { FilterBar } from "@/components/search/filter-bar";
 import {
   PageResultCard,
@@ -11,9 +15,14 @@ import { StarCard } from "@/components/stars/star-card";
 import { auth } from "@/lib/auth";
 import { inDateRange } from "@/lib/date-range";
 import { db } from "@/lib/db";
-import { bookmarks, customPages, githubStars } from "@/lib/db/schema";
+import {
+  agentDocs,
+  bookmarks,
+  customPages,
+  githubStars,
+} from "@/lib/db/schema";
 import { extractTiptapText } from "@/lib/tiptap-text";
-import type { Bookmark, GithubStar } from "@/lib/types";
+import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -43,7 +52,14 @@ function makeSnippet(text: string, q: string, max = 140): string {
   return slice;
 }
 
-/** 검색어/필터에 맞는 북마크·Star·페이지를 통합 표시한다. */
+const AGENT_KINDS = new Set<AgentDocKind>([
+  "skill",
+  "agents",
+  "claude",
+  "other",
+]);
+
+/** 검색어/필터에 맞는 북마크·Star·페이지·에이전트 문서를 통합 표시한다. */
 export default async function SearchPage({
   searchParams,
 }: {
@@ -63,6 +79,7 @@ export default async function SearchPage({
   let bookmarkResults: Bookmark[] = [];
   let starResults: GithubStar[] = [];
   let pageResults: PageSearchResult[] = [];
+  let agentDocResults: AgentDocSearchResult[] = [];
 
   if (type === "all" || type === "bookmark") {
     const rows = db
@@ -198,18 +215,59 @@ export default async function SearchPage({
       }));
   }
 
+  // 에이전트 문서: 태그/카테고리 없음
+  if ((type === "all" || type === "agent-doc") && !tag && !category) {
+    const rows = db
+      .select()
+      .from(agentDocs)
+      .where(eq(agentDocs.userId, userId))
+      .all();
+
+    agentDocResults = rows
+      .filter((row) => {
+        if (!inDateRange(row.updatedAt, from, to)) return false;
+        if (!q) return true;
+        const hay = [
+          row.title,
+          row.filename,
+          row.description ?? "",
+          row.content,
+          row.kind,
+        ]
+          .join(" ")
+          .toLowerCase();
+        return hay.includes(q);
+      })
+      .map((row) => ({
+        id: row.id,
+        title: row.title,
+        filename: row.filename,
+        kind: AGENT_KINDS.has(row.kind as AgentDocKind)
+          ? (row.kind as AgentDocKind)
+          : "other",
+        snippet: makeSnippet(
+          [row.description ?? "", row.content].join("\n"),
+          q
+        ),
+        updatedAt: row.updatedAt,
+      }));
+  }
+
   const hasQuery = Boolean(
     q || tag || category || from || to || (type && type !== "all")
   );
   const total =
-    bookmarkResults.length + starResults.length + pageResults.length;
+    bookmarkResults.length +
+    starResults.length +
+    pageResults.length +
+    agentDocResults.length;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">검색</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          북마크, GitHub Stars, 커스텀 페이지를 통합 검색합니다.
+          북마크, Stars, 페이지, 에이전트 문서를 통합 검색합니다.
         </p>
       </div>
 
@@ -225,6 +283,8 @@ export default async function SearchPage({
           {bookmarkResults.length > 0 && ` · 북마크 ${bookmarkResults.length}`}
           {starResults.length > 0 && ` · Star ${starResults.length}`}
           {pageResults.length > 0 && ` · 페이지 ${pageResults.length}`}
+          {agentDocResults.length > 0 &&
+            ` · 에이전트 문서 ${agentDocResults.length}`}
           {(from || to) && ` · 기간 ${from || "…"} ~ ${to || "…"}`}
         </p>
       )}
@@ -271,6 +331,18 @@ export default async function SearchPage({
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {pageResults.map((p) => (
                   <PageResultCard key={p.id} page={p} />
+                ))}
+              </div>
+            </section>
+          )}
+          {agentDocResults.length > 0 && (
+            <section className="space-y-3">
+              <h2 className="text-sm font-medium text-muted-foreground">
+                에이전트 문서
+              </h2>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {agentDocResults.map((d) => (
+                  <AgentDocResultCard key={d.id} doc={d} />
                 ))}
               </div>
             </section>

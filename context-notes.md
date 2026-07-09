@@ -63,6 +63,11 @@
 - Supabase: RLS 정책 + MIGRATION.md (런타임은 여전히 SQLite).
 - 프로덕션 Dev Login 기본 off.
 
+### 2026-07-09: 에이전트 문서 보관함
+- `agent_docs` 테이블: kind(skill|agents|claude|other), filename, title, description, markdown content.
+- UI: /agent-docs 목록 + 템플릿 생성, /agent-docs/[id] 모노스페이스 Markdown 에디터(자동저장·복사·다운로드).
+- 검색 type=agent-doc 연동.
+
 
 ### 2026-07-09: MVP 구현 완료 (Worker)
 - 로컬 SQLite `data/mymark.db`, 첫 import 시 CREATE TABLE IF NOT EXISTS.

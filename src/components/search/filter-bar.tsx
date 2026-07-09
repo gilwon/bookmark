@@ -59,13 +59,13 @@ export function FilterBar() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             className="pl-8"
-            placeholder="제목, 설명, URL, 페이지 본문…"
+            placeholder="제목, 설명, URL, 페이지·에이전트 문서…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </div>
       </div>
-      <div className="space-y-1 w-full sm:w-40">
+      <div className="space-y-1 w-full sm:w-44">
         <label className="text-xs text-muted-foreground">타입</label>
         <select
           value={type}
@@ -76,6 +76,7 @@ export function FilterBar() {
           <option value="bookmark">북마크</option>
           <option value="star">GitHub Star</option>
           <option value="page">페이지</option>
+          <option value="agent-doc">에이전트 문서</option>
         </select>
       </div>
       <div className="space-y-1 w-full sm:w-32">

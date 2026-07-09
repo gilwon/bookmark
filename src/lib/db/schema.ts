@@ -51,7 +51,27 @@ export const oauthTokens = sqliteTable("oauth_tokens", {
   updatedAt: text("updated_at").notNull(),
 });
 
+/**
+ * 에이전트 지시 문서 저장소
+ * SKILL.md / AGENTS.md / CLAUDE.md 등 Markdown 본문
+ */
+export const agentDocs = sqliteTable("agent_docs", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  // skill | agents | claude | other
+  kind: text("kind").notNull().default("other"),
+  // 파일명 예: SKILL.md, AGENTS.md, CLAUDE.md
+  filename: text("filename").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  // Markdown 원문
+  content: text("content").notNull().default(""),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export type BookmarkRow = typeof bookmarks.$inferSelect;
 export type GithubStarRow = typeof githubStars.$inferSelect;
 export type CustomPageRow = typeof customPages.$inferSelect;
 export type OauthTokenRow = typeof oauthTokens.$inferSelect;
+export type AgentDocRow = typeof agentDocs.$inferSelect;

@@ -48,3 +48,8 @@
 - [o] unstar 로컬 정리
 - [o] 프로덕션 Dev Login 기본 비활성
 - [o] Supabase 스키마 RLS + 이전 가이드
+
+## 에이전트 문서 보관함
+- [o] agent_docs 테이블 (SKILL / AGENTS / CLAUDE / other)
+- [o] 템플릿 생성 · Markdown 편집 · 복사 · .md 다운로드
+- [o] 사이드바 네비 + 통합 검색 연동
