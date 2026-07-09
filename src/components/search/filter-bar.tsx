@@ -59,22 +59,23 @@ export function FilterBar() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             className="pl-8"
-            placeholder="제목, 설명, URL…"
+            placeholder="제목, 설명, URL, 페이지 본문…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </div>
       </div>
-      <div className="space-y-1 w-full sm:w-36">
+      <div className="space-y-1 w-full sm:w-40">
         <label className="text-xs text-muted-foreground">타입</label>
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="flex h-9 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <option value="all">전체</option>
           <option value="bookmark">북마크</option>
           <option value="star">GitHub Star</option>
+          <option value="page">페이지</option>
         </select>
       </div>
       <div className="space-y-1 w-full sm:w-32">
