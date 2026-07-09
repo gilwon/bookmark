@@ -359,20 +359,74 @@ function blocksToMarkdown(blocks: string[]): string {
 
   for (const b of blocks) {
     if (isListLine(b) || /^-\s+/.test(b)) {
-      listBuf.push(b.startsWith("- ") ? b : b.replace(/^\s+/, ""));
+      // 번호 목록 1. 2. 유지, 불릿은 -
+      let line = b.trim();
+      if (/^[•●○▪▸►·*]\s+/.test(line)) {
+        line = line.replace(/^[•●○▪▸►·*]\s+/, "- ");
+      } else if (/^[-–—]\s+/.test(line)) {
+        line = line.replace(/^[-–—]\s+/, "- ");
+      } else if (/^\d+[.)]\s+/.test(line)) {
+        line = line.replace(/^(\d+)[.)]\s+/, "$1. ");
+      }
+      listBuf.push(line);
       continue;
     }
     flushList();
     if (/^#{1,6}\s/.test(b)) {
-      parts.push(b);
+      parts.push(b.trim());
     } else {
-      parts.push(b);
+      parts.push(b.trim());
     }
   }
   flushList();
 
-  // 블록 사이 빈 줄 (목록 내부는 이미 \n 만)
-  return parts.join("\n\n").replace(/\n{3,}/g, "\n\n").trim();
+  return polishMarkdownDocument(parts.join("\n\n"));
+}
+
+/**
+ * 최종 마크다운 가독성 정리.
+ * - 제목/목록/문단 사이 빈 줄
+ * - 벽 텍스트면 문장 단위로 문단 분할
+ * - 페이지 라벨 잔여 제거
+ */
+function polishMarkdownDocument(raw: string): string {
+  let md = raw.replace(/\r\n/g, "\n").trim();
+  if (!md) return "";
+
+  // 줄 단위 페이지 마커 제거
+  md = md
+    .split("\n")
+    .filter((line) => !isPageMarker(line))
+    .join("\n");
+
+  // 제목 앞뒤 빈 줄 보장
+  md = md.replace(/([^\n])\n(#{1,6}\s)/g, "$1\n\n$2");
+  md = md.replace(/(#{1,6}\s[^\n]+)\n(?!\n|#|- |\d+\. )/g, "$1\n\n");
+
+  // 목록 앞 빈 줄
+  md = md.replace(/([^\n])\n([-*] |\d+\. )/g, "$1\n\n$2");
+
+  // 문단 분리가 거의 없는 벽 텍스트 → 문장 2~3개씩 문단
+  const paraCount = (md.match(/\n\n/g) || []).length;
+  const plainLen = md.replace(/\s/g, "").length;
+  if (paraCount < 2 && plainLen > 280 && !/^#{1,6}\s/m.test(md)) {
+    const oneLine = md.replace(/\n+/g, " ").replace(/[ \t]{2,}/g, " ").trim();
+    const sentences = oneLine
+      .split(/(?<=[.!?…。．！？])\s+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (sentences.length >= 3) {
+      const chunks: string[] = [];
+      for (let i = 0; i < sentences.length; i += 2) {
+        chunks.push(sentences.slice(i, i + 2).join(" "));
+      }
+      md = chunks.join("\n\n");
+    }
+  }
+
+  // 과도한 빈 줄 정리
+  md = md.replace(/\n{3,}/g, "\n\n").trim();
+  return md;
 }
 
 /** 파일명에서 확장자 제거한 제목 */
@@ -436,7 +490,7 @@ export async function extractPdfToMarkdown(
   const merged = mergeAcrossPages(pageBlocks);
   // 최종 마크다운에서도 페이지 라벨 블록 제거 (제목으로 승격된 경우 포함)
   const cleanedBlocks = merged.filter((b) => !isPageMarker(b));
-  let markdown = blocksToMarkdown(cleanedBlocks);
+  let markdown = polishMarkdownDocument(blocksToMarkdown(cleanedBlocks));
 
   const title = titleFromPdfName(fileName);
   const charCount = markdown.replace(/\s/g, "").length;
@@ -466,5 +520,6 @@ export const __pdfReflow = {
   reflowLinesToBlocks,
   mergeAcrossPages,
   blocksToMarkdown,
+  polishMarkdownDocument,
   isPageMarker,
 };

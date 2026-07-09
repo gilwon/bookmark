@@ -1,9 +1,10 @@
-// 텍스트 PDF 업로드 → 마크다운 초안 편집 → 페이지 저장
+// 텍스트 PDF 업로드 → 마크다운 초안(미리보기) → 페이지 저장
 "use client";
 
 import { FileUp, Save, Upload } from "lucide-react";
+import { marked } from "marked";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { markdownToTiptapDoc } from "@/lib/markdown-to-tiptap";
 import {
   extractPdfToMarkdown,
@@ -14,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+
+type ViewMode = "preview" | "source";
 
 /** PDF 파일을 골라 텍스트를 추출한 뒤 페이지로 저장한다. */
 export function PdfImportForm() {
@@ -32,6 +35,21 @@ export function PdfImportForm() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("preview");
+
+  /** 마크다운 → HTML 미리보기 (읽기 전용) */
+  const previewHtml = useMemo(() => {
+    if (!markdown.trim()) return "";
+    try {
+      return marked.parse(markdown, {
+        gfm: true,
+        breaks: false,
+        async: false,
+      }) as string;
+    } catch {
+      return `<p>${markdown.replace(/</g, "&lt;")}</p>`;
+    }
+  }, [markdown]);
 
   async function processFile(file: File) {
     if (!file) return;
@@ -50,6 +68,7 @@ export function PdfImportForm() {
     setError(null);
     setStatus(null);
     setMeta(null);
+    setViewMode("preview");
     try {
       const buf = await file.arrayBuffer();
       const result = await extractPdfToMarkdown(buf, file.name);
@@ -65,12 +84,10 @@ export function PdfImportForm() {
         setError(
           "추출된 텍스트가 거의 없습니다. 스캔(이미지) PDF 일 수 있습니다. OCR 은 지원하지 않습니다."
         );
-        setStatus(
-          `${result.pageCount}페이지 처리 — 내용을 확인·보완한 뒤 저장하세요.`
-        );
+        setStatus("내용을 확인·보완한 뒤 저장하세요.");
       } else {
         setStatus(
-          `${result.pageCount}페이지 · 글자 약 ${result.charCount.toLocaleString("ko-KR")}자 추출 완료. 확인 후 저장하세요.`
+          `추출 완료 · 약 ${result.charCount.toLocaleString("ko-KR")}자. 미리보기를 확인한 뒤 저장하세요.`
         );
       }
     } catch (err) {
@@ -129,8 +146,8 @@ export function PdfImportForm() {
           PDF로 페이지 등록
         </h2>
         <p className="mt-0.5 text-xs text-muted-foreground">
-          텍스트가 들어 있는 PDF 를 올리면 본문 초안을 만듭니다. 스캔본·이미지
-          PDF 는 지원하지 않습니다 (OCR 없음).
+          텍스트 PDF 를 올리면 마크다운 문서로 정리합니다. 미리보기로 확인한 뒤
+          페이지로 저장하세요. (스캔 PDF · OCR 미지원)
         </p>
       </div>
 
@@ -179,7 +196,7 @@ export function PdfImportForm() {
         <div className="space-y-0.5">
           <p className="text-sm font-medium">
             {loading
-              ? "PDF 텍스트 추출 중…"
+              ? "PDF → 마크다운 변환 중…"
               : dragOver
                 ? "여기에 놓으세요"
                 : "PDF 를 끌어다 놓거나 클릭해서 선택"}
@@ -208,7 +225,7 @@ export function PdfImportForm() {
           <span className="truncate">{fileName}</span>
           {meta && (
             <span className="shrink-0 tabular-nums">
-              · {meta.pageCount}p · {meta.charCount.toLocaleString("ko-KR")}자
+              · {meta.charCount.toLocaleString("ko-KR")}자
             </span>
           )}
         </p>
@@ -225,18 +242,62 @@ export function PdfImportForm() {
               disabled={saving}
             />
           </div>
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">
-              본문 초안 (마크다운)
-            </label>
-            <Textarea
-              value={markdown}
-              onChange={(e) => setMarkdown(e.target.value)}
-              className="min-h-[240px] font-mono text-xs leading-relaxed"
-              placeholder="추출된 텍스트가 여기에 표시됩니다…"
-              disabled={saving}
-            />
+
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <label className="text-xs text-muted-foreground">본문 초안</label>
+              <div className="inline-flex rounded-lg border border-border p-0.5 text-xs">
+                <button
+                  type="button"
+                  className={cn(
+                    "rounded-md px-2.5 py-1 font-medium transition-colors",
+                    viewMode === "preview"
+                      ? "bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  onClick={() => setViewMode("preview")}
+                >
+                  미리보기
+                </button>
+                <button
+                  type="button"
+                  className={cn(
+                    "rounded-md px-2.5 py-1 font-medium transition-colors",
+                    viewMode === "source"
+                      ? "bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  onClick={() => setViewMode("source")}
+                >
+                  마크다운
+                </button>
+              </div>
+            </div>
+
+            {viewMode === "preview" ? (
+              <div
+                className={cn(
+                  "pdf-md-preview max-h-[min(60vh,520px)] min-h-[240px] overflow-y-auto",
+                  "rounded-xl border border-border bg-background px-5 py-4"
+                )}
+                // 추출 미리보기 전용 — 사용자 입력이 아닌 변환 결과
+                dangerouslySetInnerHTML={{ __html: previewHtml }}
+              />
+            ) : (
+              <Textarea
+                value={markdown}
+                onChange={(e) => setMarkdown(e.target.value)}
+                className="min-h-[280px] font-mono text-sm leading-relaxed"
+                placeholder="마크다운 원본…"
+                disabled={saving}
+              />
+            )}
+            <p className="text-[11px] text-muted-foreground">
+              기본은 렌더된 미리보기입니다. 수정이 필요하면 「마크다운」 탭에서
+              고친 뒤 저장하세요.
+            </p>
           </div>
+
           <Button
             type="button"
             onClick={() => void handleSave()}

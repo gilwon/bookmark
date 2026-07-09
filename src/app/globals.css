@@ -402,6 +402,87 @@ html.light .ProseMirror .hljs-formula {
   box-shadow: none;
 }
 
+/* PDF 가져오기 마크다운 미리보기 */
+.pdf-md-preview {
+  color: var(--foreground);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.pdf-md-preview h1,
+.pdf-md-preview h2,
+.pdf-md-preview h3,
+.pdf-md-preview h4 {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 1.1em 0 0.45em;
+  line-height: 1.35;
+}
+
+.pdf-md-preview h1 {
+  font-size: 1.5rem;
+}
+
+.pdf-md-preview h2 {
+  font-size: 1.25rem;
+}
+
+.pdf-md-preview h3 {
+  font-size: 1.1rem;
+}
+
+.pdf-md-preview p {
+  margin: 0.65em 0;
+}
+
+.pdf-md-preview ul,
+.pdf-md-preview ol {
+  margin: 0.55em 0;
+  padding-left: 1.4rem;
+}
+
+.pdf-md-preview li {
+  margin: 0.2em 0;
+}
+
+.pdf-md-preview li > p {
+  margin: 0.15em 0;
+}
+
+.pdf-md-preview blockquote {
+  margin: 0.75em 0;
+  padding-left: 0.85rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted-foreground);
+}
+
+.pdf-md-preview code {
+  font-size: 0.875em;
+  background: var(--code-bg);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.35em;
+}
+
+.pdf-md-preview pre {
+  margin: 0.75em 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: var(--pre-bg);
+  border: 1px solid var(--border);
+}
+
+.pdf-md-preview pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.pdf-md-preview hr {
+  margin: 1.25em 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
 /* 본문: 제목 아래 자연스럽게 이어지는 입력면 + 왼쪽 핸들 거터 */
 .notion-body {
   position: relative;
