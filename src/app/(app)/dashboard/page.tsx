@@ -193,6 +193,7 @@ export default async function DashboardPage() {
         ))}
       </div>
 
+      {/* 최근 북마크 + 카테고리 */}
       <div className="grid gap-6 lg:grid-cols-5">
         <section className="space-y-3 lg:col-span-3">
           <div className="flex items-center justify-between">
@@ -209,155 +210,153 @@ export default async function DashboardPage() {
           <DashboardRecentBookmarks bookmarks={recentBookmarks} />
         </section>
 
-        <div className="space-y-6 lg:col-span-2">
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold tracking-tight">
-                카테고리
-              </h2>
-              <Link
-                href="/bookmarks"
-                className="text-xs text-muted-foreground hover:text-indigo-500"
-              >
-                북마크로
-              </Link>
-            </div>
-            <Card>
-              <CardContent className="space-y-3 p-4">
-                {categories.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    아직 북마크가 없습니다.
-                  </p>
-                ) : (
-                  categories.map((c) => (
-                    <div key={c.name} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="truncate font-medium text-foreground">
-                          {c.name}
-                        </span>
-                        <span className="tabular-nums text-muted-foreground">
-                          {c.count}
-                        </span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full bg-indigo-500/70"
-                          style={{
-                            width: `${Math.round((c.count / maxCat) * 100)}%`,
-                          }}
-                        />
-                      </div>
+        <section className="space-y-3 lg:col-span-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold tracking-tight">카테고리</h2>
+            <Link
+              href="/bookmarks"
+              className="text-xs text-muted-foreground hover:text-indigo-500"
+            >
+              북마크로
+            </Link>
+          </div>
+          <Card>
+            <CardContent className="space-y-3 p-4">
+              {categories.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  아직 북마크가 없습니다.
+                </p>
+              ) : (
+                categories.map((c) => (
+                  <div key={c.name} className="space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="truncate font-medium text-foreground">
+                        {c.name}
+                      </span>
+                      <span className="tabular-nums text-muted-foreground">
+                        {c.count}
+                      </span>
                     </div>
-                  ))
-                )}
-              </CardContent>
-            </Card>
-          </section>
+                    <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full bg-indigo-500/70"
+                        style={{
+                          width: `${Math.round((c.count / maxCat) * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
+            </CardContent>
+          </Card>
+        </section>
+      </div>
 
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold tracking-tight">
-                최근 Stars
-              </h2>
-              <Link
-                href="/stars"
-                className="text-xs text-muted-foreground hover:text-indigo-500"
-              >
-                전체 보기
-              </Link>
-            </div>
-            <Card>
-              <CardContent className="divide-y divide-border p-0">
-                {recentStars.length === 0 ? (
-                  <p className="p-4 text-sm text-muted-foreground">
-                    동기화된 Star가 없습니다.
-                  </p>
-                ) : (
-                  recentStars.map((s) => (
-                    <a
-                      key={s.id}
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-start justify-between gap-2 px-4 py-3 transition-colors hover:bg-muted/40"
-                    >
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-1">
-                          {s.changeKind === "new" && (
-                            <Badge className="border-transparent bg-emerald-600/20 text-[10px] text-emerald-700 dark:text-emerald-300">
-                              신규
-                            </Badge>
-                          )}
-                          {s.changeKind === "updated" && (
-                            <Badge className="border-transparent bg-amber-500/20 text-[10px] text-amber-800 dark:text-amber-200">
-                              업데이트
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="truncate text-sm font-medium">
-                          {s.repoFullName}
-                        </p>
-                        {s.description && (
-                          <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                            {s.description}
-                          </p>
+      {/* 최근 Stars · 최근 페이지 — 반반 */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold tracking-tight">
+              최근 Stars
+            </h2>
+            <Link
+              href="/stars"
+              className="text-xs text-muted-foreground hover:text-indigo-500"
+            >
+              전체 보기
+            </Link>
+          </div>
+          <Card className="h-full">
+            <CardContent className="divide-y divide-border p-0">
+              {recentStars.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">
+                  동기화된 Star가 없습니다.
+                </p>
+              ) : (
+                recentStars.map((s) => (
+                  <a
+                    key={s.id}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start justify-between gap-2 px-4 py-3 transition-colors hover:bg-muted/40"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-1">
+                        {s.changeKind === "new" && (
+                          <Badge className="border-transparent bg-emerald-600/20 text-[10px] text-emerald-700 dark:text-emerald-300">
+                            신규
+                          </Badge>
+                        )}
+                        {s.changeKind === "updated" && (
+                          <Badge className="border-transparent bg-amber-500/20 text-[10px] text-amber-800 dark:text-amber-200">
+                            업데이트
+                          </Badge>
                         )}
                       </div>
-                      <div className="flex shrink-0 flex-col items-end gap-1">
-                        {s.language && (
-                          <Badge variant="secondary">{s.language}</Badge>
-                        )}
-                        <span className="text-[11px] tabular-nums text-muted-foreground">
-                          ★ {s.stars.toLocaleString()}
-                          {s.starsDelta
-                            ? ` (${s.starsDelta > 0 ? "+" : ""}${s.starsDelta})`
-                            : ""}
-                        </span>
-                      </div>
-                    </a>
-                  ))
-                )}
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold tracking-tight">
-                최근 페이지
-              </h2>
-              <Link
-                href="/pages"
-                className="text-xs text-muted-foreground hover:text-indigo-500"
-              >
-                전체 보기
-              </Link>
-            </div>
-            <Card>
-              <CardContent className="divide-y divide-border p-0">
-                {recentPages.length === 0 ? (
-                  <p className="p-4 text-sm text-muted-foreground">
-                    작성한 페이지가 없습니다.
-                  </p>
-                ) : (
-                  recentPages.map((p) => (
-                    <Link
-                      key={p.id}
-                      href={`/pages/${p.id}`}
-                      className="block px-4 py-3 transition-colors hover:bg-muted/40"
-                    >
-                      <p className="truncate text-sm font-medium">{p.title}</p>
-                      <p className="mt-0.5 text-[11px] text-muted-foreground">
-                        수정{" "}
-                        {new Date(p.updatedAt).toLocaleDateString("ko-KR")}
+                      <p className="truncate text-sm font-medium">
+                        {s.repoFullName}
                       </p>
-                    </Link>
-                  ))
-                )}
-              </CardContent>
-            </Card>
-          </section>
-        </div>
+                      {s.description && (
+                        <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                          {s.description}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      {s.language && (
+                        <Badge variant="secondary">{s.language}</Badge>
+                      )}
+                      <span className="text-[11px] tabular-nums text-muted-foreground">
+                        ★ {s.stars.toLocaleString()}
+                        {s.starsDelta
+                          ? ` (${s.starsDelta > 0 ? "+" : ""}${s.starsDelta})`
+                          : ""}
+                      </span>
+                    </div>
+                  </a>
+                ))
+              )}
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold tracking-tight">
+              최근 페이지
+            </h2>
+            <Link
+              href="/pages"
+              className="text-xs text-muted-foreground hover:text-indigo-500"
+            >
+              전체 보기
+            </Link>
+          </div>
+          <Card className="h-full">
+            <CardContent className="divide-y divide-border p-0">
+              {recentPages.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">
+                  작성한 페이지가 없습니다.
+                </p>
+              ) : (
+                recentPages.map((p) => (
+                  <Link
+                    key={p.id}
+                    href={`/pages/${p.id}`}
+                    className="block px-4 py-3 transition-colors hover:bg-muted/40"
+                  >
+                    <p className="truncate text-sm font-medium">{p.title}</p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">
+                      수정 {new Date(p.updatedAt).toLocaleDateString("ko-KR")}
+                    </p>
+                  </Link>
+                ))
+              )}
+            </CardContent>
+          </Card>
+        </section>
       </div>
 
       <section className="space-y-3">
