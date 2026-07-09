@@ -43,77 +43,77 @@ const ITEMS: SlashItem[] = [
   {
     id: "text",
     title: "텍스트",
-    desc: "일반 본문",
-    keywords: "text paragraph 본문 텍스트",
+    desc: "일반 텍스트로 쓰기",
+    keywords: "text paragraph 본문 텍스트 일반",
     icon: Type,
   },
   {
     id: "h1",
-    title: "제목 1",
-    desc: "큰 제목",
-    keywords: "h1 heading title 제목",
+    title: "제목1",
+    desc: "큰 섹션 제목",
+    keywords: "h1 heading title 제목1",
     icon: Heading1,
   },
   {
     id: "h2",
-    title: "제목 2",
-    desc: "중간 제목",
-    keywords: "h2 heading 제목",
+    title: "제목2",
+    desc: "중간 섹션 제목",
+    keywords: "h2 heading 제목2",
     icon: Heading2,
   },
   {
     id: "h3",
-    title: "제목 3",
-    desc: "작은 제목",
-    keywords: "h3 heading 제목",
+    title: "제목3",
+    desc: "작은 섹션 제목",
+    keywords: "h3 heading 제목3",
     icon: Heading3,
   },
   {
     id: "bullet",
     title: "글머리 기호 목록",
-    desc: "순서 없는 목록",
-    keywords: "bullet list ul 목록",
+    desc: "간단한 글머리 기호 목록",
+    keywords: "bullet list ul 목록 글머리",
     icon: List,
   },
   {
     id: "ordered",
-    title: "번호 목록",
-    desc: "1, 2, 3…",
-    keywords: "ordered list ol 번호",
+    title: "번호 매기기 목록",
+    desc: "번호가 매겨진 목록",
+    keywords: "ordered list ol 번호 매기기",
     icon: ListOrdered,
   },
   {
     id: "quote",
     title: "인용",
-    desc: "인용 블록",
+    desc: "인용문을 담은 블록",
     keywords: "quote blockquote 인용",
     icon: Quote,
   },
   {
     id: "callout",
     title: "콜아웃",
-    desc: "aside 강조 박스",
+    desc: "강조 박스 (aside)",
     keywords: "callout aside 콜아웃 강조",
     icon: MessageSquareWarning,
   },
   {
     id: "code",
     title: "코드",
-    desc: "코드 블록",
+    desc: "코드 스니펫 블록",
     keywords: "code codeblock 코드",
     icon: Code2,
   },
   {
     id: "hr",
     title: "구분선",
-    desc: "가로줄",
+    desc: "콘텐츠를 시각적으로 구분",
     keywords: "hr divider 구분선",
     icon: Minus,
   },
   {
     id: "embed",
     title: "임베드",
-    desc: "북마크 · GitHub Star",
+    desc: "북마크 · GitHub Star 삽입",
     keywords: "embed bookmark star 임베드 북마크",
     icon: Bookmark,
   },
@@ -317,18 +317,20 @@ export function SlashMenu({ editor, onRequestEmbed, onRanCommand }: Props) {
 
   return (
     <div
-      className="slash-menu absolute z-40 w-[min(100%,18rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
+      className="slash-menu absolute z-40 w-[min(100%,17rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
       style={{ top: menu.top, left: menu.left }}
       role="listbox"
       aria-label="슬래시 명령"
     >
-      <div className="border-b border-border px-3 py-2 text-[11px] text-muted-foreground">
+      <div className="border-b border-border px-3 py-2 text-[11px] font-medium text-muted-foreground">
         기본 블록
         {menu.query ? (
-          <span className="ml-1 text-foreground">· /{menu.query}</span>
+          <span className="ml-1 font-normal text-foreground">
+            · /{menu.query}
+          </span>
         ) : null}
       </div>
-      <div ref={listRef} className="max-h-72 overflow-y-auto p-1">
+      <div ref={listRef} className="max-h-80 overflow-y-auto p-1">
         {filtered.length === 0 ? (
           <p className="px-2 py-4 text-center text-xs text-muted-foreground">
             결과 없음
@@ -344,20 +346,22 @@ export function SlashMenu({ editor, onRequestEmbed, onRanCommand }: Props) {
                 role="option"
                 aria-selected={idx === active}
                 className={cn(
-                  "flex w-full items-start gap-2.5 rounded-lg px-2 py-2 text-left transition-colors",
+                  "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors",
                   idx === active
-                    ? "bg-indigo-600/15 text-foreground"
-                    : "hover:bg-muted"
+                    ? "bg-muted text-foreground"
+                    : "hover:bg-muted/70"
                 )}
                 onMouseEnter={() => setActive(idx)}
                 onClick={() => run(it.id)}
               >
-                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-background text-muted-foreground shadow-sm">
                   <Icon className="h-4 w-4" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm font-medium">{it.title}</span>
-                  <span className="block text-[11px] text-muted-foreground">
+                  <span className="block text-sm font-medium leading-tight">
+                    {it.title}
+                  </span>
+                  <span className="block text-[11px] leading-snug text-muted-foreground">
                     {it.desc}
                   </span>
                 </span>

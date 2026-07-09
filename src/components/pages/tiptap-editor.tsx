@@ -1,27 +1,12 @@
-// 노션형 페이지 에디터 — 제목·본문 연속 입력, 서식 툴바, 자동/수동 저장
+// 노션형 페이지 에디터 — 선택 버블 메뉴·슬래시·자동 저장
 "use client";
 
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import {
-  Bold,
-  Check,
-  Code,
-  Heading1,
-  Heading2,
-  Heading3,
-  Italic,
-  List,
-  ListOrdered,
-  MessageSquareWarning,
-  Quote,
-  Redo2,
-  Save,
-  Strikethrough,
-  Undo2,
-} from "lucide-react";
+import { Check, Redo2, Save, Undo2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Editor } from "@tiptap/react";
 import type { Bookmark, GithubStar } from "@/lib/types";
@@ -38,6 +23,7 @@ import {
   useBlockDragDrop,
 } from "@/components/pages/block-handle";
 import { EmbedPicker } from "@/components/pages/embed-picker";
+import { NotionBubbleMenu } from "@/components/pages/notion-bubble-menu";
 import { SlashMenu } from "@/components/pages/slash-menu";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -89,8 +75,9 @@ export function TiptapEditor({
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
       }),
+      Underline,
       Placeholder.configure({
-        placeholder: "글을 입력하거나, 서식 도구로 꾸며 보세요…",
+        placeholder: "글을 쓰거나 / 를 입력해 블록을 추가하세요…",
         emptyEditorClass: "is-editor-empty",
         emptyNodeClass: "is-empty",
         showOnlyWhenEditable: true,
@@ -98,7 +85,9 @@ export function TiptapEditor({
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { class: "text-indigo-500 underline underline-offset-2" },
+        HTMLAttributes: {
+          class: "text-indigo-500 underline underline-offset-2",
+        },
       }),
       CalloutBlock,
       EmbedBlock,
@@ -239,11 +228,6 @@ export function TiptapEditor({
     markDirty();
   }
 
-  function runFormat(cmd: () => void) {
-    cmd();
-    markDirty();
-  }
-
   const statusLabel =
     saveState === "saving"
       ? "저장 중…"
@@ -265,8 +249,8 @@ export function TiptapEditor({
   return (
     // 상단 네비와 같이 앱 셸 전체 폭(max-w-6xl) 사용
     <div className="w-full min-w-0">
-      {/* 상단 고정 툴바 */}
-      <div className="sticky top-0 z-20 -mx-1 mb-6 border-b border-border/80 bg-background/90 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+      {/* 노션처럼 상단은 최소 액션만 — 서식은 선택 버블 메뉴 */}
+      <div className="sticky top-0 z-20 -mx-1 mb-4 border-b border-border/80 bg-background/90 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/75">
         <div className="flex flex-wrap items-center gap-1">
           <ToolbarBtn
             label="실행 취소"
@@ -283,120 +267,6 @@ export function TiptapEditor({
             <Redo2 className="h-4 w-4" />
           </ToolbarBtn>
           <Sep />
-          <ToolbarBtn
-            label="굵게"
-            active={editor?.isActive("bold")}
-            onClick={() =>
-              runFormat(() => editor?.chain().focus().toggleBold().run())
-            }
-          >
-            <Bold className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="기울임"
-            active={editor?.isActive("italic")}
-            onClick={() =>
-              runFormat(() => editor?.chain().focus().toggleItalic().run())
-            }
-          >
-            <Italic className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="취소선"
-            active={editor?.isActive("strike")}
-            onClick={() =>
-              runFormat(() => editor?.chain().focus().toggleStrike().run())
-            }
-          >
-            <Strikethrough className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="인라인 코드"
-            active={editor?.isActive("code")}
-            onClick={() =>
-              runFormat(() => editor?.chain().focus().toggleCode().run())
-            }
-          >
-            <Code className="h-4 w-4" />
-          </ToolbarBtn>
-          <Sep />
-          <ToolbarBtn
-            label="제목 1"
-            active={editor?.isActive("heading", { level: 1 })}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleHeading({ level: 1 }).run()
-              )
-            }
-          >
-            <Heading1 className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="제목 2"
-            active={editor?.isActive("heading", { level: 2 })}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleHeading({ level: 2 }).run()
-              )
-            }
-          >
-            <Heading2 className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="제목 3"
-            active={editor?.isActive("heading", { level: 3 })}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleHeading({ level: 3 }).run()
-              )
-            }
-          >
-            <Heading3 className="h-4 w-4" />
-          </ToolbarBtn>
-          <Sep />
-          <ToolbarBtn
-            label="글머리 목록"
-            active={editor?.isActive("bulletList")}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleBulletList().run()
-              )
-            }
-          >
-            <List className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="번호 목록"
-            active={editor?.isActive("orderedList")}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleOrderedList().run()
-              )
-            }
-          >
-            <ListOrdered className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="인용"
-            active={editor?.isActive("blockquote")}
-            onClick={() =>
-              runFormat(() =>
-                editor?.chain().focus().toggleBlockquote().run()
-              )
-            }
-          >
-            <Quote className="h-4 w-4" />
-          </ToolbarBtn>
-          <ToolbarBtn
-            label="콜아웃 (aside)"
-            active={editor?.isActive("callout")}
-            onClick={() =>
-              runFormat(() => editor?.chain().focus().toggleCallout().run())
-            }
-          >
-            <MessageSquareWarning className="h-4 w-4" />
-          </ToolbarBtn>
-          <Sep />
           <EmbedPicker
             bookmarks={bookmarks}
             stars={stars}
@@ -404,6 +274,9 @@ export function TiptapEditor({
             open={embedOpen}
             onOpenChange={setEmbedOpen}
           />
+          <p className="hidden text-xs text-muted-foreground sm:block">
+            텍스트 선택 → 서식 · / 로 블록 추가
+          </p>
           <div className="ml-auto flex items-center gap-2 pl-2">
             <span
               className={cn(
@@ -479,6 +352,7 @@ export function TiptapEditor({
               onDirty={markDirty}
             />
             <EditorContent editor={editor} />
+            <NotionBubbleMenu editor={editor} onDirty={markDirty} />
             <SlashMenu
               editor={editor}
               onRequestEmbed={() => setEmbedOpen(true)}

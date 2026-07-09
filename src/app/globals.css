@@ -268,6 +268,16 @@ body {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+/* 노션형 선택 버블 메뉴 (Floating UI 래퍼) */
+.notion-bubble-menu {
+  z-index: 50;
+}
+
+.ProseMirror u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* 슬래시 메뉴 위치 기준 */
 .notion-body {
   position: relative;
