@@ -22,8 +22,14 @@ import {
   Strikethrough,
   Undo2,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Editor } from "@tiptap/react";
 import type { Bookmark, GithubStar } from "@/lib/types";
+import {
+  migrateAsideInTiptapDoc,
+  pastedAsideToNodes,
+} from "@/lib/migrate-aside-content";
+import { hasLiteralAside } from "@/lib/normalize-to-markdown";
 import { CalloutBlock } from "@/components/pages/extensions/callout-block";
 import { EmbedBlock } from "@/components/pages/extensions/embed-block";
 import type { EmbedAttrs } from "@/components/pages/extensions/embed-types";
@@ -60,6 +66,16 @@ export function TiptapEditor({
   const dirtyRef = useRef(false);
   const titleValueRef = useRef(title);
   titleValueRef.current = title;
+  const editorRef = useRef<Editor | null>(null);
+
+  /** 저장된 문서 안 리터럴 <aside> 를 callout 노드로 승격 */
+  const seed = useMemo(() => {
+    const base =
+      initialContent && typeof initialContent === "object"
+        ? initialContent
+        : { type: "doc", content: [{ type: "paragraph" }] };
+    return migrateAsideInTiptapDoc(base);
+  }, [initialContent]);
 
   const editor = useEditor({
     extensions: [
@@ -76,23 +92,48 @@ export function TiptapEditor({
       CalloutBlock,
       EmbedBlock,
     ],
-    content:
-      initialContent && typeof initialContent === "object"
-        ? (initialContent as object)
-        : { type: "doc", content: [{ type: "paragraph" }] },
+    content: seed.content as object,
+    onCreate: ({ editor: ed }) => {
+      editorRef.current = ed;
+    },
     editorProps: {
       attributes: {
         class:
           "notion-editor ProseMirror max-w-none min-h-[50vh] focus:outline-none",
       },
-      // Notion 등에서 복사한 <aside> 가 콜아웃으로 파싱되도록 유지
-      transformPastedHTML(html) {
-        // 일부 환경에서 aside 가 div 로 감싸여 와도 그대로 전달
-        return html;
+      /**
+       * 클립보드에 보이는 <aside> 문자열이 있으면 콜아웃 노드로 삽입.
+       * (plain text / HTML 모두 처리)
+       */
+      handlePaste(_view, event) {
+        const html = event.clipboardData?.getData("text/html") ?? "";
+        const text = event.clipboardData?.getData("text/plain") ?? "";
+        const raw = html.trim() || text;
+        if (!raw || !/aside/i.test(raw)) return false;
+        // 리터럴 태그 또는 HTML aside 만 가로챔
+        if (!hasLiteralAside(raw) && !/<aside\b/i.test(raw)) return false;
+
+        event.preventDefault();
+        const nodes = pastedAsideToNodes(raw);
+        const ed = editorRef.current;
+        if (ed && nodes.length > 0) {
+          ed.chain().focus().insertContent(nodes).run();
+          dirtyRef.current = true;
+          setSaveState("dirty");
+        }
+        return true;
       },
     },
     immediatelyRender: false,
   });
+
+  // 시드 마이그레이션이 있었으면 자동 저장 대상
+  useEffect(() => {
+    if (seed.changed) {
+      dirtyRef.current = true;
+      setSaveState("dirty");
+    }
+  }, [seed.changed]);
 
   /** 제목 높이 자동 조절 */
   useEffect(() => {

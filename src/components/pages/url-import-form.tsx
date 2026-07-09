@@ -176,15 +176,23 @@ export function UrlImportForm() {
             </label>
             <Textarea
               value={markdown}
-              onChange={(e) => setMarkdown(e.target.value)}
+              onChange={(e) => {
+                const v = e.target.value;
+                // 입력 중 리터럴 <aside> 가 보이면 즉시 펜스로 치환
+                if (/<\s*aside\b/i.test(v) || /&lt;aside/i.test(v)) {
+                  setMarkdown(normalizePasteToMarkdown(v));
+                  setStatus("aside 태그를 콜아웃 마크다운으로 바꿨습니다.");
+                  return;
+                }
+                setMarkdown(v);
+              }}
               onPaste={(e) => {
-                // 클립보드가 HTML이면 마크다운으로 바꿔 붙여넣기
                 const html = e.clipboardData.getData("text/html");
                 const plain = e.clipboardData.getData("text/plain");
                 const raw = html?.trim() ? html : plain;
                 if (!raw) return;
                 if (
-                  /<aside\b/i.test(raw) ||
+                  /aside/i.test(raw) ||
                   /<\/?(p|div|h[1-6]|ul|ol|li|a)\b/i.test(raw)
                 ) {
                   e.preventDefault();
@@ -194,9 +202,9 @@ export function UrlImportForm() {
                   const end = el.selectionEnd ?? markdown.length;
                   const next =
                     markdown.slice(0, start) + md + markdown.slice(end);
-                  setMarkdown(next);
+                  setMarkdown(normalizePasteToMarkdown(next));
                   setStatus(
-                    "HTML/콜아웃을 마크다운으로 변환해 붙여넣었습니다."
+                    "HTML/aside 를 콜아웃 마크다운으로 변환해 붙여넣었습니다."
                   );
                 }
               }}
@@ -205,10 +213,10 @@ export function UrlImportForm() {
               disabled={saving}
             />
             <p className="text-[11px] text-muted-foreground">
-              Notion에서 복사하면{" "}
-              <code className="text-[10px]">&lt;aside&gt;</code> 같은 HTML이
-              섞일 수 있습니다. 붙여넣기 시 자동 변환하거나 「MD 정리」를
-              누르세요.
+              <code className="text-[10px]">&lt;aside&gt;</code> 가 보이면
+              자동으로 콜아웃(
+              <code className="text-[10px]">:::callout</code>)으로 바뀝니다.
+              안 바뀌면 「MD 정리」를 누르세요.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
