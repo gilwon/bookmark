@@ -41,7 +41,12 @@ export function AddBookmarkForm() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "저장에 실패했습니다.");
+        const msg =
+          (data as { error?: string }).error ||
+          (res.status === 409
+            ? "이미 등록된 주소입니다."
+            : "저장에 실패했습니다.");
+        throw new Error(msg);
       }
       setUrl("");
       setTags("");

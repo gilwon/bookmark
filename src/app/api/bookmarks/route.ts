@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { auth } from "@/lib/auth";
+import { bookmarkUrlKey, isSameBookmarkUrl } from "@/lib/bookmark-url";
 import { categoryFromUrl, extractMeta } from "@/lib/meta";
 import { store } from "@/lib/store";
 import type { Bookmark } from "@/lib/types";
@@ -53,6 +54,28 @@ export async function POST(req: Request) {
 
   let url = body.url.trim();
   if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+
+  const key = bookmarkUrlKey(url);
+  if (!key) {
+    return NextResponse.json(
+      { error: "올바른 URL 형식이 아닙니다." },
+      { status: 400 }
+    );
+  }
+
+  // 쿼리(?…) 제외한 주소가 같으면 중복 — 등록하지 않음
+  const existingUrls = await store.listBookmarkUrls(session.user.id);
+  const dup = existingUrls.find((u) => isSameBookmarkUrl(u, url));
+  if (dup) {
+    return NextResponse.json(
+      {
+        error: `이미 등록된 주소입니다. (쿼리 제외 비교: ${key})`,
+        url: dup,
+        duplicate: true,
+      },
+      { status: 409 }
+    );
+  }
 
   const tags: string[] = Array.isArray(body.tags)
     ? body.tags.map(String).filter(Boolean)
