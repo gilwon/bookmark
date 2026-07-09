@@ -33,8 +33,8 @@ export default async function PagesPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">페이지</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          노션처럼 바로 입력·수정·자동 저장합니다. URL로 초안을 가져올 수도
-          있습니다.
+          노션처럼 바로 입력·수정·자동 저장합니다. URL 또는 텍스트 PDF 로
+          초안을 가져올 수 있습니다.
         </p>
       </div>
       <PageList pages={list} />

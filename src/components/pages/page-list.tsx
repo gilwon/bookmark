@@ -9,6 +9,7 @@ import type { CustomPage } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { extractTiptapText } from "@/lib/tiptap-text";
+import { PdfImportForm } from "@/components/pages/pdf-import-form";
 import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -104,6 +105,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       </div>
 
       <UrlImportForm />
+      <PdfImportForm />
 
       {pages.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
