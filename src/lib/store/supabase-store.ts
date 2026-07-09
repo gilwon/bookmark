@@ -178,6 +178,9 @@ export async function updateStar(
   if (patch.url !== undefined) body.url = patch.url;
   if (patch.lastSynced !== undefined) body.last_synced = patch.lastSynced;
   if (patch.repoFullName !== undefined) body.repo_full_name = patch.repoFullName;
+  if (patch.changeKind !== undefined) body.change_kind = patch.changeKind;
+  if (patch.starsDelta !== undefined) body.stars_delta = patch.starsDelta;
+  if (patch.changedAt !== undefined) body.changed_at = patch.changedAt;
 
   const { error } = await sb()
     .from("github_stars")
@@ -185,6 +188,29 @@ export async function updateStar(
     .eq("id", id)
     .eq("user_id", userId);
   throwIfError(error, "updateStar");
+}
+
+/** 미확인 Star 변경 뱃지 모두 제거 */
+export async function clearStarChanges(userId: string): Promise<number> {
+  const { data, error } = await sb()
+    .from("github_stars")
+    .update({ change_kind: null, stars_delta: 0, changed_at: null })
+    .eq("user_id", userId)
+    .not("change_kind", "is", null)
+    .select("id");
+  throwIfError(error, "clearStarChanges");
+  return data?.length ?? 0;
+}
+
+/** 미확인 변경(신규/업데이트) 개수 */
+export async function countStarChanges(userId: string): Promise<number> {
+  const { count, error } = await sb()
+    .from("github_stars")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .not("change_kind", "is", null);
+  throwIfError(error, "countStarChanges");
+  return count ?? 0;
 }
 
 export async function deleteStar(id: string, userId: string): Promise<void> {

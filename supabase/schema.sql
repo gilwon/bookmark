@@ -31,8 +31,16 @@ create table if not exists public.github_stars (
   url text not null,
   last_synced text not null,
   created_at text not null,
+  change_kind text,
+  stars_delta integer not null default 0,
+  changed_at text,
   unique (user_id, repo_full_name)
 );
+
+-- 기존 프로젝트 마이그레이션 (이미 테이블 있으면 경우 SQL Editor에서 실행)
+alter table public.github_stars add column if not exists change_kind text;
+alter table public.github_stars add column if not exists stars_delta integer not null default 0;
+alter table public.github_stars add column if not exists changed_at text;
 
 create table if not exists public.custom_pages (
   id text primary key,

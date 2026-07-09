@@ -25,6 +25,9 @@ export const githubStars = sqliteTable("github_stars", {
   url: text("url").notNull(),
   lastSynced: text("last_synced").notNull(),
   createdAt: text("created_at").notNull(),
+  changeKind: text("change_kind"),
+  starsDelta: integer("stars_delta").notNull().default(0),
+  changedAt: text("changed_at"),
 });
 
 export const customPages = sqliteTable("custom_pages", {

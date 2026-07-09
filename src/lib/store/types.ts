@@ -13,6 +13,9 @@ export type BookmarkRow = {
   createdAt: string;
 };
 
+/** 동기화 후 카드 뱃지: 신규 / 업데이트 */
+export type StarChangeKind = "new" | "updated" | null;
+
 export type GithubStarRow = {
   id: string;
   userId: string;
@@ -24,6 +27,11 @@ export type GithubStarRow = {
   url: string;
   lastSynced: string;
   createdAt: string;
+  /** new | updated | null */
+  changeKind: StarChangeKind;
+  /** 직전 동기화 대비 stargazer 수 변화 */
+  starsDelta: number;
+  changedAt: string | null;
 };
 
 export type CustomPageRow = {

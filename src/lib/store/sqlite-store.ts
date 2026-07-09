@@ -159,6 +159,41 @@ export async function deleteStar(id: string, userId: string): Promise<void> {
   );
 }
 
+/** 미확인 Star 변경 뱃지 모두 제거 */
+export async function clearStarChanges(userId: string): Promise<number> {
+  const rows = await qall(
+    db
+      .select()
+      .from(githubStars)
+      .where(eq(githubStars.userId, userId))
+  );
+  let n = 0;
+  for (const r of rows) {
+    if (r.changeKind) {
+      await qrun(
+        db
+          .update(githubStars)
+          .set({ changeKind: null, starsDelta: 0, changedAt: null })
+          .where(eq(githubStars.id, r.id))
+      );
+      n += 1;
+    }
+  }
+  return n;
+}
+
+/** 미확인 변경(신규/업데이트) 개수 */
+export async function countStarChanges(userId: string): Promise<number> {
+  const rows = await qall(
+    db
+      .select()
+      .from(githubStars)
+      .where(eq(githubStars.userId, userId))
+  );
+  return rows.filter((r) => r.changeKind === "new" || r.changeKind === "updated")
+    .length;
+}
+
 // --- pages ---
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
   return qall(

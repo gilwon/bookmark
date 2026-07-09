@@ -2,8 +2,8 @@
 import { StarsView } from "@/components/stars/stars-view";
 import { auth } from "@/lib/auth";
 import { hasGithubToken } from "@/lib/oauth-tokens";
+import { rowToGithubStar } from "@/lib/star-mapper";
 import { store } from "@/lib/store";
-import type { GithubStar } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -14,25 +14,14 @@ export default async function StarsPage() {
     Boolean(session?.hasGithub) || (await hasGithubToken(userId));
 
   const rows = await store.listStars(userId);
-  const list: GithubStar[] = rows.map((row) => {
-    let topics: string[] = [];
-    try {
-      topics = JSON.parse(row.topics || "[]");
-    } catch {
-      topics = [];
-    }
-    return {
-      id: row.id,
-      userId: row.userId,
-      repoFullName: row.repoFullName,
-      description: row.description,
-      language: row.language,
-      stars: row.stars,
-      topics,
-      url: row.url,
-      lastSynced: row.lastSynced,
-      createdAt: row.createdAt,
-    };
+  const list = rows.map(rowToGithubStar);
+
+  // 변경 있는 항목을 앞으로
+  list.sort((a, b) => {
+    const aw = a.changeKind ? 1 : 0;
+    const bw = b.changeKind ? 1 : 0;
+    if (aw !== bw) return bw - aw;
+    return (b.stars ?? 0) - (a.stars ?? 0);
   });
 
   const lastSynced =

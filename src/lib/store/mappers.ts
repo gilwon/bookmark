@@ -25,6 +25,9 @@ export function mapBookmark(r: any): BookmarkRow {
 }
 
 export function mapStar(r: any): GithubStarRow {
+  const rawKind = r.change_kind ?? r.changeKind ?? null;
+  const changeKind =
+    rawKind === "new" || rawKind === "updated" ? rawKind : null;
   return {
     id: r.id,
     userId: r.user_id ?? r.userId,
@@ -36,6 +39,9 @@ export function mapStar(r: any): GithubStarRow {
     url: r.url,
     lastSynced: r.last_synced ?? r.lastSynced,
     createdAt: r.created_at ?? r.createdAt,
+    changeKind,
+    starsDelta: Number(r.stars_delta ?? r.starsDelta ?? 0) || 0,
+    changedAt: r.changed_at ?? r.changedAt ?? null,
   };
 }
 
@@ -102,6 +108,9 @@ export function starToDb(row: GithubStarRow) {
     url: row.url,
     last_synced: row.lastSynced,
     created_at: row.createdAt,
+    change_kind: row.changeKind ?? null,
+    stars_delta: row.starsDelta ?? 0,
+    changed_at: row.changedAt ?? null,
   };
 }
 

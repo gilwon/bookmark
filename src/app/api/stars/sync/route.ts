@@ -30,6 +30,12 @@ export async function POST() {
       count: result.count,
       removed: result.removed,
       lastSynced: result.lastSynced,
+      added: result.added,
+      updated: result.updated,
+      starsChanged: result.starsChanged,
+      addedRepos: result.addedRepos.slice(0, 20),
+      updatedRepos: result.updatedRepos.slice(0, 20),
+      removedRepos: result.removedRepos.slice(0, 20),
     });
   } catch (err) {
     console.error("[stars/sync]", err);

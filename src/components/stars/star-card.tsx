@@ -1,4 +1,4 @@
-// GitHub Star 카드 + 선택 체크
+// GitHub Star 카드 + 신규/업데이트 뱃지
 "use client";
 
 import { ExternalLink, Star } from "lucide-react";
@@ -21,16 +21,21 @@ export function StarCard({
   selected,
   onToggleSelect,
 }: Props) {
+  const isNew = star.changeKind === "new";
+  const isUpdated = star.changeKind === "updated";
+  const delta = star.starsDelta ?? 0;
+
   return (
     <Card
       className={cn(
         "flex flex-col transition-colors hover:border-border",
-        selected && "border-indigo-500 ring-1 ring-indigo-500/40"
+        selected && "border-indigo-500 ring-1 ring-indigo-500/40",
+        isNew && "border-emerald-500/50",
+        isUpdated && !isNew && "border-amber-500/40"
       )}
     >
       <CardHeader className="pb-2">
         <div className="flex items-start gap-2">
-          {/* absolute 대신 인라인 배치 — 제목과 겹치지 않음 */}
           {selectable && (
             <label
               className="mt-0.5 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-background shadow"
@@ -45,17 +50,36 @@ export function StarCard({
               />
             </label>
           )}
-          <CardTitle className="min-w-0 flex-1 text-sm">
-            <a
-              href={star.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 hover:text-indigo-300"
-            >
-              <span className="break-all">{star.repoFullName}</span>
-              <ExternalLink className="h-3 w-3 shrink-0 opacity-50" />
-            </a>
-          </CardTitle>
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
+              {isNew && (
+                <Badge className="border-transparent bg-emerald-600/20 text-emerald-700 dark:text-emerald-300">
+                  신규
+                </Badge>
+              )}
+              {isUpdated && (
+                <Badge className="border-transparent bg-amber-500/20 text-amber-800 dark:text-amber-200">
+                  업데이트
+                </Badge>
+              )}
+              {delta !== 0 && (
+                <Badge variant="outline" className="tabular-nums">
+                  ⭐ {delta > 0 ? `+${delta}` : delta}
+                </Badge>
+              )}
+            </div>
+            <CardTitle className="text-sm">
+              <a
+                href={star.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 hover:text-indigo-300"
+              >
+                <span className="break-all">{star.repoFullName}</span>
+                <ExternalLink className="h-3 w-3 shrink-0 opacity-50" />
+              </a>
+            </CardTitle>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">

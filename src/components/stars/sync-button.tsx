@@ -1,4 +1,4 @@
-// GitHub Star 동기화 버튼 — 진행 상태·마지막 동기화 시각 표시
+// GitHub Star 동기화 버튼 — 변경 요약 메시지 표시
 "use client";
 
 import { RefreshCw } from "lucide-react";
@@ -6,20 +6,22 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-type Props = {
-  /** ISO 문자열 또는 null */
-  lastSynced?: string | null;
-  hasGithub?: boolean;
-  /** true면 마운트 시 자동 동기화 1회 */
-  autoSync?: boolean;
-  onSynced?: (info: {
-    count: number;
-    removed: number;
-    lastSynced: string;
-  }) => void;
+export type StarSyncSummary = {
+  count: number;
+  removed: number;
+  added: number;
+  updated: number;
+  starsChanged: number;
+  lastSynced: string;
 };
 
-/** 상대 시각 문자열 (간단 한국어). */
+type Props = {
+  lastSynced?: string | null;
+  hasGithub?: boolean;
+  autoSync?: boolean;
+  onSynced?: (info: StarSyncSummary) => void;
+};
+
 function formatRelative(iso: string): string {
   const t = Date.parse(iso);
   if (Number.isNaN(t)) return iso;
@@ -30,7 +32,7 @@ function formatRelative(iso: string): string {
   return `${Math.floor(diffSec / 86400)}일 전`;
 }
 
-/** Star 목록을 GitHub API에서 가져와 로컬 DB에 upsert한다. */
+/** Star 목록 동기화 + A: 신규/업데이트/제거 요약 */
 export function SyncButton({
   lastSynced,
   hasGithub = false,
@@ -48,28 +50,50 @@ export function SyncButton({
     setLocalLast(lastSynced ?? null);
   }, [lastSynced]);
 
-  /** POST /api/stars/sync */
   const handleSync = useCallback(async () => {
     setLoading(true);
     setMessage(null);
     setPhase("GitHub에서 Star 목록 가져오는 중…");
     try {
       const res = await fetch("/api/stars/sync", { method: "POST" });
-      setPhase("로컬 DB에 반영하는 중…");
+      setPhase("변경 사항 반영 중…");
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.error || "동기화 실패");
+        throw new Error(
+          (data as { error?: string }).error || "동기화 실패"
+        );
       }
-      const count = data.count ?? 0;
-      const removed = data.removed ?? 0;
-      const syncedAt = data.lastSynced ?? new Date().toISOString();
-      setLocalLast(syncedAt);
-      setMessage(
-        removed > 0
-          ? `${count}개 동기화 · unstar ${removed}개 정리`
-          : `${count}개 레포를 동기화했습니다.`
+      const count = Number((data as { count?: number }).count ?? 0);
+      const removed = Number((data as { removed?: number }).removed ?? 0);
+      const added = Number((data as { added?: number }).added ?? 0);
+      const updated = Number((data as { updated?: number }).updated ?? 0);
+      const starsChanged = Number(
+        (data as { starsChanged?: number }).starsChanged ?? 0
       );
-      onSynced?.({ count, removed, lastSynced: syncedAt });
+      const syncedAt =
+        (data as { lastSynced?: string }).lastSynced ??
+        new Date().toISOString();
+      setLocalLast(syncedAt);
+
+      const parts = [`총 ${count}개`];
+      if (added > 0) parts.push(`신규 ${added}`);
+      if (updated > 0) parts.push(`업데이트 ${updated}`);
+      if (starsChanged > 0) parts.push(`⭐변동 ${starsChanged}`);
+      if (removed > 0) parts.push(`제거 ${removed}`);
+      if (added === 0 && updated === 0 && removed === 0) {
+        setMessage(`${count}개 동기화 · 변경 없음`);
+      } else {
+        setMessage(parts.join(" · "));
+      }
+
+      onSynced?.({
+        count,
+        removed,
+        added,
+        updated,
+        starsChanged,
+        lastSynced: syncedAt,
+      });
       router.refresh();
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "오류가 발생했습니다.");
@@ -101,22 +125,22 @@ export function SyncButton({
         {loading ? "동기화 중…" : "Star 동기화"}
       </Button>
       {loading && phase && (
-        <p className="text-xs text-muted-foreground max-w-xs text-right">
+        <p className="max-w-xs text-right text-xs text-muted-foreground">
           {phase}
         </p>
       )}
       {!loading && message && (
-        <p className="text-xs text-muted-foreground max-w-xs text-right">
+        <p className="max-w-sm text-right text-xs font-medium text-indigo-600 dark:text-indigo-300">
           {message}
         </p>
       )}
       {!loading && !message && localLast && (
-        <p className="text-xs text-muted-foreground max-w-xs text-right">
+        <p className="max-w-xs text-right text-xs text-muted-foreground">
           마지막 동기화 · {formatRelative(localLast)}
         </p>
       )}
       {!hasGithub && (
-        <p className="text-xs text-amber-600 dark:text-amber-400 max-w-xs text-right">
+        <p className="max-w-xs text-right text-xs text-amber-600 dark:text-amber-400">
           GitHub 로그인 후 동기화할 수 있습니다.
         </p>
       )}

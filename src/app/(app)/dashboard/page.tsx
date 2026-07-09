@@ -55,14 +55,21 @@ export default async function DashboardPage() {
     session?.user?.email?.split("@")[0] ||
     "사용자";
 
-  const [counts, categories, recentBookmarkRows, recentStars, recentPages] =
-    await Promise.all([
-      store.getDashboardCounts(userId),
-      store.listCategoryCounts(userId, 8),
-      store.listRecentBookmarks(userId, 6),
-      store.listRecentStars(userId, 5),
-      store.listRecentPages(userId, 5),
-    ]);
+  const [
+    counts,
+    categories,
+    recentBookmarkRows,
+    recentStars,
+    recentPages,
+    starChanges,
+  ] = await Promise.all([
+    store.getDashboardCounts(userId),
+    store.listCategoryCounts(userId, 8),
+    store.listRecentBookmarks(userId, 6),
+    store.listRecentStars(userId, 5),
+    store.listRecentPages(userId, 5),
+    store.countStarChanges(userId),
+  ]);
 
   const recentBookmarks = recentBookmarkRows.map(toBookmark);
   const maxCat = Math.max(1, ...categories.map((c) => c.count), 1);
@@ -87,7 +94,10 @@ export default async function DashboardPage() {
       value: counts.stars,
       href: "/stars",
       icon: GitFork,
-      hint: "동기화된 레포",
+      hint:
+        starChanges > 0
+          ? `미확인 변경 ${starChanges}건`
+          : "동기화된 레포",
     },
     {
       label: "페이지",
@@ -134,10 +144,36 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {starChanges > 0 && (
+        <Link
+          href="/stars"
+          className="flex items-center justify-between gap-3 rounded-xl border border-indigo-500/35 bg-indigo-500/10 px-4 py-3 transition-colors hover:bg-indigo-500/15"
+        >
+          <div>
+            <p className="text-sm font-semibold text-indigo-900 dark:text-indigo-100">
+              Star 변경 {starChanges}건
+            </p>
+            <p className="text-xs text-indigo-800/80 dark:text-indigo-200/80">
+              동기화 후 신규·업데이트된 레포가 있습니다. Stars에서 확인하세요.
+            </p>
+          </div>
+          <span className="shrink-0 text-xs font-medium text-indigo-600 dark:text-indigo-300">
+            보러 가기 →
+          </span>
+        </Link>
+      )}
+
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map(({ label, value, href, icon: Icon, hint }) => (
           <Link key={label} href={href} className="group">
-            <Card className="h-full transition-colors group-hover:border-indigo-500/40">
+            <Card
+              className={cn(
+                "h-full transition-colors group-hover:border-indigo-500/40",
+                label === "GitHub Stars" &&
+                  starChanges > 0 &&
+                  "border-indigo-500/40"
+              )}
+            >
               <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 pb-2">
                 <CardTitle className="text-xs font-medium text-muted-foreground">
                   {label}
@@ -246,6 +282,18 @@ export default async function DashboardPage() {
                       className="flex items-start justify-between gap-2 px-4 py-3 transition-colors hover:bg-muted/40"
                     >
                       <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-1">
+                          {s.changeKind === "new" && (
+                            <Badge className="border-transparent bg-emerald-600/20 text-[10px] text-emerald-700 dark:text-emerald-300">
+                              신규
+                            </Badge>
+                          )}
+                          {s.changeKind === "updated" && (
+                            <Badge className="border-transparent bg-amber-500/20 text-[10px] text-amber-800 dark:text-amber-200">
+                              업데이트
+                            </Badge>
+                          )}
+                        </div>
                         <p className="truncate text-sm font-medium">
                           {s.repoFullName}
                         </p>
@@ -261,6 +309,9 @@ export default async function DashboardPage() {
                         )}
                         <span className="text-[11px] tabular-nums text-muted-foreground">
                           ★ {s.stars.toLocaleString()}
+                          {s.starsDelta
+                            ? ` (${s.starsDelta > 0 ? "+" : ""}${s.starsDelta})`
+                            : ""}
                         </span>
                       </div>
                     </a>

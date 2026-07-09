@@ -100,26 +100,8 @@ export default async function SearchPage({
 
   if ((type === "all" || type === "star") && !category) {
     const rows = await store.searchStars(userId, opts);
-    starResults = rows.map((row) => {
-      let topics: string[] = [];
-      try {
-        topics = JSON.parse(row.topics || "[]");
-      } catch {
-        topics = [];
-      }
-      return {
-        id: row.id,
-        userId: row.userId,
-        repoFullName: row.repoFullName,
-        description: row.description,
-        language: row.language,
-        stars: row.stars,
-        topics,
-        url: row.url,
-        lastSynced: row.lastSynced,
-        createdAt: row.createdAt,
-      };
-    });
+    const { rowToGithubStar } = await import("@/lib/star-mapper");
+    starResults = rows.map(rowToGithubStar);
   }
 
   if ((type === "all" || type === "page") && !tag && !category) {

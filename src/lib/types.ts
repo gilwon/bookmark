@@ -26,6 +26,10 @@ export type GithubStar = {
   url: string;
   lastSynced: string;
   createdAt: string;
+  /** 동기화 후 미확인 변경 */
+  changeKind?: "new" | "updated" | null;
+  starsDelta?: number;
+  changedAt?: string | null;
 };
 
 /** 커스텀 페이지 엔티티 */

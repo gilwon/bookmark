@@ -36,7 +36,8 @@ function createSqlite(): SqliteDb {
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, repo_full_name TEXT NOT NULL,
       description TEXT, language TEXT, stars INTEGER NOT NULL DEFAULT 0,
       topics TEXT NOT NULL DEFAULT '[]', url TEXT NOT NULL,
-      last_synced TEXT NOT NULL, created_at TEXT NOT NULL
+      last_synced TEXT NOT NULL, created_at TEXT NOT NULL,
+      change_kind TEXT, stars_delta INTEGER NOT NULL DEFAULT 0, changed_at TEXT
     );
     CREATE TABLE IF NOT EXISTS custom_pages (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
@@ -59,13 +60,24 @@ function createSqlite(): SqliteDb {
     CREATE INDEX IF NOT EXISTS idx_agent_docs_user ON agent_docs(user_id);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_oauth_user_provider ON oauth_tokens(user_id, provider);
   `);
-  const cols = sqlite.prepare("PRAGMA table_info(agent_docs)").all() as {
+  const agentCols = sqlite.prepare("PRAGMA table_info(agent_docs)").all() as {
     name: string;
   }[];
-  if (cols.length && !cols.some((c) => c.name === "bundle")) {
+  if (agentCols.length && !agentCols.some((c) => c.name === "bundle")) {
     sqlite.exec(
       "ALTER TABLE agent_docs ADD COLUMN bundle TEXT NOT NULL DEFAULT '[]'"
     );
+  }
+  // Star 변경 뱃지 컬럼 (기존 DB 마이그레이션)
+  const starCols = sqlite.prepare("PRAGMA table_info(github_stars)").all() as {
+    name: string;
+  }[];
+  if (starCols.length && !starCols.some((c) => c.name === "change_kind")) {
+    sqlite.exec(`
+      ALTER TABLE github_stars ADD COLUMN change_kind TEXT;
+      ALTER TABLE github_stars ADD COLUMN stars_delta INTEGER NOT NULL DEFAULT 0;
+      ALTER TABLE github_stars ADD COLUMN changed_at TEXT;
+    `);
   }
   return drizzle(sqlite, { schema });
 }
