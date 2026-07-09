@@ -4,7 +4,7 @@
 import { Check, Copy, Download, Plus, Save, Sparkles, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   isAllowedAgentDocName,
   isSkillExtName,
@@ -31,97 +31,134 @@ import { cn } from "@/lib/utils";
 
 type Props =
   | { mode: "edit"; doc: AgentDoc }
-  | { mode: "create"; /** 없으면 sessionStorage 초안 */ initialDraft?: AgentDocDraft };
+  | { mode: "create"; initialDraft?: AgentDocDraft };
+
+/** 생성 모드 초기 초안 — 첫 렌더에서 sessionStorage 를 읽어 NOTES.md 폴백 레이스를 막는다. */
+function readCreateSeed(initial?: AgentDocDraft): AgentDocDraft | null {
+  if (initial) return initial;
+  if (typeof window === "undefined") return null;
+  return peekDraft();
+}
+
+function emptyDraft(): AgentDocDraft {
+  return {
+    kind: "other",
+    title: "",
+    description: "",
+    files: [{ filename: "NOTES.md", content: "" }],
+  };
+}
 
 /** 에이전트 문서 메타·번들 파일 편집 (저장 버튼으로만 반영) */
 export function AgentDocEditor(props: Props) {
   const router = useRouter();
   const isCreate = props.mode === "create";
 
-  const seed = isCreate
-    ? props.initialDraft ?? null
-    : {
-        kind: props.doc.kind,
-        title: props.doc.title,
-        description: props.doc.description ?? "",
-        files:
-          props.doc.files?.length > 0
-            ? props.doc.files
-            : [{ filename: props.doc.filename, content: props.doc.content }],
-      };
+  const seedRef = useRef<AgentDocDraft | null>(
+    isCreate
+      ? readCreateSeed(
+          props.mode === "create" ? props.initialDraft : undefined
+        )
+      : null
+  );
 
-  const [title, setTitle] = useState(seed?.title ?? "");
-  const [kind, setKind] = useState<AgentDocKind>(seed?.kind ?? "other");
-  const [description, setDescription] = useState(seed?.description ?? "");
+  const editSeed =
+    props.mode === "edit"
+      ? {
+          kind: props.doc.kind,
+          title: props.doc.title,
+          description: props.doc.description ?? "",
+          files:
+            props.doc.files?.length > 0
+              ? props.doc.files
+              : [
+                  {
+                    filename: props.doc.filename,
+                    content: props.doc.content,
+                  },
+                ],
+        }
+      : null;
+
+  const initial = isCreate
+    ? seedRef.current ?? emptyDraft()
+    : editSeed!;
+
+  const [title, setTitle] = useState(initial.title);
+  const [kind, setKind] = useState<AgentDocKind>(initial.kind);
+  const [description, setDescription] = useState(initial.description);
   const [files, setFiles] = useState<AgentDocFilePart[]>(
-    seed?.files?.length
-      ? seed.files
+    initial.files.length > 0
+      ? initial.files
       : [{ filename: "NOTES.md", content: "" }]
   );
   const [activeIdx, setActiveIdx] = useState(0);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(
-    isCreate ? "미저장 초안" : null
+    isCreate
+      ? seedRef.current
+        ? "미저장 초안 — 저장을 눌러야 DB에 반영됩니다"
+        : "초안이 없습니다. 목록에서 파일을 추가하세요."
+      : null
   );
   const [copied, setCopied] = useState(false);
   const [queueLeft, setQueueLeft] = useState(0);
-  const [dirty, setDirty] = useState(isCreate);
+  const [dirty, setDirty] = useState(isCreate && Boolean(seedRef.current));
+  /** 초안 로드 완료 전 sessionStorage 덮어쓰기 방지 */
+  const [draftReady, setDraftReady] = useState(!isCreate);
 
   const active = files[activeIdx] ?? files[0];
   const docId = props.mode === "edit" ? props.doc.id : null;
 
-  // 생성 모드: sessionStorage 초안 로드
   useEffect(() => {
-    if (!isCreate) return;
-    if (props.mode === "create" && props.initialDraft) {
+    if (!isCreate) {
+      setDraftReady(true);
+      return;
+    }
+    // Strict Mode 에서도 seedRef 가 이미 올바른 초안이면 재적용만
+    const d =
+      (props.mode === "create" ? props.initialDraft : undefined) ??
+      peekDraft();
+    if (d) {
+      setTitle(d.title);
+      setKind(d.kind);
+      setDescription(d.description);
+      setFiles(
+        d.files.length > 0
+          ? d.files
+          : [{ filename: defaultFilenameForKind(d.kind), content: "" }]
+      );
+      setActiveIdx(0);
+      setDirty(true);
+      setStatus("미저장 초안 — 저장을 눌러야 DB에 반영됩니다");
       setQueueLeft(Math.max(0, draftQueueLength() - 1));
-      return;
+    } else {
+      setStatus("초안이 없습니다. 목록에서 템플릿/파일을 추가하세요.");
     }
-    const d = peekDraft();
-    if (!d) {
-      setStatus("초안이 없습니다. 목록에서 파일을 추가하세요.");
-      return;
-    }
-    applyDraft(d);
-    setQueueLeft(Math.max(0, draftQueueLength() - 1));
-    setDirty(true);
-    setStatus("미저장 초안 — 저장을 눌러야 DB에 반영됩니다");
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
-  }, [isCreate]);
+    setDraftReady(true);
+  }, [isCreate, props]);
 
-  function applyDraft(d: AgentDocDraft) {
-    setTitle(d.title);
-    setKind(d.kind);
-    setDescription(d.description);
-    setFiles(
-      d.files.length > 0 ? d.files : [{ filename: "NOTES.md", content: "" }]
+  // 생성 모드: 준비된 뒤에만 초안 동기화 (초기 NOTES.md 로 덮어쓰지 않음)
+  useEffect(() => {
+    if (!isCreate || !draftReady || !dirty) return;
+    updateCurrentDraft({ kind, title, description, files });
+  }, [isCreate, draftReady, dirty, kind, title, description, files]);
+
+  function setDirtyState(msg?: string) {
+    setDirty(true);
+    setStatus(
+      msg ??
+        (isCreate ? "미저장 초안" : "수정됨 (미저장)")
     );
-    setActiveIdx(0);
   }
 
-  function markDirty() {
-    setDirty(true);
-    setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
-    if (isCreate) {
-      updateCurrentDraft({
-        kind,
-        title,
-        description,
-        files,
-      });
-    }
-  }
-
-  /** 본문에서 제목·설명 다시 채우기 */
   function fillMetaFromContent() {
     const meta = extractMetaFromFiles(files);
     setTitle(meta.title);
     setDescription(meta.description);
-    setDirty(true);
-    setStatus("본문에서 제목·설명을 채웠습니다 (미저장)");
+    setDirtyState("본문에서 제목·설명을 채웠습니다 (미저장)");
   }
 
-  /** 서버 저장 — 생성 POST / 수정 PATCH */
   const save = useCallback(async () => {
     setSaving(true);
     setStatus(null);
@@ -139,7 +176,7 @@ export function AgentDocEditor(props: Props) {
         });
         if (!res.ok) throw new Error("저장 실패");
         const created = (await res.json()) as AgentDoc;
-        shiftDraft(); // 현재 초안 제거
+        shiftDraft();
         const remaining = draftQueueLength();
         setQueueLeft(remaining);
         setDirty(false);
@@ -147,7 +184,20 @@ export function AgentDocEditor(props: Props) {
         if (remaining > 0) {
           const next = peekDraft();
           if (next) {
-            applyDraft(next);
+            setTitle(next.title);
+            setKind(next.kind);
+            setDescription(next.description);
+            setFiles(
+              next.files.length > 0
+                ? next.files
+                : [
+                    {
+                      filename: defaultFilenameForKind(next.kind),
+                      content: "",
+                    },
+                  ]
+            );
+            setActiveIdx(0);
             setDirty(true);
             setStatus(
               `저장됨 · 남은 초안 ${remaining}개 — 이어서 확인 후 저장하세요`
@@ -181,18 +231,11 @@ export function AgentDocEditor(props: Props) {
     }
   }, [description, docId, files, isCreate, kind, router, title]);
 
-  // 생성 모드 편집 시 초안 동기화
-  useEffect(() => {
-    if (!isCreate || !dirty) return;
-    updateCurrentDraft({ kind, title, description, files });
-  }, [isCreate, dirty, kind, title, description, files]);
-
   function updateActiveContent(text: string) {
     setFiles((prev) =>
       prev.map((f, i) => (i === activeIdx ? { ...f, content: text } : f))
     );
-    setDirty(true);
-    setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+    setDirtyState();
   }
 
   function updateActiveFilename(name: string) {
@@ -201,8 +244,7 @@ export function AgentDocEditor(props: Props) {
         i === activeIdx ? { ...f, filename: normalizeFilename(name) } : f
       )
     );
-    setDirty(true);
-    setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+    setDirtyState();
   }
 
   function addEmptyFile(ext: "md" | "skill") {
@@ -211,12 +253,11 @@ export function AgentDocEditor(props: Props) {
         ? `part-${files.length + 1}.skill`
         : files.some((f) => /^skill\.md$/i.test(f.filename))
           ? `NOTES-${files.length + 1}.md`
-          : "SKILL.md";
+          : defaultFilenameForKind(kind);
     setFiles((prev) => [...prev, { filename: base, content: "" }]);
     setActiveIdx(files.length);
     if (ext === "skill") setKind("skill");
-    setDirty(true);
-    setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+    setDirtyState();
   }
 
   function removeActiveFile() {
@@ -227,8 +268,7 @@ export function AgentDocEditor(props: Props) {
     if (!confirm(`「${active?.filename}」을(를) 번들에서 제거할까요?`)) return;
     setFiles((prev) => prev.filter((_, i) => i !== activeIdx));
     setActiveIdx((i) => Math.max(0, i - 1));
-    setDirty(true);
-    setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+    setDirtyState();
   }
 
   async function copyContent() {
@@ -242,7 +282,7 @@ export function AgentDocEditor(props: Props) {
   }
 
   function downloadActive() {
-    const name = active?.filename || "NOTES.md";
+    const name = active?.filename || defaultFilenameForKind(kind);
     const blob = new Blob([active?.content ?? ""], {
       type: isSkillExtName(name)
         ? "text/plain;charset=utf-8"
@@ -317,8 +357,7 @@ export function AgentDocEditor(props: Props) {
       setKind("skill");
     }
     setActiveIdx(0);
-    setDirty(true);
-    setStatus("파일 반영됨 — 저장을 눌러야 DB에 반영됩니다");
+    setDirtyState("파일 반영됨 — 저장을 눌러야 DB에 반영됩니다");
   }
 
   function discardCreate() {
@@ -362,8 +401,7 @@ export function AgentDocEditor(props: Props) {
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
-              setDirty(true);
-              setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+              setDirtyState();
             }}
             placeholder="표시 제목"
           />
@@ -374,8 +412,7 @@ export function AgentDocEditor(props: Props) {
             value={kind}
             onChange={(e) => {
               setKind(e.target.value as AgentDocKind);
-              setDirty(true);
-              setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+              setDirtyState();
             }}
             className="flex h-9 w-full rounded-md border border-border bg-input px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
@@ -392,8 +429,7 @@ export function AgentDocEditor(props: Props) {
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
-              setDirty(true);
-              setStatus(isCreate ? "미저장 초안" : "수정됨 (미저장)");
+              setDirtyState();
             }}
             placeholder="한 줄 설명"
           />
@@ -480,6 +516,7 @@ export function AgentDocEditor(props: Props) {
           value={active?.filename ?? ""}
           onChange={(e) => updateActiveFilename(e.target.value)}
           className="font-mono text-sm"
+          placeholder="SKILL.md"
         />
       </div>
 
@@ -498,4 +535,18 @@ export function AgentDocEditor(props: Props) {
       </div>
     </div>
   );
+}
+
+/** kind 기본 파일명 */
+function defaultFilenameForKind(kind: AgentDocKind): string {
+  switch (kind) {
+    case "skill":
+      return "SKILL.md";
+    case "agents":
+      return "AGENTS.md";
+    case "claude":
+      return "CLAUDE.md";
+    default:
+      return "NOTES.md";
+  }
 }

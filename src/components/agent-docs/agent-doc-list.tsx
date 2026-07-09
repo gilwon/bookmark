@@ -101,12 +101,18 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     });
   }, [docs, filter, q]);
 
-  /** 템플릿 → 초안 편집 (DB 저장 안 함) */
+  /** 템플릿 → 초안 편집 (DB 저장 안 함, 파일명은 템플릿 그대로) */
   function createFromTemplate(kind: AgentDocKind) {
     const tpl = templates.find((t) => t.kind === kind);
     if (!tpl) return;
-    const files = [{ filename: tpl.filename, content: tpl.content }];
-    const meta = extractMetaFromFiles(files);
+    // 템플릿 파일명을 명시적으로 고정 (SKILL.md / AGENTS.md / CLAUDE.md / NOTES.md)
+    const files = [
+      {
+        filename: tpl.filename,
+        content: tpl.content,
+      },
+    ];
+    const meta = extractMetaFromFiles(files, tpl.filename.replace(/\.md$/i, ""));
     setDraftQueue([
       {
         kind: tpl.kind,
@@ -115,7 +121,9 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         files,
       },
     ]);
-    setMsg("초안을 열었습니다. 저장을 눌러야 등록됩니다.");
+    setMsg(
+      `「${tpl.filename}」 초안 — 저장을 눌러야 등록됩니다.`
+    );
     router.push("/agent-docs/new");
   }
 

@@ -81,10 +81,21 @@ function readQueue(): AgentDocDraft[] {
 function isDraft(x: unknown): x is AgentDocDraft {
   if (!x || typeof x !== "object") return false;
   const d = x as AgentDocDraft;
-  return (
-    typeof d.title === "string" &&
-    typeof d.description === "string" &&
-    typeof d.kind === "string" &&
-    Array.isArray(d.files)
+  if (
+    typeof d.title !== "string" ||
+    typeof d.description !== "string" ||
+    typeof d.kind !== "string" ||
+    !Array.isArray(d.files)
+  ) {
+    return false;
+  }
+  // 파일이 있으면 filename/content 필수 (손상된 초안 차단)
+  return d.files.every(
+    (f) =>
+      f &&
+      typeof f === "object" &&
+      typeof (f as { filename?: unknown }).filename === "string" &&
+      typeof (f as { content?: unknown }).content === "string" &&
+      (f as { filename: string }).filename.length > 0
   );
 }
