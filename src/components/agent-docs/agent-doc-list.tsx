@@ -1,4 +1,4 @@
-// 에이전트 문서 목록 — 템플릿 / 드래그앤드롭(번들) / 삭제
+// 에이전트 문서 목록 — 템플릿/드롭은 초안만 만들고 저장은 편집 화면에서
 "use client";
 
 import {
@@ -19,6 +19,11 @@ import {
   isSkillExtName,
   type AgentDocFilePart,
 } from "@/lib/agent-doc-bundle";
+import {
+  setDraftQueue,
+  type AgentDocDraft,
+} from "@/lib/agent-doc-draft";
+import { extractMetaFromFiles } from "@/lib/agent-doc-meta";
 import {
   AGENT_DOC_KIND_LABEL,
   getAgentDocTemplates,
@@ -41,14 +46,39 @@ import { cn } from "@/lib/utils";
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const MAX_ZIP_BYTES = 12 * 1024 * 1024;
 
+/** 파일 그룹 → 초안 (제목/설명 본문에서 추출) */
+function draftFromGroup(
+  group: AgentDocFilePart[],
+  packageName?: string
+): AgentDocDraft {
+  const hasSkill =
+    group.some((f) => /^skill\.md$/i.test(f.filename)) ||
+    group.some((f) => isSkillExtName(f.filename)) ||
+    Boolean(packageName);
+  const primary =
+    group.find((f) => /^skill\.md$/i.test(f.filename)) ?? group[0]!;
+  const kind: AgentDocKind = hasSkill
+    ? "skill"
+    : inferKindFromFilename(primary.filename);
+  const meta = extractMetaFromFiles(group, packageName);
+  const names = group.map((f) => f.filename).join(", ");
+  return {
+    kind,
+    title: meta.title,
+    description:
+      meta.description ||
+      (group.length > 1 ? `번들 · ${names}` : `파일 · ${primary.filename}`),
+    files: group,
+  };
+}
+
 /** 에이전트 문서 목록 UI */
 export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [creating, setCreating] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
-  const [uploadMsg, setUploadMsg] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
   const [filter, setFilter] = useState<AgentDocKind | "all">("all");
   const [q, setQ] = useState("");
   const templates = getAgentDocTemplates();
@@ -71,40 +101,37 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     });
   }, [docs, filter, q]);
 
-  async function createFromTemplate(kind: AgentDocKind) {
-    setCreating(true);
-    try {
-      const res = await fetch("/api/agent-docs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ template: kind }),
-      });
-      if (!res.ok) throw new Error("생성 실패");
-      const doc = (await res.json()) as AgentDoc;
-      router.push(`/agent-docs/${doc.id}`);
-      router.refresh();
-    } catch {
-      alert("문서 생성에 실패했습니다.");
-    } finally {
-      setCreating(false);
-    }
+  /** 템플릿 → 초안 편집 (DB 저장 안 함) */
+  function createFromTemplate(kind: AgentDocKind) {
+    const tpl = templates.find((t) => t.kind === kind);
+    if (!tpl) return;
+    const files = [{ filename: tpl.filename, content: tpl.content }];
+    const meta = extractMetaFromFiles(files);
+    setDraftQueue([
+      {
+        kind: tpl.kind,
+        title: meta.title || tpl.title,
+        description: meta.description || tpl.description,
+        files,
+      },
+    ]);
+    setMsg("초안을 열었습니다. 저장을 눌러야 등록됩니다.");
+    router.push("/agent-docs/new");
   }
 
   /**
-   * 일반 텍스트 + .zip + .skill(ZIP 패키지) 를 처리한다.
-   * .skill 이 PK 헤더(ZIP)면 자동 해제 후 SKILL.md 번들로 저장.
+   * 파일/zip 을 읽어 초안 큐로 넘긴다. DB POST 없음.
    */
   async function importFiles(fileList: FileList | File[]) {
     const raw = Array.from(fileList);
     if (raw.length === 0) return;
 
-    setUploading(true);
-    setUploadMsg(null);
+    setBusy(true);
+    setMsg(null);
 
     const flatParts: AgentDocFilePart[] = [];
-    const zipGroups: AgentDocFilePart[][] = [];
-    /** 그룹별 표시 제목 (패키지 폴더명) */
-    const groupTitles: (string | undefined)[] = [];
+    const zipGroups: { group: AgentDocFilePart[]; packageName?: string }[] =
+      [];
     const errors: string[] = [];
     let archiveCount = 0;
 
@@ -114,13 +141,10 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
           ? MAX_ZIP_BYTES
           : MAX_FILE_BYTES;
       if (file.size > sizeLimit) {
-        errors.push(
-          `${file.name}: ${isZipFile(file) || isSkillExtName(file.name) ? "12MB" : "2MB"} 초과`
-        );
+        errors.push(`${file.name}: 용량 초과`);
         continue;
       }
 
-      // --- zip / .skill(ZIP) ---
       try {
         const buf = new Uint8Array(await file.arrayBuffer());
         const looksZip =
@@ -130,7 +154,6 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
 
         if (looksZip) {
           const extracted = await tryExtractZipFile(file);
-          // tryExtractZipFile 이 null 이면 아래에서 텍스트 시도
           if (extracted) {
             errors.push(...extracted.warnings);
             archiveCount += 1;
@@ -139,29 +162,24 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
               extracted.parts,
               groupUploadParts
             );
+            const pkg =
+              extracted.packageName ||
+              file.name.replace(/\.skill$/i, "").replace(/\.zip$/i, "");
             for (const g of groups) {
-              zipGroups.push(g);
-              groupTitles.push(
-                extracted.packageName ||
-                  file.name.replace(/\.skill$/i, "").replace(/\.zip$/i, "")
-              );
+              zipGroups.push({ group: g, packageName: pkg });
             }
             continue;
           }
         }
 
-        // --- 일반 텍스트 (.md / 텍스트 .skill) ---
         if (!isAllowedAgentDocName(file.name) && !isSkillExtName(file.name)) {
           if (!file.type.startsWith("text/") && file.type !== "") {
             errors.push(`${file.name}: 미지원 형식`);
             continue;
           }
         }
-        // ZIP 시그니처인데 여기까지 온 경우 텍스트로 저장 금지
         if (isZipBytes(buf)) {
-          errors.push(
-            `${file.name}: ZIP 패키지 해제에 실패했습니다. 파일이 손상됐을 수 있습니다.`
-          );
+          errors.push(`${file.name}: ZIP 해제 실패`);
           continue;
         }
         const content = new TextDecoder("utf-8", { fatal: false }).decode(buf);
@@ -176,93 +194,33 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       }
     }
 
-    const flatGroups = groupUploadParts(flatParts);
-    const groups: AgentDocFilePart[][] = [...flatGroups, ...zipGroups];
-    const titles: (string | undefined)[] = [
-      ...flatGroups.map(() => undefined),
-      ...groupTitles,
+    const drafts: AgentDocDraft[] = [
+      ...groupUploadParts(flatParts).map((g) => draftFromGroup(g)),
+      ...zipGroups.map(({ group, packageName }) =>
+        draftFromGroup(group, packageName)
+      ),
     ];
 
-    if (groups.length === 0) {
-      setUploadMsg(errors.join(" · ") || "가져올 파일이 없습니다.");
-      setUploading(false);
+    if (drafts.length === 0) {
+      setMsg(errors.join(" · ") || "가져올 파일이 없습니다.");
+      setBusy(false);
       return;
     }
 
-    const createdIds: string[] = [];
-    let ok = 0;
-
-    for (let gi = 0; gi < groups.length; gi++) {
-      const group = groups[gi]!;
-      try {
-        const hasSkill =
-          group.some((f) => /^skill\.md$/i.test(f.filename)) ||
-          group.some((f) => isSkillExtName(f.filename));
-        const primary =
-          group.find((f) => /^skill\.md$/i.test(f.filename)) ?? group[0]!;
-        const names = group.map((f) => f.filename).join(", ");
-        const titleFromPkg = titles[gi];
-        const title =
-          titleFromPkg ||
-          primary.filename.replace(/\.md$/i, "").replace(/\.skill$/i, "");
-
-        const res = await fetch("/api/agent-docs", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title,
-            kind:
-              hasSkill || titleFromPkg
-                ? "skill"
-                : inferKindFromFilename(primary.filename),
-            description:
-              group.length > 1
-                ? `번들 · ${names}`
-                : `파일에서 가져옴 · ${primary.filename}`,
-            files: group,
-          }),
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error || "저장 실패");
-        }
-        const doc = (await res.json()) as AgentDoc;
-        createdIds.push(doc.id);
-        ok += 1;
-      } catch (err) {
-        errors.push(
-          `${group.map((g) => g.filename).join("+")}: ${
-            err instanceof Error ? err.message : "실패"
-          }`
-        );
-      }
-    }
-
-    const notes = [
-      groups.some((g) => g.length > 1) ? "skill 번들" : null,
-      archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
-    ].filter(Boolean);
-
-    if (ok === 1 && errors.length === 0 && createdIds[0]) {
-      setUploadMsg(
-        `저장됨${notes.length ? ` (${notes.join(", ")})` : ""}`
-      );
-      router.push(`/agent-docs/${createdIds[0]}`);
-      router.refresh();
-    } else {
-      setUploadMsg(
-        [
-          `${ok}개 문서 저장${notes.length ? ` · ${notes.join(", ")}` : ""}`,
-          errors.length ? `문제: ${errors.join("; ")}` : null,
-        ]
-          .filter(Boolean)
-          .join(" · ")
-      );
-      router.refresh();
-    }
-
-    setUploading(false);
+    setDraftQueue(drafts);
+    setMsg(
+      [
+        `${drafts.length}개 초안 준비`,
+        archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
+        "저장 버튼을 눌러야 등록됩니다",
+        errors.length ? `참고: ${errors.join("; ")}` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ")
+    );
+    setBusy(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    router.push("/agent-docs/new");
   }
 
   async function handleDelete(id: string) {
@@ -272,7 +230,6 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   }
 
   function downloadMd(doc: AgentDoc) {
-    // 번들이면 대표 파일만 다운로드 (편집기에서 개별 다운로드 권장)
     const primary = doc.files[0] ?? {
       filename: doc.filename,
       content: doc.content,
@@ -292,12 +249,11 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     <div className="space-y-4">
       <div className="rounded-xl border border-border bg-card/50 p-4 space-y-3">
         <p className="text-sm text-muted-foreground">
-          템플릿·.md·{" "}
-          <strong className="font-medium text-foreground">
-            .skill 패키지(ZIP)
-          </strong>
-          ·.zip 을 드롭할 수 있습니다. .skill 이 ZIP이면 자동 해제하고 안의
-          SKILL.md 를 저장합니다.
+          템플릿·파일·.skill/.zip 은{" "}
+          <strong className="font-medium text-foreground">초안</strong>만
+          만듭니다. 편집 화면에서{" "}
+          <strong className="font-medium text-foreground">저장</strong>을 눌러야
+          목록에 등록됩니다. 제목·설명은 본문에서 자동으로 채웁니다.
         </p>
         <div className="flex flex-wrap gap-2">
           {templates.map((t) => (
@@ -305,8 +261,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
               key={t.kind}
               variant="secondary"
               size="sm"
-              disabled={creating || uploading}
-              onClick={() => void createFromTemplate(t.kind)}
+              disabled={busy}
+              onClick={() => createFromTemplate(t.kind)}
             >
               <Plus className="h-4 w-4" />
               {t.filename}
@@ -339,17 +295,17 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         onDrop={(e) => {
           e.preventDefault();
           setDragOver(false);
-          if (!uploading && e.dataTransfer.files?.length) {
+          if (!busy && e.dataTransfer.files?.length) {
             void importFiles(e.dataTransfer.files);
           }
         }}
-        onClick={() => !uploading && fileInputRef.current?.click()}
+        onClick={() => !busy && fileInputRef.current?.click()}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-10 text-center transition-colors",
           dragOver
             ? "border-indigo-500 bg-indigo-500/10"
             : "border-border bg-card/30 hover:border-indigo-400/60 hover:bg-muted/40",
-          (uploading || creating) && "pointer-events-none opacity-60"
+          busy && "pointer-events-none opacity-60"
         )}
       >
         <Upload
@@ -360,14 +316,14 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         />
         <div className="space-y-1">
           <p className="text-sm font-medium text-foreground">
-            {uploading
+            {busy
               ? "파일 읽는 중…"
               : dragOver
-                ? "여기에 놓으면 저장됩니다"
+                ? "놓으면 초안 편집으로 이동합니다"
                 : "파일을 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            .md · .skill(ZIP 패키지) · .zip · 패키지 최대 12MB · 내부 파일 2MB
+            .md · .skill(ZIP) · .zip · 자동 저장 없음 · 저장 버튼 필요
           </p>
         </div>
         <input
@@ -382,15 +338,13 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
         />
       </div>
 
-      {uploadMsg && (
-        <p className="text-sm text-muted-foreground">{uploadMsg}</p>
-      )}
+      {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
 
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
         <div className="flex-1 space-y-1">
           <label className="text-xs text-muted-foreground">검색</label>
           <Input
-            placeholder="파일명, 제목, 본문, .skill…"
+            placeholder="파일명, 제목, 본문…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
@@ -419,7 +373,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       {filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           {docs.length === 0
-            ? "아직 문서가 없습니다. skill 폴더 zip 또는 skill.md + .skill 을 드롭해 보세요."
+            ? "등록된 문서가 없습니다. 템플릿 또는 파일을 추가한 뒤 저장하세요."
             : "필터 조건에 맞는 문서가 없습니다."}
         </div>
       ) : (

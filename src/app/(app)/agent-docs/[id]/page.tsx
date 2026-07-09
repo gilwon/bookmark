@@ -25,5 +25,5 @@ export default async function AgentDocEditPage({ params }: Props) {
 
   if (!row) notFound();
 
-  return <AgentDocEditor doc={rowToAgentDoc(row)} />;
+  return <AgentDocEditor mode="edit" doc={rowToAgentDoc(row)} />;
 }
