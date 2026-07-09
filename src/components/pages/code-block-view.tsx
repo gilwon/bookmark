@@ -68,17 +68,19 @@ export function CodeBlockView({
   return (
     <NodeViewWrapper
       className={cn(
-        "notion-code-block group relative my-3 overflow-hidden rounded-xl border bg-[var(--pre-bg)]",
+        // overflow-visible: 언어 드롭다운이 블록 밖으로 나가도 잘리지 않음
+        "notion-code-block group relative z-0 my-3 overflow-visible rounded-xl border bg-[var(--pre-bg)]",
         selected
           ? "border-indigo-500 ring-1 ring-indigo-500/40"
-          : "border-border"
+          : "border-border",
+        open && "z-40"
       )}
       data-language={language || "plain"}
     >
       {/* 상단 바: 언어 선택 + 복사 (노션 유사) */}
       <div
         contentEditable={false}
-        className="flex items-center justify-between gap-2 border-b border-border/60 px-2 py-1.5"
+        className="relative z-20 flex items-center justify-between gap-2 rounded-t-xl border-b border-border/60 px-2 py-1.5"
       >
         <div ref={rootRef} className="relative min-w-0">
           <button
@@ -97,13 +99,19 @@ export function CodeBlockView({
             aria-expanded={open}
           >
             <span className="truncate">{languageLabel(language)}</span>
-            <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-70" />
+            <ChevronDown
+              className={cn(
+                "h-3.5 w-3.5 shrink-0 opacity-70 transition-transform",
+                open && "rotate-180"
+              )}
+            />
           </button>
 
           {open && (
             <div
               className={cn(
-                "absolute left-0 top-[calc(100%+4px)] z-50 w-56 overflow-hidden rounded-xl",
+                // 블록 위쪽으로 펼침 — 아래 잘림 방지
+                "absolute bottom-[calc(100%+6px)] left-0 z-[80] w-56 overflow-hidden rounded-xl",
                 "border border-border bg-card shadow-2xl"
               )}
               role="listbox"
@@ -192,15 +200,17 @@ export function CodeBlockView({
         </button>
       </div>
 
-      {/* contentDOM = pre 내부 블록 (NodeViewContent) */}
-      <pre
-        className={cn(
-          "m-0 overflow-x-auto !rounded-none !border-0 !bg-transparent p-3.5 font-mono text-[0.875rem] leading-relaxed text-foreground",
-          language && `language-${language}`
-        )}
-      >
-        <NodeViewContent className="whitespace-pre font-mono text-[0.875rem] leading-relaxed" />
-      </pre>
+      {/* contentDOM = pre 내부 블록 (NodeViewContent) — 코드만 가로 스크롤 */}
+      <div className="overflow-hidden rounded-b-xl">
+        <pre
+          className={cn(
+            "m-0 overflow-x-auto !rounded-none !border-0 !bg-transparent p-3.5 font-mono text-[0.875rem] leading-relaxed text-foreground",
+            language && `language-${language}`
+          )}
+        >
+          <NodeViewContent className="whitespace-pre font-mono text-[0.875rem] leading-relaxed" />
+        </pre>
+      </div>
     </NodeViewWrapper>
   );
 }

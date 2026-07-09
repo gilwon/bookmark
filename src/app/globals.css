@@ -163,6 +163,11 @@ body {
 }
 
 /* 노션형 코드 블록 NodeView — 바깥 래퍼가 스타일 담당 */
+.ProseMirror .notion-code-block {
+  /* 드롭다운이 블록 밖(위)으로 나가도 잘리지 않게 */
+  overflow: visible !important;
+}
+
 .ProseMirror .notion-code-block pre {
   margin: 0;
   border: 0;
