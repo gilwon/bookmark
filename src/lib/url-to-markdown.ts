@@ -2,6 +2,7 @@
 import { Readability } from "@mozilla/readability";
 import { parseHTML } from "linkedom";
 import TurndownService from "turndown";
+import { assertPublicHttpUrl, safeFetch, UnsafeUrlError } from "@/lib/safe-fetch";
 
 export type UrlMarkdownResult = {
   title: string;
@@ -96,71 +97,24 @@ function notionStub(sourceUrl: string, reason: string): UrlMarkdownResult {
 }
 
 /**
- * 리다이렉트 루프를 피하기 위해 수동으로 최대 N회만 따라간다.
+ * SSRF 방어 fetch — 리다이렉트마다 공개 URL 재검증.
  */
 async function fetchHtmlLimited(
   startUrl: string,
   maxRedirects = 5
 ): Promise<{ finalUrl: string; status: number; html: string }> {
-  let url = startUrl;
-  const seen = new Set<string>();
-
-  for (let i = 0; i <= maxRedirects; i++) {
-    if (seen.has(url)) {
-      throw new Error(
-        "리다이렉트가 반복됩니다 (redirect loop). 로그인·권한 페이지일 수 있습니다."
-      );
-    }
-    seen.add(url);
-
-    let res: Response;
-    try {
-      res = await fetch(url, {
-        redirect: "manual",
-        signal: AbortSignal.timeout(18_000),
-        headers: {
-          // 일반 브라우저 UA (봇 UA는 Notion 등에서 루프·차단되는 경우 있음)
-          "user-agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-          accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-          "accept-language": "ko-KR,ko;q=0.9,en;q=0.8",
-          "cache-control": "no-cache",
-        },
-      });
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      const cause =
-        err instanceof Error && err.cause instanceof Error
-          ? err.cause.message
-          : "";
-      if (/redirect count exceeded/i.test(msg + cause)) {
-        throw new Error(
-          "리다이렉트 한도 초과 — 로그인 필요·비공개 페이지일 수 있습니다."
-        );
-      }
-      if (/ENOTFOUND|ECONNREFUSED|ETIMEDOUT|certificate|fetch failed/i.test(msg + cause)) {
-        throw new Error(
-          `네트워크 오류로 가져오지 못했습니다.${cause ? ` (${cause})` : msg !== "fetch failed" ? ` (${msg})` : ""}`
-        );
-      }
-      throw new Error(msg || "fetch failed");
-    }
-
-    // 3xx 수동 추적
-    if (res.status >= 300 && res.status < 400) {
-      const loc = res.headers.get("location");
-      if (!loc) {
-        throw new Error(`리다이렉트 응답(${res.status})에 Location 없음`);
-      }
-      url = new URL(loc, url).toString();
-      continue;
-    }
-
-    if (!res.ok) {
-      throw new Error(`페이지 응답 오류 (${res.status})`);
-    }
-
+  try {
+    const safeStart = await assertPublicHttpUrl(startUrl);
+    const res = await safeFetch(safeStart, {
+      maxRedirects,
+      timeoutMs: 18_000,
+      maxBytes: 2_000_000,
+      headers: {
+        // 일반 브라우저 UA (봇 UA는 Notion 등에서 루프·차단되는 경우 있음)
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+      },
+    });
     const contentType = res.headers.get("content-type") || "";
     if (
       contentType &&
@@ -168,12 +122,20 @@ async function fetchHtmlLimited(
     ) {
       throw new Error("HTML 페이지가 아닙니다.");
     }
-
-    const html = await res.text();
-    return { finalUrl: url, status: res.status, html };
+    return { finalUrl: res.url, status: res.status, html: res.body };
+  } catch (err) {
+    if (err instanceof UnsafeUrlError) throw err;
+    const msg = err instanceof Error ? err.message : String(err);
+    if (/redirect/i.test(msg)) {
+      throw new Error(
+        "리다이렉트 한도 초과 — 로그인 필요·비공개 페이지일 수 있습니다."
+      );
+    }
+    if (/ENOTFOUND|ECONNREFUSED|ETIMEDOUT|certificate|fetch failed/i.test(msg)) {
+      throw new Error(`네트워크 오류로 가져오지 못했습니다. (${msg})`);
+    }
+    throw err instanceof Error ? err : new Error(msg || "fetch failed");
   }
-
-  throw new Error("리다이렉트가 너무 많습니다.");
 }
 
 /**

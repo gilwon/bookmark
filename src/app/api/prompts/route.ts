@@ -1,6 +1,12 @@
 // 프롬프트 목록 / 생성
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import {
+  MAX_PROMPT_SECTIONS_BYTES,
+  MAX_PROMPT_TITLE_LEN,
+  overLimitMessage,
+  utf8Bytes,
+} from "@/lib/api-limits";
 import { requireUser } from "@/lib/authz";
 import { normalizeSections, rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
@@ -40,6 +46,12 @@ export async function POST(req: Request) {
     typeof body.title === "string" && body.title.trim()
       ? body.title.trim()
       : "제목 없는 프롬프트";
+  if (title.length > MAX_PROMPT_TITLE_LEN) {
+    return NextResponse.json(
+      { error: `제목은 ${MAX_PROMPT_TITLE_LEN}자 이하여야 합니다.` },
+      { status: 400 }
+    );
+  }
   const category =
     typeof body.category === "string" ? body.category.trim() || null : null;
   const summary =
@@ -47,6 +59,15 @@ export async function POST(req: Request) {
   const whenToUse =
     typeof body.whenToUse === "string" ? body.whenToUse.trim() || null : null;
   const sections = parseSectionsBody(body);
+  const sectionsJson = JSON.stringify(sections);
+  const limitMsg = overLimitMessage(
+    "프롬프트 본문",
+    utf8Bytes(sectionsJson),
+    MAX_PROMPT_SECTIONS_BYTES
+  );
+  if (limitMsg) {
+    return NextResponse.json({ error: limitMsg }, { status: 400 });
+  }
 
   const now = new Date().toISOString();
   const row = await store.insertPrompt({
@@ -56,7 +77,7 @@ export async function POST(req: Request) {
     category,
     summary,
     whenToUse,
-    sections: JSON.stringify(sections),
+    sections: sectionsJson,
     createdAt: now,
     updatedAt: now,
   });

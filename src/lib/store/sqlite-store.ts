@@ -1,5 +1,5 @@
 // SQLite(Drizzle) 스토어 구현
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db/sqlite";
 import {
@@ -28,14 +28,20 @@ import type {
 } from "./types";
 
 // --- bookmarks ---
-export async function listBookmarks(userId: string): Promise<BookmarkRow[]> {
-  return qall(
-    db
-      .select()
-      .from(bookmarks)
-      .where(eq(bookmarks.userId, userId))
-      .orderBy(desc(bookmarks.createdAt))
-  );
+export async function listBookmarks(
+  userId: string,
+  opts?: { limit?: number }
+): Promise<BookmarkRow[]> {
+  const lim = opts?.limit;
+  const base = db
+    .select()
+    .from(bookmarks)
+    .where(eq(bookmarks.userId, userId))
+    .orderBy(desc(bookmarks.createdAt));
+  if (lim && lim > 0) {
+    return qall(base.limit(lim));
+  }
+  return qall(base);
 }
 
 export async function getBookmark(
@@ -88,20 +94,27 @@ export async function listBookmarkUrls(userId: string): Promise<string[]> {
   return rows.map((r) => r.url);
 }
 
-/** 북마크.category 문자열 일괄 변경 */
+/** 북마크.category 문자열 일괄 변경 (단일 UPDATE) */
 export async function renameBookmarkCategory(
   userId: string,
   fromName: string,
   toName: string | null
 ): Promise<number> {
-  const rows = await listBookmarks(userId);
-  let n = 0;
-  for (const r of rows) {
-    if ((r.category ?? "").trim() !== fromName.trim()) continue;
-    await updateBookmark(r.id, userId, { category: toName });
-    n += 1;
-  }
-  return n;
+  const from = fromName.trim();
+  const before = await qall(
+    db
+      .select({ id: bookmarks.id })
+      .from(bookmarks)
+      .where(and(eq(bookmarks.userId, userId), eq(bookmarks.category, from)))
+  );
+  if (before.length === 0) return 0;
+  await qrun(
+    db
+      .update(bookmarks)
+      .set({ category: toName })
+      .where(and(eq(bookmarks.userId, userId), eq(bookmarks.category, from)))
+  );
+  return before.length;
 }
 
 // --- categories ---
@@ -204,14 +217,20 @@ export async function listStars(userId: string): Promise<GithubStarRow[]> {
   );
 }
 
-export async function listStarsBySynced(userId: string): Promise<GithubStarRow[]> {
-  return qall(
-    db
-      .select()
-      .from(githubStars)
-      .where(eq(githubStars.userId, userId))
-      .orderBy(desc(githubStars.lastSynced))
-  );
+export async function listStarsBySynced(
+  userId: string,
+  opts?: { limit?: number }
+): Promise<GithubStarRow[]> {
+  const lim = opts?.limit;
+  const base = db
+    .select()
+    .from(githubStars)
+    .where(eq(githubStars.userId, userId))
+    .orderBy(desc(githubStars.lastSynced));
+  if (lim && lim > 0) {
+    return qall(base.limit(lim));
+  }
+  return qall(base);
 }
 
 export async function getStar(
@@ -396,7 +415,10 @@ export async function deleteToken(
 }
 
 // --- agent docs ---
-/** 목록용. full=false 이면 content/bundle 비움(속도). */
+/**
+ * 목록용. full=false 이면 무거운 bundle 만 비움.
+ * content 는 유지해 클라이언트 본문 검색이 동작한다.
+ */
 export async function listAgentDocs(
   userId: string,
   opts?: { full?: boolean }
@@ -409,7 +431,7 @@ export async function listAgentDocs(
       .orderBy(desc(agentDocs.updatedAt))
   );
   if (opts?.full === true) return rows;
-  return rows.map((r) => ({ ...r, content: "", bundle: "[]" }));
+  return rows.map((r) => ({ ...r, bundle: "[]" }));
 }
 
 export async function getAgentDoc(
@@ -616,40 +638,57 @@ export async function searchBookmarks(
   userId: string,
   opts: SearchOpts = {}
 ): Promise<BookmarkRow[]> {
-  const lim = opts.limit ?? 100;
+  const lim = Math.min(Math.max(opts.limit ?? 100, 1), 200);
+  // 태그 필터는 JSON 문자열 후처리 → 여유 있게 가져와 슬라이스
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
+  const q = opts.q?.trim().toLowerCase();
+  const cat = opts.category?.trim().toLowerCase();
+  const tag = opts.tag?.trim().toLowerCase();
+
+  const conditions = [eq(bookmarks.userId, userId)];
+  if (cat) {
+    conditions.push(sql`lower(coalesce(${bookmarks.category}, '')) = ${cat}`);
+  }
+  if (opts.from) {
+    conditions.push(sql`${bookmarks.createdAt} >= ${opts.from}`);
+  }
+  if (opts.to) {
+    conditions.push(
+      sql`${bookmarks.createdAt} <= ${opts.to + "T23:59:59.999Z"}`
+    );
+  }
+  if (q) {
+    const p = `%${q.replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
+    conditions.push(
+      sql`(
+        lower(${bookmarks.title}) like ${p} escape '\'
+        or lower(coalesce(${bookmarks.description}, '')) like ${p} escape '\'
+        or lower(${bookmarks.url}) like ${p} escape '\'
+        or lower(${bookmarks.tags}) like ${p} escape '\'
+        or lower(coalesce(${bookmarks.category}, '')) like ${p} escape '\'
+      )`
+    );
+  }
+
   const rows = await qall(
     db
       .select()
       .from(bookmarks)
-      .where(eq(bookmarks.userId, userId))
+      .where(and(...conditions))
       .orderBy(desc(bookmarks.createdAt))
-      .limit(Math.min(lim * 3, 500))
+      .limit(fetchLim)
   );
-  const q = opts.q?.trim().toLowerCase();
-  const cat = opts.category?.trim().toLowerCase();
-  const tag = opts.tag?.trim().toLowerCase();
+
+  if (!tag) return rows.slice(0, lim);
   return rows
     .filter((r) => {
-      if (cat && (r.category ?? "").toLowerCase() !== cat) return false;
-      if (opts.from && r.createdAt < opts.from) return false;
-      if (opts.to && r.createdAt > opts.to + "T23:59:59") return false;
-      if (tag) {
-        try {
-          if (
-            !(JSON.parse(r.tags || "[]") as string[]).some(
-              (t) => t.toLowerCase() === tag
-            )
-          )
-            return false;
-        } catch {
-          if (!(r.tags || "").toLowerCase().includes(tag)) return false;
-        }
+      try {
+        return (JSON.parse(r.tags || "[]") as string[]).some(
+          (t) => t.toLowerCase() === tag
+        );
+      } catch {
+        return (r.tags || "").toLowerCase().includes(tag);
       }
-      if (!q) return true;
-      const hay = [r.title, r.description ?? "", r.url, r.tags, r.category ?? ""]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(q);
     })
     .slice(0, lim);
 }
@@ -658,43 +697,51 @@ export async function searchStars(
   userId: string,
   opts: SearchOpts = {}
 ): Promise<GithubStarRow[]> {
-  const lim = opts.limit ?? 100;
+  const lim = Math.min(Math.max(opts.limit ?? 100, 1), 200);
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
+  const q = opts.q?.trim().toLowerCase();
+  const tag = opts.tag?.trim().toLowerCase();
+
+  const conditions = [eq(githubStars.userId, userId)];
+  if (opts.from) {
+    conditions.push(sql`${githubStars.createdAt} >= ${opts.from}`);
+  }
+  if (opts.to) {
+    conditions.push(
+      sql`${githubStars.createdAt} <= ${opts.to + "T23:59:59.999Z"}`
+    );
+  }
+  if (q) {
+    const p = `%${q.replace(/%/g, "\\%").replace(/_/g, "\\_")}%`;
+    conditions.push(
+      sql`(
+        lower(${githubStars.repoFullName}) like ${p} escape '\'
+        or lower(coalesce(${githubStars.description}, '')) like ${p} escape '\'
+        or lower(coalesce(${githubStars.language}, '')) like ${p} escape '\'
+        or lower(${githubStars.topics}) like ${p} escape '\'
+      )`
+    );
+  }
+
   const rows = await qall(
     db
       .select()
       .from(githubStars)
-      .where(eq(githubStars.userId, userId))
+      .where(and(...conditions))
       .orderBy(desc(githubStars.stars))
-      .limit(Math.min(lim * 3, 500))
+      .limit(fetchLim)
   );
-  const q = opts.q?.trim().toLowerCase();
-  const tag = opts.tag?.trim().toLowerCase();
+
+  if (!tag) return rows.slice(0, lim);
   return rows
     .filter((r) => {
-      if (opts.from && r.createdAt < opts.from) return false;
-      if (opts.to && r.createdAt > opts.to + "T23:59:59") return false;
-      if (tag) {
-        try {
-          if (
-            !(JSON.parse(r.topics || "[]") as string[]).some(
-              (t) => t.toLowerCase() === tag
-            )
-          )
-            return false;
-        } catch {
-          if (!(r.topics || "").toLowerCase().includes(tag)) return false;
-        }
+      try {
+        return (JSON.parse(r.topics || "[]") as string[]).some(
+          (t) => t.toLowerCase() === tag
+        );
+      } catch {
+        return (r.topics || "").toLowerCase().includes(tag);
       }
-      if (!q) return true;
-      const hay = [
-        r.repoFullName,
-        r.description ?? "",
-        r.language ?? "",
-        r.topics,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(q);
     })
     .slice(0, lim);
 }

@@ -1,4 +1,5 @@
 // open-graph-scraper 래핑 — URL 메타 추출 및 폴백
+import { assertPublicHttpUrl, UnsafeUrlError } from "@/lib/safe-fetch";
 import type { UrlMeta } from "./types";
 
 /** URL에서 호스트명을 안전하게 추출한다. */
@@ -26,18 +27,29 @@ export async function extractMeta(
   options?: { timeoutSec?: number }
 ): Promise<UrlMeta> {
   const timeoutSec = options?.timeoutSec ?? 8;
+  // SSRF 방어 — 사설·메타데이터 IP 차단
+  let safeUrl = url;
+  try {
+    safeUrl = await assertPublicHttpUrl(url);
+  } catch (err) {
+    if (err instanceof UnsafeUrlError) throw err;
+    throw new UnsafeUrlError(
+      err instanceof Error ? err.message : "안전하지 않은 URL"
+    );
+  }
+
   const fallback: UrlMeta = {
-    title: hostnameOf(url),
+    title: hostnameOf(safeUrl),
     description: null,
     image: null,
-    favicon: guessFavicon(url) || null,
+    favicon: guessFavicon(safeUrl) || null,
   };
 
   try {
     // ESM 이슈 회피용 dynamic import
     const ogs = (await import("open-graph-scraper")).default;
     const { result, error } = await ogs({
-      url,
+      url: safeUrl,
       timeout: timeoutSec,
       fetchOptions: {
         headers: {

@@ -25,10 +25,11 @@ export default async function PageEditorPage({ params }: Props) {
     content = {};
   }
 
-  // 임베드 피커용 — 목록만 (본문 전체 불필요)
+  // 임베드 피커용 — 최근 항목만 (전체 직렬화 병목 완화)
+  const EMBED_LIST_LIMIT = 150;
   const [bookmarkRows, starRows] = await Promise.all([
-    store.listBookmarks(userId),
-    store.listStarsBySynced(userId),
+    store.listBookmarks(userId, { limit: EMBED_LIST_LIMIT }),
+    store.listStarsBySynced(userId, { limit: EMBED_LIST_LIMIT }),
   ]);
 
   const bookmarkList: Bookmark[] = bookmarkRows.map((b) => {

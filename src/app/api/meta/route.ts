@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { extractMeta } from "@/lib/meta";
+import { UnsafeUrlError } from "@/lib/safe-fetch";
 
 export const runtime = "nodejs";
 
@@ -22,6 +23,14 @@ export async function POST(req: Request) {
     url = `https://${url}`;
   }
 
-  const meta = await extractMeta(url);
-  return NextResponse.json(meta);
+  try {
+    const meta = await extractMeta(url);
+    return NextResponse.json(meta);
+  } catch (err) {
+    if (err instanceof UnsafeUrlError) {
+      return NextResponse.json({ error: err.message }, { status: 400 });
+    }
+    const msg = err instanceof Error ? err.message : "메타 추출 실패";
+    return NextResponse.json({ error: msg }, { status: 502 });
+  }
 }

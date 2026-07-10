@@ -1,6 +1,12 @@
 // 커스텀 페이지 목록 / 생성
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import {
+  MAX_PAGE_CONTENT_BYTES,
+  MAX_PAGE_TITLE_LEN,
+  overLimitMessage,
+  utf8Bytes,
+} from "@/lib/api-limits";
 import { auth } from "@/lib/auth";
 import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
@@ -44,6 +50,12 @@ export async function POST(req: Request) {
     typeof body.title === "string" && body.title.trim()
       ? body.title.trim()
       : "제목 없는 페이지";
+  if (title.length > MAX_PAGE_TITLE_LEN) {
+    return NextResponse.json(
+      { error: `제목은 ${MAX_PAGE_TITLE_LEN}자 이하여야 합니다.` },
+      { status: 400 }
+    );
+  }
 
   const emptyDoc = {
     type: "doc",
@@ -53,6 +65,15 @@ export async function POST(req: Request) {
     body.content && typeof body.content === "object"
       ? body.content
       : emptyDoc;
+  const contentStr = JSON.stringify(content);
+  const limitMsg = overLimitMessage(
+    "페이지 본문",
+    utf8Bytes(contentStr),
+    MAX_PAGE_CONTENT_BYTES
+  );
+  if (limitMsg) {
+    return NextResponse.json({ error: limitMsg }, { status: 400 });
+  }
 
   const now = new Date().toISOString();
   const row = await store.insertPage({

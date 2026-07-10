@@ -41,12 +41,19 @@ function throwIfError(error: { message: string } | null, ctx: string) {
 }
 
 // --- bookmarks ---
-export async function listBookmarks(userId: string): Promise<BookmarkRow[]> {
-  const { data, error } = await sb()
+export async function listBookmarks(
+  userId: string,
+  opts?: { limit?: number }
+): Promise<BookmarkRow[]> {
+  let query = sb()
     .from("bookmarks")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
+  if (opts?.limit && opts.limit > 0) {
+    query = query.limit(opts.limit);
+  }
+  const { data, error } = await query;
   throwIfError(error, "listBookmarks");
   return (data ?? []).map(mapBookmark);
 }
@@ -242,12 +249,19 @@ export async function listStars(userId: string): Promise<GithubStarRow[]> {
   return (data ?? []).map(mapStar);
 }
 
-export async function listStarsBySynced(userId: string): Promise<GithubStarRow[]> {
-  const { data, error } = await sb()
+export async function listStarsBySynced(
+  userId: string,
+  opts?: { limit?: number }
+): Promise<GithubStarRow[]> {
+  let query = sb()
     .from("github_stars")
     .select("*")
     .eq("user_id", userId)
     .order("last_synced", { ascending: false });
+  if (opts?.limit && opts.limit > 0) {
+    query = query.limit(opts.limit);
+  }
+  const { data, error } = await query;
   throwIfError(error, "listStarsBySynced");
   return (data ?? []).map(mapStar);
 }
@@ -455,8 +469,8 @@ export async function deleteToken(
 
 // --- agent docs ---
 /**
- * 목록용. full=false 이면 content/bundle 제외(용량·속도).
- * 검색·본문 미리보기가 필요하면 full: true.
+ * 목록용. full=false 이면 bundle 제외(용량).
+ * content 는 유지해 클라이언트 본문 검색이 동작한다.
  */
 export async function listAgentDocs(
   userId: string,
@@ -473,13 +487,13 @@ export async function listAgentDocs(
     : await sb()
         .from("agent_docs")
         .select(
-          "id, user_id, kind, filename, title, description, created_at, updated_at"
+          "id, user_id, kind, filename, title, description, content, created_at, updated_at"
         )
         .eq("user_id", userId)
         .order("updated_at", { ascending: false });
   throwIfError(res.error, "listAgentDocs");
   return (res.data ?? []).map((r) =>
-    mapAgentDoc(full ? r : { ...r, content: "", bundle: "[]" })
+    mapAgentDoc(full ? r : { ...r, bundle: "[]" })
   );
 }
 
@@ -742,13 +756,15 @@ export async function searchBookmarks(
   userId: string,
   opts: SearchOpts = {}
 ): Promise<BookmarkRow[]> {
-  const lim = opts.limit ?? 100;
+  const lim = Math.min(Math.max(opts.limit ?? 100, 1), 200);
+  // 태그 후처리 시 여유분 — 이후 slice
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
   let query = sb()
     .from("bookmarks")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
-    .limit(lim);
+    .limit(fetchLim);
 
   if (opts.category?.trim()) {
     query = query.ilike("category", opts.category.trim());
@@ -767,7 +783,7 @@ export async function searchBookmarks(
   throwIfError(error, "searchBookmarks");
   let rows = (data ?? []).map(mapBookmark);
 
-  // tag 는 JSON 배열 문자열 — 서버에서 대략 걸러도 클라이언트와 동일하게 한 번 더
+  // tag 는 JSON 배열 문자열 — 메모리 필터 후 limit 슬라이스
   if (opts.tag?.trim()) {
     const t = opts.tag.trim().toLowerCase();
     rows = rows.filter((r) => {
@@ -780,7 +796,7 @@ export async function searchBookmarks(
       }
     });
   }
-  return rows;
+  return rows.slice(0, lim);
 }
 
 /** Star 검색 */
@@ -788,13 +804,14 @@ export async function searchStars(
   userId: string,
   opts: SearchOpts = {}
 ): Promise<GithubStarRow[]> {
-  const lim = opts.limit ?? 100;
+  const lim = Math.min(Math.max(opts.limit ?? 100, 1), 200);
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
   let query = sb()
     .from("github_stars")
     .select("*")
     .eq("user_id", userId)
     .order("stars", { ascending: false })
-    .limit(lim);
+    .limit(fetchLim);
 
   query = applyDateRange(query, "created_at", opts.from, opts.to);
 
@@ -821,7 +838,7 @@ export async function searchStars(
       }
     });
   }
-  return rows;
+  return rows.slice(0, lim);
 }
 
 /** 페이지 검색 (제목; 본문은 로드 후 필요 시 추가 필터) */

@@ -216,7 +216,28 @@ function SidebarFooter({
       <Button
         variant="ghost"
         className="w-full justify-start text-muted-foreground"
-        onClick={() => signOut({ callbackUrl: "/login" })}
+        onClick={() => {
+          // 로그아웃 전 SW/Cache Storage 의 앱 캐시 제거 (교차 계정 노출 방지)
+          try {
+            if ("serviceWorker" in navigator) {
+              void navigator.serviceWorker.ready.then((reg) => {
+                reg.active?.postMessage({ type: "MYMARK_CLEAR_CACHES" });
+              });
+            }
+            if ("caches" in window) {
+              void caches.keys().then((keys) =>
+                Promise.all(
+                  keys
+                    .filter((k) => k.startsWith("mymark-"))
+                    .map((k) => caches.delete(k))
+                )
+              );
+            }
+          } catch {
+            /* ignore */
+          }
+          void signOut({ callbackUrl: "/login" });
+        }}
       >
         <LogOut className="h-4 w-4" />
         로그아웃

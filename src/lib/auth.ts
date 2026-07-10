@@ -11,8 +11,15 @@ import {
 
 const devSecret = "mymark-dev-secret-change-me";
 const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+const isProdRuntime =
+  process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
 
 if (!secret) {
+  if (isProdRuntime) {
+    throw new Error(
+      "[auth] AUTH_SECRET(또는 NEXTAUTH_SECRET)이 없습니다. 프로덕션에서는 필수입니다."
+    );
+  }
   console.warn(
     "[auth] AUTH_SECRET이 없습니다. 개발용 고정 시크릿을 사용합니다."
   );

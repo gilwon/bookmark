@@ -1,13 +1,30 @@
-// GitHub access_token AES-256-GCM 암·복호화 (AUTH_SECRET 기반)
+// GitHub access_token AES-256-GCM 암·복호화 (전용 키 또는 AUTH_SECRET)
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from "crypto";
 
-/** AUTH_SECRET에서 32바이트 키를 유도한다. */
-function deriveKey(): Buffer {
+const DEV_FALLBACK = "mymark-dev-secret-change-me";
+
+/** 암호화 키 원천 시크릿 (TOKEN_ENCRYPTION_SECRET → AUTH_SECRET) */
+function resolveCryptoSecret(): string {
   const secret =
+    process.env.TOKEN_ENCRYPTION_SECRET ??
     process.env.AUTH_SECRET ??
-    process.env.NEXTAUTH_SECRET ??
-    "mymark-dev-secret-change-me";
-  return createHash("sha256").update(secret).digest();
+    process.env.NEXTAUTH_SECRET;
+  const isProd =
+    process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+  if (!secret) {
+    if (isProd) {
+      throw new Error(
+        "[token-crypto] TOKEN_ENCRYPTION_SECRET 또는 AUTH_SECRET이 필요합니다."
+      );
+    }
+    return DEV_FALLBACK;
+  }
+  return secret;
+}
+
+/** 시크릿에서 32바이트 키를 유도한다. */
+function deriveKey(): Buffer {
+  return createHash("sha256").update(resolveCryptoSecret()).digest();
 }
 
 /** 평문 토큰을 base64url(iv|tag|ciphertext)로 암호화한다. */

@@ -39,16 +39,17 @@ export async function PATCH(req: Request, ctx: Ctx) {
 
   const oldName = existing.name;
   const now = new Date().toISOString();
+
+  // 북마크 문자열을 먼저 배치 갱신한 뒤 마스터 이름 변경 (중간 불일치 최소화)
+  if (oldName.trim() !== name) {
+    await store.renameBookmarkCategory(gate.user.userId, oldName, name);
+  }
+
   const row = await store.updateCategory(id, gate.user.userId, {
     name,
     updatedAt: now,
   });
   if (!row) return ownershipError();
-
-  // 북마크에 붙은 이름도 함께 변경
-  if (oldName.trim() !== name) {
-    await store.renameBookmarkCategory(gate.user.userId, oldName, name);
-  }
 
   const bookmarks = await store.listBookmarks(gate.user.userId);
   const count = bookmarks.filter(

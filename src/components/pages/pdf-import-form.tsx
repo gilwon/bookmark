@@ -11,6 +11,7 @@ import {
   MAX_PDF_BYTES,
   titleFromPdfName,
 } from "@/lib/pdf-to-markdown";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,15 +38,16 @@ export function PdfImportForm() {
   const [dragOver, setDragOver] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
 
-  /** 마크다운 → HTML 미리보기 (읽기 전용) */
+  /** 마크다운 → 정화된 HTML 미리보기 (XSS 방지) */
   const previewHtml = useMemo(() => {
     if (!markdown.trim()) return "";
     try {
-      return marked.parse(markdown, {
+      const raw = marked.parse(markdown, {
         gfm: true,
         breaks: false,
         async: false,
       }) as string;
+      return sanitizeHtml(raw);
     } catch {
       return `<p>${markdown.replace(/</g, "&lt;")}</p>`;
     }
@@ -280,7 +282,7 @@ export function PdfImportForm() {
                   "pdf-md-preview max-h-[min(60vh,520px)] min-h-[240px] overflow-y-auto",
                   "rounded-xl border border-border bg-background px-5 py-4"
                 )}
-                // 추출 미리보기 전용 — 사용자 입력이 아닌 변환 결과
+                // sanitizeHtml 로 정화된 미리보기
                 dangerouslySetInnerHTML={{ __html: previewHtml }}
               />
             ) : (

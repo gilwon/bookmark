@@ -47,6 +47,10 @@ create table if not exists public.github_stars (
   unique (user_id, repo_full_name)
 );
 
+-- 북마크 URL 중복 방지 (동일 user+url)
+create unique index if not exists idx_bookmarks_user_url
+  on public.bookmarks (user_id, url);
+
 -- 기존 프로젝트 마이그레이션 (이미 테이블 있으면 경우 SQL Editor에서 실행)
 alter table public.github_stars add column if not exists change_kind text;
 alter table public.github_stars add column if not exists stars_delta integer not null default 0;

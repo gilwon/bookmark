@@ -1,5 +1,11 @@
 // 프롬프트 조회 / 수정 / 삭제
 import { NextResponse } from "next/server";
+import {
+  MAX_PROMPT_SECTIONS_BYTES,
+  MAX_PROMPT_TITLE_LEN,
+  overLimitMessage,
+  utf8Bytes,
+} from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
 import { normalizeSections, rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
@@ -31,7 +37,14 @@ export async function PATCH(req: Request, ctx: Ctx) {
   };
 
   if (typeof body.title === "string" && body.title.trim()) {
-    patch.title = body.title.trim();
+    const title = body.title.trim();
+    if (title.length > MAX_PROMPT_TITLE_LEN) {
+      return NextResponse.json(
+        { error: `제목은 ${MAX_PROMPT_TITLE_LEN}자 이하여야 합니다.` },
+        { status: 400 }
+      );
+    }
+    patch.title = title;
   }
   if (typeof body.category === "string") {
     patch.category = body.category.trim() || null;
@@ -52,7 +65,16 @@ export async function PATCH(req: Request, ctx: Ctx) {
         };
       })
     );
-    patch.sections = JSON.stringify(sections);
+    const sectionsJson = JSON.stringify(sections);
+    const limitMsg = overLimitMessage(
+      "프롬프트 본문",
+      utf8Bytes(sectionsJson),
+      MAX_PROMPT_SECTIONS_BYTES
+    );
+    if (limitMsg) {
+      return NextResponse.json({ error: limitMsg }, { status: 400 });
+    }
+    patch.sections = sectionsJson;
   }
 
   const row = await store.updatePrompt(id, gate.user.userId, patch);

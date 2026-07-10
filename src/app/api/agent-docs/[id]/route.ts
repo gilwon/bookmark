@@ -6,9 +6,35 @@ import {
   inferKindFromFilename,
   normalizeFilename,
 } from "@/lib/agent-doc-templates";
+import {
+  MAX_AGENT_DOC_FILES,
+  MAX_AGENT_DOC_FILE_BYTES,
+  MAX_AGENT_DOC_TOTAL_BYTES,
+  overLimitMessage,
+  utf8Bytes,
+} from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
 import { store } from "@/lib/store";
 import type { AgentDocKind } from "@/lib/types";
+
+function validateAgentFiles(files: AgentDocFilePart[]): string | null {
+  if (files.length > MAX_AGENT_DOC_FILES) {
+    return `파일은 최대 ${MAX_AGENT_DOC_FILES}개까지입니다.`;
+  }
+  let total = 0;
+  for (const f of files) {
+    const n = utf8Bytes(f.content);
+    if (n > MAX_AGENT_DOC_FILE_BYTES) {
+      return overLimitMessage(
+        `파일 ${f.filename}`,
+        n,
+        MAX_AGENT_DOC_FILE_BYTES
+      );
+    }
+    total += n;
+  }
+  return overLimitMessage("에이전트 문서 전체", total, MAX_AGENT_DOC_TOTAL_BYTES);
+}
 
 export const runtime = "nodejs";
 
@@ -50,6 +76,10 @@ export async function PATCH(req: Request, ctx: Ctx) {
         content: x.content,
       }));
     if (files.length > 0) {
+      const sizeErr = validateAgentFiles(files);
+      if (sizeErr) {
+        return NextResponse.json({ error: sizeErr }, { status: 400 });
+      }
       const stored = fieldsFromFiles(files);
       patch.filename = stored.filename;
       patch.content = stored.content;
@@ -81,6 +111,10 @@ export async function PATCH(req: Request, ctx: Ctx) {
         { filename: primaryName, content: primaryContent },
         ...rest,
       ];
+      const sizeErr = validateAgentFiles(files);
+      if (sizeErr) {
+        return NextResponse.json({ error: sizeErr }, { status: 400 });
+      }
       const stored = fieldsFromFiles(files, primaryName);
       patch.filename = stored.filename;
       patch.content = stored.content;

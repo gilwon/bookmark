@@ -65,10 +65,11 @@ function createSqlite(): SqliteDb {
       created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_bookmarks_user_url ON bookmarks(user_id, url);
     CREATE INDEX IF NOT EXISTS idx_categories_user ON categories(user_id);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_categories_user_name ON categories(user_id, name);
     CREATE INDEX IF NOT EXISTS idx_stars_user ON github_stars(user_id);
-    CREATE INDEX IF NOT EXISTS idx_stars_repo ON github_stars(user_id, repo_full_name);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_stars_user_repo ON github_stars(user_id, repo_full_name);
     CREATE INDEX IF NOT EXISTS idx_pages_user ON custom_pages(user_id);
     CREATE INDEX IF NOT EXISTS idx_agent_docs_user ON agent_docs(user_id);
     CREATE INDEX IF NOT EXISTS idx_prompts_user ON prompts(user_id);
@@ -97,6 +98,22 @@ function createSqlite(): SqliteDb {
     sqlite.exec(
       `ALTER TABLE github_stars ADD COLUMN source TEXT NOT NULL DEFAULT 'sync'`
     );
+  }
+  // 기존 DB: unique 인덱스 보강 (중복 있으면 스킵 로그)
+  try {
+    sqlite.exec(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_bookmarks_user_url ON bookmarks(user_id, url)`
+    );
+  } catch (e) {
+    console.warn("[db] bookmarks unique(url) 인덱스 생성 실패 (중복 가능)", e);
+  }
+  try {
+    sqlite.exec(`DROP INDEX IF EXISTS idx_stars_repo`);
+    sqlite.exec(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_stars_user_repo ON github_stars(user_id, repo_full_name)`
+    );
+  } catch (e) {
+    console.warn("[db] stars unique(repo) 인덱스 생성 실패 (중복 가능)", e);
   }
   return drizzle(sqlite, { schema });
 }

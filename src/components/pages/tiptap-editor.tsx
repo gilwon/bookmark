@@ -156,7 +156,13 @@ type Props = {
   stars: GithubStar[];
 };
 
-type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
+type SaveState =
+  | "idle"
+  | "dirty"
+  | "saving"
+  | "saved"
+  | "error"
+  | "conflict";
 
 /** 페이지 제목/본문을 노션처럼 편집·자동 저장한다. */
 export function TiptapEditor({
@@ -178,6 +184,14 @@ export function TiptapEditor({
   const titleValueRef = useRef(title);
   titleValueRef.current = title;
   const editorRef = useRef<Editor | null>(null);
+  /** 서버가 아는 마지막 updatedAt (낙관적 잠금) */
+  const expectedUpdatedAtRef = useRef<string | null>(initialUpdatedAt ?? null);
+  /** 저장 요청 직렬화 체인 */
+  const saveChainRef = useRef(Promise.resolve());
+  /** 진행 중 저장 여부 (state 레이스 방지) */
+  const savingRef = useRef(false);
+  /** 저장 중 다시 dirty 되면 완료 후 한 번 더 저장 */
+  const pendingResaveRef = useRef(false);
   const [embedOpen, setEmbedOpen] = useState(false);
 
   /** 저장된 문서 안 리터럴 <aside> 를 callout 노드로 승격 */
@@ -308,30 +322,73 @@ export function TiptapEditor({
   // 블록 드래그 앤 드롭
   useBlockDragDrop(editor, markDirty);
 
-  /** 제목 + 본문 저장 */
+  /** 제목 + 본문 저장 (직렬화 + 낙관적 잠금) */
   const save = useCallback(
     async (opts?: { silent?: boolean }) => {
       if (!editor) return;
       if (!dirtyRef.current && opts?.silent) return;
 
-      setSaveState("saving");
-      try {
-        const res = await fetch(`/api/pages/${pageId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: titleValueRef.current.trim() || "제목 없는 페이지",
-            content: editor.getJSON(),
-          }),
-        });
-        if (!res.ok) throw new Error("저장 실패");
-        dirtyRef.current = false;
-        const now = new Date().toISOString();
-        setLastSavedAt(now);
-        setSaveState("saved");
-      } catch {
-        setSaveState("error");
+      // 저장 중이면 완료 후 재저장 예약
+      if (savingRef.current) {
+        pendingResaveRef.current = true;
+        return;
       }
+
+      const run = async () => {
+        savingRef.current = true;
+        setSaveState("saving");
+        const snapTitle =
+          titleValueRef.current.trim() || "제목 없는 페이지";
+        const snapContent = editor.getJSON();
+        try {
+          const res = await fetch(`/api/pages/${pageId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title: snapTitle,
+              content: snapContent,
+              expectedUpdatedAt: expectedUpdatedAtRef.current,
+            }),
+          });
+          if (res.status === 409) {
+            setSaveState("conflict");
+            return;
+          }
+          if (!res.ok) throw new Error("저장 실패");
+          const data = (await res.json().catch(() => null)) as {
+            updatedAt?: string;
+          } | null;
+          if (data?.updatedAt) {
+            expectedUpdatedAtRef.current = data.updatedAt;
+            setLastSavedAt(data.updatedAt);
+          } else {
+            const now = new Date().toISOString();
+            expectedUpdatedAtRef.current = now;
+            setLastSavedAt(now);
+          }
+          // 저장 스냅샷 이후 추가 편집이 없으면 dirty 해제
+          if (!pendingResaveRef.current) {
+            dirtyRef.current = false;
+            setSaveState("saved");
+          } else {
+            pendingResaveRef.current = false;
+            dirtyRef.current = true;
+            setSaveState("dirty");
+          }
+        } catch {
+          setSaveState("error");
+        } finally {
+          savingRef.current = false;
+        }
+      };
+
+      saveChainRef.current = saveChainRef.current
+        .then(run)
+        .catch(() => {
+          savingRef.current = false;
+          setSaveState("error");
+        });
+      await saveChainRef.current;
     },
     [editor, pageId]
   );
@@ -403,14 +460,16 @@ export function TiptapEditor({
           ? "수정됨"
           : saveState === "error"
             ? "저장 실패"
-            : lastSavedAt
-              ? `저장 ${new Date(lastSavedAt).toLocaleString("ko-KR", {
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}`
-              : "준비됨";
+            : saveState === "conflict"
+              ? "충돌 — 새로고침 필요"
+              : lastSavedAt
+                ? `저장 ${new Date(lastSavedAt).toLocaleString("ko-KR", {
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}`
+                : "준비됨";
 
   return (
     // 상단 네비와 같이 앱 셸 전체 폭(max-w-6xl) 사용
@@ -447,7 +506,7 @@ export function TiptapEditor({
             <span
               className={cn(
                 "inline-flex items-center gap-1 text-xs",
-                saveState === "error"
+                saveState === "error" || saveState === "conflict"
                   ? "text-red-400"
                   : saveState === "saved"
                     ? "text-emerald-600 dark:text-emerald-400"

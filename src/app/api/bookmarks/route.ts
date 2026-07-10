@@ -78,27 +78,50 @@ export async function POST(req: Request) {
   }
 
   const tags: string[] = Array.isArray(body.tags)
-    ? body.tags.map(String).filter(Boolean)
+    ? body.tags.map(String).filter(Boolean).slice(0, 30)
     : [];
   const category =
     typeof body.category === "string" && body.category.trim()
-      ? body.category.trim()
+      ? body.category.trim().slice(0, 80)
       : categoryFromUrl(url);
 
-  const meta = await extractMeta(url);
+  let meta;
+  try {
+    meta = await extractMeta(url);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "메타 추출 실패";
+    return NextResponse.json({ error: msg }, { status: 400 });
+  }
   const now = new Date().toISOString();
-  const row = await store.insertBookmark({
-    id: uuidv4(),
-    userId: session.user.id,
-    url,
-    title: meta.title,
-    description: meta.description,
-    image: meta.image,
-    favicon: meta.favicon,
-    tags: JSON.stringify(tags),
-    category,
-    createdAt: now,
-  });
+  let row;
+  try {
+    row = await store.insertBookmark({
+      id: uuidv4(),
+      userId: session.user.id,
+      url,
+      title: meta.title,
+      description: meta.description,
+      image: meta.image,
+      favicon: meta.favicon,
+      tags: JSON.stringify(tags),
+      category,
+      createdAt: now,
+    });
+  } catch (insertErr) {
+    const msg =
+      insertErr instanceof Error ? insertErr.message : String(insertErr);
+    if (/unique|duplicate|conflict/i.test(msg)) {
+      return NextResponse.json(
+        {
+          error: "이미 등록된 주소입니다.",
+          url,
+          duplicate: true,
+        },
+        { status: 409 }
+      );
+    }
+    throw insertErr;
+  }
 
   // 새 카테고리면 마스터에 등록
   if (category?.trim()) {
