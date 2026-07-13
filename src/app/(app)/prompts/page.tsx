@@ -17,7 +17,8 @@ export default async function PromptsPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">프롬프트</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          재사용 프롬프트를 등록하고, 목차·사용 상황·1차/2차 본문을 관리합니다.
+          공유 프롬프트 라이브러리입니다. 모든 로그인 사용자가 목록·본문을
+          보고 재사용할 수 있습니다.
         </p>
       </div>
       <PromptList prompts={list} />

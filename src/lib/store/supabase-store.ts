@@ -555,12 +555,11 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
   throwIfError(error, "deleteAgentDoc");
 }
 
-// --- prompts ---
-export async function listPrompts(userId: string): Promise<PromptRow[]> {
+// --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
+export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
   const { data, error } = await sb()
     .from("prompts")
     .select("*")
-    .eq("user_id", userId)
     .order("updated_at", { ascending: false });
   throwIfError(error, "listPrompts");
   return (data ?? []).map(mapPrompt);
@@ -568,13 +567,12 @@ export async function listPrompts(userId: string): Promise<PromptRow[]> {
 
 export async function getPrompt(
   id: string,
-  userId: string
+  _userId?: string
 ): Promise<PromptRow | undefined> {
   const { data, error } = await sb()
     .from("prompts")
     .select("*")
     .eq("id", id)
-    .eq("user_id", userId)
     .maybeSingle();
   throwIfError(error, "getPrompt");
   return data ? mapPrompt(data) : undefined;
@@ -592,7 +590,7 @@ export async function insertPrompt(row: PromptRow): Promise<PromptRow> {
 
 export async function updatePrompt(
   id: string,
-  userId: string,
+  _userId: string,
   patch: Partial<PromptRow>
 ): Promise<PromptRow | undefined> {
   const body: Record<string, unknown> = {};
@@ -607,19 +605,14 @@ export async function updatePrompt(
     .from("prompts")
     .update(body)
     .eq("id", id)
-    .eq("user_id", userId)
     .select("*")
     .maybeSingle();
   throwIfError(error, "updatePrompt");
   return data ? mapPrompt(data) : undefined;
 }
 
-export async function deletePrompt(id: string, userId: string): Promise<void> {
-  const { error } = await sb()
-    .from("prompts")
-    .delete()
-    .eq("id", id)
-    .eq("user_id", userId);
+export async function deletePrompt(id: string, _userId: string): Promise<void> {
+  const { error } = await sb().from("prompts").delete().eq("id", id);
   throwIfError(error, "deletePrompt");
 }
 

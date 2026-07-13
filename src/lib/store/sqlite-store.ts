@@ -474,55 +474,35 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
   );
 }
 
-// --- prompts ---
-export async function listPrompts(userId: string): Promise<PromptRow[]> {
-  return qall(
-    db
-      .select()
-      .from(prompts)
-      .where(eq(prompts.userId, userId))
-      .orderBy(desc(prompts.updatedAt))
-  );
+// --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
+export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
+  return qall(db.select().from(prompts).orderBy(desc(prompts.updatedAt)));
 }
 
 export async function getPrompt(
   id: string,
-  userId: string
+  _userId?: string
 ): Promise<PromptRow | undefined> {
-  return qget(
-    db
-      .select()
-      .from(prompts)
-      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
-  );
+  return qget(db.select().from(prompts).where(eq(prompts.id, id)));
 }
 
 export async function insertPrompt(row: PromptRow): Promise<PromptRow> {
   await qrun(db.insert(prompts).values(row));
-  return (await getPrompt(row.id, row.userId))!;
+  return (await getPrompt(row.id))!;
 }
 
 export async function updatePrompt(
   id: string,
-  userId: string,
+  _userId: string,
   patch: Partial<PromptRow>
 ): Promise<PromptRow | undefined> {
   const { id: _i, userId: _u, ...rest } = patch as PromptRow;
-  await qrun(
-    db
-      .update(prompts)
-      .set(rest)
-      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
-  );
-  return getPrompt(id, userId);
+  await qrun(db.update(prompts).set(rest).where(eq(prompts.id, id)));
+  return getPrompt(id);
 }
 
-export async function deletePrompt(id: string, userId: string): Promise<void> {
-  await qrun(
-    db
-      .delete(prompts)
-      .where(and(eq(prompts.id, id), eq(prompts.userId, userId)))
-  );
+export async function deletePrompt(id: string, _userId: string): Promise<void> {
+  await qrun(db.delete(prompts).where(eq(prompts.id, id)));
 }
 
 // --- dashboard / search ---
