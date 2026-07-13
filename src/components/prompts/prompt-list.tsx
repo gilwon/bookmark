@@ -1,10 +1,18 @@
-// 프롬프트 라이브러리 목록 — 목차 그룹·검색·카테고리 칩·선택 삭제
+// 프롬프트 라이브러리 목록 — 상위 그룹 필터·접이식 섹션·즐겨찾기
 "use client";
 
-import { Copy, MessageSquareText, Plus, Star, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  Copy,
+  MessageSquareText,
+  Plus,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Prompt } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
@@ -28,11 +36,53 @@ function categoryLabel(p: Prompt): string {
 }
 
 /**
+ * 상위 그룹 키 — 칩 폭증 방지.
+ * - "GPT공식 · 마케팅" → "GPT공식"
+ * - "클로드 · 후킹 문장" → "클로드"
+ * - "1-2. 미팅…" → "일잘러 · 1"
+ */
+function categoryGroup(label: string): string {
+  if (label === UNCATEGORIZED) return UNCATEGORIZED;
+  const sep = label.indexOf(" · ");
+  if (sep > 0) return label.slice(0, sep).trim();
+  const m = label.match(/^(\d+)-\d+\./);
+  if (m) return `일잘러 · ${m[1]}`;
+  return label;
+}
+
+/** 그룹 표시 이름 */
+function groupDisplayName(group: string): string {
+  if (group.startsWith("일잘러 · ")) {
+    const n = group.replace("일잘러 · ", "");
+    const map: Record<string, string> = {
+      "1": "일잘러 1 · 시작/미팅",
+      "2": "일잘러 2 · 보고서·기획",
+      "3": "일잘러 3 · 마감·판단",
+      "4": "일잘러 4 · 일상",
+    };
+    return map[n] ?? group;
+  }
+  return group;
+}
+
+/**
  * 목차 정렬: "1-1.", "2-10." 숫자 자연순. 미분류는 맨 뒤.
  */
 function compareCategory(a: string, b: string): number {
   if (a === UNCATEGORIZED && b !== UNCATEGORIZED) return 1;
   if (b === UNCATEGORIZED && a !== UNCATEGORIZED) return -1;
+  return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
+}
+
+function compareGroup(a: string, b: string): number {
+  if (a === UNCATEGORIZED && b !== UNCATEGORIZED) return 1;
+  if (b === UNCATEGORIZED && a !== UNCATEGORIZED) return -1;
+  // 일잘러 숫자 우선 정렬
+  const na = a.match(/일잘러 · (\d+)/);
+  const nb = b.match(/일잘러 · (\d+)/);
+  if (na && nb) return Number(na[1]) - Number(nb[1]);
+  if (na) return -1;
+  if (nb) return 1;
   return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
 }
 
@@ -51,10 +101,17 @@ function comparePrompt(a: Prompt, b: Prompt): number {
 export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  /** 상위 그룹 필터 (GPT공식 / 클로드 / 일잘러 · n …) */
+  const [activeGroup, setActiveGroup] = useState(ALL);
+  /** 세부 카테고리 필터 (그룹 내) */
   const [activeCat, setActiveCat] = useState(ALL);
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
+  /** 접이식 섹션 — 기본 접힘, 즐겨찾기만 펼침 */
+  const [expanded, setExpanded] = useState<Set<string>>(
+    () => new Set([FAVORITES])
+  );
 
   const categories = useMemo(() => {
     const map = new Map<string, number>();
@@ -67,12 +124,41 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       .map(([label, count]) => ({ label, count }));
   }, [prompts]);
 
-  // 필터 후 목차 → 제목 순 정렬 (updatedAt 섞임 방지)
+  /** 상위 그룹 집계 (칩 수 축소) */
+  const groupsMeta = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const c of categories) {
+      const g = categoryGroup(c.label);
+      map.set(g, (map.get(g) ?? 0) + c.count);
+    }
+    return [...map.entries()]
+      .sort((a, b) => compareGroup(a[0], b[0]))
+      .map(([key, count]) => ({
+        key,
+        label: groupDisplayName(key),
+        count,
+      }));
+  }, [categories]);
+
+  /** 현재 그룹에 속한 세부 카테고리 */
+  const subCategories = useMemo(() => {
+    if (activeGroup === ALL) return [];
+    return categories.filter((c) => categoryGroup(c.label) === activeGroup);
+  }, [categories, activeGroup]);
+
+  // 그룹 변경 시 세부 카테고리 초기화
+  useEffect(() => {
+    setActiveCat(ALL);
+  }, [activeGroup]);
+
+  // 필터 후 정렬
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return prompts
       .filter((p) => {
         const cat = categoryLabel(p);
+        const group = categoryGroup(cat);
+        if (activeGroup !== ALL && group !== activeGroup) return false;
         if (activeCat !== ALL && cat !== activeCat) return false;
         if (!needle) return true;
         const hay = [
@@ -87,42 +173,61 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         return hay.includes(needle);
       })
       .sort(comparePrompt);
-  }, [prompts, q, activeCat]);
+  }, [prompts, q, activeGroup, activeCat]);
 
   /**
-   * 전체 보기: 즐겨찾기 섹션을 맨 위, 나머지는 목차별.
-   * 목차 필터: 해당 목차만, 즐겨찾기 항목이 먼저.
+   * 섹션 그룹:
+   * - 세부 카테고리 미선택: 즐겨찾기 + 목차별 (접이식)
+   * - 세부 카테고리 선택: 단일 섹션
    */
   const groups = useMemo(() => {
-    if (activeCat === ALL) {
-      const favs = filtered.filter((p) => p.isFavorite);
-      const rest = filtered.filter((p) => !p.isFavorite);
-      const map = new Map<string, Prompt[]>();
-      for (const p of rest) {
-        const c = categoryLabel(p);
-        const list = map.get(c);
-        if (list) list.push(p);
-        else map.set(c, [p]);
-      }
-      const catGroups = [...map.entries()]
-        .sort((a, b) => compareCategory(a[0], b[0]))
-        .map(([label, items]) => ({ label, items, isFavoriteGroup: false }));
-      if (favs.length > 0) {
-        return [
-          { label: FAVORITES, items: favs, isFavoriteGroup: true },
-          ...catGroups,
-        ];
-      }
-      return catGroups;
+    const singleSection = activeCat !== ALL;
+    if (singleSection) {
+      return [
+        {
+          label: activeCat,
+          items: filtered,
+          isFavoriteGroup: false,
+        },
+      ];
     }
-    return [
-      {
-        label: activeCat,
-        items: filtered,
-        isFavoriteGroup: false,
-      },
-    ];
+    const favs = filtered.filter((p) => p.isFavorite);
+    const rest = filtered.filter((p) => !p.isFavorite);
+    const map = new Map<string, Prompt[]>();
+    for (const p of rest) {
+      const c = categoryLabel(p);
+      const list = map.get(c);
+      if (list) list.push(p);
+      else map.set(c, [p]);
+    }
+    const catGroups = [...map.entries()]
+      .sort((a, b) => compareCategory(a[0], b[0]))
+      .map(([label, items]) => ({ label, items, isFavoriteGroup: false }));
+    if (favs.length > 0) {
+      return [
+        { label: FAVORITES, items: favs, isFavoriteGroup: true },
+        ...catGroups,
+      ];
+    }
+    return catGroups;
   }, [filtered, activeCat]);
+
+  const showSectionHeaders = activeCat === ALL && groups.length > 1;
+  const hasActiveFilter = activeGroup !== ALL || activeCat !== ALL;
+
+  function toggleSection(label: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  }
+
+  function clearFilters() {
+    setActiveGroup(ALL);
+    setActiveCat(ALL);
+  }
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
     const items: SearchSuggestItem[] = [];
@@ -215,37 +320,76 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         </Link>
       </div>
 
-      {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveCat(ALL)}
-            className={cn(
-              "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-              activeCat === ALL
-                ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
-                : "border-border text-muted-foreground hover:bg-muted"
+      {/* 상위 그룹만 한 줄 스크롤 — 세부 29개를 한꺼번에 펼치지 않음 */}
+      {groupsMeta.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-xs font-medium text-muted-foreground">
+              카테고리 그룹
+            </p>
+            {hasActiveFilter && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-3 w-3" />
+                필터 초기화
+              </button>
             )}
-          >
-            전체 ({prompts.length})
-          </button>
-          {categories.map((c) => (
-            <button
-              key={c.label}
-              type="button"
-              onClick={() =>
-                setActiveCat((prev) => (prev === c.label ? ALL : c.label))
-              }
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                activeCat === c.label
-                  ? "border-amber-500/40 bg-amber-500/15 text-amber-800 dark:text-amber-200"
-                  : "border-border text-muted-foreground hover:bg-muted"
-              )}
-            >
-              {c.label} ({c.count})
-            </button>
-          ))}
+          </div>
+          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:thin]">
+            <FilterChip
+              label={`전체 (${prompts.length})`}
+              active={activeGroup === ALL}
+              onClick={() => setActiveGroup(ALL)}
+              tone="indigo"
+            />
+            {groupsMeta.map((g) => (
+              <FilterChip
+                key={g.key}
+                label={`${g.label} (${g.count})`}
+                active={activeGroup === g.key}
+                onClick={() =>
+                  setActiveGroup((prev) => (prev === g.key ? ALL : g.key))
+                }
+                tone="amber"
+              />
+            ))}
+          </div>
+
+          {/* 그룹 선택 시에만 세부 카테고리 한 줄 표시 */}
+          {activeGroup !== ALL && subCategories.length > 0 && (
+            <div className="rounded-lg border border-border/70 bg-muted/30 p-2">
+              <p className="mb-1.5 text-[11px] text-muted-foreground">
+                {groupDisplayName(activeGroup)} · 세부
+              </p>
+              <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:thin]">
+                <FilterChip
+                  label={`그룹 전체 (${subCategories.reduce((s, c) => s + c.count, 0)})`}
+                  active={activeCat === ALL}
+                  onClick={() => setActiveCat(ALL)}
+                  tone="indigo"
+                  compact
+                />
+                {subCategories.map((c) => (
+                  <FilterChip
+                    key={c.label}
+                    label={`${shortCatLabel(c.label, activeGroup)} (${c.count})`}
+                    active={activeCat === c.label}
+                    onClick={() =>
+                      setActiveCat((prev) =>
+                        prev === c.label ? ALL : c.label
+                      )
+                    }
+                    tone="amber"
+                    compact
+                    title={c.label}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -258,7 +402,37 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           조건에 맞는 프롬프트가 없습니다.
         </p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-xs text-muted-foreground">
+              {filtered.length}개 표시
+              {hasActiveFilter ? " · 필터 적용 중" : ""}
+              {showSectionHeaders
+                ? " · 섹션을 눌러 펼치기"
+                : ""}
+            </p>
+            {showSectionHeaders && (
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() =>
+                    setExpanded(new Set(groups.map((g) => g.label)))
+                  }
+                >
+                  모두 펼치기
+                </button>
+                <button
+                  type="button"
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setExpanded(new Set([FAVORITES]))}
+                >
+                  모두 접기
+                </button>
+              </div>
+            )}
+          </div>
+
           <SelectionToolbar
             total={filtered.length}
             selectedCount={selection.selectedCount}
@@ -269,25 +443,41 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             onDeleteSelected={() => void deleteSelected()}
           />
 
-          {/* 전체: 즐겨찾기 상단 + 목차 섹션 / 칩 선택: 해당 목차만 */}
           {groups.map((group) => {
-            const showHeader =
-              activeCat === ALL &&
-              (groups.length > 1 || group.isFavoriteGroup);
+            const isOpen =
+              !showSectionHeaders ||
+              expanded.has(group.label) ||
+              // 섹션이 하나뿐이면 항상 펼침
+              groups.length === 1;
+            const showCatBadge =
+              group.isFavoriteGroup || !showSectionHeaders;
+
             return (
-              <section key={group.label} className="space-y-3">
-                {showHeader && (
-                  <div
+              <section
+                key={group.label}
+                className="overflow-hidden rounded-xl border border-border/80"
+              >
+                {showSectionHeaders ? (
+                  <button
+                    type="button"
+                    onClick={() => toggleSection(group.label)}
                     className={cn(
-                      "sticky top-0 z-10 -mx-1 flex items-center gap-2 border-b px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80",
+                      "flex w-full items-center gap-2 px-3 py-2.5 text-left transition-colors hover:bg-muted/50",
                       group.isFavoriteGroup
-                        ? "border-amber-500/30 bg-amber-500/5"
-                        : "border-border/60 bg-background/95"
+                        ? "bg-amber-500/5"
+                        : "bg-muted/20"
                     )}
+                    aria-expanded={isOpen}
                   >
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
+                        !isOpen && "-rotate-90"
+                      )}
+                    />
                     <h2
                       className={cn(
-                        "text-sm font-semibold tracking-tight",
+                        "min-w-0 flex-1 truncate text-sm font-semibold tracking-tight",
                         group.isFavoriteGroup
                           ? "text-amber-800 dark:text-amber-200"
                           : "text-foreground"
@@ -298,131 +488,137 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                     <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                       {group.items.length}
                     </span>
-                  </div>
-                )}
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {group.items.map((p) => {
-                    const selected = selection.isSelected(p.id);
-                    const cat = categoryLabel(p);
-                    // 즐겨찾기 섹션·목차 헤더가 있을 때 뱃지 정책
-                    const showCatBadge =
-                      (group.isFavoriteGroup || !showHeader) &&
-                      cat !== UNCATEGORIZED;
-                    return (
-                      <Card
-                        key={p.id}
-                        className={cn(
-                          "group transition-colors hover:border-border",
-                          selected &&
-                            "border-indigo-500 ring-1 ring-indigo-500/40",
-                          p.isFavorite && "border-amber-500/40"
-                        )}
-                      >
-                        <CardContent className="flex items-start gap-3 p-4">
-                          <input
-                            type="checkbox"
-                            className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
-                            checked={selected}
-                            onChange={() => selection.toggle(p.id)}
-                            aria-label={`${p.title} 선택`}
-                          />
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-300">
-                            <MessageSquareText className="h-5 w-5" />
-                          </div>
-                          <div className="min-w-0 flex-1 space-y-1.5">
-                            {showCatBadge && (
-                              <Badge
-                                variant="outline"
-                                className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
-                              >
-                                {cat}
-                              </Badge>
-                            )}
-                            <Link
-                              href={`/prompts/${p.id}`}
-                              className="block font-medium leading-snug hover:text-indigo-500"
-                            >
-                              {p.title}
-                            </Link>
-                            {p.whenToUse && (
-                              <p className="line-clamp-2 text-xs text-muted-foreground">
-                                {p.whenToUse}
-                              </p>
-                            )}
-                            <p className="text-[11px] text-muted-foreground">
-                              섹션 {p.sections.length}
-                              {p.sections.length > 1 ? " (1·2차)" : ""}
-                            </p>
-                          </div>
-                          <div className="flex shrink-0 flex-col gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className={cn(
-                                p.isFavorite
-                                  ? "text-amber-500"
-                                  : "text-muted-foreground opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+                  </button>
+                ) : null}
+
+                {isOpen && (
+                  <div
+                    className={cn(
+                      "grid gap-3 p-3 sm:grid-cols-2",
+                      showSectionHeaders && "border-t border-border/60"
+                    )}
+                  >
+                    {group.items.map((p) => {
+                      const selected = selection.isSelected(p.id);
+                      const cat = categoryLabel(p);
+                      return (
+                        <Card
+                          key={p.id}
+                          className={cn(
+                            "group transition-colors hover:border-border",
+                            selected &&
+                              "border-indigo-500 ring-1 ring-indigo-500/40",
+                            p.isFavorite && "border-amber-500/40"
+                          )}
+                        >
+                          <CardContent className="flex items-start gap-3 p-4">
+                            <input
+                              type="checkbox"
+                              className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                              checked={selected}
+                              onChange={() => selection.toggle(p.id)}
+                              aria-label={`${p.title} 선택`}
+                            />
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-300">
+                              <MessageSquareText className="h-5 w-5" />
+                            </div>
+                            <div className="min-w-0 flex-1 space-y-1.5">
+                              {showCatBadge && cat !== UNCATEGORIZED && (
+                                <Badge
+                                  variant="outline"
+                                  className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
+                                >
+                                  {cat}
+                                </Badge>
                               )}
-                              title={
-                                p.isFavorite
-                                  ? "즐겨찾기 해제"
-                                  : "즐겨찾기"
-                              }
-                              aria-label={
-                                p.isFavorite
-                                  ? "즐겨찾기 해제"
-                                  : "즐겨찾기"
-                              }
-                              aria-pressed={p.isFavorite}
-                              disabled={favoritingId === p.id}
-                              onClick={() => void toggleFavorite(p)}
-                            >
-                              <Star
-                                className={cn(
-                                  "h-4 w-4",
-                                  p.isFavorite && "fill-current"
-                                )}
-                              />
-                            </Button>
-                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                              <Link
+                                href={`/prompts/${p.id}`}
+                                className="block font-medium leading-snug hover:text-indigo-500"
+                              >
+                                {p.title}
+                              </Link>
+                              {p.whenToUse && (
+                                <p className="line-clamp-2 text-xs text-muted-foreground">
+                                  {p.whenToUse}
+                                </p>
+                              )}
+                              <p className="text-[11px] text-muted-foreground">
+                                섹션 {p.sections.length}
+                                {p.sections.length > 1 ? " (1·2차)" : ""}
+                              </p>
+                            </div>
+                            <div className="flex shrink-0 flex-col gap-1">
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                title="전체 복사"
-                                aria-label="전체 복사"
-                                onClick={() => void copyAll(p)}
+                                className={cn(
+                                  p.isFavorite
+                                    ? "text-amber-500"
+                                    : "text-muted-foreground opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+                                )}
+                                title={
+                                  p.isFavorite
+                                    ? "즐겨찾기 해제"
+                                    : "즐겨찾기"
+                                }
+                                aria-label={
+                                  p.isFavorite
+                                    ? "즐겨찾기 해제"
+                                    : "즐겨찾기"
+                                }
+                                aria-pressed={p.isFavorite}
+                                disabled={favoritingId === p.id}
+                                onClick={() => void toggleFavorite(p)}
                               >
-                                <Copy
+                                <Star
                                   className={cn(
                                     "h-4 w-4",
-                                    copiedId === p.id && "text-emerald-500"
+                                    p.isFavorite && "fill-current"
                                   )}
                                 />
                               </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-red-400"
-                                aria-label="삭제"
-                                onClick={async () => {
-                                  if (!confirm("이 프롬프트를 삭제할까요?"))
-                                    return;
-                                  const res = await fetch(
-                                    `/api/prompts/${p.id}`,
-                                    { method: "DELETE" }
-                                  );
-                                  if (res.ok) router.refresh();
-                                }}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
+                              <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  title="전체 복사"
+                                  aria-label="전체 복사"
+                                  onClick={() => void copyAll(p)}
+                                >
+                                  <Copy
+                                    className={cn(
+                                      "h-4 w-4",
+                                      copiedId === p.id && "text-emerald-500"
+                                    )}
+                                  />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-red-400"
+                                  aria-label="삭제"
+                                  onClick={async () => {
+                                    if (
+                                      !confirm("이 프롬프트를 삭제할까요?")
+                                    )
+                                      return;
+                                    const res = await fetch(
+                                      `/api/prompts/${p.id}`,
+                                      { method: "DELETE" }
+                                    );
+                                    if (res.ok) router.refresh();
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                )}
               </section>
             );
           })}
@@ -430,4 +626,49 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       )}
     </div>
   );
+}
+
+/** 그룹/세부 필터 칩 (가로 스크롤용 shrink-0) */
+function FilterChip({
+  label,
+  active,
+  onClick,
+  tone,
+  compact,
+  title,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  tone: "indigo" | "amber";
+  compact?: boolean;
+  title?: string;
+}) {
+  return (
+    <button
+      type="button"
+      title={title}
+      onClick={onClick}
+      className={cn(
+        "shrink-0 rounded-full border font-medium transition-colors whitespace-nowrap",
+        compact ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs",
+        active
+          ? tone === "indigo"
+            ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
+            : "border-amber-500/40 bg-amber-500/15 text-amber-800 dark:text-amber-200"
+          : "border-border text-muted-foreground hover:bg-muted"
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
+/** 세부 칩에서 그룹 접두어를 짧게 표시 */
+function shortCatLabel(full: string, group: string): string {
+  if (full.startsWith(group + " · ")) {
+    return full.slice(group.length + 3);
+  }
+  // 일잘러 1-2. 제목 → 1-2. 제목 유지(이미 짧음)
+  return full;
 }
