@@ -1,4 +1,4 @@
-// 프롬프트 라이브러리 목록 — 검색·카테고리 칩·선택 삭제
+// 프롬프트 라이브러리 목록 — 목차 그룹·검색·카테고리 칩·선택 삭제
 "use client";
 
 import { Copy, MessageSquareText, Plus, Trash2 } from "lucide-react";
@@ -19,6 +19,31 @@ import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
+const UNCATEGORIZED = "미분류";
+
+/** 목차 라벨 정규화 (빈 값 → 미분류) */
+function categoryLabel(p: Prompt): string {
+  return p.category?.trim() || UNCATEGORIZED;
+}
+
+/**
+ * 목차 정렬: "1-1.", "2-10." 숫자 자연순. 미분류는 맨 뒤.
+ */
+function compareCategory(a: string, b: string): number {
+  if (a === UNCATEGORIZED && b !== UNCATEGORIZED) return 1;
+  if (b === UNCATEGORIZED && a !== UNCATEGORIZED) return -1;
+  return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
+}
+
+/** 같은 목차 안에서는 제목 가나다순 */
+function comparePrompt(a: Prompt, b: Prompt): number {
+  const cat = compareCategory(categoryLabel(a), categoryLabel(b));
+  if (cat !== 0) return cat;
+  return a.title.localeCompare(b.title, "ko", {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
 
 /** 프롬프트 목록 UI */
 export function PromptList({ prompts }: { prompts: Prompt[] }) {
@@ -31,32 +56,49 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const categories = useMemo(() => {
     const map = new Map<string, number>();
     for (const p of prompts) {
-      const c = p.category?.trim() || "미분류";
+      const c = categoryLabel(p);
       map.set(c, (map.get(c) ?? 0) + 1);
     }
     return [...map.entries()]
-      .sort((a, b) => a[0].localeCompare(b[0], "ko"))
+      .sort((a, b) => compareCategory(a[0], b[0]))
       .map(([label, count]) => ({ label, count }));
   }, [prompts]);
 
+  // 필터 후 목차 → 제목 순 정렬 (updatedAt 섞임 방지)
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return prompts.filter((p) => {
-      const cat = p.category?.trim() || "미분류";
-      if (activeCat !== ALL && cat !== activeCat) return false;
-      if (!needle) return true;
-      const hay = [
-        p.title,
-        p.category ?? "",
-        p.summary ?? "",
-        p.whenToUse ?? "",
-        ...p.sections.flatMap((s) => [s.title, s.body]),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(needle);
-    });
+    return prompts
+      .filter((p) => {
+        const cat = categoryLabel(p);
+        if (activeCat !== ALL && cat !== activeCat) return false;
+        if (!needle) return true;
+        const hay = [
+          p.title,
+          p.category ?? "",
+          p.summary ?? "",
+          p.whenToUse ?? "",
+          ...p.sections.flatMap((s) => [s.title, s.body]),
+        ]
+          .join(" ")
+          .toLowerCase();
+        return hay.includes(needle);
+      })
+      .sort(comparePrompt);
   }, [prompts, q, activeCat]);
+
+  /** 전체 보기일 때 목차별 섹션 그룹 */
+  const groups = useMemo(() => {
+    const map = new Map<string, Prompt[]>();
+    for (const p of filtered) {
+      const c = categoryLabel(p);
+      const list = map.get(c);
+      if (list) list.push(p);
+      else map.set(c, [p]);
+    }
+    return [...map.entries()]
+      .sort((a, b) => compareCategory(a[0], b[0]))
+      .map(([label, items]) => ({ label, items }));
+  }, [filtered]);
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
     const items: SearchSuggestItem[] = [];
@@ -176,7 +218,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           조건에 맞는 프롬프트가 없습니다.
         </p>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <SelectionToolbar
             total={filtered.length}
             selectedCount={selection.selectedCount}
@@ -186,89 +228,114 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             onToggleAll={selection.toggleAll}
             onDeleteSelected={() => void deleteSelected()}
           />
-          <div className="grid gap-3 sm:grid-cols-2">
-            {filtered.map((p) => {
-              const selected = selection.isSelected(p.id);
-              return (
-                <Card
-                  key={p.id}
-                  className={cn(
-                    "group transition-colors hover:border-border",
-                    selected && "border-indigo-500 ring-1 ring-indigo-500/40"
-                  )}
-                >
-                  <CardContent className="flex items-start gap-3 p-4">
-                    <input
-                      type="checkbox"
-                      className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
-                      checked={selected}
-                      onChange={() => selection.toggle(p.id)}
-                      aria-label={`${p.title} 선택`}
-                    />
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-300">
-                      <MessageSquareText className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0 flex-1 space-y-1.5">
-                      {p.category && (
-                        <Badge
-                          variant="outline"
-                          className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
-                        >
-                          {p.category}
-                        </Badge>
-                      )}
-                      <Link
-                        href={`/prompts/${p.id}`}
-                        className="block font-medium leading-snug hover:text-indigo-500"
+
+          {/* 전체: 목차 섹션으로 묶음 / 칩 선택: 해당 목차만 카드 그리드 */}
+          {groups.map((group) => {
+            const showHeader = activeCat === ALL && groups.length > 1;
+            return (
+              <section key={group.label} className="space-y-3">
+                {showHeader && (
+                  <div className="sticky top-0 z-10 -mx-1 flex items-center gap-2 border-b border-border/60 bg-background/95 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+                    <h2 className="text-sm font-semibold tracking-tight text-foreground">
+                      {group.label}
+                    </h2>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {group.items.length}
+                    </span>
+                  </div>
+                )}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {group.items.map((p) => {
+                    const selected = selection.isSelected(p.id);
+                    const cat = categoryLabel(p);
+                    // 섹션 헤더가 있을 때는 카드에 목차 뱃지 중복 표시 안 함
+                    const showCatBadge = !showHeader && cat !== UNCATEGORIZED;
+                    return (
+                      <Card
+                        key={p.id}
+                        className={cn(
+                          "group transition-colors hover:border-border",
+                          selected &&
+                            "border-indigo-500 ring-1 ring-indigo-500/40"
+                        )}
                       >
-                        {p.title}
-                      </Link>
-                      {p.whenToUse && (
-                        <p className="line-clamp-2 text-xs text-muted-foreground">
-                          {p.whenToUse}
-                        </p>
-                      )}
-                      <p className="text-[11px] text-muted-foreground">
-                        섹션 {p.sections.length} · 수정{" "}
-                        {new Date(p.updatedAt).toLocaleString("ko-KR")}
-                      </p>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        title="전체 복사"
-                        aria-label="전체 복사"
-                        onClick={() => void copyAll(p)}
-                      >
-                        <Copy
-                          className={cn(
-                            "h-4 w-4",
-                            copiedId === p.id && "text-emerald-500"
-                          )}
-                        />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-red-400"
-                        aria-label="삭제"
-                        onClick={async () => {
-                          if (!confirm("이 프롬프트를 삭제할까요?")) return;
-                          const res = await fetch(`/api/prompts/${p.id}`, {
-                            method: "DELETE",
-                          });
-                          if (res.ok) router.refresh();
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                        <CardContent className="flex items-start gap-3 p-4">
+                          <input
+                            type="checkbox"
+                            className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                            checked={selected}
+                            onChange={() => selection.toggle(p.id)}
+                            aria-label={`${p.title} 선택`}
+                          />
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-300">
+                            <MessageSquareText className="h-5 w-5" />
+                          </div>
+                          <div className="min-w-0 flex-1 space-y-1.5">
+                            {showCatBadge && (
+                              <Badge
+                                variant="outline"
+                                className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
+                              >
+                                {cat}
+                              </Badge>
+                            )}
+                            <Link
+                              href={`/prompts/${p.id}`}
+                              className="block font-medium leading-snug hover:text-indigo-500"
+                            >
+                              {p.title}
+                            </Link>
+                            {p.whenToUse && (
+                              <p className="line-clamp-2 text-xs text-muted-foreground">
+                                {p.whenToUse}
+                              </p>
+                            )}
+                            <p className="text-[11px] text-muted-foreground">
+                              섹션 {p.sections.length}
+                              {p.sections.length > 1 ? " (1·2차)" : ""}
+                            </p>
+                          </div>
+                          <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              title="전체 복사"
+                              aria-label="전체 복사"
+                              onClick={() => void copyAll(p)}
+                            >
+                              <Copy
+                                className={cn(
+                                  "h-4 w-4",
+                                  copiedId === p.id && "text-emerald-500"
+                                )}
+                              />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-400"
+                              aria-label="삭제"
+                              onClick={async () => {
+                                if (!confirm("이 프롬프트를 삭제할까요?"))
+                                  return;
+                                const res = await fetch(
+                                  `/api/prompts/${p.id}`,
+                                  { method: "DELETE" }
+                                );
+                                if (res.ok) router.refresh();
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
     </div>
