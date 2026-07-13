@@ -36,6 +36,7 @@ export default async function BookmarksPage() {
       favicon: row.favicon,
       tags,
       category: row.category,
+      isFavorite: Boolean(row.isFavorite),
       createdAt: row.createdAt,
     };
   });

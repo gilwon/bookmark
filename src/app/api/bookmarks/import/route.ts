@@ -212,6 +212,7 @@ export async function POST(req: Request) {
       favicon,
       tags: JSON.stringify(item.tags),
       category: item.category,
+      isFavorite: 0,
       createdAt: item.createdAt,
     });
     imported += 1;

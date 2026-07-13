@@ -49,6 +49,7 @@ export default async function PageEditorPage({ params }: Props) {
       favicon: b.favicon,
       tags,
       category: b.category,
+      isFavorite: Boolean(b.isFavorite),
       createdAt: b.createdAt,
     };
   });

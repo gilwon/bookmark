@@ -11,6 +11,12 @@ import type {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+/** DB 값(0/1/bool) → 0|1 */
+function toFavoriteFlag(v: unknown): number {
+  if (v === true || v === 1 || v === "1") return 1;
+  return 0;
+}
+
 export function mapBookmark(r: any): BookmarkRow {
   return {
     id: r.id,
@@ -22,6 +28,7 @@ export function mapBookmark(r: any): BookmarkRow {
     favicon: r.favicon ?? null,
     tags: r.tags ?? "[]",
     category: r.category ?? null,
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
     createdAt: r.created_at ?? r.createdAt,
   };
 }
@@ -115,6 +122,7 @@ export function bookmarkToDb(row: Partial<BookmarkRow> & { id: string; userId: s
     favicon: row.favicon ?? null,
     tags: row.tags ?? "[]",
     category: row.category ?? null,
+    is_favorite: toFavoriteFlag(row.isFavorite),
     created_at: row.createdAt,
   };
 }
@@ -186,6 +194,7 @@ export function mapPrompt(r: any): PromptRow {
       typeof r.sections === "string"
         ? r.sections
         : JSON.stringify(r.sections ?? []),
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
     createdAt: r.created_at ?? r.createdAt,
     updatedAt: r.updated_at ?? r.updatedAt,
   };
@@ -200,6 +209,7 @@ export function promptToDb(row: PromptRow) {
     summary: row.summary,
     when_to_use: row.whenToUse,
     sections: row.sections,
+    is_favorite: toFavoriteFlag(row.isFavorite),
     created_at: row.createdAt,
     updated_at: row.updatedAt,
   };

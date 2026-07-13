@@ -26,6 +26,7 @@ function toBookmark(row: Awaited<ReturnType<typeof store.listBookmarks>>[0]): Bo
     favicon: row.favicon,
     tags,
     category: row.category,
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
   };
 }
@@ -105,6 +106,7 @@ export async function POST(req: Request) {
       favicon: meta.favicon,
       tags: JSON.stringify(tags),
       category,
+      isFavorite: 0,
       createdAt: now,
     });
   } catch (insertErr) {

@@ -43,6 +43,7 @@ function toBookmark(
     favicon: row.favicon,
     tags: parseTags(row.tags),
     category: row.category,
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
   };
 }

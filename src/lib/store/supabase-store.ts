@@ -49,11 +49,23 @@ export async function listBookmarks(
     .from("bookmarks")
     .select("*")
     .eq("user_id", userId)
+    // 즐겨찾기 우선, 그다음 최신순
+    .order("is_favorite", { ascending: false })
     .order("created_at", { ascending: false });
   if (opts?.limit && opts.limit > 0) {
     query = query.limit(opts.limit);
   }
-  const { data, error } = await query;
+  let { data, error } = await query;
+  // 컬럼 미적용(구 스키마) 시 폴백
+  if (error && /is_favorite/i.test(error.message)) {
+    let fallback = sb()
+      .from("bookmarks")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (opts?.limit && opts.limit > 0) fallback = fallback.limit(opts.limit);
+    ({ data, error } = await fallback);
+  }
   throwIfError(error, "listBookmarks");
   return (data ?? []).map(mapBookmark);
 }
@@ -95,6 +107,7 @@ export async function updateBookmark(
   if (patch.tags !== undefined) body.tags = patch.tags;
   if (patch.category !== undefined) body.category = patch.category;
   if (patch.url !== undefined) body.url = patch.url;
+  if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
 
   const { data, error } = await sb()
     .from("bookmarks")
@@ -557,10 +570,18 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
 export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
-  const { data, error } = await sb()
+  let { data, error } = await sb()
     .from("prompts")
     .select("*")
+    .order("is_favorite", { ascending: false })
     .order("updated_at", { ascending: false });
+  // 컬럼 미적용(구 스키마) 시 폴백
+  if (error && /is_favorite/i.test(error.message)) {
+    ({ data, error } = await sb()
+      .from("prompts")
+      .select("*")
+      .order("updated_at", { ascending: false }));
+  }
   throwIfError(error, "listPrompts");
   return (data ?? []).map(mapPrompt);
 }
@@ -599,6 +620,7 @@ export async function updatePrompt(
   if (patch.summary !== undefined) body.summary = patch.summary;
   if (patch.whenToUse !== undefined) body.when_to_use = patch.whenToUse;
   if (patch.sections !== undefined) body.sections = patch.sections;
+  if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
   if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
 
   const { data, error } = await sb()
@@ -690,6 +712,7 @@ export async function listRecentBookmarks(
     .from("bookmarks")
     .select("*")
     .eq("user_id", userId)
+    .order("is_favorite", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(limit);
   throwIfError(error, "listRecentBookmarks");

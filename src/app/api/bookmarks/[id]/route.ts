@@ -22,6 +22,9 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (typeof body.description === "string") patch.description = body.description;
   if (typeof body.category === "string") patch.category = body.category;
   if (Array.isArray(body.tags)) patch.tags = JSON.stringify(body.tags);
+  if (typeof body.isFavorite === "boolean") {
+    patch.isFavorite = body.isFavorite ? 1 : 0;
+  }
 
   // URL 수정 — 유효한 http(s) 만 허용, 쿼리 제외 중복 금지
   if (typeof body.url === "string") {
@@ -95,6 +98,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
     favicon: row.favicon,
     tags,
     category: row.category,
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
   });
 }

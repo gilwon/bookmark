@@ -55,6 +55,9 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (typeof body.whenToUse === "string") {
     patch.whenToUse = body.whenToUse.trim() || null;
   }
+  if (typeof body.isFavorite === "boolean") {
+    patch.isFavorite = body.isFavorite ? 1 : 0;
+  }
   if (Array.isArray(body.sections)) {
     const sections: PromptSection[] = normalizeSections(
       body.sections.map((x) => {

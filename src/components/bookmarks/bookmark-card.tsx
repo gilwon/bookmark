@@ -1,7 +1,14 @@
 // 북마크 카드 — OG 이미지, 제목, 태그, 인라인 편집/삭제
 "use client";
 
-import { Check, ExternalLink, Pencil, Trash2, X } from "lucide-react";
+import {
+  Check,
+  ExternalLink,
+  Pencil,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { Bookmark } from "@/lib/types";
@@ -35,6 +42,7 @@ export function BookmarkCard({
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [favoriting, setFavoriting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 편집 폼 상태
@@ -182,6 +190,22 @@ export function BookmarkCard({
     }
   }
 
+  /** 즐겨찾기 on/off — 목록 상단 정렬에 반영 */
+  async function toggleFavorite() {
+    if (favoriting) return;
+    setFavoriting(true);
+    try {
+      const res = await fetch(`/api/bookmarks/${bookmark.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isFavorite: !bookmark.isFavorite }),
+      });
+      if (res.ok) router.refresh();
+    } finally {
+      setFavoriting(false);
+    }
+  }
+
   let domain = "";
   try {
     domain = new URL(bookmark.url).hostname;
@@ -212,7 +236,8 @@ export function BookmarkCard({
     <Card
       className={cn(
         "group relative flex flex-col overflow-hidden transition-colors hover:border-border",
-        selected && "border-indigo-500 ring-1 ring-indigo-500/40"
+        selected && "border-indigo-500 ring-1 ring-indigo-500/40",
+        bookmark.isFavorite && "border-amber-500/40"
       )}
     >
       {hasImage ? (
@@ -436,7 +461,37 @@ export function BookmarkCard({
               <span className="truncate text-xs text-muted-foreground">
                 {domain}
               </span>
-              <div className="flex gap-1 opacity-70 group-hover:opacity-100">
+              <div className="flex gap-1 opacity-70 group-hover:opacity-100 focus-within:opacity-100">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    "h-8 w-8",
+                    bookmark.isFavorite
+                      ? "text-amber-500 opacity-100"
+                      : "text-muted-foreground"
+                  )}
+                  onClick={() => void toggleFavorite()}
+                  disabled={favoriting}
+                  title={
+                    bookmark.isFavorite
+                      ? "즐겨찾기 해제"
+                      : "즐겨찾기"
+                  }
+                  aria-label={
+                    bookmark.isFavorite
+                      ? "즐겨찾기 해제"
+                      : "즐겨찾기"
+                  }
+                  aria-pressed={bookmark.isFavorite}
+                >
+                  <Star
+                    className={cn(
+                      "h-3.5 w-3.5",
+                      bookmark.isFavorite && "fill-current"
+                    )}
+                  />
+                </Button>
                 <a
                   href={bookmark.url}
                   target="_blank"

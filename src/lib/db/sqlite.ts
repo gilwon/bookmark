@@ -30,7 +30,9 @@ function createSqlite(): SqliteDb {
     CREATE TABLE IF NOT EXISTS bookmarks (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, url TEXT NOT NULL,
       title TEXT NOT NULL, description TEXT, image TEXT, favicon TEXT,
-      tags TEXT NOT NULL DEFAULT '[]', category TEXT, created_at TEXT NOT NULL
+      tags TEXT NOT NULL DEFAULT '[]', category TEXT,
+      is_favorite INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS categories (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, name TEXT NOT NULL,
@@ -62,6 +64,7 @@ function createSqlite(): SqliteDb {
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
       category TEXT, summary TEXT, when_to_use TEXT,
       sections TEXT NOT NULL DEFAULT '[]',
+      is_favorite INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
@@ -114,6 +117,26 @@ function createSqlite(): SqliteDb {
     );
   } catch (e) {
     console.warn("[db] stars unique(repo) 인덱스 생성 실패 (중복 가능)", e);
+  }
+  // 즐겨찾기 컬럼 (기존 DB 마이그레이션)
+  const bookmarkCols = sqlite
+    .prepare("PRAGMA table_info(bookmarks)")
+    .all() as { name: string }[];
+  if (
+    bookmarkCols.length &&
+    !bookmarkCols.some((c) => c.name === "is_favorite")
+  ) {
+    sqlite.exec(
+      `ALTER TABLE bookmarks ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0`
+    );
+  }
+  const promptCols = sqlite
+    .prepare("PRAGMA table_info(prompts)")
+    .all() as { name: string }[];
+  if (promptCols.length && !promptCols.some((c) => c.name === "is_favorite")) {
+    sqlite.exec(
+      `ALTER TABLE prompts ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0`
+    );
   }
   return drizzle(sqlite, { schema });
 }

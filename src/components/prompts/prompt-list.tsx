@@ -1,7 +1,7 @@
 // 프롬프트 라이브러리 목록 — 목차 그룹·검색·카테고리 칩·선택 삭제
 "use client";
 
-import { Copy, MessageSquareText, Plus, Trash2 } from "lucide-react";
+import { Copy, MessageSquareText, Plus, Star, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
 const UNCATEGORIZED = "미분류";
+const FAVORITES = "⭐ 즐겨찾기";
 
 /** 목차 라벨 정규화 (빈 값 → 미분류) */
 function categoryLabel(p: Prompt): string {
@@ -35,8 +36,9 @@ function compareCategory(a: string, b: string): number {
   return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
 }
 
-/** 같은 목차 안에서는 제목 가나다순 */
+/** 즐겨찾기 우선 → 목차 → 제목 */
 function comparePrompt(a: Prompt, b: Prompt): number {
+  if (a.isFavorite !== b.isFavorite) return a.isFavorite ? -1 : 1;
   const cat = compareCategory(categoryLabel(a), categoryLabel(b));
   if (cat !== 0) return cat;
   return a.title.localeCompare(b.title, "ko", {
@@ -52,6 +54,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const [activeCat, setActiveCat] = useState(ALL);
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [favoritingId, setFavoritingId] = useState<string | null>(null);
 
   const categories = useMemo(() => {
     const map = new Map<string, number>();
@@ -86,19 +89,40 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       .sort(comparePrompt);
   }, [prompts, q, activeCat]);
 
-  /** 전체 보기일 때 목차별 섹션 그룹 */
+  /**
+   * 전체 보기: 즐겨찾기 섹션을 맨 위, 나머지는 목차별.
+   * 목차 필터: 해당 목차만, 즐겨찾기 항목이 먼저.
+   */
   const groups = useMemo(() => {
-    const map = new Map<string, Prompt[]>();
-    for (const p of filtered) {
-      const c = categoryLabel(p);
-      const list = map.get(c);
-      if (list) list.push(p);
-      else map.set(c, [p]);
+    if (activeCat === ALL) {
+      const favs = filtered.filter((p) => p.isFavorite);
+      const rest = filtered.filter((p) => !p.isFavorite);
+      const map = new Map<string, Prompt[]>();
+      for (const p of rest) {
+        const c = categoryLabel(p);
+        const list = map.get(c);
+        if (list) list.push(p);
+        else map.set(c, [p]);
+      }
+      const catGroups = [...map.entries()]
+        .sort((a, b) => compareCategory(a[0], b[0]))
+        .map(([label, items]) => ({ label, items, isFavoriteGroup: false }));
+      if (favs.length > 0) {
+        return [
+          { label: FAVORITES, items: favs, isFavoriteGroup: true },
+          ...catGroups,
+        ];
+      }
+      return catGroups;
     }
-    return [...map.entries()]
-      .sort((a, b) => compareCategory(a[0], b[0]))
-      .map(([label, items]) => ({ label, items }));
-  }, [filtered]);
+    return [
+      {
+        label: activeCat,
+        items: filtered,
+        isFavoriteGroup: false,
+      },
+    ];
+  }, [filtered, activeCat]);
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
     const items: SearchSuggestItem[] = [];
@@ -151,6 +175,22 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       setTimeout(() => setCopiedId(null), 1500);
     } catch {
       alert("복사에 실패했습니다.");
+    }
+  }
+
+  /** 즐겨찾기 on/off */
+  async function toggleFavorite(p: Prompt) {
+    if (favoritingId) return;
+    setFavoritingId(p.id);
+    try {
+      const res = await fetch(`/api/prompts/${p.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isFavorite: !p.isFavorite }),
+      });
+      if (res.ok) router.refresh();
+    } finally {
+      setFavoritingId(null);
     }
   }
 
@@ -229,14 +269,30 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             onDeleteSelected={() => void deleteSelected()}
           />
 
-          {/* 전체: 목차 섹션으로 묶음 / 칩 선택: 해당 목차만 카드 그리드 */}
+          {/* 전체: 즐겨찾기 상단 + 목차 섹션 / 칩 선택: 해당 목차만 */}
           {groups.map((group) => {
-            const showHeader = activeCat === ALL && groups.length > 1;
+            const showHeader =
+              activeCat === ALL &&
+              (groups.length > 1 || group.isFavoriteGroup);
             return (
               <section key={group.label} className="space-y-3">
                 {showHeader && (
-                  <div className="sticky top-0 z-10 -mx-1 flex items-center gap-2 border-b border-border/60 bg-background/95 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-                    <h2 className="text-sm font-semibold tracking-tight text-foreground">
+                  <div
+                    className={cn(
+                      "sticky top-0 z-10 -mx-1 flex items-center gap-2 border-b px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80",
+                      group.isFavoriteGroup
+                        ? "border-amber-500/30 bg-amber-500/5"
+                        : "border-border/60 bg-background/95"
+                    )}
+                  >
+                    <h2
+                      className={cn(
+                        "text-sm font-semibold tracking-tight",
+                        group.isFavoriteGroup
+                          ? "text-amber-800 dark:text-amber-200"
+                          : "text-foreground"
+                      )}
+                    >
                       {group.label}
                     </h2>
                     <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
@@ -248,15 +304,18 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                   {group.items.map((p) => {
                     const selected = selection.isSelected(p.id);
                     const cat = categoryLabel(p);
-                    // 섹션 헤더가 있을 때는 카드에 목차 뱃지 중복 표시 안 함
-                    const showCatBadge = !showHeader && cat !== UNCATEGORIZED;
+                    // 즐겨찾기 섹션·목차 헤더가 있을 때 뱃지 정책
+                    const showCatBadge =
+                      (group.isFavoriteGroup || !showHeader) &&
+                      cat !== UNCATEGORIZED;
                     return (
                       <Card
                         key={p.id}
                         className={cn(
                           "group transition-colors hover:border-border",
                           selected &&
-                            "border-indigo-500 ring-1 ring-indigo-500/40"
+                            "border-indigo-500 ring-1 ring-indigo-500/40",
+                          p.isFavorite && "border-amber-500/40"
                         )}
                       >
                         <CardContent className="flex items-start gap-3 p-4">
@@ -295,38 +354,69 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                               {p.sections.length > 1 ? " (1·2차)" : ""}
                             </p>
                           </div>
-                          <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                          <div className="flex shrink-0 flex-col gap-1">
                             <Button
                               variant="ghost"
                               size="icon"
-                              title="전체 복사"
-                              aria-label="전체 복사"
-                              onClick={() => void copyAll(p)}
+                              className={cn(
+                                p.isFavorite
+                                  ? "text-amber-500"
+                                  : "text-muted-foreground opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+                              )}
+                              title={
+                                p.isFavorite
+                                  ? "즐겨찾기 해제"
+                                  : "즐겨찾기"
+                              }
+                              aria-label={
+                                p.isFavorite
+                                  ? "즐겨찾기 해제"
+                                  : "즐겨찾기"
+                              }
+                              aria-pressed={p.isFavorite}
+                              disabled={favoritingId === p.id}
+                              onClick={() => void toggleFavorite(p)}
                             >
-                              <Copy
+                              <Star
                                 className={cn(
                                   "h-4 w-4",
-                                  copiedId === p.id && "text-emerald-500"
+                                  p.isFavorite && "fill-current"
                                 )}
                               />
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-red-400"
-                              aria-label="삭제"
-                              onClick={async () => {
-                                if (!confirm("이 프롬프트를 삭제할까요?"))
-                                  return;
-                                const res = await fetch(
-                                  `/api/prompts/${p.id}`,
-                                  { method: "DELETE" }
-                                );
-                                if (res.ok) router.refresh();
-                              }}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                title="전체 복사"
+                                aria-label="전체 복사"
+                                onClick={() => void copyAll(p)}
+                              >
+                                <Copy
+                                  className={cn(
+                                    "h-4 w-4",
+                                    copiedId === p.id && "text-emerald-500"
+                                  )}
+                                />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-red-400"
+                                aria-label="삭제"
+                                onClick={async () => {
+                                  if (!confirm("이 프롬프트를 삭제할까요?"))
+                                    return;
+                                  const res = await fetch(
+                                    `/api/prompts/${p.id}`,
+                                    { method: "DELETE" }
+                                  );
+                                  if (res.ok) router.refresh();
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>

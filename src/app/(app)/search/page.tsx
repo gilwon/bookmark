@@ -93,6 +93,7 @@ export default async function SearchPage({
         favicon: row.favicon,
         tags,
         category: row.category,
+        isFavorite: Boolean(row.isFavorite),
         createdAt: row.createdAt,
       };
     });

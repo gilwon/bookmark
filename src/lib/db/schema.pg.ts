@@ -11,6 +11,8 @@ export const bookmarks = pgTable("bookmarks", {
   favicon: text("favicon"),
   tags: text("tags").notNull().default("[]"),
   category: text("category"),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
   createdAt: text("created_at").notNull(),
 });
 
@@ -80,6 +82,8 @@ export const prompts = pgTable("prompts", {
   summary: text("summary"),
   whenToUse: text("when_to_use"),
   sections: text("sections").notNull().default("[]"),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

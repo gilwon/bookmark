@@ -31,6 +31,7 @@ export function rowToPrompt(row: PromptRow): Prompt {
     summary: row.summary,
     whenToUse: row.whenToUse,
     sections: parsePromptSections(row.sections),
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };

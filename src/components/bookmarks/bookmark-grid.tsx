@@ -17,6 +17,7 @@ import { BookmarkCard } from "./bookmark-card";
 /** 카테고리 없음 표시용 키 */
 const UNCATEGORIZED = "__uncategorized__";
 const ALL = "__all__";
+const FAVORITES = "__favorites__";
 
 function categoryKey(b: Bookmark): string {
   const c = b.category?.trim();
@@ -24,7 +25,14 @@ function categoryKey(b: Bookmark): string {
 }
 
 function categoryLabel(key: string): string {
+  if (key === FAVORITES) return "⭐ 즐겨찾기";
   return key === UNCATEGORIZED ? "미분류" : key;
+}
+
+/** 즐겨찾기 우선, 그다음 최신(createdAt desc) */
+function compareBookmark(a: Bookmark, b: Bookmark): number {
+  if (a.isFavorite !== b.isFavorite) return a.isFavorite ? -1 : 1;
+  return b.createdAt.localeCompare(a.createdAt);
 }
 
 /** 제목·URL·설명·태그·카테고리 텍스트 매칭 */
@@ -91,20 +99,24 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
     return items;
   }, [bookmarks]);
 
-  /** 검색 + 카테고리 필터 */
+  /** 검색 + 카테고리 필터, 즐겨찾기 우선 정렬 */
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return bookmarks.filter((b) => {
-      if (active !== ALL && categoryKey(b) !== active) return false;
-      return matchesBookmarkQuery(b, needle);
-    });
+    return bookmarks
+      .filter((b) => {
+        if (active !== ALL && categoryKey(b) !== active) return false;
+        return matchesBookmarkQuery(b, needle);
+      })
+      .sort(compareBookmark);
   }, [bookmarks, active, q]);
 
-  /** 전체 보기일 때 카테고리 섹션 그룹 */
+  /** 전체 보기: 즐겨찾기 섹션 상단 + 카테고리 섹션 */
   const groups = useMemo(() => {
     if (active !== ALL) return null;
+    const favs = filtered.filter((b) => b.isFavorite).sort(compareBookmark);
+    const rest = filtered.filter((b) => !b.isFavorite);
     const map = new Map<string, Bookmark[]>();
-    for (const b of filtered) {
+    for (const b of rest) {
       const k = categoryKey(b);
       const list = map.get(k) ?? [];
       list.push(b);
@@ -115,11 +127,24 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
       if (b === UNCATEGORIZED) return -1;
       return a.localeCompare(b, "ko");
     });
-    return keys.map((key) => ({
+    const catGroups = keys.map((key) => ({
       key,
       label: categoryLabel(key),
-      items: map.get(key)!,
+      items: (map.get(key) ?? []).sort(compareBookmark),
+      isFavoriteGroup: false,
     }));
+    if (favs.length > 0) {
+      return [
+        {
+          key: FAVORITES,
+          label: categoryLabel(FAVORITES),
+          items: favs,
+          isFavoriteGroup: true,
+        },
+        ...catGroups,
+      ];
+    }
+    return catGroups;
   }, [filtered, active]);
 
   /** 전체 북마크에서 unique 카테고리 (편집 suggest용) */
@@ -238,8 +263,21 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
         <div className="space-y-8">
           {groups.map((g) => (
             <section key={g.key} className="space-y-3">
-              <div className="flex items-center gap-2 border-b border-border pb-2">
-                <h2 className="text-sm font-semibold tracking-tight">
+              <div
+                className={cn(
+                  "flex items-center gap-2 border-b pb-2",
+                  g.isFavoriteGroup
+                    ? "border-amber-500/30"
+                    : "border-border"
+                )}
+              >
+                <h2
+                  className={cn(
+                    "text-sm font-semibold tracking-tight",
+                    g.isFavoriteGroup &&
+                      "text-amber-800 dark:text-amber-200"
+                  )}
+                >
                   {g.label}
                 </h2>
                 <span className="text-xs text-muted-foreground">

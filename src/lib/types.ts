@@ -11,6 +11,8 @@ export type Bookmark = {
   favicon: string | null;
   tags: string[];
   category: string | null;
+  /** 즐겨찾기 — 목록 상단 고정 */
+  isFavorite: boolean;
   createdAt: string;
 };
 
@@ -107,6 +109,8 @@ export type Prompt = {
   /** 이런 상황에 사용 */
   whenToUse: string | null;
   sections: PromptSection[];
+  /** 즐겨찾기 — 목록 상단 고정 */
+  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
 };

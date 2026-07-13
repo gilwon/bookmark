@@ -78,6 +78,7 @@ export async function POST(req: Request) {
     summary,
     whenToUse,
     sections: sectionsJson,
+    isFavorite: 0,
     createdAt: now,
     updatedAt: now,
   });

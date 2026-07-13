@@ -37,7 +37,8 @@ export async function listBookmarks(
     .select()
     .from(bookmarks)
     .where(eq(bookmarks.userId, userId))
-    .orderBy(desc(bookmarks.createdAt));
+    // 즐겨찾기 우선, 그다음 최신순
+    .orderBy(desc(bookmarks.isFavorite), desc(bookmarks.createdAt));
   if (lim && lim > 0) {
     return qall(base.limit(lim));
   }
@@ -476,7 +477,12 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
 export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
-  return qall(db.select().from(prompts).orderBy(desc(prompts.updatedAt)));
+  return qall(
+    db
+      .select()
+      .from(prompts)
+      .orderBy(desc(prompts.isFavorite), desc(prompts.updatedAt))
+  );
 }
 
 export async function getPrompt(
@@ -581,7 +587,7 @@ export async function listRecentBookmarks(
       .select()
       .from(bookmarks)
       .where(eq(bookmarks.userId, userId))
-      .orderBy(desc(bookmarks.createdAt))
+      .orderBy(desc(bookmarks.isFavorite), desc(bookmarks.createdAt))
       .limit(limit)
   );
 }

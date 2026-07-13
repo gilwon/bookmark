@@ -10,6 +10,8 @@ export type BookmarkRow = {
   favicon: string | null;
   tags: string;
   category: string | null;
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
   createdAt: string;
 };
 
@@ -84,6 +86,8 @@ export type PromptRow = {
   summary: string | null;
   whenToUse: string | null;
   sections: string;
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
   createdAt: string;
   updatedAt: string;
 };

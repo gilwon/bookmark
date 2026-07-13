@@ -17,6 +17,7 @@ create table if not exists public.bookmarks (
   favicon text,
   tags text not null default '[]',
   category text,
+  is_favorite integer not null default 0,
   created_at text not null
 );
 
@@ -96,9 +97,14 @@ create table if not exists public.prompts (
   summary text,
   when_to_use text,
   sections text not null default '[]',
+  is_favorite integer not null default 0,
   created_at text not null,
   updated_at text not null
 );
+
+-- 기존 프로젝트: 즐겨찾기 컬럼
+alter table public.bookmarks add column if not exists is_favorite integer not null default 0;
+alter table public.prompts add column if not exists is_favorite integer not null default 0;
 
 create index if not exists idx_bookmarks_user on public.bookmarks (user_id);
 create index if not exists idx_categories_user on public.categories (user_id);
