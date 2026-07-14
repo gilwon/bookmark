@@ -94,11 +94,12 @@ export function PromptEditor({ mode, initial }: Props) {
         );
       }
       const id = (data as { id?: string }).id ?? initial?.id;
+      // replace: 저장 후 뒤로가기 시 편집 폼/다른 메뉴로 튕기지 않게 함
       if (id) {
-        router.push(`/prompts/${id}`);
+        router.replace(`/prompts/${id}`);
         router.refresh();
       } else {
-        router.push("/prompts");
+        router.replace("/prompts");
         router.refresh();
       }
     } catch (err) {
@@ -239,7 +240,14 @@ export function PromptEditor({ mode, initial }: Props) {
           type="button"
           variant="secondary"
           disabled={saving}
-          onClick={() => router.back()}
+          onClick={() => {
+            // history.back 대신 고정 경로 — 이전 메뉴(북마크/검색 등)로 튀는 것 방지
+            if (mode === "edit" && initial?.id) {
+              router.push(`/prompts/${initial.id}`);
+            } else {
+              router.push("/prompts");
+            }
+          }}
         >
           취소
         </Button>
