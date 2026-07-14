@@ -95,7 +95,10 @@ export function StarCard({
         )}
         <div className="flex flex-wrap items-center gap-1.5">
           {star.language && <Badge variant="default">{star.language}</Badge>}
-          <Badge variant="secondary" className="gap-1">
+          <Badge
+            variant="outline"
+            className="gap-1 border-amber-400/40 bg-amber-100/80 text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-100"
+          >
             <Star className="h-3 w-3" />
             {star.stars.toLocaleString()}
           </Badge>
