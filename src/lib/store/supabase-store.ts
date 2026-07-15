@@ -372,14 +372,15 @@ export async function deleteStar(id: string, userId: string): Promise<void> {
 }
 
 // --- pages ---
+/** 목록용 — 본문 제외(경량). 등록일 최신순. */
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
   const { data, error } = await sb()
     .from("custom_pages")
-    .select("*")
+    .select("id, user_id, title, created_at, updated_at")
     .eq("user_id", userId)
-    .order("updated_at", { ascending: false });
+    .order("created_at", { ascending: false });
   throwIfError(error, "listPages");
-  return (data ?? []).map(mapPage);
+  return (data ?? []).map((r) => mapPage({ ...r, content: "{}" }));
 }
 
 export async function getPage(
@@ -569,17 +570,26 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 }
 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
+/** 즐겨찾기 우선 → 등록일 최신순 */
 export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
   let { data, error } = await sb()
     .from("prompts")
     .select("*")
     .order("is_favorite", { ascending: false })
-    .order("updated_at", { ascending: false });
+    .order("created_at", { ascending: false });
   // 컬럼 미적용(구 스키마) 시 폴백
   if (error && /is_favorite/i.test(error.message)) {
     ({ data, error } = await sb()
       .from("prompts")
       .select("*")
+      .order("created_at", { ascending: false }));
+  }
+  // created_at 정렬 실패 시 updated_at
+  if (error && /created_at/i.test(error.message)) {
+    ({ data, error } = await sb()
+      .from("prompts")
+      .select("*")
+      .order("is_favorite", { ascending: false })
       .order("updated_at", { ascending: false }));
   }
   throwIfError(error, "listPrompts");

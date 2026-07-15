@@ -320,14 +320,25 @@ export async function countStarChanges(userId: string): Promise<number> {
 }
 
 // --- pages ---
+/** 목록용 — 본문 제외(경량). 등록일 최신순. */
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
-  return qall(
+  const rows = await qall(
     db
-      .select()
+      .select({
+        id: customPages.id,
+        userId: customPages.userId,
+        title: customPages.title,
+        createdAt: customPages.createdAt,
+        updatedAt: customPages.updatedAt,
+      })
       .from(customPages)
       .where(eq(customPages.userId, userId))
-      .orderBy(desc(customPages.updatedAt))
+      .orderBy(desc(customPages.createdAt))
   );
+  return rows.map((r) => ({
+    ...r,
+    content: "{}",
+  }));
 }
 
 export async function getPage(
@@ -476,12 +487,13 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 }
 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
+/** 즐겨찾기 우선 → 등록일 최신순 */
 export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
   return qall(
     db
       .select()
       .from(prompts)
-      .orderBy(desc(prompts.isFavorite), desc(prompts.updatedAt))
+      .orderBy(desc(prompts.isFavorite), desc(prompts.createdAt))
   );
 }
 

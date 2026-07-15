@@ -1,18 +1,27 @@
-// 커스텀 페이지 목록 + 검색 + 생성 + 전체 선택 / 선택 삭제
+// 커스텀 페이지 목록 + 검색·정렬·페이징 + 생성·선택 삭제
 "use client";
 
 import { FileText, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CustomPage } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
-import { extractTiptapText } from "@/lib/tiptap-text";
+import {
+  compareIsoDesc,
+  compareTitleAsc,
+  DEFAULT_PAGE_SIZE,
+  formatListDate,
+  type ListSortKey,
+  matchesSearchTokens,
+  slicePage,
+} from "@/lib/list-utils";
 import { PdfImportForm } from "@/components/pages/pdf-import-form";
 import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
@@ -20,23 +29,48 @@ import {
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
-/** 페이지 목록을 렌더하고 검색/생성/삭제/선택 삭제를 처리한다. */
+const SORT_OPTIONS: { value: ListSortKey; label: string }[] = [
+  { value: "created_desc", label: "등록일 최신" },
+  { value: "updated_desc", label: "수정일 최신" },
+  { value: "title_asc", label: "제목 가나다" },
+];
+
+function sortPages(list: CustomPage[], sort: ListSortKey): CustomPage[] {
+  const arr = [...list];
+  if (sort === "title_asc") {
+    arr.sort((a, b) => compareTitleAsc(a.title, b.title));
+  } else if (sort === "updated_desc") {
+    arr.sort((a, b) => compareIsoDesc(a.updatedAt, b.updatedAt));
+  } else {
+    arr.sort((a, b) => compareIsoDesc(a.createdAt, b.createdAt));
+  }
+  return arr;
+}
+
+/** 페이지 목록을 렌더하고 검색/정렬/페이징/생성/삭제를 처리한다. */
 export function PageList({ pages }: { pages: CustomPage[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  const [sort, setSort] = useState<ListSortKey>("created_desc");
+  const [page, setPage] = useState(1);
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    if (!needle) return pages;
-    return pages.filter((p) => {
-      const hay = [p.title, extractTiptapText(p.content)]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(needle);
-    });
-  }, [pages, q]);
+    const matched = pages.filter((p) =>
+      matchesSearchTokens(p.title ?? "", q)
+    );
+    return sortPages(matched, sort);
+  }, [pages, q, sort]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [q, sort]);
+
+  const pageItems = useMemo(
+    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
+    [filtered, page]
+  );
 
   /** 검색 suggest — 페이지 제목 */
   const searchSuggestions = useMemo((): SearchSuggestItem[] => {
@@ -46,7 +80,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       .map((title) => ({ value: title, label: title, group: "제목" }));
   }, [pages]);
 
-  const ids = useMemo(() => filtered.map((p) => p.id), [filtered]);
+  const ids = useMemo(() => pageItems.map((p) => p.id), [pageItems]);
   const selection = useSelection(ids);
 
   async function handleCreate() {
@@ -58,8 +92,8 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
         body: JSON.stringify({ title: "제목 없는 페이지" }),
       });
       if (!res.ok) throw new Error("생성 실패");
-      const page = await res.json();
-      router.push(`/pages/${page.id}`);
+      const created = await res.json();
+      router.push(`/pages/${created.id}`);
       router.refresh();
     } catch {
       alert("페이지 생성에 실패했습니다.");
@@ -114,19 +148,46 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       ) : (
         <div className="space-y-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-            <div className="flex-1 space-y-1">
-              <label className="text-xs text-muted-foreground">검색</label>
+            <div className="min-w-0 flex-1 space-y-1">
+              <label className="text-xs text-muted-foreground">
+                검색 (제목 · 공백으로 여러 단어 AND)
+              </label>
               <SearchSuggestInput
-                placeholder="제목, 본문…"
+                placeholder="예: Muse 총정리 · Claude 폴더"
                 value={q}
                 onChange={setQ}
                 suggestions={searchSuggestions}
               />
             </div>
+            <div className="w-full space-y-1 sm:w-44">
+              <label
+                htmlFor="page-sort"
+                className="text-xs text-muted-foreground"
+              >
+                정렬
+              </label>
+              <select
+                id="page-sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as ListSortKey)}
+                className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
+          <p className="text-xs text-muted-foreground">
+            전체 {pages.length}개 · 검색 결과 {filtered.length}개
+            {q.trim() ? " · 본문 검색은 상단 통합 검색 활용" : ""}
+          </p>
+
           <SelectionToolbar
-            total={filtered.length}
+            total={pageItems.length}
             selectedCount={selection.selectedCount}
             allSelected={selection.allSelected}
             someSelected={selection.someSelected}
@@ -140,52 +201,63 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
               검색 조건에 맞는 페이지가 없습니다.
             </p>
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {filtered.map((page) => {
-                const selected = selection.isSelected(page.id);
-                return (
-                  <Card
-                    key={page.id}
-                    className={cn(
-                      "group transition-colors hover:border-border",
-                      selected && "border-indigo-500 ring-1 ring-indigo-500/40"
-                    )}
-                  >
-                    <CardContent className="flex items-center gap-3 p-4">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 shrink-0 accent-indigo-600"
-                        checked={selected}
-                        onChange={() => selection.toggle(page.id)}
-                        aria-label={`${page.title} 선택`}
-                      />
-                      <FileText className="h-5 w-5 shrink-0 text-indigo-400" />
-                      <div className="min-w-0 flex-1">
-                        <Link
-                          href={`/pages/${page.id}`}
-                          className="block truncate font-medium hover:text-indigo-300"
+            <>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {pageItems.map((p) => {
+                  const selected = selection.isSelected(p.id);
+                  return (
+                    <Card
+                      key={p.id}
+                      className={cn(
+                        "group transition-colors hover:border-border",
+                        selected &&
+                          "border-indigo-500 ring-1 ring-indigo-500/40"
+                      )}
+                    >
+                      <CardContent className="flex items-center gap-3 p-4">
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 shrink-0 accent-indigo-600"
+                          checked={selected}
+                          onChange={() => selection.toggle(p.id)}
+                          aria-label={`${p.title} 선택`}
+                        />
+                        <FileText className="h-5 w-5 shrink-0 text-indigo-400" />
+                        <div className="min-w-0 flex-1">
+                          <Link
+                            href={`/pages/${p.id}`}
+                            className="block truncate font-medium hover:text-indigo-300"
+                          >
+                            {p.title}
+                          </Link>
+                          <p className="text-xs text-muted-foreground">
+                            등록 {formatListDate(p.createdAt)}
+                            {p.updatedAt !== p.createdAt
+                              ? ` · 수정 ${formatListDate(p.updatedAt)}`
+                              : ""}
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="opacity-0 group-hover:opacity-100 text-red-400"
+                          onClick={() => void handleDelete(p.id)}
+                          aria-label="삭제"
                         >
-                          {page.title}
-                        </Link>
-                        <p className="text-xs text-muted-foreground">
-                          수정{" "}
-                          {new Date(page.updatedAt).toLocaleString("ko-KR")}
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="opacity-0 group-hover:opacity-100 text-red-400"
-                        onClick={() => void handleDelete(page.id)}
-                        aria-label="삭제"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+              <ListPagination
+                page={page}
+                total={filtered.length}
+                pageSize={DEFAULT_PAGE_SIZE}
+                onChange={setPage}
+              />
+            </>
           )}
         </div>
       )}

@@ -16,15 +16,31 @@ import { useEffect, useMemo, useState } from "react";
 import type { Prompt } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
+import {
+  compareIsoDesc,
+  compareTitleAsc,
+  DEFAULT_PAGE_SIZE,
+  formatListDate,
+  type ListSortKey,
+  matchesSearchTokens,
+  slicePage,
+} from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
 } from "@/components/ui/search-suggest-input";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
+
+const SORT_OPTIONS: { value: ListSortKey; label: string }[] = [
+  { value: "created_desc", label: "등록일 최신" },
+  { value: "updated_desc", label: "수정일 최신" },
+  { value: "title_asc", label: "제목 가나다" },
+];
 
 const ALL = "__all__";
 const UNCATEGORIZED = "미분류";
@@ -86,21 +102,22 @@ function compareGroup(a: string, b: string): number {
   return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
 }
 
-/** 즐겨찾기 우선 → 목차 → 제목 */
-function comparePrompt(a: Prompt, b: Prompt): number {
+/** 즐겨찾기 우선 → 선택 정렬 */
+function comparePrompt(a: Prompt, b: Prompt, sort: ListSortKey): number {
   if (a.isFavorite !== b.isFavorite) return a.isFavorite ? -1 : 1;
-  const cat = compareCategory(categoryLabel(a), categoryLabel(b));
-  if (cat !== 0) return cat;
-  return a.title.localeCompare(b.title, "ko", {
-    numeric: true,
-    sensitivity: "base",
-  });
+  if (sort === "title_asc") return compareTitleAsc(a.title, b.title);
+  if (sort === "updated_desc") {
+    return compareIsoDesc(a.updatedAt, b.updatedAt);
+  }
+  return compareIsoDesc(a.createdAt, b.createdAt);
 }
 
 /** 프롬프트 목록 UI */
 export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  const [sort, setSort] = useState<ListSortKey>("created_desc");
+  const [page, setPage] = useState(1);
   /** 상위 그룹 필터 (GPT공식 / 클로드 / 일잘러 · n …) */
   const [activeGroup, setActiveGroup] = useState(ALL);
   /** 세부 카테고리 필터 (그룹 내) */
@@ -151,34 +168,42 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     setActiveCat(ALL);
   }, [activeGroup]);
 
+  // 검색·필터·정렬 변경 시 1페이지로
+  useEffect(() => {
+    setPage(1);
+  }, [q, sort, activeGroup, activeCat]);
+
   // 필터 후 정렬
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
     return prompts
       .filter((p) => {
         const cat = categoryLabel(p);
         const group = categoryGroup(cat);
         if (activeGroup !== ALL && group !== activeGroup) return false;
         if (activeCat !== ALL && cat !== activeCat) return false;
-        if (!needle) return true;
         const hay = [
           p.title,
           p.category ?? "",
           p.summary ?? "",
           p.whenToUse ?? "",
           ...p.sections.flatMap((s) => [s.title, s.body]),
-        ]
-          .join(" ")
-          .toLowerCase();
-        return hay.includes(needle);
+        ].join(" ");
+        return matchesSearchTokens(hay, q);
       })
-      .sort(comparePrompt);
-  }, [prompts, q, activeGroup, activeCat]);
+      .sort((a, b) => comparePrompt(a, b, sort));
+  }, [prompts, q, activeGroup, activeCat, sort]);
+
+  /** 현재 페이지에 표시할 항목 (필터 결과 슬라이스) */
+  const pageItems = useMemo(
+    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
+    [filtered, page]
+  );
 
   /**
    * 섹션 그룹:
    * - 세부 카테고리 미선택: 즐겨찾기 + 목차별 (접이식)
    * - 세부 카테고리 선택: 단일 섹션
+   * 페이징된 pageItems 기준으로 그룹핑
    */
   const groups = useMemo(() => {
     const singleSection = activeCat !== ALL;
@@ -186,13 +211,13 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       return [
         {
           label: activeCat,
-          items: filtered,
+          items: pageItems,
           isFavoriteGroup: false,
         },
       ];
     }
-    const favs = filtered.filter((p) => p.isFavorite);
-    const rest = filtered.filter((p) => !p.isFavorite);
+    const favs = pageItems.filter((p) => p.isFavorite);
+    const rest = pageItems.filter((p) => !p.isFavorite);
     const map = new Map<string, Prompt[]>();
     for (const p of rest) {
       const c = categoryLabel(p);
@@ -210,7 +235,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       ];
     }
     return catGroups;
-  }, [filtered, activeCat]);
+  }, [pageItems, activeCat]);
 
   const showSectionHeaders = activeCat === ALL && groups.length > 1;
   const hasActiveFilter = activeGroup !== ALL || activeCat !== ALL;
@@ -246,7 +271,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     return items;
   }, [prompts]);
 
-  const ids = useMemo(() => filtered.map((p) => p.id), [filtered]);
+  const ids = useMemo(() => pageItems.map((p) => p.id), [pageItems]);
   const selection = useSelection(ids);
 
   async function deleteSelected() {
@@ -301,15 +326,37 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex-1 min-w-[200px] max-w-md space-y-1">
-          <label className="text-xs text-muted-foreground">검색</label>
+      <div className="flex flex-wrap items-end justify-between gap-2">
+        <div className="min-w-[200px] max-w-md flex-1 space-y-1">
+          <label className="text-xs text-muted-foreground">
+            검색 (제목·목차·본문 · 공백 AND)
+          </label>
           <SearchSuggestInput
-            placeholder="제목, 목차, 본문…"
+            placeholder="예: Muse 광고 · 버그 찾기"
             value={q}
             onChange={setQ}
             suggestions={suggestions}
           />
+        </div>
+        <div className="w-full space-y-1 sm:w-44">
+          <label
+            htmlFor="prompt-sort"
+            className="text-xs text-muted-foreground"
+          >
+            정렬 (즐겨찾기 우선)
+          </label>
+          <select
+            id="prompt-sort"
+            value={sort}
+            onChange={(e) => setSort(e.target.value as ListSortKey)}
+            className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
+          >
+            {SORT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
         </div>
         <Link
           href="/prompts/new"
@@ -405,7 +452,10 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="text-xs text-muted-foreground">
-              {filtered.length}개 표시
+              검색 결과 {filtered.length}개
+              {filtered.length > DEFAULT_PAGE_SIZE
+                ? ` · 이 페이지 ${pageItems.length}개`
+                : ""}
               {hasActiveFilter ? " · 필터 적용 중" : ""}
               {showSectionHeaders
                 ? " · 섹션을 눌러 펼치기"
@@ -434,7 +484,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           </div>
 
           <SelectionToolbar
-            total={filtered.length}
+            total={pageItems.length}
             selectedCount={selection.selectedCount}
             allSelected={selection.allSelected}
             someSelected={selection.someSelected}
@@ -545,6 +595,8 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                               <p className="text-[11px] text-muted-foreground">
                                 섹션 {p.sections.length}
                                 {p.sections.length > 1 ? " (1·2차)" : ""}
+                                {" · "}
+                                등록 {formatListDate(p.createdAt)}
                               </p>
                             </div>
                             <div className="flex shrink-0 flex-col gap-1">
@@ -622,6 +674,13 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
               </section>
             );
           })}
+
+          <ListPagination
+            page={page}
+            total={filtered.length}
+            pageSize={DEFAULT_PAGE_SIZE}
+            onChange={setPage}
+          />
         </div>
       )}
     </div>
