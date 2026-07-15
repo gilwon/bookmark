@@ -66,3 +66,7 @@ export function getClaudePrompt(
 export const CLAUDE_PROMPTS_SOURCE =
   "https://claude-prompts-kr.vercel.app";
 export const CLAUDE_PROMPTS_CREDIT = "우주보스 · 300 Claude Prompts";
+
+/** 원본 사이트 사용법 안내 — [...] 자리표시자 교체 */
+export const CLAUDE_PROMPTS_USAGE =
+  "사용법 · [...] 대괄호 부분만 본인 상황에 맞게 바꿔주세요.";
