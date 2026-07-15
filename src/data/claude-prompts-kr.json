@@ -1,0 +1,2702 @@
+[
+  {
+    "id": 257,
+    "displayId": 1,
+    "category": "productivity",
+    "title": "Knowledge Management System",
+    "titleKo": "지식 관리 시스템",
+    "prompt": "Design a personal knowledge management system for [DESCRIBE PERSON AND WORK]. Cover how information is captured, organized, linked, retrieved, and how it is converted into output.",
+    "promptKo": "[개인 및 업무 설명]에 대한 개인 지식 관리 시스템을 설계합니다. 정보를 캡처, 구성, 연결, 검색하는 방법과 정보가 출력으로 변환되는 방법을 다룹니다."
+  },
+  {
+    "id": 286,
+    "displayId": 2,
+    "category": "productivity",
+    "title": "Training and Development System",
+    "titleKo": "교육·역량 개발 시스템",
+    "prompt": "Design a training and development system for [DESCRIBE TEAM]. Cover skills assessment, learning paths, delivery methods, progress tracking, and how learning connects to performance.",
+    "promptKo": "[팀 설명]을 위한 교육 및 개발 시스템을 설계합니다. 기술 평가, 학습 경로, 전달 방법, 진행 상황 추적 및 학습이 성과에 연결되는 방식을 다룹니다."
+  },
+  {
+    "id": 295,
+    "displayId": 3,
+    "category": "productivity",
+    "title": "Customer Feedback System",
+    "titleKo": "고객 피드백 시스템",
+    "prompt": "Design a comprehensive customer feedback system for [DESCRIBE BUSINESS]. Cover all feedback touchpoints, how feedback is collected, analyzed, prioritized, actioned, and communicated back to customers.",
+    "promptKo": "[비즈니스 설명]에 대한 포괄적인 고객 피드백 시스템을 설계합니다. 모든 피드백 접점, 피드백 수집, 분석, 우선 순위 지정, 조치 및 고객과의 커뮤니케이션 방법을 다룹니다."
+  },
+  {
+    "id": 299,
+    "displayId": 4,
+    "category": "productivity",
+    "title": "Personal Board of Directors",
+    "titleKo": "개인 자문단(Board of Directors)",
+    "prompt": "Design a personal board of directors system for [DESCRIBE PERSON AND GOALS]. Cover who should be on it, how to recruit members, what the relationship looks like, and how to get maximum value from each advisor.",
+    "promptKo": "[개인 및 목표 설명]을 위한 개인 이사회 시스템을 설계합니다. 누가 참여해야 하는지, 회원을 모집하는 방법, 관계가 어떤지, 각 고문으로부터 최대 가치를 얻는 방법을 다룹니다."
+  },
+  {
+    "id": 300,
+    "displayId": 5,
+    "category": "productivity",
+    "title": "Life Design System",
+    "titleKo": "인생 설계 시스템",
+    "prompt": "Design a comprehensive life design system for [DESCRIBE PERSON]. Cover career, relationships, health, finances, learning, and personal fulfillment. Include how all areas are reviewed and balanced over time.",
+    "promptKo": "[DESCRIBE PERSON]을 위한 종합적인 라이프 디자인 시스템을 디자인합니다. 경력, 인간관계, 건강, 재정, 학습 및 개인적 성취를 다룹니다. 시간이 지남에 따라 모든 영역을 검토하고 균형을 맞추는 방법을 포함합니다."
+  },
+  {
+    "id": 284,
+    "displayId": 6,
+    "category": "productivity",
+    "title": "Vendor Selection Framework",
+    "titleKo": "벤더 선정 프레임워크",
+    "prompt": "Design a vendor selection framework for [DESCRIBE TYPE OF PURCHASE]. Cover requirements gathering, market scanning, RFP process, evaluation criteria, and decision documentation.",
+    "promptKo": "[구매 유형 설명]에 대한 공급업체 선택 프레임워크를 설계합니다. 요구 사항 수집, 시장 조사, RFP 프로세스, 평가 기준 및 의사 결정 문서를 다룹니다."
+  },
+  {
+    "id": 280,
+    "displayId": 7,
+    "category": "productivity",
+    "title": "Product Development System",
+    "titleKo": "제품 개발 시스템",
+    "prompt": "Design a product development system for [DESCRIBE TEAM]. Cover discovery, prioritization, specification, design, development, testing, launch, and post-launch review.",
+    "promptKo": "[DESCRIBE TEAM]의 제품 개발 시스템을 설계합니다. 검색, 우선순위 지정, 사양, 디자인, 개발, 테스트, 출시 및 출시 후 검토를 다룹니다."
+  },
+  {
+    "id": 266,
+    "displayId": 8,
+    "category": "productivity",
+    "title": "Reading and Note Taking System",
+    "titleKo": "독서·노트 테이킹 시스템",
+    "prompt": "Design a system for reading and retaining insights from [DESCRIBE READING MATERIAL]. Cover selection criteria, active reading techniques, note taking format, review schedule, and how to apply insights.",
+    "promptKo": "[독서 자료 설명]에서 통찰력을 읽고 유지하기 위한 시스템을 설계합니다. 선택 기준, 적극적인 읽기 기술, 메모 작성 형식, 검토 일정 및 통찰력 적용 방법을 다룹니다."
+  },
+  {
+    "id": 258,
+    "displayId": 9,
+    "category": "productivity",
+    "title": "Project Management Template",
+    "titleKo": "프로젝트 관리 템플릿",
+    "prompt": "Create a project management template for [DESCRIBE TYPE OF PROJECT]. Include project brief, stakeholder map, milestone plan, risk register, communication plan, and retrospective framework.",
+    "promptKo": "[프로젝트 유형 설명]에 대한 프로젝트 관리 템플릿을 만듭니다. 프로젝트 개요, 이해관계자 지도, 마일스톤 계획, 위험 등록부, 의사소통 계획 및 회고적 프레임워크를 포함합니다."
+  },
+  {
+    "id": 276,
+    "displayId": 10,
+    "category": "productivity",
+    "title": "Performance Management System",
+    "titleKo": "성과 관리 시스템",
+    "prompt": "Design a performance management system for [DESCRIBE TEAM]. Cover goal setting, regular check-ins, performance reviews, recognition, and how to handle underperformance.",
+    "promptKo": "[팀 설명]의 성과 관리 시스템을 설계합니다. 목표 설정, 정기 점검, 성과 검토, 인정 및 성과 저조 처리 방법을 다룹니다."
+  },
+  {
+    "id": 260,
+    "displayId": 11,
+    "category": "productivity",
+    "title": "Focus and Deep Work System",
+    "titleKo": "집중·딥워크 시스템",
+    "prompt": "Design a system for protecting and maximizing deep work time for [DESCRIBE ROLE]. Cover environment design, scheduling, managing interruptions, and measuring output quality.",
+    "promptKo": "[DESCRIBE ROLE]의 심층 작업 시간을 보호하고 극대화하기 위한 시스템을 설계합니다. 환경 설계, 일정 관리, 중단 관리 및 출력 품질 측정을 다룹니다."
+  },
+  {
+    "id": 293,
+    "displayId": 12,
+    "category": "productivity",
+    "title": "Procurement System",
+    "titleKo": "조달(Procurement) 시스템",
+    "prompt": "Design a procurement system for [DESCRIBE ORGANIZATION]. Cover how needs are identified, approved, sourced, contracted, and how supplier performance is managed.",
+    "promptKo": "[조직 설명]의 조달 시스템을 설계합니다. 요구 사항을 식별, 승인, 조달, 계약하는 방법과 공급업체 성과를 관리하는 방법을 다룹니다."
+  },
+  {
+    "id": 264,
+    "displayId": 13,
+    "category": "productivity",
+    "title": "Learning System",
+    "titleKo": "학습 시스템",
+    "prompt": "Design a system for learning [DESCRIBE SUBJECT OR SKILL] efficiently. Cover how to find the best resources, how to process and retain information, how to practice, and how to measure progress.",
+    "promptKo": "[주제 또는 기술 설명]을 효율적으로 학습하기 위한 시스템을 설계합니다. 최고의 자원을 찾는 방법, 정보를 처리하고 유지하는 방법, 실천하는 방법, 진행 상황을 측정하는 방법을 다룹니다."
+  },
+  {
+    "id": 274,
+    "displayId": 14,
+    "category": "productivity",
+    "title": "Customer Success Playbook",
+    "titleKo": "커스터머 석세스 플레이북",
+    "prompt": "Design a customer success playbook for [DESCRIBE PRODUCT]. Cover onboarding, health monitoring, QBRs, expansion plays, renewal process, and churn prevention.",
+    "promptKo": "[제품 설명]에 대한 고객 성공 플레이북을 디자인합니다. 온보딩, 상태 모니터링, QBR, 확장 플레이, 갱신 프로세스 및 이탈 방지를 다룹니다."
+  },
+  {
+    "id": 255,
+    "displayId": 15,
+    "category": "productivity",
+    "title": "Decision Making Framework",
+    "titleKo": "의사결정 프레임워크",
+    "prompt": "Create a decision making framework for [DESCRIBE TYPE OF DECISIONS]. Define what information is needed, who should be involved, how options should be evaluated, and how decisions should be documented.",
+    "promptKo": "[의사결정 유형 설명]에 대한 의사결정 프레임워크를 만듭니다. 필요한 정보, 참여 대상, 옵션 평가 방법, 결정을 문서화하는 방법을 정의합니다."
+  },
+  {
+    "id": 282,
+    "displayId": 16,
+    "category": "productivity",
+    "title": "Conflict Resolution Framework",
+    "titleKo": "갈등 해결 프레임워크",
+    "prompt": "Design a conflict resolution framework for [DESCRIBE CONTEXT]. Cover how conflicts are surfaced, the resolution process, who is involved, and how outcomes are documented.",
+    "promptKo": "[컨텍스트 설명]에 대한 충돌 해결 프레임워크를 설계합니다. 갈등이 어떻게 표면화되는지, 해결 과정, 관련자 및 결과가 문서화되는 방법을 다룹니다."
+  },
+  {
+    "id": 292,
+    "displayId": 17,
+    "category": "productivity",
+    "title": "Partnership Management System",
+    "titleKo": "파트너십 관리 시스템",
+    "prompt": "Design a system for managing strategic partnerships for [DESCRIBE COMPANY]. Cover partner onboarding, communication cadence, joint planning, performance tracking, and renewal process.",
+    "promptKo": "[회사 설명]의 전략적 파트너십 관리 시스템을 설계합니다. 파트너 온보딩, 커뮤니케이션 흐름, 공동 계획, 성과 추적 및 갱신 프로세스를 다룹니다."
+  },
+  {
+    "id": 273,
+    "displayId": 18,
+    "category": "productivity",
+    "title": "Sales Process System",
+    "titleKo": "세일즈 프로세스 시스템",
+    "prompt": "Design a sales process for [DESCRIBE PRODUCT AND MARKET]. Cover prospecting, qualification, discovery, proposal, negotiation, closing, and handoff to customer success.",
+    "promptKo": "[제품 및 시장 설명]에 대한 판매 프로세스를 설계합니다. 잠재 고객 발굴, 검증, 발견, 제안, 협상, 마감 및 고객 성공을 위한 인계를 다룹니다."
+  },
+  {
+    "id": 262,
+    "displayId": 19,
+    "category": "productivity",
+    "title": "Content Creation System",
+    "titleKo": "콘텐츠 제작 시스템",
+    "prompt": "Design a content creation system for producing [DESCRIBE CONTENT TYPE] consistently. Cover ideation, drafting, editing, production, distribution, and performance review.",
+    "promptKo": "[DESCRIBE CONTENT TYPE]을 지속적으로 제작하기 위한 콘텐츠 제작 시스템을 설계합니다. 표지 아이디어 구상, 초안 작성, 편집, 제작, 배포, 성과 검토 등을 담당합니다."
+  },
+  {
+    "id": 285,
+    "displayId": 20,
+    "category": "productivity",
+    "title": "Crisis Management System",
+    "titleKo": "위기 관리 시스템",
+    "prompt": "Design a crisis management system for [DESCRIBE ORGANIZATION]. Cover how crises are detected, classified, escalated, managed, communicated, and reviewed after resolution.",
+    "promptKo": "[조직 설명]의 위기 관리 시스템을 설계합니다. 해결 후 위기를 감지, 분류, 에스컬레이션, 관리, 전달 및 검토하는 방법을 다룹니다."
+  },
+  {
+    "id": 261,
+    "displayId": 21,
+    "category": "productivity",
+    "title": "Delegation Framework",
+    "titleKo": "위임 프레임워크",
+    "prompt": "Design a delegation framework for [DESCRIBE MANAGER AND TEAM]. Cover what to delegate, how to brief tasks, what oversight is appropriate, and how to develop team members through delegation.",
+    "promptKo": "[관리자 및 팀 설명]에 대한 위임 프레임워크를 설계합니다. 무엇을 위임해야 하는지, 업무를 간략하게 설명하는 방법, 어떤 감독이 적절한지, 위임을 통해 팀 구성원을 발전시키는 방법을 다룹니다."
+  },
+  {
+    "id": 287,
+    "displayId": 22,
+    "category": "productivity",
+    "title": "OKR System",
+    "titleKo": "OKR 시스템",
+    "prompt": "Design an OKR implementation for [DESCRIBE ORGANIZATION OR TEAM]. Cover how OKRs are set, cascaded, tracked, reviewed, and how they connect to compensation and recognition.",
+    "promptKo": "[조직 또는 팀 설명]에 대한 OKR 구현을 설계합니다. OKR이 설정, 계단식 적용, 추적, 검토되는 방법과 보상 및 인정에 연결되는 방법을 다룹니다."
+  },
+  {
+    "id": 270,
+    "displayId": 23,
+    "category": "productivity",
+    "title": "Idea Management System",
+    "titleKo": "아이디어 관리 시스템",
+    "prompt": "Design a system for capturing, developing, and acting on ideas for [DESCRIBE PERSON AND CONTEXT]. Cover how ideas are captured, evaluated, developed, prioritized, and either implemented or archived.",
+    "promptKo": "[사람 및 상황 설명]에 대한 아이디어를 포착, 개발 및 실행하기 위한 시스템을 설계합니다. 아이디어를 포착하고, 평가하고, 개발하고, 우선순위를 지정하고, 구현하거나 보관하는 방법을 다룹니다."
+  },
+  {
+    "id": 259,
+    "displayId": 24,
+    "category": "productivity",
+    "title": "Habit Building System",
+    "titleKo": "습관 만들기 시스템",
+    "prompt": "Design a habit building system for adding [DESCRIBE HABITS] to a [DESCRIBE PERSON]'s routine. Cover habit design, tracking, accountability, recovery from missed days, and how to stack habits effectively.",
+    "promptKo": "[사람 설명]의 루틴에 [습관 설명]을 추가하기 위한 습관 구축 시스템을 설계합니다. 습관 설계, 추적, 책임, 놓친 일로부터의 회복 및 습관을 효과적으로 쌓는 방법을 다룹니다."
+  },
+  {
+    "id": 294,
+    "displayId": 25,
+    "category": "productivity",
+    "title": "Risk Management System",
+    "titleKo": "리스크 관리 시스템",
+    "prompt": "Design a risk management system for [DESCRIBE ORGANIZATION OR PROJECT]. Cover how risks are identified, assessed, prioritized, mitigated, monitored, and reported.",
+    "promptKo": "[조직 또는 프로젝트 설명]에 대한 위험 관리 시스템을 설계합니다. 위험을 식별, 평가, 우선순위 지정, 완화, 모니터링 및 보고하는 방법을 다룹니다."
+  },
+  {
+    "id": 289,
+    "displayId": 26,
+    "category": "productivity",
+    "title": "Documentation System",
+    "titleKo": "문서화 시스템",
+    "prompt": "Design a documentation system for [DESCRIBE TEAM OR PRODUCT]. Cover what needs to be documented, who is responsible, where it lives, how it stays current, and how people find what they need.",
+    "promptKo": "[팀 또는 제품 설명]에 대한 문서화 시스템을 설계합니다. 문서화해야 할 내용, 책임자, 위치, 최신 상태 유지 방법, 필요한 정보를 찾는 방법 등을 다룹니다."
+  },
+  {
+    "id": 252,
+    "displayId": 27,
+    "category": "productivity",
+    "title": "Weekly Review Template",
+    "titleKo": "위클리 리뷰 템플릿",
+    "prompt": "Create a weekly review template for [DESCRIBE PERSON AND GOALS]. Cover what got done, what did not, what was learned, priorities for next week, and any systems that need adjustment.",
+    "promptKo": "[개인 및 목표 설명]에 대한 주간 검토 템플릿을 만듭니다. 수행한 작업, 수행하지 않은 작업, 배운 내용, 다음 주의 우선 순위 및 조정이 필요한 시스템을 다룹니다."
+  },
+  {
+    "id": 271,
+    "displayId": 28,
+    "category": "productivity",
+    "title": "Client Management System",
+    "titleKo": "클라이언트 관리 시스템",
+    "prompt": "Design a client management system for [DESCRIBE FREELANCER OR AGENCY]. Cover onboarding, communication standards, project tracking, invoicing, and relationship maintenance.",
+    "promptKo": "[프리랜서 또는 대행사 설명]에 대한 클라이언트 관리 시스템을 설계합니다. 온보딩, 커뮤니케이션 표준, 프로젝트 추적, 송장 발행 및 관계 유지 관리를 다룹니다."
+  },
+  {
+    "id": 263,
+    "displayId": 29,
+    "category": "productivity",
+    "title": "Personal Finance System",
+    "titleKo": "개인 재무 관리 시스템",
+    "prompt": "Design a personal finance tracking and management system for [DESCRIBE FINANCIAL SITUATION AND GOALS]. Cover income tracking, expense categories, savings automation, investment review, and monthly reconciliation.",
+    "promptKo": "[재정 상황 및 목표 설명]을 위한 개인 재정 추적 및 관리 시스템을 설계합니다. 소득 추적, 비용 범주, 저축 자동화, 투자 검토 및 월간 조정을 다룹니다."
+  },
+  {
+    "id": 267,
+    "displayId": 30,
+    "category": "productivity",
+    "title": "Morning Routine Design",
+    "titleKo": "모닝 루틴 설계",
+    "prompt": "Design an optimal morning routine for [DESCRIBE PERSON, GOALS, AND CONSTRAINTS]. Cover wake time, physical activity, mindset practices, planning, and how to make it sustainable long term.",
+    "promptKo": "[사람, 목표 및 제약 조건 설명]에 대한 최적의 아침 루틴을 설계합니다. 기상 시간, 신체 활동, 사고 방식 연습, 계획 및 이를 장기적으로 지속 가능하게 만드는 방법을 다룹니다."
+  },
+  {
+    "id": 269,
+    "displayId": 31,
+    "category": "productivity",
+    "title": "Feedback System",
+    "titleKo": "피드백 시스템",
+    "prompt": "Design a system for giving and receiving feedback in [DESCRIBE CONTEXT]. Cover how feedback is solicited, delivered, received, processed, and acted upon.",
+    "promptKo": "[DESCRIBE CONTEXT]에서 피드백을 주고받는 시스템을 설계합니다. 피드백을 요청하고, 전달하고, 수신하고, 처리하고, 조치를 취하는 방법을 다룹니다."
+  },
+  {
+    "id": 298,
+    "displayId": 32,
+    "category": "productivity",
+    "title": "Strategic Planning System",
+    "titleKo": "전략 기획 시스템",
+    "prompt": "Design a strategic planning system for [DESCRIBE ORGANIZATION]. Cover the annual planning cycle, how market intelligence informs strategy, how plans are communicated, and how execution is tracked.",
+    "promptKo": "[조직 설명]에 대한 전략 계획 시스템을 설계합니다. 연간 계획 주기, 시장 정보를 통해 전략을 알리는 방법, 계획을 전달하는 방법, 실행을 추적하는 방법을 다룹니다."
+  },
+  {
+    "id": 254,
+    "displayId": 33,
+    "category": "productivity",
+    "title": "Meeting Effectiveness System",
+    "titleKo": "효과적인 미팅 시스템",
+    "prompt": "Design a system for making meetings more effective for [DESCRIBE TEAM OR ORGANIZATION]. Cover when meetings should happen, how they are structured, how decisions are documented, and how follow-up is managed.",
+    "promptKo": "[팀 또는 조직 설명]의 회의를 더욱 효과적으로 만들기 위한 시스템을 설계합니다. 회의 개최 시기, 회의 구성 방법, 결정 문서화 방법, 후속 조치 관리 방법을 다룹니다."
+  },
+  {
+    "id": 265,
+    "displayId": 34,
+    "category": "productivity",
+    "title": "Network Building System",
+    "titleKo": "네트워크 구축 시스템",
+    "prompt": "Design a system for building and maintaining a professional network for [DESCRIBE PERSON AND GOALS]. Cover how to meet new people, how to stay in touch, how to provide value, and how to track relationships.",
+    "promptKo": "[개인 및 목표 설명]을 위한 전문 네트워크를 구축하고 유지하기 위한 시스템을 설계합니다. 새로운 사람들을 만나는 방법, 연락을 유지하는 방법, 가치를 제공하는 방법, 관계를 추적하는 방법을 다룹니다."
+  },
+  {
+    "id": 272,
+    "displayId": 35,
+    "category": "productivity",
+    "title": "Hiring System",
+    "titleKo": "채용 시스템",
+    "prompt": "Design a hiring system for [DESCRIBE ROLE AND COMPANY]. Cover job scoping, sourcing, screening, interviews, assessment, offers, and onboarding. Minimize bias and time to hire.",
+    "promptKo": "[역할 및 회사 설명]에 대한 채용 시스템을 설계합니다. 직무 범위 지정, 소싱, 심사, 인터뷰, 평가, 제안 및 온보딩을 다룹니다. 편견과 채용 시간을 최소화하세요."
+  },
+  {
+    "id": 297,
+    "displayId": 36,
+    "category": "productivity",
+    "title": "Brand Management System",
+    "titleKo": "브랜드 관리 시스템",
+    "prompt": "Design a brand management system for [DESCRIBE BRAND]. Cover brand guidelines, approval processes, asset management, consistency monitoring, and how the brand evolves over time.",
+    "promptKo": "[브랜드 설명]의 브랜드 관리 시스템을 디자인합니다. 브랜드 지침, 승인 프로세스, 자산 관리, 일관성 모니터링 및 시간이 지남에 따라 브랜드가 어떻게 발전하는지 다룹니다."
+  },
+  {
+    "id": 288,
+    "displayId": 37,
+    "category": "productivity",
+    "title": "Retrospective System",
+    "titleKo": "회고(Retrospective) 시스템",
+    "prompt": "Design a retrospective system for [DESCRIBE TEAM]. Cover cadence, format, facilitation, how insights are captured, how action items are tracked, and how the team measures whether retrospectives are working.",
+    "promptKo": "[팀 설명]을 위한 회고적 시스템을 설계합니다. 표지 흐름, 형식, 촉진, 통찰력 확보 방법, 작업 항목 추적 방법, 회고가 작동하는지 팀이 측정하는 방법."
+  },
+  {
+    "id": 279,
+    "displayId": 38,
+    "category": "productivity",
+    "title": "Research and Synthesis System",
+    "titleKo": "리서치·종합 시스템",
+    "prompt": "Design a system for conducting research on [DESCRIBE TOPIC TYPE] and synthesizing it into actionable insights. Cover source selection, reading strategy, note-taking, synthesis, and output format.",
+    "promptKo": "[주제 유형 설명]에 대한 연구를 수행하고 이를 실행 가능한 통찰력으로 종합하기 위한 시스템을 설계합니다. 소스 선택, 읽기 전략, 메모 작성, 종합 및 출력 형식을 다룹니다."
+  },
+  {
+    "id": 281,
+    "displayId": 39,
+    "category": "productivity",
+    "title": "Budget Management System",
+    "titleKo": "예산 관리 시스템",
+    "prompt": "Design a budget management system for [DESCRIBE CONTEXT]. Cover how budgets are set, tracked, reviewed, and how variances are identified and addressed.",
+    "promptKo": "[DESCRIBE CONTEXT]에 대한 예산 관리 시스템을 설계합니다. 예산을 설정, 추적, 검토하는 방법과 차이를 식별하고 해결하는 방법을 다룹니다."
+  },
+  {
+    "id": 283,
+    "displayId": 40,
+    "category": "productivity",
+    "title": "Innovation System",
+    "titleKo": "혁신 시스템",
+    "prompt": "Design a system for generating and developing innovative ideas in [DESCRIBE ORGANIZATION]. Cover how ideas are submitted, evaluated, developed, resourced, and implemented.",
+    "promptKo": "[조직 설명]에서 혁신적인 아이디어를 생성하고 개발하기 위한 시스템을 설계합니다. 아이디어 제출, 평가, 개발, 리소스 제공 및 구현 방법을 다룹니다."
+  },
+  {
+    "id": 296,
+    "displayId": 41,
+    "category": "productivity",
+    "title": "Data Governance System",
+    "titleKo": "데이터 거버넌스 시스템",
+    "prompt": "Design a data governance system for [DESCRIBE ORGANIZATION]. Cover data ownership, quality standards, access controls, compliance requirements, and how data issues are reported and resolved.",
+    "promptKo": "[조직 설명]에 대한 데이터 거버넌스 시스템을 설계합니다. 데이터 소유권, 품질 표준, 액세스 제어, 규정 준수 요구 사항, 데이터 문제 보고 및 해결 방법을 다룹니다."
+  },
+  {
+    "id": 277,
+    "displayId": 42,
+    "category": "productivity",
+    "title": "Personal Productivity Audit",
+    "titleKo": "개인 생산성 진단",
+    "prompt": "Conduct a personal productivity audit framework for [DESCRIBE ROLE]. Cover how to identify time wasters, measure output versus activity, find leverage points, and redesign the workday.",
+    "promptKo": "[역할 설명]에 대한 개인 생산성 감사 프레임워크를 수행합니다. 시간 낭비 요소를 식별하고, 성과 대비 활동을 측정하고, 레버리지 포인트를 찾고, 근무일을 재설계하는 방법을 다룹니다."
+  },
+  {
+    "id": 268,
+    "displayId": 43,
+    "category": "productivity",
+    "title": "Energy Management System",
+    "titleKo": "에너지 관리 시스템",
+    "prompt": "Design an energy management system for [DESCRIBE PERSON AND WORK]. Cover how to schedule tasks by energy level, recovery practices, nutrition and sleep optimization, and how to identify energy drains.",
+    "promptKo": "[사람 및 작업 설명]에 대한 에너지 관리 시스템을 설계합니다. 에너지 수준, 회복 방법, 영양 및 수면 최적화에 따라 작업을 예약하는 방법, 에너지 소모를 식별하는 방법을 다룹니다."
+  },
+  {
+    "id": 291,
+    "displayId": 44,
+    "category": "productivity",
+    "title": "Content Calendar System",
+    "titleKo": "콘텐츠 캘린더 시스템",
+    "prompt": "Design a content calendar system for [DESCRIBE BRAND]. Cover how topics are generated, assigned, produced, reviewed, scheduled, and how performance informs future planning.",
+    "promptKo": "[브랜드 설명]에 대한 콘텐츠 캘린더 시스템을 디자인합니다. 주제가 생성, 할당, 생성, 검토, 예약되는 방법과 성과가 향후 계획에 어떻게 영향을 미치는지 다룹니다."
+  },
+  {
+    "id": 253,
+    "displayId": 45,
+    "category": "productivity",
+    "title": "Goal Setting Framework",
+    "titleKo": "목표 설정 프레임워크",
+    "prompt": "Design a goal setting framework for [DESCRIBE CONTEXT]. Cover how goals are set, how they cascade to daily actions, how progress is tracked, and how to course correct when off track.",
+    "promptKo": "[컨텍스트 설명]에 대한 목표 설정 프레임워크를 설계합니다. 목표 설정 방법, 일일 활동에 적용하는 방법, 진행 상황 추적 방법, 궤도를 벗어났을 때 코스를 수정하는 방법을 다룹니다."
+  },
+  {
+    "id": 275,
+    "displayId": 46,
+    "category": "productivity",
+    "title": "Team Communication System",
+    "titleKo": "팀 커뮤니케이션 시스템",
+    "prompt": "Design a team communication system for [DESCRIBE TEAM]. Cover which tools are used for what, response time expectations, meeting cadences, and how decisions and context are documented.",
+    "promptKo": "[팀 설명]을 위한 팀 커뮤니케이션 시스템을 설계합니다. 어떤 도구가 무엇에 사용되는지, 응답 시간 예상, 회의 흐름, 의사 결정 및 맥락이 문서화되는 방법을 다룹니다."
+  },
+  {
+    "id": 290,
+    "displayId": 47,
+    "category": "productivity",
+    "title": "Offboarding System",
+    "titleKo": "오프보딩 시스템",
+    "prompt": "Design an employee offboarding system for [DESCRIBE ORGANIZATION]. Cover knowledge transfer, access revocation, exit interviews, equipment return, and maintaining the relationship for future reference.",
+    "promptKo": "[조직 설명]에 대한 직원 오프보딩 시스템을 설계합니다. 지식 이전, 액세스 권한 취소, 종료 인터뷰, 장비 반환 및 향후 참조를 위한 관계 유지를 다룹니다."
+  },
+  {
+    "id": 251,
+    "displayId": 48,
+    "category": "productivity",
+    "title": "Daily Planning System",
+    "titleKo": "데일리 플래닝 시스템",
+    "prompt": "Design a daily planning system for [DESCRIBE ROLE AND GOALS]. Include morning routine, time blocking, priority framework, end of day review, and how to handle interruptions and unexpected tasks.",
+    "promptKo": "[역할 및 목표 설명]에 대한 일일 계획 시스템을 설계합니다. 아침 루틴, 시간 차단, 우선순위 프레임워크, 하루 종료 검토, 방해 및 예상치 못한 작업 처리 방법을 포함합니다."
+  },
+  {
+    "id": 256,
+    "displayId": 49,
+    "category": "productivity",
+    "title": "Email Management System",
+    "titleKo": "이메일 관리 시스템",
+    "prompt": "Design a system for managing email for [DESCRIBE ROLE]. Cover inbox organization, response time standards, templates for common responses, and how to achieve and maintain inbox zero.",
+    "promptKo": "[DESCRIBE ROLE]의 이메일 관리 시스템을 설계합니다. 받은 편지함 구성, 응답 시간 표준, 일반적인 응답을 위한 템플릿, 받은 편지함 제로 달성 및 유지 방법을 다룹니다."
+  },
+  {
+    "id": 278,
+    "displayId": 50,
+    "category": "productivity",
+    "title": "Quarterly Planning System",
+    "titleKo": "분기 플래닝 시스템",
+    "prompt": "Design a quarterly planning system for [DESCRIBE PERSON OR TEAM]. Cover how to review the previous quarter, set priorities for the next, allocate resources, and create accountability.",
+    "promptKo": "[개인 또는 팀 설명]에 대한 분기별 계획 시스템을 설계합니다. 이전 분기를 검토하고, 다음 분기의 우선순위를 설정하고, 자원을 할당하고, 책임을 창출하는 방법을 다룹니다."
+  },
+  {
+    "id": 22,
+    "displayId": 51,
+    "category": "coding",
+    "title": "Build a Rate Limiter",
+    "titleKo": "레이트 리미터 구현",
+    "prompt": "Implement a rate limiter in [LANGUAGE] that allows [X] requests per [TIME PERIOD] per user. Handle edge cases and include a way to whitelist certain users.",
+    "promptKo": "사용자당 [TIME PERIOD]당 [X]개의 요청을 허용하는 [LANGUAGE] 속도 제한기를 구현합니다. 극단적인 경우를 처리하고 특정 사용자를 화이트리스트에 추가하는 방법을 포함합니다."
+  },
+  {
+    "id": 19,
+    "displayId": 52,
+    "category": "coding",
+    "title": "Build a Cron Job",
+    "titleKo": "크론 잡 작성",
+    "prompt": "Write a cron job in [LANGUAGE] that [DESCRIBE TASK]. It should run [FREQUENCY], handle failures, and send an alert if something goes wrong.",
+    "promptKo": "[DESCRIBE TASK]라는 크론 작업을 [LANGUAGE]로 작성합니다. [FREQUENCY]를 실행하고, 오류를 처리하고, 문제가 발생하면 경고를 보내야 합니다."
+  },
+  {
+    "id": 38,
+    "displayId": 53,
+    "category": "coding",
+    "title": "Build a Notification System",
+    "titleKo": "알림 시스템 구축",
+    "prompt": "Design and implement a notification system that sends [EMAIL/SMS/PUSH] notifications when [DESCRIBE TRIGGERS]. Include templates, queuing, and delivery tracking.",
+    "promptKo": "[트리거 설명] 시 [이메일/SMS/PUSH] 알림을 보내는 알림 시스템을 설계하고 구현합니다. 템플릿, 대기열 및 배송 추적을 포함합니다."
+  },
+  {
+    "id": 20,
+    "displayId": 54,
+    "category": "coding",
+    "title": "Translate Between Languages",
+    "titleKo": "언어 간 코드 변환",
+    "prompt": "Translate this code from [LANGUAGE A] to [LANGUAGE B]. Maintain all functionality and use idiomatic patterns for the target language: [PASTE CODE]",
+    "promptKo": "이 코드를 [LANGUAGE A]에서 [LANGUAGE B]로 번역하세요. 모든 기능을 유지하고 대상 언어에 대한 관용적 패턴을 사용하십시오. [PASTE CODE]"
+  },
+  {
+    "id": 4,
+    "displayId": 55,
+    "category": "coding",
+    "title": "Write Unit Tests",
+    "titleKo": "유닛 테스트 작성",
+    "prompt": "Write comprehensive unit tests for this function. Cover the happy path, edge cases, null inputs, and error conditions: [PASTE FUNCTION]",
+    "promptKo": "이 함수에 대한 포괄적인 단위 테스트를 작성합니다. 행복한 경로, 엣지 케이스, null 입력 및 오류 조건을 처리합니다. [PASTE FUNCTION]"
+  },
+  {
+    "id": 10,
+    "displayId": 56,
+    "category": "coding",
+    "title": "Write Documentation",
+    "titleKo": "문서화 작성",
+    "prompt": "Write clear developer documentation for this function including purpose, parameters, return values, example usage, and edge cases: [PASTE FUNCTION]",
+    "promptKo": "목적, 매개변수, 반환 값, 사용법 예시, 극단적인 경우를 포함하여 이 함수에 대한 명확한 개발자 문서를 작성하세요. [PASTE FUNCTION]"
+  },
+  {
+    "id": 8,
+    "displayId": 57,
+    "category": "coding",
+    "title": "Generate API Endpoint",
+    "titleKo": "API 엔드포인트 생성",
+    "prompt": "Write a REST API endpoint in [LANGUAGE/FRAMEWORK] that [DESCRIBE WHAT IT SHOULD DO]. Include input validation, error handling, and proper HTTP status codes.",
+    "promptKo": "[해야 할 일을 설명]하는 [LANGUAGE/FRAMEWORK]로 REST API 엔드포인트를 작성합니다. 입력 유효성 검사, 오류 처리 및 적절한 HTTP 상태 코드를 포함합니다."
+  },
+  {
+    "id": 16,
+    "displayId": 58,
+    "category": "coding",
+    "title": "Build a Web Scraper",
+    "titleKo": "웹 스크래퍼 만들기",
+    "prompt": "Write a Python web scraper that extracts [DESCRIBE DATA] from [URL/TYPE OF SITE]. Handle pagination, rate limiting, and failed requests gracefully.",
+    "promptKo": "[URL/TYPE OF SITE]에서 [DESCRIBE DATA]를 추출하는 Python 웹 스크레이퍼를 작성하세요. 페이지 매김, 속도 제한 및 실패한 요청을 정상적으로 처리합니다."
+  },
+  {
+    "id": 11,
+    "displayId": 59,
+    "category": "coding",
+    "title": "Security Audit",
+    "titleKo": "보안 감사",
+    "prompt": "Audit this code for security vulnerabilities. Check for SQL injection, XSS, authentication issues, exposed secrets, and any other risks: [PASTE CODE]",
+    "promptKo": "보안 취약점이 있는지 이 코드를 감사하세요. SQL 삽입, XSS, 인증 문제, 노출된 비밀 및 기타 위험을 확인하세요. [PASTE CODE]"
+  },
+  {
+    "id": 14,
+    "displayId": 60,
+    "category": "coding",
+    "title": "Design a Data Schema",
+    "titleKo": "데이터 스키마 설계",
+    "prompt": "Design a database schema for [DESCRIBE APPLICATION]. Include all tables, columns, data types, relationships, indexes, and explain your design decisions.",
+    "promptKo": "[DESCRIBE APPLICATION]에 대한 데이터베이스 스키마를 설계합니다. 모든 테이블, 열, 데이터 유형, 관계, 인덱스를 포함하고 디자인 결정을 설명하십시오."
+  },
+  {
+    "id": 5,
+    "displayId": 61,
+    "category": "coding",
+    "title": "Optimize Performance",
+    "titleKo": "성능 최적화",
+    "prompt": "Analyze this code for performance bottlenecks. Identify the slowest parts and rewrite them to be more efficient: [PASTE CODE]",
+    "promptKo": "성능 병목 현상이 있는지 이 코드를 분석하세요. 가장 느린 부분을 식별하고 보다 효율적으로 다시 작성하십시오. [PASTE CODE]"
+  },
+  {
+    "id": 41,
+    "displayId": 62,
+    "category": "coding",
+    "title": "Implement File Upload",
+    "titleKo": "파일 업로드 구현",
+    "prompt": "Write a file upload handler in [FRAMEWORK] that accepts [FILE TYPES], validates size and type, stores files in [STORAGE], and returns a URL.",
+    "promptKo": "[FILE TYPES]를 허용하고, 크기와 유형을 검증하고, [STORAGE]에 파일을 저장하고, URL을 반환하는 [FRAMEWORK]에 파일 업로드 핸들러를 작성합니다."
+  },
+  {
+    "id": 18,
+    "displayId": 63,
+    "category": "coding",
+    "title": "Add Error Handling",
+    "titleKo": "에러 핸들링 추가",
+    "prompt": "Add comprehensive error handling to this code. Catch all possible failures, log them appropriately, and fail gracefully: [PASTE CODE]",
+    "promptKo": "이 코드에 포괄적인 오류 처리를 추가합니다. 가능한 모든 오류를 포착하여 적절하게 기록하고 정상적으로 실패합니다. [코드 붙여넣기]"
+  },
+  {
+    "id": 3,
+    "displayId": 64,
+    "category": "coding",
+    "title": "Refactor for Readability",
+    "titleKo": "가독성 높이는 리팩터링",
+    "prompt": "Refactor this code to be cleaner and more readable without changing its functionality. Add comments explaining complex logic: [PASTE CODE]",
+    "promptKo": "기능을 변경하지 않고도 이 코드를 더 깔끔하고 읽기 쉽게 리팩터링할 수 있습니다. 복잡한 논리를 설명하는 주석 추가: [PASTE CODE]"
+  },
+  {
+    "id": 2,
+    "displayId": 65,
+    "category": "coding",
+    "title": "Debug This Error",
+    "titleKo": "에러 디버깅",
+    "prompt": "I am getting this error: [ERROR MESSAGE]. Here is the relevant code: [PASTE CODE]. Walk me through every possible cause and fix each one.",
+    "promptKo": "다음 오류가 발생합니다: [오류 메시지]. 관련 코드는 다음과 같습니다: [PASTE CODE]. 가능한 모든 원인을 살펴보고 각각을 해결해 보세요."
+  },
+  {
+    "id": 32,
+    "displayId": 66,
+    "category": "coding",
+    "title": "Write a State Machine",
+    "titleKo": "상태 머신 작성",
+    "prompt": "Implement a state machine for [DESCRIBE SYSTEM WITH STATES]. Define all states, transitions, guards, and actions.",
+    "promptKo": "[상태가 포함된 시스템 설명]에 대한 상태 기계를 구현합니다. 모든 상태, 전환, 가드 및 작업을 정의합니다."
+  },
+  {
+    "id": 29,
+    "displayId": 67,
+    "category": "coding",
+    "title": "Write a CI/CD Pipeline",
+    "titleKo": "CI/CD 파이프라인 작성",
+    "prompt": "Write a GitHub Actions workflow that runs tests, checks code quality, builds the application, and deploys to [PLATFORM] on every push to main.",
+    "promptKo": "테스트를 실행하고, 코드 품질을 확인하고, 애플리케이션을 빌드하고, 메인에 푸시할 때마다 [PLATFORM]에 배포하는 GitHub Actions 워크플로를 작성하세요."
+  },
+  {
+    "id": 48,
+    "displayId": 68,
+    "category": "coding",
+    "title": "Design a Plugin System",
+    "titleKo": "플러그인 시스템 설계",
+    "prompt": "Design a plugin architecture for [APPLICATION] that allows third party developers to extend functionality without modifying core code. Define the plugin interface and lifecycle hooks.",
+    "promptKo": "타사 개발자가 핵심 코드를 수정하지 않고도 기능을 확장할 수 있도록 하는 [APPLICATION]용 플러그인 아키텍처를 설계합니다. 플러그인 인터페이스와 수명주기 후크를 정의합니다."
+  },
+  {
+    "id": 6,
+    "displayId": 69,
+    "category": "coding",
+    "title": "Convert to TypeScript",
+    "titleKo": "타입스크립트로 변환",
+    "prompt": "Convert this JavaScript code to TypeScript. Add proper type definitions for all variables, parameters, and return values: [PASTE CODE]",
+    "promptKo": "이 JavaScript 코드를 TypeScript로 변환하세요. 모든 변수, 매개변수 및 반환 값에 대한 적절한 유형 정의를 추가하세요. [코드 붙여넣기]"
+  },
+  {
+    "id": 13,
+    "displayId": 70,
+    "category": "coding",
+    "title": "Convert Function to Async",
+    "titleKo": "비동기 함수로 변환",
+    "prompt": "Convert this synchronous function to async/await. Handle all promise rejections properly and maintain the same functionality: [PASTE FUNCTION]",
+    "promptKo": "이 동기 함수를 async/await로 변환하세요. 모든 Promise 거부를 적절하게 처리하고 동일한 기능을 유지합니다: [PASTE FUNCTION]"
+  },
+  {
+    "id": 28,
+    "displayId": 71,
+    "category": "coding",
+    "title": "Implement Pagination",
+    "titleKo": "페이지네이션 구현",
+    "prompt": "Add cursor-based pagination to this API endpoint. Include a page size limit, handle edge cases, and return proper metadata: [PASTE ENDPOINT CODE]",
+    "promptKo": "이 API 엔드포인트에 커서 기반 페이지 매김을 추가합니다. 페이지 크기 제한을 포함하고, 극단적인 경우를 처리하고, 적절한 메타데이터를 반환합니다. [PASTE ENDPOINT CODE]"
+  },
+  {
+    "id": 42,
+    "displayId": 72,
+    "category": "coding",
+    "title": "Build a Configuration System",
+    "titleKo": "설정 관리 시스템",
+    "prompt": "Design a configuration management system for [APPLICATION TYPE] that supports multiple environments, secret management, and runtime updates without restarts.",
+    "promptKo": "재시작 없이 여러 환경, 비밀 관리, 런타임 업데이트를 지원하는 [APPLICATION TYPE]에 대한 구성 관리 시스템을 설계합니다."
+  },
+  {
+    "id": 12,
+    "displayId": 73,
+    "category": "coding",
+    "title": "Build a CLI Tool",
+    "titleKo": "CLI 도구 만들기",
+    "prompt": "Write a command line tool in Python that [DESCRIBE FUNCTIONALITY]. Include argument parsing, error handling, help text, and a usage example.",
+    "promptKo": "[기능 설명] Python으로 명령줄 도구를 작성합니다. 인수 구문 분석, 오류 처리, 도움말 텍스트 및 사용 예를 포함합니다."
+  },
+  {
+    "id": 39,
+    "displayId": 74,
+    "category": "coding",
+    "title": "Write a Parser",
+    "titleKo": "파서 작성",
+    "prompt": "Write a parser in [LANGUAGE] that reads [DESCRIBE FORMAT] and outputs [DESCRIBE OUTPUT]. Handle malformed input gracefully.",
+    "promptKo": "[DESCRIBE FORMAT]을 읽고 [DESCRIBE OUTPUT]을 출력하는 [LANGUAGE] 파서를 작성하세요. 잘못된 입력을 정상적으로 처리합니다."
+  },
+  {
+    "id": 43,
+    "displayId": 75,
+    "category": "coding",
+    "title": "Write a Health Check Endpoint",
+    "titleKo": "헬스 체크 엔드포인트",
+    "prompt": "Write a health check endpoint for [FRAMEWORK] that checks database connectivity, external service availability, and system resources. Return appropriate HTTP status codes.",
+    "promptKo": "데이터베이스 연결, 외부 서비스 가용성 및 시스템 리소스를 확인하는 [FRAMEWORK]에 대한 상태 확인 엔드포인트를 작성합니다. 적절한 HTTP 상태 코드를 반환합니다."
+  },
+  {
+    "id": 21,
+    "displayId": 76,
+    "category": "coding",
+    "title": "Write a Webhook Handler",
+    "titleKo": "웹훅 핸들러 작성",
+    "prompt": "Write a webhook handler in [FRAMEWORK] that receives events from [SERVICE]. Validate the signature, parse the payload, and handle [DESCRIBE EVENTS].",
+    "promptKo": "[SERVICE]에서 이벤트를 수신하는 [FRAMEWORK]에 웹훅 핸들러를 작성합니다. 서명을 검증하고, 페이로드를 구문 분석하고, [이벤트 설명]을 처리합니다."
+  },
+  {
+    "id": 23,
+    "displayId": 77,
+    "category": "coding",
+    "title": "Create a Middleware",
+    "titleKo": "미들웨어 작성",
+    "prompt": "Write middleware for [FRAMEWORK] that [DESCRIBE WHAT IT SHOULD DO]. Make it reusable, well documented, and handle all edge cases.",
+    "promptKo": "[무엇을 해야 하는지 설명]하는 [프레임워크]용 미들웨어를 작성합니다. 재사용이 가능하고 잘 문서화되어 있으며 모든 극단적인 경우를 처리합니다."
+  },
+  {
+    "id": 25,
+    "displayId": 78,
+    "category": "coding",
+    "title": "Write a Data Migration Script",
+    "titleKo": "데이터 마이그레이션 스크립트",
+    "prompt": "Write a database migration script that [DESCRIBE WHAT IT NEEDS TO DO]. Make it idempotent, reversible, and safe to run on a production database.",
+    "promptKo": "[해야 할 일을 설명]하는 데이터베이스 마이그레이션 스크립트를 작성합니다. 프로덕션 데이터베이스에서 멱등성이 있고 되돌릴 수 있으며 안전하게 실행되도록 만드세요."
+  },
+  {
+    "id": 24,
+    "displayId": 79,
+    "category": "coding",
+    "title": "Design a Caching Strategy",
+    "titleKo": "캐싱 전략 설계",
+    "prompt": "Design a caching strategy for [DESCRIBE SYSTEM]. What should be cached, for how long, when should it be invalidated, and what caching technology would you use?",
+    "promptKo": "[시스템 설명]에 대한 캐싱 전략을 설계합니다. 무엇을 캐시해야 하며, 얼마 동안, 언제 무효화해야 하며, 어떤 캐싱 기술을 사용해야 합니까?"
+  },
+  {
+    "id": 9,
+    "displayId": 80,
+    "category": "coding",
+    "title": "Database Query Optimization",
+    "titleKo": "DB 쿼리 최적화",
+    "prompt": "This SQL query is running slowly: [PASTE QUERY]. Analyze it, explain why it is slow, and rewrite it to be faster. Suggest any indexes that would help.",
+    "promptKo": "이 SQL 쿼리가 느리게 실행되고 있습니다: [PASTE QUERY]. 이를 분석하고 왜 느린지 설명하고 더 빠르게 다시 작성해 보세요. 도움이 될 만한 색인을 제안해 보세요."
+  },
+  {
+    "id": 17,
+    "displayId": 81,
+    "category": "coding",
+    "title": "Code Architecture Review",
+    "titleKo": "코드 아키텍처 리뷰",
+    "prompt": "Review this architecture and tell me what problems you foresee at scale. What would break first and how should I redesign it: [DESCRIBE OR PASTE ARCHITECTURE]",
+    "promptKo": "이 아키텍처를 검토하고 대규모로 어떤 문제가 예상되는지 알려주세요. 무엇이 먼저 깨지고 어떻게 다시 디자인해야 할까요?: [아키텍처 설명 또는 붙여넣기]"
+  },
+  {
+    "id": 36,
+    "displayId": 82,
+    "category": "coding",
+    "title": "Write Integration Tests",
+    "titleKo": "통합 테스트 작성",
+    "prompt": "Write integration tests for this API endpoint that test the full request/response cycle including the database: [PASTE ENDPOINT CODE]",
+    "promptKo": "데이터베이스를 포함하여 전체 요청/응답 주기를 테스트하는 이 API 엔드포인트에 대한 통합 테스트 작성: [PASTE ENDPOINT CODE]"
+  },
+  {
+    "id": 45,
+    "displayId": 83,
+    "category": "coding",
+    "title": "Create a Logging System",
+    "titleKo": "로깅 시스템 구축",
+    "prompt": "Implement structured logging for [APPLICATION TYPE] that includes request IDs, user context, performance timing, and integrates with [LOGGING SERVICE].",
+    "promptKo": "요청 ID, 사용자 컨텍스트, 성능 타이밍을 포함하고 [LOGGING SERVICE]와 통합되는 [APPLICATION TYPE]에 대한 구조화된 로깅을 구현합니다."
+  },
+  {
+    "id": 46,
+    "displayId": 84,
+    "category": "coding",
+    "title": "Build a Report Generator",
+    "titleKo": "리포트 생성기 만들기",
+    "prompt": "Write code that queries [DESCRIBE DATA SOURCE] and generates a [FORMAT] report showing [DESCRIBE METRICS]. Schedule it to run [FREQUENCY] and email it to [RECIPIENTS].",
+    "promptKo": "[DESCRIBE DATA SOURCE]를 ​​쿼리하고 [DESCRIBE METRICS]를 표시하는 [FORMAT] 보고서를 생성하는 코드를 작성하세요. [FREQUENCY]를 실행하도록 예약하고 [RECIPIENTS]에게 이메일을 보냅니다."
+  },
+  {
+    "id": 7,
+    "displayId": 85,
+    "category": "coding",
+    "title": "Explain This Code",
+    "titleKo": "이 코드 설명해줘",
+    "prompt": "Explain this code to me like I have never seen it before. What does it do, how does it work, and why is it written this way: [PASTE CODE]",
+    "promptKo": "이 코드를 이전에 본 적이 없는 것처럼 설명해주세요. 무엇을 하고, 어떻게 작동하며, 왜 이런 식으로 쓰여졌나요: [PASTE CODE]"
+  },
+  {
+    "id": 40,
+    "displayId": 86,
+    "category": "coding",
+    "title": "Design an Event System",
+    "titleKo": "이벤트 시스템 설계",
+    "prompt": "Design an event-driven architecture for [DESCRIBE APPLICATION]. What events should exist, how should they be structured, and how should services communicate through them?",
+    "promptKo": "[애플리케이션 설명]에 대한 이벤트 기반 아키텍처를 설계합니다. 어떤 이벤트가 존재해야 하고, 어떻게 구성되어야 하며, 서비스는 이를 통해 어떻게 통신해야 할까요?"
+  },
+  {
+    "id": 30,
+    "displayId": 87,
+    "category": "coding",
+    "title": "Design a Microservice",
+    "titleKo": "마이크로서비스 설계",
+    "prompt": "Design the architecture for a microservice that handles [DESCRIBE FUNCTIONALITY]. What endpoints does it need, how does it communicate with other services, and what does its data model look like?",
+    "promptKo": "[기능 설명]을 처리하는 마이크로서비스의 아키텍처를 설계합니다. 필요한 엔드포인트는 무엇이며, 다른 서비스와 어떻게 통신하며, 데이터 모델은 어떤 모습입니까?"
+  },
+  {
+    "id": 27,
+    "displayId": 88,
+    "category": "coding",
+    "title": "Generate Mock Data",
+    "titleKo": "목(Mock) 데이터 생성",
+    "prompt": "Write a script that generates realistic mock data for [DESCRIBE DATA STRUCTURE]. Generate [NUMBER] records and output as JSON.",
+    "promptKo": "[데이터 구조 설명]에 대한 현실적인 모의 데이터를 생성하는 스크립트를 작성하세요. [NUMBER]개의 레코드를 생성하고 JSON으로 출력합니다."
+  },
+  {
+    "id": 44,
+    "displayId": 89,
+    "category": "coding",
+    "title": "Implement Feature Flags",
+    "titleKo": "피처 플래그 구현",
+    "prompt": "Design and implement a feature flag system that allows enabling and disabling features per user, per percentage of traffic, or globally without deploying code.",
+    "promptKo": "코드를 배포하지 않고도 사용자별, 트래픽 비율별 또는 전역적으로 기능을 활성화 및 비활성화할 수 있는 기능 플래그 시스템을 설계하고 구현합니다."
+  },
+  {
+    "id": 50,
+    "displayId": 90,
+    "category": "coding",
+    "title": "Build a Dashboard Backend",
+    "titleKo": "대시보드 백엔드 구축",
+    "prompt": "Design and write the backend for a real-time dashboard that shows [DESCRIBE METRICS]. Include WebSocket support, data aggregation, and efficient querying.",
+    "promptKo": "[메트릭 설명]을 표시하는 실시간 대시보드용 백엔드를 설계하고 작성합니다. WebSocket 지원, 데이터 집계 및 효율적인 쿼리를 포함합니다."
+  },
+  {
+    "id": 31,
+    "displayId": 91,
+    "category": "coding",
+    "title": "Implement Retry Logic",
+    "titleKo": "재시도 로직 구현",
+    "prompt": "Add retry logic to this function that makes an external API call. Handle rate limits, transient errors, and use exponential backoff: [PASTE FUNCTION]",
+    "promptKo": "외부 API 호출을 수행하는 이 함수에 재시도 논리를 추가합니다. 속도 제한, 일시적인 오류를 처리하고 지수 백오프를 사용합니다. [PASTE FUNCTION]"
+  },
+  {
+    "id": 15,
+    "displayId": 92,
+    "category": "coding",
+    "title": "Write a Regex",
+    "titleKo": "정규식 작성",
+    "prompt": "Write a regex pattern that matches [DESCRIBE WHAT TO MATCH]. Explain each part of the pattern and show example matches and non-matches.",
+    "promptKo": "[DESCRIBE WHAT TO MATCH]와 일치하는 정규식 패턴을 작성하세요. 패턴의 각 부분을 설명하고 일치 항목과 일치하지 않는 항목의 예를 보여줍니다."
+  },
+  {
+    "id": 49,
+    "displayId": 93,
+    "category": "coding",
+    "title": "Write a Load Testing Script",
+    "titleKo": "부하 테스트 스크립트",
+    "prompt": "Write a load testing script using [TOOL] that simulates [NUMBER] concurrent users performing [DESCRIBE USER ACTIONS] and reports on response times and error rates.",
+    "promptKo": "[사용자 작업 설명]을 수행하는 [NUMBER]명의 동시 사용자를 시뮬레이션하고 응답 시간과 오류율을 보고하는 [도구]를 사용하여 부하 테스트 스크립트를 작성합니다."
+  },
+  {
+    "id": 37,
+    "displayId": 94,
+    "category": "coding",
+    "title": "Implement Search Functionality",
+    "titleKo": "검색 기능 구현",
+    "prompt": "Implement full-text search for [DESCRIBE DATA] using [TECHNOLOGY]. Include fuzzy matching, relevance scoring, and filtering by [FIELDS].",
+    "promptKo": "[TECHNOLOGY]를 사용하여 [DESCRIBE DATA]에 대한 전체 텍스트 검색을 구현합니다. 유사 일치, 관련성 점수, [FIELDS]별 필터링을 포함합니다."
+  },
+  {
+    "id": 34,
+    "displayId": 95,
+    "category": "coding",
+    "title": "Create an SDK",
+    "titleKo": "SDK 만들기",
+    "prompt": "Design and write a basic SDK in [LANGUAGE] for the following API. Make it easy to use, well documented, and handle authentication automatically: [PASTE API SPEC]",
+    "promptKo": "다음 API에 대한 기본 SDK를 [LANGUAGE]로 설계하고 작성합니다. 사용하기 쉽고 문서화도 잘 되어 있으며 인증을 자동으로 처리합니다. [PASTE API SPEC]"
+  },
+  {
+    "id": 47,
+    "displayId": 96,
+    "category": "coding",
+    "title": "Implement Data Validation",
+    "titleKo": "데이터 검증 구현",
+    "prompt": "Write a comprehensive data validation layer for this API. Validate all inputs, return clear error messages, and prevent any malformed data from reaching the database: [PASTE API SPEC]",
+    "promptKo": "이 API에 대한 포괄적인 데이터 유효성 검사 계층을 작성합니다. 모든 입력을 검증하고, 명확한 오류 메시지를 반환하고, 잘못된 형식의 데이터가 데이터베이스에 도달하는 것을 방지합니다. [PASTE API SPEC]"
+  },
+  {
+    "id": 35,
+    "displayId": 97,
+    "category": "coding",
+    "title": "Optimize a React Component",
+    "titleKo": "리액트 컴포넌트 최적화",
+    "prompt": "This React component is re-rendering too often and causing performance issues. Analyze it and fix the performance problems: [PASTE COMPONENT]",
+    "promptKo": "이 React 구성요소는 너무 자주 다시 렌더링되어 성능 문제를 일으킵니다. 이를 분석하고 성능 문제를 해결합니다. [PASTE COMPONENT]"
+  },
+  {
+    "id": 33,
+    "displayId": 98,
+    "category": "coding",
+    "title": "Build a Queue System",
+    "titleKo": "큐 시스템 구축",
+    "prompt": "Implement a job queue in [LANGUAGE] that processes [DESCRIBE JOBS]. Include priority levels, retry logic, dead letter handling, and a way to monitor queue depth.",
+    "promptKo": "[DESCRIBE JOBS]를 처리하는 [LANGUAGE]로 작업 대기열을 구현합니다. 우선 순위 수준, 재시도 논리, 배달 못한 편지 처리 및 대기열 깊이를 모니터링하는 방법을 포함합니다."
+  },
+  {
+    "id": 26,
+    "displayId": 99,
+    "category": "coding",
+    "title": "Build an Authentication System",
+    "titleKo": "인증 시스템 구축",
+    "prompt": "Design and write a JWT authentication system in [FRAMEWORK]. Include signup, login, token refresh, logout, and protected route middleware.",
+    "promptKo": "[FRAMEWORK]에서 JWT 인증 시스템을 설계하고 작성합니다. 가입, 로그인, 토큰 새로 고침, 로그아웃 및 보호된 경로 미들웨어를 포함합니다."
+  },
+  {
+    "id": 1,
+    "displayId": 100,
+    "category": "coding",
+    "title": "Code Review",
+    "titleKo": "코드 리뷰",
+    "prompt": "Review this code as a senior engineer. Identify bugs, security vulnerabilities, performance issues, and style problems. Explain each issue and suggest a fix: [PASTE CODE]",
+    "promptKo": "수석 엔지니어로서 이 코드를 검토하세요. 버그, 보안 취약점, 성능 문제, 스타일 문제를 식별합니다. 각 문제를 설명하고 해결 방법을 제안하세요. [PASTE CODE]"
+  },
+  {
+    "id": 52,
+    "displayId": 101,
+    "category": "ai",
+    "title": "Build a Prompt Chain",
+    "titleKo": "프롬프트 체인 구성",
+    "prompt": "Design a multi-step prompt chain that takes [INPUT] and produces [OUTPUT]. Break it into discrete steps, define what each step does, and explain how outputs feed into the next step.",
+    "promptKo": "[INPUT]을 취하고 [OUTPUT]을 생성하는 다단계 프롬프트 체인을 디자인하십시오. 이를 개별 단계로 나누고, 각 단계의 기능을 정의하고, 출력이 다음 단계에 어떻게 적용되는지 설명합니다."
+  },
+  {
+    "id": 99,
+    "displayId": 102,
+    "category": "ai",
+    "title": "Create a Personalized Learning System",
+    "titleKo": "맞춤형 학습 시스템",
+    "prompt": "Design an AI personalized learning system for [DESCRIBE SUBJECT]. How should knowledge gaps be identified, content difficulty be adjusted, and progress be measured?",
+    "promptKo": "[DESCRIBE SUBJECT]에 대한 AI 맞춤형 학습 시스템을 설계합니다. 지식 격차를 어떻게 식별하고, 콘텐츠 난이도를 조정하고, 진행 상황을 측정해야 합니까?"
+  },
+  {
+    "id": 69,
+    "displayId": 103,
+    "category": "ai",
+    "title": "Create a Prompt Template Library",
+    "titleKo": "프롬프트 템플릿 라이브러리",
+    "prompt": "Create a library of 10 reusable prompt templates for [DESCRIBE USE CASE]. Each template should have placeholders, usage instructions, and example inputs and outputs.",
+    "promptKo": "[사용 사례 설명]에 대한 재사용 가능한 프롬프트 템플릿 10개로 구성된 라이브러리를 만듭니다. 각 템플릿에는 자리 표시자, 사용 지침, 예시 입력 및 출력이 있어야 합니다."
+  },
+  {
+    "id": 56,
+    "displayId": 104,
+    "category": "ai",
+    "title": "Build a Classification Pipeline",
+    "titleKo": "분류 파이프라인 구축",
+    "prompt": "Design an AI classification pipeline that categorizes [DESCRIBE INPUTS] into [DESCRIBE CATEGORIES]. Include data preprocessing, model selection, confidence thresholds, and handling of edge cases.",
+    "promptKo": "[DESCRIBE INPUTS]를 [DESCRIBE CATEGORIES]로 분류하는 AI 분류 파이프라인을 설계합니다. 데이터 전처리, 모델 선택, 신뢰도 임계값 및 극단적 사례 처리를 포함합니다."
+  },
+  {
+    "id": 54,
+    "displayId": 105,
+    "category": "ai",
+    "title": "Evaluate Prompt Quality",
+    "titleKo": "프롬프트 품질 평가",
+    "prompt": "Evaluate this prompt and tell me everything that is wrong with it. Then rewrite it to be more precise, consistent, and likely to produce the output I actually want: [PASTE PROMPT]",
+    "promptKo": "이 메시지를 평가하고 잘못된 점을 모두 알려주세요. 그런 다음 더 정확하고 일관되며 실제로 원하는 결과를 생성할 수 있도록 다시 작성하십시오. [PASTE PROMPT]"
+  },
+  {
+    "id": 57,
+    "displayId": 106,
+    "category": "ai",
+    "title": "Create an Extraction Prompt",
+    "titleKo": "정보 추출 프롬프트",
+    "prompt": "Write a prompt that extracts [DESCRIBE INFORMATION] from [DESCRIBE DOCUMENT TYPE]. Output as structured JSON. Handle missing fields gracefully and flag uncertain extractions.",
+    "promptKo": "[문서 유형 설명]에서 [설명 정보]를 추출하는 프롬프트를 작성하세요. 구조화된 JSON으로 출력합니다. 누락된 필드를 적절하게 처리하고 불확실한 추출에 플래그를 지정합니다."
+  },
+  {
+    "id": 61,
+    "displayId": 107,
+    "category": "ai",
+    "title": "Design a Content Moderation System",
+    "titleKo": "콘텐츠 모더레이션 시스템",
+    "prompt": "Design an AI content moderation pipeline for [DESCRIBE PLATFORM]. What categories of content need to be detected, what confidence thresholds trigger action, and how is the human review queue managed?",
+    "promptKo": "[플랫폼 설명]을 위한 AI 콘텐츠 조정 파이프라인을 설계합니다. 감지해야 하는 콘텐츠 카테고리는 무엇이며, 어떤 신뢰 임계값이 조치를 유발하며, 인적 검토 대기열은 어떻게 관리됩니까?"
+  },
+  {
+    "id": 66,
+    "displayId": 108,
+    "category": "ai",
+    "title": "Create a Document Processing Pipeline",
+    "titleKo": "문서 처리 파이프라인",
+    "prompt": "Design a pipeline that ingests [DESCRIBE DOCUMENT TYPES], extracts structured data, validates it, and stores it in [DESCRIBE SYSTEM]. Handle OCR, various formats, and malformed inputs.",
+    "promptKo": "[문서 유형 설명]을 수집하고, 구조화된 데이터를 추출하고, 유효성을 검사하고, [시스템 설명]에 저장하는 파이프라인을 설계합니다. OCR, 다양한 형식 및 잘못된 형식의 입력을 처리합니다."
+  },
+  {
+    "id": 85,
+    "displayId": 109,
+    "category": "ai",
+    "title": "Design a Voice AI System",
+    "titleKo": "음성 AI 시스템 설계",
+    "prompt": "Design a voice AI assistant for [DESCRIBE USE CASE]. How should speech be processed, what intents need to be recognized, and how should ambiguous requests be handled?",
+    "promptKo": "[사용 사례 설명]을 위한 음성 AI 도우미를 디자인합니다. 음성은 어떻게 처리되어야 하며, 어떤 의도를 인식해야 하며, 모호한 요청은 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 64,
+    "displayId": 110,
+    "category": "ai",
+    "title": "Design an AI Writing Assistant",
+    "titleKo": "AI 글쓰기 어시스턴트",
+    "prompt": "Design an AI writing assistant for [DESCRIBE USE CASE]. What capabilities should it have, what constraints should it operate under, and how should it handle requests outside its scope?",
+    "promptKo": "[사용 사례 설명]을 위한 AI 글쓰기 도우미를 디자인합니다. 어떤 기능을 갖추어야 하고, 어떤 제약 조건 하에서 작동해야 하며, 범위 밖의 요청을 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 81,
+    "displayId": 111,
+    "category": "ai",
+    "title": "Create an Anomaly Detection System",
+    "titleKo": "이상 탐지 시스템",
+    "prompt": "Design an AI anomaly detection system for [DESCRIBE DATA]. What constitutes an anomaly, how should severity be classified, and what should happen when one is detected?",
+    "promptKo": "[데이터 설명]에 대한 AI 이상 탐지 시스템을 설계합니다. 이상 현상은 무엇이고, 심각도는 어떻게 분류해야 하며, 이상 현상이 감지되면 어떻게 됩니까?"
+  },
+  {
+    "id": 90,
+    "displayId": 112,
+    "category": "ai",
+    "title": "Create an Inventory Management AI",
+    "titleKo": "재고 관리 AI",
+    "prompt": "Design an AI inventory management system for [DESCRIBE BUSINESS]. How should demand be forecasted, when should reorders be triggered, and how should seasonal patterns be handled?",
+    "promptKo": "[비즈니스 설명]을 위한 AI 재고 관리 시스템을 설계합니다. 수요를 어떻게 예측해야 하며, 언제 재주문을 시작해야 하며, 계절적 패턴을 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 62,
+    "displayId": 113,
+    "category": "ai",
+    "title": "Build a Question Answering System",
+    "titleKo": "질의응답 시스템 구축",
+    "prompt": "Design a question answering system over [DESCRIBE KNOWLEDGE BASE]. How should documents be preprocessed, what retrieval strategy works best, and how should confidence be communicated to users?",
+    "promptKo": "[지식 기반 설명]을 통해 질문 응답 시스템을 설계합니다. 문서는 어떻게 전처리되어야 하며, 어떤 검색 전략이 가장 효과적이며, 사용자에게 확신을 어떻게 전달해야 합니까?"
+  },
+  {
+    "id": 71,
+    "displayId": 114,
+    "category": "ai",
+    "title": "Build a Knowledge Graph Extraction Pipeline",
+    "titleKo": "지식 그래프 추출 파이프라인",
+    "prompt": "Design a pipeline that reads [DESCRIBE DOCUMENTS] and extracts entities, relationships, and facts into a knowledge graph. Define the schema and extraction prompts.",
+    "promptKo": "[문서 설명]을 읽고 엔터티, 관계, 사실을 지식 그래프로 추출하는 파이프라인을 설계합니다. 스키마 및 추출 프롬프트를 정의합니다."
+  },
+  {
+    "id": 74,
+    "displayId": 115,
+    "category": "ai",
+    "title": "Build a Research Assistant",
+    "titleKo": "리서치 어시스턴트 구축",
+    "prompt": "Design an AI research assistant that can [DESCRIBE RESEARCH TASKS]. How should it search, synthesize information, cite sources, and flag low confidence conclusions?",
+    "promptKo": "[연구 과제 설명]이 가능한 AI 연구 보조자를 설계합니다. 어떻게 정보를 검색, 종합하고, 출처를 인용하고, 신뢰도가 낮은 결론을 표시해야 합니까?"
+  },
+  {
+    "id": 77,
+    "displayId": 116,
+    "category": "ai",
+    "title": "Build a Contract Analysis Pipeline",
+    "titleKo": "계약서 분석 파이프라인",
+    "prompt": "Design an AI pipeline that analyzes contracts and flags [DESCRIBE RISK TYPES]. What clauses should trigger alerts, how should confidence be communicated, and when should a lawyer review?",
+    "promptKo": "계약을 분석하고 [위험 유형 설명]을 표시하는 AI 파이프라인을 설계합니다. 경고를 트리거해야 하는 조항은 무엇이며, 신뢰도를 어떻게 전달해야 하며, 변호사는 언제 검토해야 합니까?"
+  },
+  {
+    "id": 60,
+    "displayId": 117,
+    "category": "ai",
+    "title": "Create a Summarization Pipeline",
+    "titleKo": "요약 파이프라인 구축",
+    "prompt": "Design a pipeline that processes [DESCRIBE CONTENT TYPE] and produces [DESCRIBE SUMMARY FORMAT]. Handle varying lengths, extract key entities, and flag content that needs human review.",
+    "promptKo": "[DESCRIBE CONTENT TYPE]을 처리하고 [DESCRIBE SUMMARY FORMAT]을 생성하는 파이프라인을 설계합니다. 다양한 길이를 처리하고, 주요 엔터티를 추출하고, 사람의 검토가 필요한 콘텐츠에 플래그를 지정하세요."
+  },
+  {
+    "id": 70,
+    "displayId": 118,
+    "category": "ai",
+    "title": "Design a Human in the Loop System",
+    "titleKo": "휴먼 인 더 루프 시스템",
+    "prompt": "Design a system where AI handles [DESCRIBE TASKS] autonomously but routes edge cases to humans. Define the confidence thresholds, escalation paths, and how human feedback is incorporated.",
+    "promptKo": "AI가 [작업 설명]을 자율적으로 처리하지만 엣지 케이스를 인간에게 전달하는 시스템을 설계합니다. 신뢰도 임계값, 에스컬레이션 경로 및 사람의 피드백이 통합되는 방식을 정의합니다."
+  },
+  {
+    "id": 65,
+    "displayId": 119,
+    "category": "ai",
+    "title": "Build a Feedback Loop System",
+    "titleKo": "피드백 루프 시스템",
+    "prompt": "Design a system where AI outputs are evaluated, feedback is collected, and the system improves over time for [DESCRIBE USE CASE]. How is quality measured and what triggers retraining?",
+    "promptKo": "[사용 사례 설명]에 대해 AI 출력을 평가하고, 피드백을 수집하고, 시간이 지남에 따라 시스템을 개선하는 시스템을 설계합니다. 품질은 어떻게 측정되며 재교육을 유발하는 요인은 무엇입니까?"
+  },
+  {
+    "id": 79,
+    "displayId": 120,
+    "category": "ai",
+    "title": "Design a Lead Scoring System",
+    "titleKo": "리드 스코어링 시스템",
+    "prompt": "Design an AI lead scoring system for [DESCRIBE BUSINESS]. What signals predict conversion, how should scores be calculated, and how should the sales team use them?",
+    "promptKo": "[비즈니스 설명]을 위한 AI 리드 채점 시스템을 설계합니다. 어떤 신호가 전환을 예측하고, 점수를 어떻게 계산해야 하며, 영업팀은 이를 어떻게 사용해야 합니까?"
+  },
+  {
+    "id": 68,
+    "displayId": 121,
+    "category": "ai",
+    "title": "Build a Monitoring System for AI",
+    "titleKo": "AI 모니터링 시스템",
+    "prompt": "Design a monitoring system for an AI pipeline that tracks output quality, latency, cost, and failure rates. What alerts should exist and what dashboards should be built?",
+    "promptKo": "출력 품질, 대기 시간, 비용 및 실패율을 추적하는 AI 파이프라인용 모니터링 시스템을 설계합니다. 어떤 경고가 있어야 하며 어떤 대시보드를 구축해야 합니까?"
+  },
+  {
+    "id": 93,
+    "displayId": 122,
+    "category": "ai",
+    "title": "Create a Technical Support AI",
+    "titleKo": "기술 지원 AI",
+    "prompt": "Design an AI technical support system for [DESCRIBE PRODUCT]. How should it diagnose problems, when should it escalate, and how should it learn from resolved tickets?",
+    "promptKo": "[제품 설명]에 대한 AI 기술 지원 시스템을 설계합니다. 문제를 어떻게 진단해야 하고, 언제 에스컬레이션해야 하며, 해결된 티켓을 통해 어떻게 학습해야 합니까?"
+  },
+  {
+    "id": 63,
+    "displayId": 123,
+    "category": "ai",
+    "title": "Create a Data Enrichment Workflow",
+    "titleKo": "데이터 보강 워크플로우",
+    "prompt": "Design a workflow that takes [DESCRIBE INPUT DATA] and enriches it with [DESCRIBE ADDITIONAL INFORMATION] using AI. Define the steps, prompts, and how to handle failures.",
+    "promptKo": "[입력 데이터 설명]을 가져와 AI를 사용하여 [추가 정보 설명]으로 보강하는 워크플로를 설계합니다. 단계, 프롬프트 및 실패 처리 방법을 정의합니다."
+  },
+  {
+    "id": 78,
+    "displayId": 124,
+    "category": "ai",
+    "title": "Create a Sentiment Analysis System",
+    "titleKo": "감성 분석 시스템",
+    "prompt": "Design a sentiment analysis system for [DESCRIBE DATA SOURCE]. What dimensions of sentiment matter, how should nuance be handled, and how should results be aggregated and reported?",
+    "promptKo": "[데이터 소스 설명]에 대한 감정 분석 시스템을 설계합니다. 감정의 어떤 측면이 중요하고, 미묘한 차이를 어떻게 처리해야 하며, 결과를 어떻게 집계하고 보고해야 합니까?"
+  },
+  {
+    "id": 96,
+    "displayId": 125,
+    "category": "ai",
+    "title": "Create an AI Scheduling System",
+    "titleKo": "AI 스케줄링 시스템",
+    "prompt": "Design an AI scheduling system for [DESCRIBE USE CASE]. How should it handle conflicts, priorities, constraints, and last minute changes?",
+    "promptKo": "[사용 사례 설명]을 위한 AI 일정 시스템을 설계합니다. 충돌, 우선순위, 제약, 마지막 변경 사항을 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 82,
+    "displayId": 126,
+    "category": "ai",
+    "title": "Design a Translation Workflow",
+    "titleKo": "번역 워크플로우 설계",
+    "prompt": "Design an AI translation workflow for [DESCRIBE CONTENT TYPE] from [SOURCE LANGUAGE] to [TARGET LANGUAGES]. How should terminology consistency be maintained and how should quality be validated?",
+    "promptKo": "[원본 언어]에서 [대상 언어]까지 [콘텐츠 유형 설명]에 대한 AI 번역 워크플로를 설계합니다. 용어의 일관성은 어떻게 유지되어야 하며 품질은 어떻게 검증되어야 합니까?"
+  },
+  {
+    "id": 100,
+    "displayId": 127,
+    "category": "ai",
+    "title": "Design a Supply Chain Intelligence System",
+    "titleKo": "공급망 인텔리전스 시스템",
+    "prompt": "Design an AI system that monitors [DESCRIBE SUPPLY CHAIN] and predicts disruptions, optimizes inventory, and recommends actions. What data sources are critical?",
+    "promptKo": "[공급망 설명]을 모니터링하고 중단을 예측하고 재고를 최적화하며 조치를 권장하는 AI 시스템을 설계합니다. 어떤 데이터 소스가 중요합니까?"
+  },
+  {
+    "id": 91,
+    "displayId": 128,
+    "category": "ai",
+    "title": "Design a Financial Analysis Agent",
+    "titleKo": "재무 분석 에이전트",
+    "prompt": "Design an AI agent that analyzes [DESCRIBE FINANCIAL DATA] and produces [DESCRIBE OUTPUTS]. What data sources does it need, what calculations should it perform, and how should uncertainty be communicated?",
+    "promptKo": "[재무 데이터 설명]을 분석하고 [출력 설명]을 생성하는 AI 에이전트를 설계합니다. 어떤 데이터 소스가 필요하고, 어떤 계산을 수행해야 하며, 불확실성은 어떻게 전달되어야 합니까?"
+  },
+  {
+    "id": 73,
+    "displayId": 129,
+    "category": "ai",
+    "title": "Design a Code Review AI",
+    "titleKo": "코드 리뷰 AI 설계",
+    "prompt": "Design an AI code review system that automatically reviews pull requests for [DESCRIBE STANDARDS]. What should it check, how should feedback be formatted, and what issues should block merges?",
+    "promptKo": "[표준 설명]에 대한 풀 요청을 자동으로 검토하는 AI 코드 검토 시스템을 설계합니다. 무엇을 확인해야 하고, 피드백 형식을 어떻게 지정해야 하며, 병합을 차단해야 하는 문제는 무엇입니까?"
+  },
+  {
+    "id": 53,
+    "displayId": 130,
+    "category": "ai",
+    "title": "Create a System Prompt",
+    "titleKo": "시스템 프롬프트 작성",
+    "prompt": "Write a system prompt for an AI assistant that works as a [DESCRIBE ROLE] for [DESCRIBE COMPANY/USE CASE]. Define its personality, capabilities, limitations, and how it should handle edge cases.",
+    "promptKo": "[회사 설명/사용 사례]에 대한 [설명 역할] 역할을 하는 AI 도우미에 대한 시스템 프롬프트를 작성합니다. 성격, 기능, 제한 사항 및 극단적인 경우를 처리하는 방법을 정의합니다."
+  },
+  {
+    "id": 58,
+    "displayId": 131,
+    "category": "ai",
+    "title": "Design a Multi-Agent System",
+    "titleKo": "멀티 에이전트 시스템 설계",
+    "prompt": "Design a multi-agent system where [NUMBER] AI agents collaborate to accomplish [DESCRIBE GOAL]. Define each agent's role, how they communicate, and how conflicts are resolved.",
+    "promptKo": "[NUMBER]개의 AI 에이전트가 협력하여 [목적 설명]을 달성하는 다중 에이전트 시스템을 설계합니다. 각 상담원의 역할, 의사소통 방법, 충돌 해결 방법을 정의합니다."
+  },
+  {
+    "id": 97,
+    "displayId": 132,
+    "category": "ai",
+    "title": "Design a Quality Control AI",
+    "titleKo": "품질 관리 AI",
+    "prompt": "Design an AI quality control system for [DESCRIBE PRODUCT OR PROCESS]. What defects should be detected, what accuracy is acceptable, and how should borderline cases be handled?",
+    "promptKo": "[제품 또는 프로세스 설명]에 대한 AI 품질 관리 시스템을 설계합니다. 어떤 결함을 감지해야 하고, 허용 가능한 정확도는 얼마이며, 경계선 사례는 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 92,
+    "displayId": 133,
+    "category": "ai",
+    "title": "Build a Social Media Monitoring System",
+    "titleKo": "소셜미디어 모니터링 시스템",
+    "prompt": "Design an AI system that monitors social media for [DESCRIBE TOPICS OR BRANDS]. What signals matter, how should sentiment be tracked, and what triggers an urgent alert?",
+    "promptKo": "[주제 또는 브랜드 설명]에 대해 소셜 미디어를 모니터링하는 AI 시스템을 설계합니다. 어떤 신호가 중요하고, 감정을 어떻게 추적해야 하며, 무엇이 긴급 경고를 트리거합니까?"
+  },
+  {
+    "id": 67,
+    "displayId": 134,
+    "category": "ai",
+    "title": "Design a Personalization Engine",
+    "titleKo": "개인화 엔진 설계",
+    "prompt": "Design an AI personalization system for [DESCRIBE APPLICATION]. What signals should be used, how should recommendations be generated, and how should it handle new users with no history?",
+    "promptKo": "[애플리케이션 설명]을 위한 AI 개인화 시스템을 설계합니다. 어떤 신호를 사용해야 하며, 추천은 어떻게 생성되어야 하며, 기록이 없는 신규 사용자를 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 89,
+    "displayId": 135,
+    "category": "ai",
+    "title": "Build a Predictive Maintenance System",
+    "titleKo": "예측 정비 시스템",
+    "prompt": "Design an AI predictive maintenance system for [DESCRIBE EQUIPMENT OR SYSTEM]. What signals predict failure, how far in advance can failures be predicted, and what actions should be triggered?",
+    "promptKo": "[장비 또는 시스템 설명]에 대한 AI 예측 유지 관리 시스템을 설계합니다. 어떤 신호가 실패를 예측하고, 실패를 얼마나 미리 예측할 수 있으며, 어떤 조치를 취해야 합니까?"
+  },
+  {
+    "id": 59,
+    "displayId": 136,
+    "category": "ai",
+    "title": "Build an AI Evaluation Framework",
+    "titleKo": "AI 평가 프레임워크",
+    "prompt": "Design a framework for evaluating the quality of AI outputs for [DESCRIBE USE CASE]. What metrics matter, how should they be measured, and what does good versus bad look like?",
+    "promptKo": "[사용 사례 설명]에 대한 AI 출력 품질을 평가하기 위한 프레임워크를 설계합니다. 어떤 지표가 중요하고, 어떻게 측정해야 하며, 좋은 것과 나쁜 것은 어떤 모습일까요?"
+  },
+  {
+    "id": 98,
+    "displayId": 137,
+    "category": "ai",
+    "title": "Build a News Aggregation System",
+    "titleKo": "뉴스 큐레이션 시스템",
+    "prompt": "Design an AI news aggregation and summarization system for [DESCRIBE TOPICS]. How should sources be ranked, bias be detected, and duplicate stories be deduplicated?",
+    "promptKo": "[주제 설명]에 대한 AI 뉴스 집계 및 요약 시스템을 설계합니다. 출처 순위를 매기고, 편견을 감지하고, 중복된 기사를 제거하려면 어떻게 해야 합니까?"
+  },
+  {
+    "id": 87,
+    "displayId": 138,
+    "category": "ai",
+    "title": "Create a Compliance Checking System",
+    "titleKo": "컴플라이언스 체크 시스템",
+    "prompt": "Design an AI compliance checking system that validates [DESCRIBE CONTENT OR ACTIONS] against [DESCRIBE REGULATIONS]. How should violations be categorized and what remediation steps should be suggested?",
+    "promptKo": "[규정 설명]에 대해 [콘텐츠 또는 행동 설명]을 검증하는 AI 규정 준수 검사 시스템을 설계합니다. 위반을 어떻게 분류해야 하며 어떤 수정 단계를 제안해야 합니까?"
+  },
+  {
+    "id": 84,
+    "displayId": 139,
+    "category": "ai",
+    "title": "Create a Risk Assessment Framework",
+    "titleKo": "리스크 평가 프레임워크",
+    "prompt": "Design an AI risk assessment system for [DESCRIBE DOMAIN]. What risk factors should be analyzed, how should they be weighted, and what output format helps decision makers act?",
+    "promptKo": "[DESCRIBE DOMAIN]에 대한 AI 위험 평가 시스템을 설계합니다. 어떤 위험 요소를 분석해야 하고, 어떻게 가중치를 부여해야 하며, 의사 결정자가 행동하는 데 도움이 되는 출력 형식은 무엇입니까?"
+  },
+  {
+    "id": 75,
+    "displayId": 140,
+    "category": "ai",
+    "title": "Create a Competitive Intelligence System",
+    "titleKo": "경쟁 정보 수집 시스템",
+    "prompt": "Design an AI system that monitors [DESCRIBE COMPETITORS] and produces weekly intelligence reports covering [DESCRIBE AREAS]. What data sources should it monitor and how should insights be prioritized?",
+    "promptKo": "[DESCRIBE COMPETITORS]를 모니터링하고 [DESCRIBE AREAS]를 다루는 주간 인텔리전스 보고서를 생성하는 AI 시스템을 설계하세요. 어떤 데이터 소스를 모니터링해야 하며 통찰력의 우선순위를 어떻게 지정해야 합니까?"
+  },
+  {
+    "id": 86,
+    "displayId": 141,
+    "category": "ai",
+    "title": "Build a Trend Detection System",
+    "titleKo": "트렌드 탐지 시스템",
+    "prompt": "Design an AI system that monitors [DESCRIBE DATA SOURCES] and identifies emerging trends in [DESCRIBE DOMAIN]. How should trends be validated and how should false positives be filtered?",
+    "promptKo": "[DESCRIBE DATA SOURCES]를 모니터링하고 [DESCRIBE DOMAIN]에서 새로운 트렌드를 식별하는 AI 시스템을 설계하세요. 추세를 어떻게 검증해야 하며 오탐지를 어떻게 필터링해야 합니까?"
+  },
+  {
+    "id": 94,
+    "displayId": 142,
+    "category": "ai",
+    "title": "Design a Price Optimization System",
+    "titleKo": "가격 최적화 시스템",
+    "prompt": "Design an AI pricing system for [DESCRIBE BUSINESS]. What factors should influence pricing, how should competitor prices be monitored, and how should price changes be validated before going live?",
+    "promptKo": "[비즈니스 설명]에 대한 AI 가격 책정 시스템을 설계합니다. 가격에 영향을 미치는 요소는 무엇이며, 경쟁사 가격은 어떻게 모니터링해야 하며, 출시 전에 가격 변경을 어떻게 검증해야 합니까?"
+  },
+  {
+    "id": 76,
+    "displayId": 143,
+    "category": "ai",
+    "title": "Design a Meeting Intelligence System",
+    "titleKo": "미팅 인텔리전스 시스템",
+    "prompt": "Design an AI system that processes meeting transcripts and produces [DESCRIBE OUTPUTS: action items, summaries, decisions]. How should it handle multiple speakers and ambiguous assignments?",
+    "promptKo": "회의 기록을 처리하고 [출력 설명: 작업 항목, 요약, 결정]을 생성하는 AI 시스템을 설계합니다. 여러 명의 화자와 모호한 과제를 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 55,
+    "displayId": 144,
+    "category": "ai",
+    "title": "Design a RAG System",
+    "titleKo": "RAG 시스템 설계",
+    "prompt": "Design a Retrieval Augmented Generation system for [DESCRIBE USE CASE]. What data should be indexed, how should it be chunked, what embedding model should be used, and how should retrieval be structured?",
+    "promptKo": "[사용 사례 설명]을 위한 검색 증강 생성 시스템을 설계합니다. 어떤 데이터를 인덱싱해야 하고, 어떻게 청크해야 하며, 어떤 임베딩 모델을 사용해야 하며, 검색은 어떻게 구성해야 합니까?"
+  },
+  {
+    "id": 88,
+    "displayId": 145,
+    "category": "ai",
+    "title": "Design an AI Onboarding System",
+    "titleKo": "AI 온보딩 시스템",
+    "prompt": "Design an AI system that onboards new [EMPLOYEES/CUSTOMERS] by answering questions, guiding them through processes, and tracking their progress. How should gaps in knowledge be identified?",
+    "promptKo": "질문에 답변하고, 프로세스를 안내하고, 진행 상황을 추적하여 새로운 [직원/고객]을 온보딩하는 AI 시스템을 설계하세요. 지식의 격차를 어떻게 식별해야 합니까?"
+  },
+  {
+    "id": 95,
+    "displayId": 146,
+    "category": "ai",
+    "title": "Build a Fraud Detection System",
+    "titleKo": "사기 탐지 시스템",
+    "prompt": "Design an AI fraud detection system for [DESCRIBE TRANSACTION TYPE]. What signals indicate fraud, how should false positive rates be managed, and what happens when fraud is detected?",
+    "promptKo": "[DESCRIBE TRANSACTION TYPE]에 대한 AI 사기 탐지 시스템을 설계합니다. 사기를 나타내는 신호는 무엇이며, 오탐률은 어떻게 관리해야 하며, 사기가 감지되면 어떻게 됩니까?"
+  },
+  {
+    "id": 51,
+    "displayId": 147,
+    "category": "ai",
+    "title": "Design an AI Agent",
+    "titleKo": "AI 에이전트 설계",
+    "prompt": "Design an AI agent that can [DESCRIBE GOAL]. What tools does it need, what decisions should it make autonomously, what should require human approval, and how should it handle failures?",
+    "promptKo": "[목표 설명]이 가능한 AI 에이전트를 설계합니다. 어떤 도구가 필요하고, 어떤 결정을 자율적으로 내려야 하며, 사람의 승인이 필요한 것은 무엇이며, 실패를 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 83,
+    "displayId": 148,
+    "category": "ai",
+    "title": "Build a Proposal Generation System",
+    "titleKo": "제안서 자동 생성 시스템",
+    "prompt": "Design an AI system that generates business proposals for [DESCRIBE BUSINESS]. What inputs does it need, what sections should proposals include, and how should customization work?",
+    "promptKo": "[비즈니스 설명]에 대한 비즈니스 제안을 생성하는 AI 시스템을 설계합니다. 어떤 입력이 필요하고, 제안서에 어떤 섹션을 포함해야 하며, 사용자 정의가 어떻게 작동해야 합니까?"
+  },
+  {
+    "id": 80,
+    "displayId": 149,
+    "category": "ai",
+    "title": "Build a Content Recommendation Engine",
+    "titleKo": "콘텐츠 추천 엔진",
+    "prompt": "Design a content recommendation engine for [DESCRIBE PLATFORM]. What signals drive recommendations, how should diversity be maintained, and how should new content be handled?",
+    "promptKo": "[플랫폼 설명]을 위한 콘텐츠 추천 엔진을 설계합니다. 추천을 유도하는 신호는 무엇이며, 다양성을 어떻게 유지해야 하며, 새로운 콘텐츠를 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 72,
+    "displayId": 150,
+    "category": "ai",
+    "title": "Create an AI Customer Service Agent",
+    "titleKo": "AI 고객 서비스 에이전트",
+    "prompt": "Design an AI customer service agent for [DESCRIBE BUSINESS]. What questions can it answer, when should it escalate to a human, and how should it handle frustrated customers?",
+    "promptKo": "[비즈니스 설명]을 위한 AI 고객 서비스 에이전트를 설계합니다. 어떤 질문에 답할 수 있고, 언제 인간에게 에스컬레이션해야 하며, 불만을 품은 고객을 어떻게 처리해야 합니까?"
+  },
+  {
+    "id": 228,
+    "displayId": 151,
+    "category": "content",
+    "title": "Event Invitation Copy",
+    "titleKo": "이벤트 초대 카피",
+    "prompt": "Write invitation copy for [DESCRIBE EVENT]. Create urgency, communicate the specific value of attending, address who should come, and make the registration CTA impossible to ignore.",
+    "promptKo": "[이벤트 설명]에 대한 초대장 사본을 작성하세요. 긴박감을 조성하고, 참석의 구체적인 가치를 전달하고, 참석해야 할 사람을 언급하고, 등록 CTA를 무시할 수 없게 만듭니다."
+  },
+  {
+    "id": 238,
+    "displayId": 152,
+    "category": "content",
+    "title": "Controversy Take",
+    "titleKo": "이슈·논쟁 관점글",
+    "prompt": "Write a take on [TOPIC] that challenges the mainstream view in [INDUSTRY/COMMUNITY]. Make the argument boldly, back it with evidence, and anticipate the strongest objections.",
+    "promptKo": "[산업/커뮤니티]의 주류 관점에 도전하는 [주제]에 대한 의견을 작성하세요. 대담하게 주장을 펼치고 증거로 뒷받침하며 가장 강력한 반대를 예상하세요."
+  },
+  {
+    "id": 223,
+    "displayId": 153,
+    "category": "content",
+    "title": "Opinion Piece",
+    "titleKo": "오피니언 칼럼",
+    "prompt": "Write a strong opinion piece arguing that [DESCRIBE POSITION] on the topic of [TOPIC]. Make the argument clearly, acknowledge counterarguments honestly, and end with a call to rethink conventional wisdom.",
+    "promptKo": "[주제] 주제에 대해 [DESCRIBE POSITION]을 주장하는 강력한 의견을 작성하세요. 주장을 명확하게 하고, 반론을 솔직하게 인정하고, 통념을 다시 생각해보라는 호소로 마무리합니다."
+  },
+  {
+    "id": 208,
+    "displayId": 154,
+    "category": "content",
+    "title": "Case Study",
+    "titleKo": "케이스 스터디",
+    "prompt": "Write a customer case study for [DESCRIBE CUSTOMER AND OUTCOME]. Structure it as: the challenge, the solution, the implementation, and the measurable results. Make it specific and credible.",
+    "promptKo": "[고객 및 결과 설명]에 대한 고객 우수사례를 작성하세요. 이를 과제, 솔루션, 구현 및 측정 가능한 결과로 구성합니다. 구체적이고 신뢰할 수 있게 작성하세요."
+  },
+  {
+    "id": 214,
+    "displayId": 155,
+    "category": "content",
+    "title": "Video Ad Script",
+    "titleKo": "영상 광고 스크립트",
+    "prompt": "Write a 60-second video ad script for [DESCRIBE PRODUCT]. Hook in the first 5 seconds, present the problem, introduce the solution, show the benefit, and end with a clear CTA.",
+    "promptKo": "[제품 설명]에 대한 60초 동영상 광고 스크립트를 작성하세요. 처음 5초 안에 문제를 제시하고, 솔루션을 소개하고, 이점을 보여주고, 명확한 CTA로 마무리하세요."
+  },
+  {
+    "id": 229,
+    "displayId": 156,
+    "category": "content",
+    "title": "Testimonial Request Email",
+    "titleKo": "후기 요청 이메일",
+    "prompt": "Write an email asking [DESCRIBE CUSTOMER] for a testimonial for [DESCRIBE PRODUCT]. Make it easy to respond, suggest the format, and explain how it will be used.",
+    "promptKo": "[DESCRIBE PRODUCT]에 대한 평가를 [DESCRIBE CUSTOMER]에게 요청하는 이메일을 작성하세요. 응답하기 쉽게 만들고, 형식을 제안하고, 어떻게 사용될지 설명하세요."
+  },
+  {
+    "id": 210,
+    "displayId": 157,
+    "category": "content",
+    "title": "Landing Page Copy",
+    "titleKo": "랜딩 페이지 카피",
+    "prompt": "Write landing page copy for [DESCRIBE PRODUCT OR SERVICE]. Include a headline, subheadline, hero section, features section, social proof, FAQ, and a strong CTA. Optimize for conversion.",
+    "promptKo": "[제품 또는 서비스 설명]에 대한 랜딩 페이지 사본을 작성합니다. 헤드라인, 소제목, 히어로 섹션, 기능 섹션, 사회적 증거, FAQ 및 강력한 CTA를 포함하세요. 전환을 위해 최적화하세요."
+  },
+  {
+    "id": 242,
+    "displayId": 158,
+    "category": "content",
+    "title": "Investor Update Email",
+    "titleKo": "투자자 업데이트 이메일",
+    "prompt": "Write a monthly investor update email for [DESCRIBE COMPANY]. Cover progress against goals, key metrics, wins, challenges, what you need, and what you are focused on next month.",
+    "promptKo": "[DESCRIBE COMPANY]에 대한 월간 투자자 업데이트 이메일을 작성하세요. 목표에 대한 진행 상황, 주요 지표, 성공, 과제, 필요한 사항, 다음 달에 집중할 사항을 다룹니다."
+  },
+  {
+    "id": 204,
+    "displayId": 159,
+    "category": "content",
+    "title": "YouTube Script",
+    "titleKo": "유튜브 스크립트",
+    "prompt": "Write a YouTube video script about [TOPIC]. Include a hook in the first 30 seconds, chapter markers, engaging transitions, a call to subscribe, and a strong ending that drives comments.",
+    "promptKo": "[주제]에 대한 YouTube 동영상 스크립트를 작성하세요. 처음 30초 동안의 연결고리, 챕터 마커, 매력적인 전환, 구독 유도, 댓글을 유도하는 강력한 결말을 포함하세요."
+  },
+  {
+    "id": 227,
+    "displayId": 160,
+    "category": "content",
+    "title": "Thought Leadership Article",
+    "titleKo": "소트 리더십 아티클",
+    "prompt": "Write a thought leadership article establishing [NAME] as an authority on [TOPIC]. Share a contrarian or original insight, back it with evidence or experience, and challenge the reader to think differently.",
+    "promptKo": "[NAME]을 [TOPIC]에 대한 권위자로 확립하는 사고 리더십 기사를 작성하세요. 반대적이거나 독창적인 통찰력을 공유하고 증거나 경험으로 이를 뒷받침하며 독자가 다르게 생각하도록 도전하십시오."
+  },
+  {
+    "id": 221,
+    "displayId": 161,
+    "category": "content",
+    "title": "Interview Questions",
+    "titleKo": "인터뷰 질문지",
+    "prompt": "Write 20 deep interview questions for [DESCRIBE GUEST] that will produce insightful, quotable answers. Avoid generic questions and get to the insights your audience actually wants.",
+    "promptKo": "통찰력 있고 인용 가능한 답변을 생성할 [DESCRIBE GUEST]에 대한 심층 인터뷰 질문 20개를 작성하세요. 일반적인 질문을 피하고 청중이 실제로 원하는 통찰력을 얻으십시오."
+  },
+  {
+    "id": 237,
+    "displayId": 162,
+    "category": "content",
+    "title": "Evergreen Content Piece",
+    "titleKo": "에버그린 콘텐츠",
+    "prompt": "Write an evergreen content piece on [TOPIC] that will still be relevant in five years. Focus on principles over tactics, include timeless examples, and structure it for easy reference.",
+    "promptKo": "5년 후에도 여전히 관련성이 있을 [주제]에 대한 지속적인 콘텐츠 글을 작성하세요. 전술보다 원칙에 중점을 두고, 시대를 초월한 예시를 포함하고, 쉽게 참조할 수 있도록 구성하세요."
+  },
+  {
+    "id": 203,
+    "displayId": 163,
+    "category": "content",
+    "title": "Newsletter Issue",
+    "titleKo": "뉴스레터 한 호",
+    "prompt": "Write a newsletter issue on [TOPIC] for [DESCRIBE AUDIENCE]. Include an opening hook, the main insight, a practical takeaway, and a closing thought that leaves them thinking.",
+    "promptKo": "[DESCRIBE AUDIENCE]의 [TOPIC]에 관한 뉴스레터를 작성하세요. 오프닝 후크, 주요 통찰력, 실용적인 시사점, 생각을 하게 만드는 마무리 생각을 포함하세요."
+  },
+  {
+    "id": 207,
+    "displayId": 164,
+    "category": "content",
+    "title": "Product Description",
+    "titleKo": "제품 소개 문구",
+    "prompt": "Write a compelling product description for [DESCRIBE PRODUCT]. Focus on benefits not features, address the main customer pain point, include social proof, and end with a clear CTA.",
+    "promptKo": "[제품 설명]에 대한 설득력 있는 제품 설명을 작성하세요. 기능이 아닌 이점에 집중하고, 주요 고객 불만 사항을 해결하고, 사회적 증거를 포함하고, 명확한 CTA로 마무리하세요."
+  },
+  {
+    "id": 202,
+    "displayId": 165,
+    "category": "content",
+    "title": "Long Form Article",
+    "titleKo": "장문 아티클",
+    "prompt": "Write a 1500 word article about [TOPIC] for [DESCRIBE AUDIENCE]. Lead with a compelling hook, use subheadings, include specific examples, and end with a memorable conclusion.",
+    "promptKo": "[DESCRIBE AUDIENCE]에 대해 [주제]에 대한 1500자 기사를 작성하세요. 설득력 있는 매력으로 이끌고, 부제목을 사용하고, 구체적인 예를 포함하고, 기억에 남는 결론으로 ​​마무리하세요."
+  },
+  {
+    "id": 222,
+    "displayId": 166,
+    "category": "content",
+    "title": "Book Summary",
+    "titleKo": "책 요약",
+    "prompt": "Write a comprehensive summary of [BOOK TITLE]. Cover the core thesis, the most important ideas, the best frameworks, key quotes, and what actions a reader should take after reading it.",
+    "promptKo": "[BOOK TITLE]에 대한 포괄적인 요약을 작성하세요. 핵심 논문, 가장 중요한 아이디어, 최고의 프레임워크, 주요 인용문, 독자가 읽은 후 취해야 할 조치를 다룹니다."
+  },
+  {
+    "id": 216,
+    "displayId": 167,
+    "category": "content",
+    "title": "SEO Article",
+    "titleKo": "SEO 아티클",
+    "prompt": "Write a 2000 word SEO-optimized article targeting the keyword [KEYWORD]. Include the keyword naturally, use proper heading structure, answer the search intent, and include internal and external link opportunities.",
+    "promptKo": "[KEYWORD]라는 키워드를 대상으로 2000단어 SEO에 최적화된 기사를 작성하세요. 키워드를 자연스럽게 포함하고, 적절한 제목 구조를 사용하고, 검색 의도에 답하고, 내부 및 외부 링크 기회를 포함합니다."
+  },
+  {
+    "id": 234,
+    "displayId": 168,
+    "category": "content",
+    "title": "Awards Submission",
+    "titleKo": "어워드 지원서",
+    "prompt": "Write an awards submission for [DESCRIBE COMPANY OR PROJECT] for the [DESCRIBE AWARD]. Highlight the most relevant achievements, use specific metrics, and make the case for why this deserves to win.",
+    "promptKo": "[DESCRIBE AWARD]에 대해 [DESCRIBE COMPANY OR PROJECT]에 대한 상을 제출합니다. 가장 관련성이 높은 성과를 강조하고, 구체적인 지표를 사용하고, 이것이 승리할 가치가 있는 이유를 설명하세요."
+  },
+  {
+    "id": 212,
+    "displayId": 169,
+    "category": "content",
+    "title": "Social Media Calendar",
+    "titleKo": "소셜미디어 캘린더",
+    "prompt": "Create a 30-day social media content calendar for [DESCRIBE BRAND] on [PLATFORMS]. Include post topics, formats, optimal posting times, and hashtag strategies.",
+    "promptKo": "[플랫폼]에서 [브랜드 설명]에 대한 30일 소셜 미디어 콘텐츠 달력을 만듭니다. 게시물 주제, 형식, 최적의 게시 시간 및 해시태그 전략을 포함합니다."
+  },
+  {
+    "id": 250,
+    "displayId": 170,
+    "category": "content",
+    "title": "Year in Review",
+    "titleKo": "연말 결산 리뷰",
+    "prompt": "Write a year in review post for [DESCRIBE PERSON OR COMPANY]. Cover the biggest wins, the hardest lessons, what changed your thinking, and what you are most excited about for next year. Be honest and specific.",
+    "promptKo": "[DESCRIBE PERSON OR COMPANY]에 대한 리뷰 게시물에 1년을 기록하세요. 가장 큰 승리, 가장 어려운 교훈, 생각을 바꾼 것, 내년에 가장 기대되는 사항을 다룹니다. 솔직하고 구체적으로 말하세요."
+  },
+  {
+    "id": 241,
+    "displayId": 171,
+    "category": "content",
+    "title": "Workshop Curriculum",
+    "titleKo": "워크숍 커리큘럼",
+    "prompt": "Design a half-day workshop curriculum on [TOPIC] for [DESCRIBE AUDIENCE]. Include learning objectives, session breakdown, activities, materials needed, and how you will measure success.",
+    "promptKo": "[청중 설명]을 위한 [주제]에 대한 반나절 워크숍 커리큘럼을 디자인하세요. 학습 목표, 세션 분석, 활동, 필요한 자료 및 성공 측정 방법을 포함합니다."
+  },
+  {
+    "id": 224,
+    "displayId": 172,
+    "category": "content",
+    "title": "FAQ Page",
+    "titleKo": "FAQ 페이지",
+    "prompt": "Write a comprehensive FAQ page for [DESCRIBE PRODUCT OR SERVICE]. Anticipate the real questions customers have including objections and concerns, and answer each one clearly and honestly.",
+    "promptKo": "[제품 또는 서비스 설명]에 대한 포괄적인 FAQ 페이지를 작성하세요. 이의, 우려 등 고객이 실제로 궁금해하는 사항을 예상하고, 각 질문에 명확하고 솔직하게 답변합니다."
+  },
+  {
+    "id": 206,
+    "displayId": 173,
+    "category": "content",
+    "title": "Email Campaign",
+    "titleKo": "이메일 캠페인",
+    "prompt": "Write a 3-email campaign for [DESCRIBE GOAL]. Email 1 builds awareness. Email 2 builds desire. Email 3 drives action. Each should have a strong subject line and a clear CTA.",
+    "promptKo": "[목표 설명]에 대한 3개의 이메일 캠페인을 작성하세요. 이메일 1은 인지도를 구축합니다. 이메일 2는 욕구를 형성합니다. 이메일 3은 행동을 유도합니다. 각 항목에는 강력한 제목과 명확한 CTA가 있어야 합니다."
+  },
+  {
+    "id": 243,
+    "displayId": 174,
+    "category": "content",
+    "title": "Partnership Proposal",
+    "titleKo": "파트너십 제안서",
+    "prompt": "Write a partnership proposal to [DESCRIBE POTENTIAL PARTNER] from [DESCRIBE YOUR COMPANY]. Make the value to both parties clear, propose specific collaboration mechanics, and suggest concrete next steps.",
+    "promptKo": "[DESCRIBE YOUR COMPANY]의 [DESCRIBE POTENTIAL PARTNER]에게 파트너십 제안서를 작성하세요. 양측 모두에게 가치를 명확히 하고, 구체적인 협업 방식을 제안하고, 구체적인 다음 단계를 제안하세요."
+  },
+  {
+    "id": 218,
+    "displayId": 175,
+    "category": "content",
+    "title": "Bio and About Page",
+    "titleKo": "자기소개·어바웃 페이지",
+    "prompt": "Write a compelling bio for [DESCRIBE PERSON] for use on [DESCRIBE CONTEXT]. Make it authoritative but human, highlight the most relevant credentials, and end with what they are working on now.",
+    "promptKo": "[DESCRIBE CONTEXT]에 사용할 [DESCRIBE PERSON]에 대한 설득력 있는 약력을 작성하세요. 권위 있으면서도 인간적인 것으로 만들고, 가장 관련성이 높은 자격 증명을 강조하고, 현재 작업 중인 작업으로 마무리하세요."
+  },
+  {
+    "id": 219,
+    "displayId": 176,
+    "category": "content",
+    "title": "Comparison Article",
+    "titleKo": "비교 아티클",
+    "prompt": "Write a comparison article between [OPTION A] and [OPTION B] for [DESCRIBE USE CASE]. Be balanced, specific, and help the reader make the right choice for their situation.",
+    "promptKo": "[사용 사례 설명]에 대해 [옵션 A]와 [옵션 B] 간의 비교 기사를 작성하세요. 균형있고 구체적이며 독자가 자신의 상황에 맞는 올바른 선택을 하도록 도와주세요."
+  },
+  {
+    "id": 226,
+    "displayId": 177,
+    "category": "content",
+    "title": "Annual Report Narrative",
+    "titleKo": "연간 보고서 내러티브",
+    "prompt": "Write the narrative sections of an annual report for [DESCRIBE COMPANY]. Cover the year in review, key achievements, challenges overcome, and vision for the year ahead. Tone should be honest and forward-looking.",
+    "promptKo": "[DESCRIBE COMPANY]에 대한 연례 보고서의 설명 섹션을 작성합니다. 한 해를 검토하고, 주요 성과, 극복 과제, 향후 비전을 다룹니다. 어조는 정직하고 미래지향적이어야 합니다."
+  },
+  {
+    "id": 236,
+    "displayId": 178,
+    "category": "content",
+    "title": "Product Update Announcement",
+    "titleKo": "제품 업데이트 공지",
+    "prompt": "Write an announcement for the product update [DESCRIBE UPDATE]. Lead with the user benefit, explain what changed and why, include any necessary instructions, and end with what is coming next.",
+    "promptKo": "제품 업데이트 [업데이트 설명]에 대한 공지를 작성하세요. 사용자 이점을 중심으로 변경된 내용과 이유를 설명하고, 필요한 지침을 포함하고, 다음에 나올 내용으로 마무리합니다."
+  },
+  {
+    "id": 246,
+    "displayId": 179,
+    "category": "content",
+    "title": "Job Description",
+    "titleKo": "채용 공고",
+    "prompt": "Write a job description for a [JOB TITLE] at [DESCRIBE COMPANY]. Make the role compelling to the right candidate, be honest about challenges, describe the impact they will have, and list only the requirements that actually matter.",
+    "promptKo": "[DESCRIBE COMPANY]에서 [JOB TITLE]에 대한 직무 설명을 작성합니다. 적절한 후보자에게 매력적인 역할을 부여하고, 과제에 대해 솔직하게 설명하고, 그것이 미칠 영향을 설명하고, 실제로 중요한 요구 사항만 나열하십시오."
+  },
+  {
+    "id": 217,
+    "displayId": 180,
+    "category": "content",
+    "title": "Sales Email Sequence",
+    "titleKo": "세일즈 이메일 시퀀스",
+    "prompt": "Write a 5-email cold outreach sequence for [DESCRIBE OFFER] targeting [DESCRIBE PROSPECT]. Each email should be short, personalized, and move the conversation forward without being pushy.",
+    "promptKo": "[DESCRIBE PROSPECT]를 대상으로 하는 [DESCRIBE OFFER]에 대한 5개의 이메일 콜드 아웃리치 시퀀스를 작성합니다. 각 이메일은 짧고 개인화되어야 하며 강압적이지 않고 대화를 진전시켜야 합니다."
+  },
+  {
+    "id": 249,
+    "displayId": 181,
+    "category": "content",
+    "title": "Product Roadmap Communication",
+    "titleKo": "제품 로드맵 커뮤니케이션",
+    "prompt": "Write a communication to [DESCRIBE AUDIENCE] explaining the product roadmap for [DESCRIBE PRODUCT]. Explain the strategic direction, what is coming when, and what it means for them.",
+    "promptKo": "[DESCRIBE PRODUCT]의 제품 로드맵을 설명하는 커뮤니케이션을 [DESCRIBE AUDIENCE]에 작성하세요. 전략적 방향, 언제, 무엇이 다가오고 그것이 그들에게 무엇을 의미하는지 설명하십시오."
+  },
+  {
+    "id": 240,
+    "displayId": 182,
+    "category": "content",
+    "title": "Re-Engagement Campaign",
+    "titleKo": "재참여(Re-engagement) 캠페인",
+    "prompt": "Write a 3-email re-engagement campaign for [DESCRIBE INACTIVE SEGMENT]. Acknowledge the gap, offer genuine value to come back, and give them a clear reason to re-engage now.",
+    "promptKo": "[DESCRIBE INACTIVE SEGMENT]에 대한 3개의 이메일 재참여 캠페인을 작성하세요. 격차를 인정하고, 다시 돌아올 수 있는 진정한 가치를 제공하고, 지금 다시 참여해야 할 명확한 이유를 제공하세요."
+  },
+  {
+    "id": 209,
+    "displayId": 183,
+    "category": "content",
+    "title": "Press Release",
+    "titleKo": "보도자료",
+    "prompt": "Write a press release announcing [DESCRIBE NEWS]. Follow AP style, lead with the most newsworthy angle, include quotes from [NAME/TITLE], and end with a boilerplate and contact information.",
+    "promptKo": "[뉴스 설명]을 알리는 보도자료를 작성하세요. AP 스타일을 따르고, 가장 뉴스 가치가 있는 각도로 진행하고, [NAME/TITLE]의 인용문을 포함하고, 상용구와 연락처 정보로 끝납니다."
+  },
+  {
+    "id": 215,
+    "displayId": 184,
+    "category": "content",
+    "title": "Webinar Presentation",
+    "titleKo": "웨비나 프레젠테이션",
+    "prompt": "Create a 45-minute webinar presentation outline on [TOPIC]. Include audience engagement questions, a value packed middle section, and a strong close that drives registrations for [NEXT STEP].",
+    "promptKo": "[주제]에 대한 45분 길이의 웹 세미나 프레젠테이션 개요를 만듭니다. 청중 참여 질문, 가치 있는 중간 섹션, [NEXT STEP] 등록을 유도하는 강력한 마감을 포함하세요."
+  },
+  {
+    "id": 211,
+    "displayId": 185,
+    "category": "content",
+    "title": "Podcast Episode Outline",
+    "titleKo": "팟캐스트 에피소드 개요",
+    "prompt": "Create a detailed outline for a podcast episode on [TOPIC]. Include an intro hook, 5 main segments with talking points, guest questions if applicable, and a closing CTA.",
+    "promptKo": "[주제]에서 팟캐스트 에피소드에 대한 자세한 개요를 작성하세요. 소개 후크, 요점이 포함된 5개의 주요 세그먼트, 해당되는 경우 게스트 질문 및 마무리 CTA를 포함합니다."
+  },
+  {
+    "id": 225,
+    "displayId": 186,
+    "category": "content",
+    "title": "Onboarding Email Series",
+    "titleKo": "온보딩 이메일 시리즈",
+    "prompt": "Write a 7-email onboarding series for new [CUSTOMERS/USERS] of [DESCRIBE PRODUCT]. Each email should help them get one specific value as quickly as possible and build toward full adoption.",
+    "promptKo": "[제품 설명]의 새로운 [고객/사용자]를 위한 7개의 이메일 온보딩 시리즈를 작성하세요. 각 이메일은 가능한 한 빨리 하나의 특정 가치를 얻고 완전한 채택을 향해 나아가는 데 도움이 되어야 합니다."
+  },
+  {
+    "id": 244,
+    "displayId": 187,
+    "category": "content",
+    "title": "Referral Program Copy",
+    "titleKo": "추천(리퍼럴) 프로그램 카피",
+    "prompt": "Write the copy for a customer referral program for [DESCRIBE PRODUCT]. Include the program explanation, the offer, how it works, the terms, and promotional messages for customers to share.",
+    "promptKo": "[제품 설명]에 대한 고객 추천 프로그램 사본을 작성하세요. 고객이 공유할 수 있는 프로그램 설명, 제안, 작동 방식, 약관 및 홍보 메시지를 포함합니다."
+  },
+  {
+    "id": 213,
+    "displayId": 188,
+    "category": "content",
+    "title": "White Paper",
+    "titleKo": "화이트페이퍼",
+    "prompt": "Write an executive summary and outline for a white paper on [TOPIC]. Target audience is [DESCRIBE]. The paper should establish authority, present original research or insight, and recommend action.",
+    "promptKo": "[주제]에 대한 백서의 요약 및 개요를 작성합니다. 타겟층은 [설명]입니다. 논문은 권위를 확립하고, 독창적인 연구나 통찰력을 제시하고, 조치를 권장해야 합니다."
+  },
+  {
+    "id": 231,
+    "displayId": 189,
+    "category": "content",
+    "title": "Explainer Content",
+    "titleKo": "개념 설명 콘텐츠",
+    "prompt": "Write an explainer for [COMPLEX TOPIC] aimed at [DESCRIBE AUDIENCE]. Use analogies and examples to make it accessible, avoid jargon, and leave the reader feeling like they actually understand it.",
+    "promptKo": "[청중 설명]을 목표로 하는 [복잡한 주제]에 대한 설명을 작성하세요. 비유와 예를 사용하여 이해하기 쉽고, 전문 용어를 피하고, 독자가 실제로 이해한 것처럼 느끼게 하십시오."
+  },
+  {
+    "id": 248,
+    "displayId": 190,
+    "category": "content",
+    "title": "Crisis Communication Statement",
+    "titleKo": "위기 커뮤니케이션 성명",
+    "prompt": "Write a crisis communication statement for [DESCRIBE SITUATION]. Acknowledge the issue directly, take appropriate responsibility, explain what is being done, and communicate what stakeholders can expect next.",
+    "promptKo": "[상황 설명]에 대한 위기 커뮤니케이션 성명을 작성합니다. 문제를 직접 인식하고, 적절한 책임을 지며, 진행 중인 작업을 설명하고, 이해관계자가 다음에 기대할 수 있는 사항을 전달합니다."
+  },
+  {
+    "id": 247,
+    "displayId": 191,
+    "category": "content",
+    "title": "Grant Proposal Narrative",
+    "titleKo": "그랜트 제안서 내러티브",
+    "prompt": "Write the narrative section of a grant proposal for [DESCRIBE PROJECT] seeking funding from [DESCRIBE FUNDER]. Make the case for impact, explain the approach, demonstrate capability, and align with funder priorities.",
+    "promptKo": "[DESCRIBE FUNDER]로부터 자금을 구하는 [DESCRIBE PROJECT]에 대한 보조금 제안서의 설명 섹션을 작성합니다. 영향을 미칠 수 있는 사례를 만들고, 접근 방식을 설명하고, 역량을 입증하고, 자금 제공자의 우선순위에 맞춰 조정하세요."
+  },
+  {
+    "id": 235,
+    "displayId": 192,
+    "category": "content",
+    "title": "Research Report Executive Summary",
+    "titleKo": "리서치 리포트 요약문",
+    "prompt": "Write a 500-word executive summary for a research report on [TOPIC]. Distill the key findings, highlight the most surprising insights, and state the recommended actions clearly.",
+    "promptKo": "[주제]에 대한 연구 보고서에 대한 500단어 요약을 작성하세요. 주요 결과를 추출하고, 가장 놀라운 통찰력을 강조하고, 권장 조치를 명확하게 설명합니다."
+  },
+  {
+    "id": 232,
+    "displayId": 193,
+    "category": "content",
+    "title": "Community Post",
+    "titleKo": "커뮤니티 포스트",
+    "prompt": "Write an engaging community post for [DESCRIBE COMMUNITY] on [TOPIC]. Start a conversation, share something genuinely useful, and end with a question that invites responses.",
+    "promptKo": "[주제]의 [커뮤니티 설명]에 대한 흥미로운 커뮤니티 게시물을 작성하세요. 대화를 시작하고, 정말로 유용한 것을 공유하고, 응답을 유도하는 질문으로 마무리하세요."
+  },
+  {
+    "id": 233,
+    "displayId": 194,
+    "category": "content",
+    "title": "Pitch Deck Narrative",
+    "titleKo": "피치덱 내러티브",
+    "prompt": "Write the narrative for a pitch deck for [DESCRIBE COMPANY]. Cover the problem, solution, market, traction, team, and ask. Make each slide advance the story compellingly.",
+    "promptKo": "[DESCRIBE COMPANY]의 프레젠테이션 자료에 대한 내러티브를 작성합니다. 문제, 솔루션, 시장, 견인력, 팀을 다루고 질문하십시오. 각 슬라이드가 스토리를 설득력 있게 전개하도록 만드세요."
+  },
+  {
+    "id": 230,
+    "displayId": 195,
+    "category": "content",
+    "title": "Product Launch Email",
+    "titleKo": "제품 출시 이메일",
+    "prompt": "Write a product launch email for [DESCRIBE PRODUCT] to [DESCRIBE AUDIENCE]. Build anticipation, communicate the key benefit clearly, create urgency, and drive clicks to [DESCRIBE CTA].",
+    "promptKo": "[DESCRIBE PRODUCT]에 대한 제품 출시 이메일을 [DESCRIBE AUDIENCE]에 작성하세요. 기대치를 높이고, 주요 이점을 명확하게 전달하고, 긴급성을 조성하고, [CTA 설명]에 대한 클릭을 유도하세요."
+  },
+  {
+    "id": 205,
+    "displayId": 196,
+    "category": "content",
+    "title": "LinkedIn Post",
+    "titleKo": "링크드인 포스트",
+    "prompt": "Write a LinkedIn post about [TOPIC] that is professional but personal. Share a specific experience or insight, make it relevant to [DESCRIBE AUDIENCE], and end with a question that drives comments.",
+    "promptKo": "전문적이지만 개인적인 [주제]에 대한 LinkedIn 게시물을 작성하세요. 특정 경험이나 통찰력을 공유하고 이를 [대상 설명]과 관련되게 만들고 댓글을 유도하는 질문으로 마무리하세요."
+  },
+  {
+    "id": 239,
+    "displayId": 197,
+    "category": "content",
+    "title": "Brand Story",
+    "titleKo": "브랜드 스토리",
+    "prompt": "Write the brand story for [COMPANY]. Cover the founding moment, the problem being solved, the mission, what makes the company different, and where it is going. Make it human and memorable.",
+    "promptKo": "[COMPANY]의 브랜드 스토리를 작성해 보세요. 창립 순간, 해결 중인 문제, 사명, 회사를 차별화하는 요소, 앞으로 나아갈 방향을 다룹니다. 인간적이고 기억에 남는 것으로 만드십시오."
+  },
+  {
+    "id": 201,
+    "displayId": 198,
+    "category": "content",
+    "title": "Viral Twitter Thread",
+    "titleKo": "바이럴 트위터 쓰레드",
+    "prompt": "Write a viral Twitter thread about [TOPIC]. Start with a scroll-stopping hook. Each tweet should deliver a standalone insight. End with a strong call to action. My audience is [DESCRIBE AUDIENCE].",
+    "promptKo": "[주제]에 대한 인기 있는 Twitter 스레드를 작성하세요. 스크롤 중지 후크로 시작하십시오. 각 트윗은 독립적인 통찰력을 제공해야 합니다. 강력한 행동 촉구로 마무리하세요. 내 청중은 [설명 청중]입니다."
+  },
+  {
+    "id": 220,
+    "displayId": 199,
+    "category": "content",
+    "title": "How To Guide",
+    "titleKo": "하우투 가이드",
+    "prompt": "Write a comprehensive how-to guide for [DESCRIBE TASK] aimed at [DESCRIBE AUDIENCE]. Break it into clear steps, include common mistakes to avoid, and add pro tips throughout.",
+    "promptKo": "[DESCRIBE TASK]를 목표로 하는 [DESCRIBE TASK]에 대한 포괄적인 방법 가이드를 작성하세요. 명확한 단계로 나누고, 피해야 할 일반적인 실수를 포함하고, 전체적으로 전문가 팁을 추가하세요."
+  },
+  {
+    "id": 245,
+    "displayId": 200,
+    "category": "content",
+    "title": "Community Guidelines",
+    "titleKo": "커뮤니티 가이드라인",
+    "prompt": "Write community guidelines for [DESCRIBE COMMUNITY]. Cover what behavior is expected, what is not allowed, how violations are handled, and the values that underpin the rules. Make them human not legalistic.",
+    "promptKo": "[DESCRIBE COMMUNITY]에 대한 커뮤니티 가이드라인을 작성하세요. 예상되는 동작, 허용되지 않는 동작, 위반 처리 방법, 규칙을 뒷받침하는 값을 다룹니다. 그들을 율법주의자가 아닌 인간으로 만드십시오."
+  },
+  {
+    "id": 125,
+    "displayId": 201,
+    "category": "research",
+    "title": "Assumption Mapping",
+    "titleKo": "가정 매핑",
+    "prompt": "Map all the assumptions underlying [DESCRIBE PLAN OR BELIEF]. Categorize them by how critical they are and how uncertain they are. Which assumptions most need to be tested?",
+    "promptKo": "[계획 또는 신념 설명]의 기초가 되는 모든 가정을 매핑합니다. 얼마나 중요한지, 얼마나 불확실한지를 기준으로 분류하세요. 어떤 가정을 가장 테스트해야 합니까?"
+  },
+  {
+    "id": 104,
+    "displayId": 202,
+    "category": "research",
+    "title": "Argument Steel-Manning",
+    "titleKo": "상대 주장 강화 분석",
+    "prompt": "Steel-man the argument that [CONTROVERSIAL POSITION]. Present the strongest possible version of this argument as its best advocate would make it. Then identify its weakest points.",
+    "promptKo": "스틸맨의 주장은 [논란의 여지가 있는 입장]입니다. 이 주장을 가장 잘 옹호하는 사람이 만들 수 있는 가장 강력한 버전을 제시하십시오. 그런 다음 가장 약한 부분을 식별하십시오."
+  },
+  {
+    "id": 145,
+    "displayId": 203,
+    "category": "research",
+    "title": "Go to Market Analysis",
+    "titleKo": "GTM(시장 진입) 분석",
+    "prompt": "Analyze the go to market strategy for [DESCRIBE PRODUCT]. Who is the beachhead customer, what is the sales motion, how does word of mouth work, and what drives viral growth?",
+    "promptKo": "[제품 설명]의 시장 진출 전략을 분석합니다. 교두보 고객은 누구이며, 영업 활동은 무엇이며, 입소문은 어떻게 작동하며, 바이럴 성장을 주도하는 요소는 무엇입니까?"
+  },
+  {
+    "id": 118,
+    "displayId": 204,
+    "category": "research",
+    "title": "Trend Analysis",
+    "titleKo": "트렌드 분석",
+    "prompt": "Analyze the trend of [DESCRIBE TREND]. How long has it been building, what is driving it, how durable is it, and what are its second and third order effects?",
+    "promptKo": "[DESCRIBE TREND]의 추세를 분석합니다. 구축된 기간은 얼마나 되었으며, 이를 추진하는 요인은 무엇이며, 내구성은 얼마나 되는지, 2차 및 3차 효과는 무엇입니까?"
+  },
+  {
+    "id": 102,
+    "displayId": 205,
+    "category": "research",
+    "title": "Competitive Analysis",
+    "titleKo": "경쟁사 분석",
+    "prompt": "Analyze [COMPANY/PRODUCT] against its top 5 competitors. Compare on [DIMENSIONS]. Identify where it leads, where it lags, and where the biggest opportunities are.",
+    "promptKo": "[회사/제품]을 상위 5개 경쟁업체와 비교 분석하세요. [DIMENSIONS]을(를) 비교해 보세요. 그것이 이끄는 곳, 뒤처지는 곳, 가장 큰 기회가 있는 곳을 식별하십시오."
+  },
+  {
+    "id": 105,
+    "displayId": 206,
+    "category": "research",
+    "title": "Investment Thesis Analysis",
+    "titleKo": "투자 논리 분석",
+    "prompt": "Analyze the investment thesis for [COMPANY/ASSET]. What has to be true for this to be a good investment, what are the key risks, and what would change your view?",
+    "promptKo": "[COMPANY/ASSET]에 대한 투자 논거를 분석합니다. 이것이 좋은 투자가 되기 위해서는 무엇이 사실이어야 하며, 주요 위험은 무엇이며, 무엇이 귀하의 견해를 바꾸게 될까요?"
+  },
+  {
+    "id": 141,
+    "displayId": 207,
+    "category": "research",
+    "title": "Channel Analysis",
+    "titleKo": "채널 분석",
+    "prompt": "Analyze the distribution channels for [DESCRIBE PRODUCT OR SERVICE]. Which channels reach the target customer most efficiently, what are the economics of each, and what is the optimal mix?",
+    "promptKo": "[제품 또는 서비스 설명]의 유통 채널을 분석합니다. 어떤 채널이 대상 고객에게 가장 효율적으로 도달하고, 각 채널의 경제성은 무엇이며, 최적의 조합은 무엇입니까?"
+  },
+  {
+    "id": 146,
+    "displayId": 208,
+    "category": "research",
+    "title": "Operations Analysis",
+    "titleKo": "오퍼레이션 분석",
+    "prompt": "Analyze the operations of [DESCRIBE BUSINESS]. Where are the bottlenecks, what processes are most critical, where is waste occurring, and what would have the highest impact to improve?",
+    "promptKo": "[비즈니스 설명]의 운영을 분석합니다. 병목 현상은 어디에 있고, 어떤 프로세스가 가장 중요한지, 낭비가 발생하는 곳은 어디이며, 개선에 가장 큰 영향을 미치는 것은 무엇입니까?"
+  },
+  {
+    "id": 123,
+    "displayId": 209,
+    "category": "research",
+    "title": "Hypothesis Generation",
+    "titleKo": "가설 도출",
+    "prompt": "Generate 10 testable hypotheses about [DESCRIBE PHENOMENON OR PROBLEM]. For each, describe what evidence would confirm or refute it and how it could be tested.",
+    "promptKo": "[현상 또는 문제 설명]에 대해 10개의 테스트 가능한 가설을 생성합니다. 각각에 대해 어떤 증거가 그것을 확인하거나 반박할 수 있는지, 그리고 어떻게 테스트할 수 있는지 설명하십시오."
+  },
+  {
+    "id": 150,
+    "displayId": 210,
+    "category": "research",
+    "title": "Exit Strategy Analysis",
+    "titleKo": "엑시트 전략 분석",
+    "prompt": "Analyze potential exit strategies for [DESCRIBE COMPANY OR INVESTMENT]. What acquirers would be interested and why, what would drive valuation, and what is the realistic timeline?",
+    "promptKo": "[회사 또는 투자 설명]에 대한 잠재적인 종료 전략을 분석합니다. 어떤 인수자가 관심을 가질 것이며 그 이유는 무엇이며 가치 평가를 촉진할 요소는 무엇이며 현실적인 일정은 어떻게 됩니까?"
+  },
+  {
+    "id": 147,
+    "displayId": 211,
+    "category": "research",
+    "title": "Talent Analysis",
+    "titleKo": "인재 분석",
+    "prompt": "Analyze the talent landscape for [DESCRIBE ROLE OR SKILL]. Where is the talent, what do they want, how competitive is hiring, and what would make [COMPANY] attractive to them?",
+    "promptKo": "[역할 또는 기술 설명]의 인재 환경을 분석하세요. 인재는 어디에 있고, 그들이 원하는 것은 무엇이며, 채용 경쟁은 얼마나 됩니까? [회사]가 그들에게 매력적인 이유는 무엇입니까?"
+  },
+  {
+    "id": 120,
+    "displayId": 212,
+    "category": "research",
+    "title": "Gap Analysis",
+    "titleKo": "갭 분석",
+    "prompt": "Conduct a gap analysis between [CURRENT STATE] and [DESIRED STATE] for [DESCRIBE CONTEXT]. What are the gaps, what causes them, and what would close them most efficiently?",
+    "promptKo": "[컨텍스트 설명]에 대해 [현재 상태]와 [원하는 상태] 간의 차이 분석을 수행합니다. 격차는 무엇이며, 그 원인은 무엇이며, 이를 가장 효율적으로 메울 수 있는 방법은 무엇입니까?"
+  },
+  {
+    "id": 108,
+    "displayId": 213,
+    "category": "research",
+    "title": "Historical Pattern Analysis",
+    "titleKo": "역사적 패턴 분석",
+    "prompt": "Analyze historical examples of [DESCRIBE SITUATION OR PATTERN]. What patterns emerge, what caused success or failure, and what lessons apply to [CURRENT SITUATION]?",
+    "promptKo": "[상황 또는 패턴 설명]의 역사적 사례를 분석하세요. 어떤 패턴이 나타나고, 성공 또는 실패의 원인은 무엇이며, [현재 상황]에는 어떤 교훈이 적용됩니까?"
+  },
+  {
+    "id": 130,
+    "displayId": 214,
+    "category": "research",
+    "title": "Technology Roadmap Analysis",
+    "titleKo": "기술 로드맵 분석",
+    "prompt": "Analyze the technology roadmap for [DESCRIBE TECHNOLOGY AREA]. What are the key milestones, what breakthroughs are needed, and what is the realistic timeline for [DESCRIBE CAPABILITY]?",
+    "promptKo": "[기술 분야 기술]에 대한 기술 로드맵을 분석합니다. 주요 이정표는 무엇이며, 어떤 혁신이 필요하며, [역량 설명]의 현실적인 일정은 어떻게 됩니까?"
+  },
+  {
+    "id": 129,
+    "displayId": 215,
+    "category": "research",
+    "title": "Regulatory Landscape Analysis",
+    "titleKo": "규제 환경 분석",
+    "prompt": "Analyze the regulatory landscape for [DESCRIBE INDUSTRY OR ACTIVITY] in [GEOGRAPHY]. What regulations apply, what is changing, and what are the compliance risks?",
+    "promptKo": "[지역]에서 [산업 또는 활동 설명]에 대한 규제 환경을 분석하세요. 어떤 규정이 적용되고, 무엇이 변경되며, 규정 준수 위험은 무엇입니까?"
+  },
+  {
+    "id": 132,
+    "displayId": 216,
+    "category": "research",
+    "title": "Pre-Mortem Analysis",
+    "titleKo": "프리모템 분석",
+    "prompt": "Conduct a pre-mortem for [DESCRIBE PLAN]. Imagine it is 12 months from now and this has failed. What went wrong, why did it fail, and what could have been done differently?",
+    "promptKo": "[계획 설명]에 대한 사전 부검을 실시합니다. 지금으로부터 12개월 후에 이것이 실패했다고 상상해 보십시오. 무엇이 잘못되었고, 왜 실패했으며, 다르게 할 수 있었던 것은 무엇입니까?"
+  },
+  {
+    "id": 149,
+    "displayId": 217,
+    "category": "research",
+    "title": "Seasonality Analysis",
+    "titleKo": "계절성 분석",
+    "prompt": "Analyze the seasonality patterns in [DESCRIBE BUSINESS OR MARKET]. How pronounced are they, what drives them, and how should strategy and operations adapt?",
+    "promptKo": "[비즈니스 또는 시장 설명]에서 계절성 패턴을 분석하세요. 얼마나 뚜렷하고, 무엇이 이를 주도하며, 전략과 운영이 어떻게 적응해야 합니까?"
+  },
+  {
+    "id": 107,
+    "displayId": 218,
+    "category": "research",
+    "title": "First Principles Analysis",
+    "titleKo": "제1원리 분석",
+    "prompt": "Break down [PROBLEM/INDUSTRY/ASSUMPTION] from first principles. What are the irreducible truths, what assumptions are people making that might be wrong, and what does this suggest?",
+    "promptKo": "첫 번째 원칙에서 [문제/산업/가정]을 분석하세요. 환원할 수 없는 진실은 무엇이며, 사람들이 틀릴 수도 있는 가정은 무엇이며, 이것이 시사하는 바는 무엇입니까?"
+  },
+  {
+    "id": 113,
+    "displayId": 219,
+    "category": "research",
+    "title": "Policy Analysis",
+    "titleKo": "정책 분석",
+    "prompt": "Analyze the policy [DESCRIBE POLICY] from multiple stakeholder perspectives. Who benefits, who is harmed, what are the intended and unintended consequences, and what alternatives exist?",
+    "promptKo": "다양한 이해관계자의 관점에서 [정책 설명] 정책을 분석합니다. 누가 이익을 얻고, 누가 피해를 입으며, 의도한 결과와 의도하지 않은 결과는 무엇이며, 어떤 대안이 존재합니까?"
+  },
+  {
+    "id": 124,
+    "displayId": 220,
+    "category": "research",
+    "title": "Analogical Reasoning",
+    "titleKo": "유추 추론",
+    "prompt": "Find 5 historical or cross-industry analogies for [DESCRIBE SITUATION]. What can each analogy teach us and where does the analogy break down?",
+    "promptKo": "[상황 설명]에 대한 5가지 역사적 또는 산업 간 비유를 찾아보세요. 각 비유는 우리에게 무엇을 가르쳐 줄 수 있으며 비유는 어디에서 설명됩니까?"
+  },
+  {
+    "id": 128,
+    "displayId": 221,
+    "category": "research",
+    "title": "Customer Research Synthesis",
+    "titleKo": "고객 리서치 종합",
+    "prompt": "Synthesize these customer interviews and identify the most important patterns: [PASTE INTERVIEW NOTES OR TRANSCRIPTS]. What are the key pain points, desires, and surprising insights?",
+    "promptKo": "이러한 고객 인터뷰를 종합하고 가장 중요한 패턴을 식별하십시오: [인터뷰 메모 또는 기록 붙여넣기]. 주요 문제점, 욕구, 놀라운 통찰력은 무엇입니까?"
+  },
+  {
+    "id": 140,
+    "displayId": 222,
+    "category": "research",
+    "title": "Pricing Power Analysis",
+    "titleKo": "가격 결정력 분석",
+    "prompt": "Analyze the pricing power of [COMPANY OR PRODUCT]. Can prices be raised without losing customers, what justifies premium pricing, and what limits pricing power?",
+    "promptKo": "[회사 또는 제품]의 가격 결정력을 분석합니다. 고객을 잃지 않고 가격을 인상할 수 있습니까? 프리미엄 가격을 정당화하는 것은 무엇이며 가격 결정력을 제한하는 것은 무엇입니까?"
+  },
+  {
+    "id": 142,
+    "displayId": 223,
+    "category": "research",
+    "title": "Brand Analysis",
+    "titleKo": "브랜드 분석",
+    "prompt": "Analyze the brand of [COMPANY]. What does it stand for, how is it perceived, what is its equity, and what would strengthen or damage it?",
+    "promptKo": "[COMPANY]의 브랜드를 분석해 보세요. 그것은 무엇을 의미하며, 어떻게 인식되고, 그 형평성은 무엇이며, 무엇이 그것을 강화하거나 손상시킬 수 있습니까?"
+  },
+  {
+    "id": 148,
+    "displayId": 224,
+    "category": "research",
+    "title": "Platform vs Product Analysis",
+    "titleKo": "플랫폼 vs 프로덕트 분석",
+    "prompt": "Analyze whether [DESCRIBE OFFERING] should be a product or a platform. What are the economics of each, what would make a platform successful, and what are the risks of each path?",
+    "promptKo": "[설명]이 제품이어야 하는지 아니면 플랫폼이어야 하는지 분석하세요. 각각의 경제성은 무엇이며, 플랫폼을 성공으로 이끄는 요인은 무엇이며, 각 경로의 위험은 무엇입니까?"
+  },
+  {
+    "id": 103,
+    "displayId": 225,
+    "category": "research",
+    "title": "Market Size Estimation",
+    "titleKo": "시장 규모 추정",
+    "prompt": "Estimate the market size for [DESCRIBE MARKET]. Use a bottom-up approach, show your assumptions clearly, and give a range rather than a single number.",
+    "promptKo": "[DESCRIBE MARKET]의 시장 규모를 추정해 보세요. 상향식 접근 방식을 사용하고, 가정을 명확하게 보여주고, 단일 숫자가 아닌 범위를 제공하십시오."
+  },
+  {
+    "id": 134,
+    "displayId": 226,
+    "category": "research",
+    "title": "Network Effects Analysis",
+    "titleKo": "네트워크 효과 분석",
+    "prompt": "Analyze the network effects dynamics in [DESCRIBE MARKET OR PRODUCT]. What type of network effects exist, how strong are they, and what does this mean for competitive dynamics?",
+    "promptKo": "[시장 또는 제품 설명]에서 네트워크 효과 역학을 분석합니다. 어떤 유형의 네트워크 효과가 존재하며, 그 효과는 얼마나 강력하며, 이는 경쟁 역학에 어떤 의미가 있습니까?"
+  },
+  {
+    "id": 119,
+    "displayId": 227,
+    "category": "research",
+    "title": "Decision Framework",
+    "titleKo": "의사결정 프레임워크",
+    "prompt": "Build a decision framework for [DESCRIBE DECISION TYPE]. What factors matter, how should they be weighted, what information is needed, and what does a good decision process look like?",
+    "promptKo": "[결정 유형 설명]에 대한 결정 프레임워크를 구축하세요. 어떤 요소가 중요하고, 어떻게 가중치를 부여해야 하며, 어떤 정보가 필요하며, 올바른 의사결정 프로세스는 어떤 모습입니까?"
+  },
+  {
+    "id": 121,
+    "displayId": 228,
+    "category": "research",
+    "title": "Root Cause Analysis",
+    "titleKo": "근본 원인 분석",
+    "prompt": "Conduct a root cause analysis of [DESCRIBE PROBLEM OR FAILURE]. Use the five whys method, identify contributing factors, and recommend actions that address root causes not symptoms.",
+    "promptKo": "[문제 또는 실패 설명]의 근본 원인 분석을 수행합니다. 5가지 이유 방법을 사용하고, 기여 요인을 식별하고, 증상이 아닌 근본 원인을 해결하는 조치를 권장합니다."
+  },
+  {
+    "id": 106,
+    "displayId": 229,
+    "category": "research",
+    "title": "SWOT Analysis",
+    "titleKo": "SWOT 분석",
+    "prompt": "Conduct a deep SWOT analysis for [COMPANY/PROJECT/IDEA]. Go beyond surface level observations and identify second-order implications of each factor.",
+    "promptKo": "[회사/프로젝트/아이디어]에 대한 심층적인 SWOT 분석을 수행합니다. 표면 수준의 관찰을 넘어 각 요인의 2차 영향을 식별합니다."
+  },
+  {
+    "id": 111,
+    "displayId": 230,
+    "category": "research",
+    "title": "Scenario Planning",
+    "titleKo": "시나리오 플래닝",
+    "prompt": "Develop three scenarios for [DESCRIBE SITUATION]: a base case, an optimistic case, and a pessimistic case. What would cause each to occur and how should we prepare for each?",
+    "promptKo": "[상황 설명]에 대한 세 가지 시나리오(기본 사례, 낙관적 사례, 비관적 사례)를 개발합니다. 각각의 상황이 발생하는 원인은 무엇이며, 각각에 대해 어떻게 준비해야 합니까?"
+  },
+  {
+    "id": 131,
+    "displayId": 231,
+    "category": "research",
+    "title": "Mental Model Application",
+    "titleKo": "멘탈 모델 적용",
+    "prompt": "Apply the mental model of [DESCRIBE MENTAL MODEL] to analyze [DESCRIBE SITUATION]. What does this lens reveal that a conventional analysis would miss?",
+    "promptKo": "[설명 모델]의 정신 모델을 적용하여 [상황 설명]을 분석합니다. 이 렌즈는 기존 분석이 놓칠 수 있는 무엇을 드러내는가?"
+  },
+  {
+    "id": 136,
+    "displayId": 232,
+    "category": "research",
+    "title": "Moat Analysis",
+    "titleKo": "해자(Moat) 분석",
+    "prompt": "Analyze the competitive moat of [COMPANY]. What sustainable advantages does it have, how durable are they, and what would erode them?",
+    "promptKo": "[COMPANY]의 경쟁 해자를 분석합니다. 지속 가능한 이점은 무엇이며, 내구성은 얼마나 되며, 이를 침식하는 요인은 무엇입니까?"
+  },
+  {
+    "id": 109,
+    "displayId": 233,
+    "category": "research",
+    "title": "Data Interpretation",
+    "titleKo": "데이터 해석",
+    "prompt": "Interpret this data: [PASTE DATA OR DESCRIBE DATASET]. What are the key insights, what is surprising, what questions does it raise, and what decisions does it support?",
+    "promptKo": "이 데이터를 해석하세요: [데이터 붙여넣기 또는 데이터세트 설명]. 핵심 통찰력은 무엇이며, 놀라운 점은 무엇이며, 그것이 제기하는 질문은 무엇이며, 어떤 결정을 뒷받침합니까?"
+  },
+  {
+    "id": 138,
+    "displayId": 234,
+    "category": "research",
+    "title": "Supply and Demand Analysis",
+    "titleKo": "수요·공급 분석",
+    "prompt": "Analyze the supply and demand dynamics for [DESCRIBE MARKET]. What drives demand, what constrains supply, how tight is the market, and what would shift the balance?",
+    "promptKo": "[DESCRIBE MARKET]에 대한 수요와 공급 역학을 분석합니다. 무엇이 수요를 주도하고, 무엇이 공급을 제한하며, 시장이 얼마나 타이트한지, 무엇이 균형을 바꿀까요?"
+  },
+  {
+    "id": 112,
+    "displayId": 235,
+    "category": "research",
+    "title": "Literature Review",
+    "titleKo": "문헌 조사",
+    "prompt": "Summarize the current state of research on [TOPIC]. What is well established, what is contested, what are the major schools of thought, and what are the key open questions?",
+    "promptKo": "[주제]에 대한 연구 현황을 요약합니다. 무엇이 잘 확립되어 있고, 무엇이 논쟁거리이며, 주요 사상 학파는 무엇이며, 주요 공개 질문은 무엇입니까?"
+  },
+  {
+    "id": 101,
+    "displayId": 236,
+    "category": "research",
+    "title": "Deep Research Brief",
+    "titleKo": "심층 리서치 브리프",
+    "prompt": "Research [TOPIC] comprehensively. Cover the current state, key players, recent developments, open questions, and what experts disagree about. Structure as a research brief.",
+    "promptKo": "[주제]을(를) 종합적으로 조사하세요. 현재 상태, 핵심 플레이어, 최근 개발, 미해결 질문, 전문가의 의견이 일치하지 않는 내용을 다룹니다. 연구 개요로서의 구조."
+  },
+  {
+    "id": 144,
+    "displayId": 237,
+    "category": "research",
+    "title": "Partnership Strategy Analysis",
+    "titleKo": "파트너십 전략 분석",
+    "prompt": "Analyze potential partnership strategies for [DESCRIBE COMPANY]. What types of partners would create the most value, what would make a partnership successful, and what are the risks?",
+    "promptKo": "[DESCRIBE COMPANY]의 잠재적 파트너십 전략을 분석합니다. 어떤 유형의 파트너가 가장 큰 가치를 창출하고, 파트너십을 성공으로 이끄는 요소는 무엇이며, 위험은 무엇입니까?"
+  },
+  {
+    "id": 127,
+    "displayId": 238,
+    "category": "research",
+    "title": "Benchmark Analysis",
+    "titleKo": "벤치마크 분석",
+    "prompt": "Benchmark [DESCRIBE SUBJECT] against industry best practices and top performers. Where does it rank, what specifically do the best performers do differently, and what is the improvement path?",
+    "promptKo": "업계 모범 사례 및 최고의 성과를 기준으로 [주제 설명]을 벤치마킹하세요. 순위는 어디이며, 최고의 성과를 낸 사람들은 구체적으로 무엇을 다르게 수행하며, 개선 경로는 무엇입니까?"
+  },
+  {
+    "id": 139,
+    "displayId": 239,
+    "category": "research",
+    "title": "Innovation Analysis",
+    "titleKo": "혁신 분석",
+    "prompt": "Analyze the innovation landscape in [DESCRIBE FIELD]. Where is innovation happening, who are the key innovators, what approaches are being tried, and where are the white spaces?",
+    "promptKo": "[DESCRIBE FIELD]에서 혁신 환경을 분석하세요. 혁신은 어디에서 일어나고 있으며, 주요 혁신자는 누구이며, 어떤 접근 방식이 시도되고 있으며 공백은 어디에 있습니까?"
+  },
+  {
+    "id": 117,
+    "displayId": 240,
+    "category": "research",
+    "title": "Expert Synthesis",
+    "titleKo": "전문가 관점 종합",
+    "prompt": "You are synthesizing the views of five leading experts on [TOPIC]. Present the areas of consensus, the key disagreements, and what the weight of expert opinion suggests.",
+    "promptKo": "귀하는 [주제]에 대한 5명의 주요 전문가의 견해를 종합하고 있습니다. 합의된 영역, 주요 불일치, 전문가 의견의 중요성이 시사하는 바를 제시합니다."
+  },
+  {
+    "id": 114,
+    "displayId": 241,
+    "category": "research",
+    "title": "Technology Assessment",
+    "titleKo": "기술 평가",
+    "prompt": "Assess the technology [DESCRIBE TECHNOLOGY] for use in [DESCRIBE CONTEXT]. Evaluate maturity, capabilities, limitations, costs, alternatives, and implementation risks.",
+    "promptKo": "[DESCRIBE CONTEXT]에 사용할 기술 [DESCRIBE TECHNOLOGY]을 평가합니다. 성숙도, 기능, 제한 사항, 비용, 대안 및 구현 위험을 평가합니다."
+  },
+  {
+    "id": 115,
+    "displayId": 242,
+    "category": "research",
+    "title": "Business Model Analysis",
+    "titleKo": "비즈니스 모델 분석",
+    "prompt": "Analyze the business model of [COMPANY]. How does it make money, what are its unit economics, what drives growth, what are its vulnerabilities, and how defensible is it?",
+    "promptKo": "[COMPANY]의 비즈니스 모델을 분석합니다. 어떻게 돈을 벌고, 단위 경제는 무엇이며, 무엇이 성장을 주도하고, 취약점은 무엇이며, 얼마나 방어 가능한가?"
+  },
+  {
+    "id": 122,
+    "displayId": 243,
+    "category": "research",
+    "title": "Stakeholder Analysis",
+    "titleKo": "이해관계자 분석",
+    "prompt": "Map the stakeholders for [DESCRIBE PROJECT OR DECISION]. Who has power, who is affected, what does each party want, and how should each be engaged?",
+    "promptKo": "[프로젝트 또는 결정 설명]에 대한 이해관계자를 매핑합니다. 권력을 가진 사람은 누구이고, 영향을 받는 사람은 누구이며, 각 당사자는 무엇을 원하며, 각 당사자는 어떻게 참여해야 합니까?"
+  },
+  {
+    "id": 137,
+    "displayId": 244,
+    "category": "research",
+    "title": "Demographic Analysis",
+    "titleKo": "인구통계 분석",
+    "prompt": "Analyze the demographic trends affecting [DESCRIBE MARKET OR INDUSTRY]. What shifts are occurring, how fast, and what are the implications for the next 10 years?",
+    "promptKo": "[시장 또는 산업 설명]에 영향을 미치는 인구통계학적 추세를 분석합니다. 어떤 변화가 일어나고 있으며, 얼마나 빠르게 진행되고 있으며, 향후 10년 동안 어떤 영향을 미칠까요?"
+  },
+  {
+    "id": 135,
+    "displayId": 245,
+    "category": "research",
+    "title": "Jobs to Be Done Analysis",
+    "titleKo": "JTBD(할 일 중심) 분석",
+    "prompt": "Apply the Jobs to Be Done framework to understand why customers hire [DESCRIBE PRODUCT OR SERVICE]. What functional, emotional, and social jobs is it doing?",
+    "promptKo": "고객이 [제품 또는 서비스 설명]을(를) 고용하는 이유를 이해하려면 완료해야 할 작업 프레임워크를 적용하세요. 어떤 기능적, 정서적, 사회적 업무를 수행하고 있나요?"
+  },
+  {
+    "id": 143,
+    "displayId": 246,
+    "category": "research",
+    "title": "Churn Analysis Framework",
+    "titleKo": "이탈(Churn) 분석 프레임워크",
+    "prompt": "Design a framework for analyzing customer churn in [DESCRIBE BUSINESS]. What are the leading indicators, what segments churn most, and what interventions are most effective?",
+    "promptKo": "[비즈니스 설명]에서 고객 이탈 분석을 위한 프레임워크를 설계합니다. 주요 지표는 무엇이며, 가장 많이 이탈하는 세그먼트는 무엇이며, 가장 효과적인 개입은 무엇입니까?"
+  },
+  {
+    "id": 126,
+    "displayId": 247,
+    "category": "research",
+    "title": "Second Order Effects",
+    "titleKo": "2차 효과 분석",
+    "prompt": "Analyze the second and third order effects of [DESCRIBE DECISION OR TREND]. Go beyond the obvious first order effects and identify what most people are missing.",
+    "promptKo": "[결정 또는 추세 설명]의 2차 및 3차 효과를 분석합니다. 명백한 1차 효과를 넘어 대부분의 사람들이 놓치고 있는 것이 무엇인지 확인하십시오."
+  },
+  {
+    "id": 133,
+    "displayId": 248,
+    "category": "research",
+    "title": "Value Chain Analysis",
+    "titleKo": "밸류체인 분석",
+    "prompt": "Map the value chain for [DESCRIBE INDUSTRY]. Where is value created, where is it captured, where are the margins, and where is disruption most likely to occur?",
+    "promptKo": "[산업 설명]의 가치 사슬을 매핑합니다. 가치는 어디에서 창출되고, 어디에서 포착되며, 마진은 어디이며, 파괴가 발생할 가능성이 가장 높은 곳은 어디입니까?"
+  },
+  {
+    "id": 110,
+    "displayId": 249,
+    "category": "research",
+    "title": "Risk Analysis",
+    "titleKo": "리스크 분석",
+    "prompt": "Conduct a comprehensive risk analysis for [DESCRIBE PROJECT OR DECISION]. Identify all risks, assess likelihood and impact, prioritize them, and suggest mitigations for the top five.",
+    "promptKo": "[프로젝트 또는 결정 설명]에 대한 포괄적인 위험 분석을 수행합니다. 모든 위험을 식별하고, 가능성과 영향을 평가하고, 우선 순위를 지정하고, 상위 5개 위험에 대한 완화 방법을 제안합니다."
+  },
+  {
+    "id": 116,
+    "displayId": 250,
+    "category": "research",
+    "title": "Causal Chain Analysis",
+    "titleKo": "인과 관계 분석",
+    "prompt": "Map the causal chain from [ROOT CAUSE] to [OUTCOME]. What are all the links in the chain, where could intervention have the most impact, and what feedback loops exist?",
+    "promptKo": "[근본 원인]에서 [결과]까지 인과 사슬을 매핑합니다. 체인의 모든 링크는 무엇이며, 개입이 가장 큰 영향을 미칠 수 있는 부분은 무엇이며, 어떤 피드백 루프가 존재합니까?"
+  },
+  {
+    "id": 160,
+    "displayId": 251,
+    "category": "automation",
+    "title": "Build a Monitoring Alert System",
+    "titleKo": "모니터링 알람 시스템",
+    "prompt": "Design an automated monitoring system for [DESCRIBE WHAT IS BEING MONITORED]. What metrics trigger alerts, how are alerts prioritized, and what information is included in each alert?",
+    "promptKo": "[모니터링 대상 설명]에 대한 자동 모니터링 시스템을 설계합니다. 어떤 측정항목이 알림을 트리거하고, 알림의 우선순위가 어떻게 지정되며, 각 알림에는 어떤 정보가 포함되나요?"
+  },
+  {
+    "id": 154,
+    "displayId": 252,
+    "category": "automation",
+    "title": "Build a Data Pipeline",
+    "titleKo": "데이터 파이프라인 구축",
+    "prompt": "Design a data pipeline that takes [DESCRIBE INPUT], transforms it by [DESCRIBE TRANSFORMATIONS], and loads it into [DESCRIBE DESTINATION]. Include error handling and monitoring.",
+    "promptKo": "[DESCRIBE INPUT]을 가져와 [DESCRIBE TRANSFORMATIONS]로 변환하고 [DESCRIBE DESTINATION]에 로드하는 데이터 파이프라인을 설계합니다. 오류 처리 및 모니터링을 포함합니다."
+  },
+  {
+    "id": 152,
+    "displayId": 253,
+    "category": "automation",
+    "title": "Zapier Workflow Design",
+    "titleKo": "Zapier 워크플로우 설계",
+    "prompt": "Design a Zapier workflow that automates [DESCRIBE PROCESS]. Define the trigger, all the steps in sequence, what data is passed between steps, and how errors are handled.",
+    "promptKo": "[프로세스 설명]을 자동화하는 Zapier 워크플로를 설계합니다. 트리거, 모든 단계의 순서, 단계 간에 전달되는 데이터, 오류 처리 방법을 정의합니다."
+  },
+  {
+    "id": 156,
+    "displayId": 254,
+    "category": "automation",
+    "title": "Build a Lead Qualification Bot",
+    "titleKo": "리드 퀄리파이 봇",
+    "prompt": "Design an automated lead qualification system that [DESCRIBE HOW LEADS COME IN], asks qualifying questions, scores them against [DESCRIBE CRITERIA], and routes them to the right person.",
+    "promptKo": "[DESCRIBE HOW LEADS COME IN], 적격 질문을 하고, [DESCRIBE CRITERIA]에 대해 점수를 매긴 후 적합한 사람에게 라우팅하는 자동화된 리드 선별 시스템을 설계합니다."
+  },
+  {
+    "id": 191,
+    "displayId": 255,
+    "category": "automation",
+    "title": "Automate Partner Reporting",
+    "titleKo": "파트너 리포팅 자동화",
+    "prompt": "Design an automation that compiles performance data for [DESCRIBE PARTNER PROGRAM], generates partner-specific reports, and distributes them on a defined schedule.",
+    "promptKo": "[DESCRIBE PARTNER PROGRAM]에 대한 성과 데이터를 수집하고, 파트너별 보고서를 생성하고, 정의된 일정에 따라 배포하는 자동화를 설계합니다."
+  },
+  {
+    "id": 173,
+    "displayId": 256,
+    "category": "automation",
+    "title": "Automate Job Posting and Screening",
+    "titleKo": "채용 공고·스크리닝 자동화",
+    "prompt": "Design an automation for the recruitment process that posts jobs, screens applications against [CRITERIA], schedules interviews for qualified candidates, and sends rejections.",
+    "promptKo": "채용 정보를 게시하고, [기준]에 따라 지원서를 심사하고, 자격을 갖춘 후보자에 대한 인터뷰 일정을 잡고, 거절 메시지를 보내는 채용 프로세스를 위한 자동화를 설계합니다."
+  },
+  {
+    "id": 197,
+    "displayId": 257,
+    "category": "automation",
+    "title": "Automate Social Listening and Response",
+    "titleKo": "소셜 리스닝·응대 자동화",
+    "prompt": "Design an automation that monitors social media for mentions of [BRAND/TOPICS], classifies them by sentiment and urgency, and routes to the right person for response.",
+    "promptKo": "[BRAND/TOPICS]에 대한 언급이 있는지 소셜 미디어를 모니터링하고 이를 정서 및 긴급성에 따라 분류하고 응답을 위해 적합한 사람에게 연결하는 자동화를 설계합니다."
+  },
+  {
+    "id": 174,
+    "displayId": 258,
+    "category": "automation",
+    "title": "Build a Compliance Monitoring System",
+    "titleKo": "컴플라이언스 모니터링",
+    "prompt": "Design an automation that monitors [DESCRIBE ACTIVITIES] for compliance with [REGULATIONS], flags potential violations, and generates audit-ready reports.",
+    "promptKo": "[규정] 준수 여부를 [활동 설명]을 모니터링하고, 잠재적인 위반 사항을 표시하고, 감사 가능한 보고서를 생성하는 자동화를 설계하세요."
+  },
+  {
+    "id": 164,
+    "displayId": 259,
+    "category": "automation",
+    "title": "Build a CRM Automation",
+    "titleKo": "CRM 자동화",
+    "prompt": "Design automations for [CRM SYSTEM] that handle [DESCRIBE SCENARIOS]. What triggers each automation, what actions does it take, and how does it update records?",
+    "promptKo": "[시나리오 설명]을 처리하는 [CRM 시스템]용 설계 자동화입니다. 각 자동화를 트리거하는 요소는 무엇이며, 어떤 작업을 수행하고, 기록을 어떻게 업데이트합니까?"
+  },
+  {
+    "id": 180,
+    "displayId": 260,
+    "category": "automation",
+    "title": "Build a Webhook Event Processing System",
+    "titleKo": "웹훅 이벤트 처리 시스템",
+    "prompt": "Design a system that receives webhook events from [DESCRIBE SERVICES], routes them to the right handlers, processes them reliably, and handles retries and failures.",
+    "promptKo": "[DESCRIBE SERVICES]에서 웹훅 이벤트를 수신하고 이를 올바른 핸들러로 라우팅하고 안정적으로 처리하며 재시도 및 실패를 처리하는 시스템을 설계합니다."
+  },
+  {
+    "id": 158,
+    "displayId": 261,
+    "category": "automation",
+    "title": "Build a Customer Onboarding Automation",
+    "titleKo": "고객 온보딩 자동화",
+    "prompt": "Design an automated customer onboarding flow for [DESCRIBE PRODUCT]. What happens at each step, what triggers the next step, and how are stuck customers identified and helped?",
+    "promptKo": "[제품 설명]에 대한 자동화된 고객 온보딩 흐름을 설계합니다. 각 단계에서 무슨 일이 일어나고, 무엇이 다음 단계를 촉발하며, 정체된 고객을 어떻게 식별하고 지원합니까?"
+  },
+  {
+    "id": 178,
+    "displayId": 262,
+    "category": "automation",
+    "title": "Build a Document Approval Workflow",
+    "titleKo": "문서 결재 워크플로우",
+    "prompt": "Design an automated document approval workflow for [DESCRIBE DOCUMENT TYPE]. Who reviews at each stage, what triggers advancement, and how are rejections handled?",
+    "promptKo": "[문서 유형 설명]에 대한 자동화된 문서 승인 워크플로를 설계합니다. 각 단계에서 누가 검토하고, 무엇이 발전을 촉발하며, 거부는 어떻게 처리됩니까?"
+  },
+  {
+    "id": 196,
+    "displayId": 263,
+    "category": "automation",
+    "title": "Build a Learning Management Automation",
+    "titleKo": "학습 관리(LMS) 자동화",
+    "prompt": "Design automations for [LMS PLATFORM] that assign courses based on [CRITERIA], send reminders, track completion, report to managers, and issue certificates.",
+    "promptKo": "[기준]에 따라 강좌를 할당하고, 알림을 보내고, 완료를 추적하고, 관리자에게 보고하고, 인증서를 발급하는 [LMS 플랫폼]용 자동화를 설계합니다."
+  },
+  {
+    "id": 193,
+    "displayId": 264,
+    "category": "automation",
+    "title": "Automate Product Analytics Reporting",
+    "titleKo": "프로덕트 애널리틱스 리포팅",
+    "prompt": "Design an automation that pulls product usage data from [DESCRIBE SOURCES], calculates key metrics, generates a weekly product health report, and distributes it to stakeholders.",
+    "promptKo": "[DESCRIBE SOURCES]에서 제품 사용 데이터를 가져오고, 주요 지표를 계산하고, 주간 제품 상태 보고서를 생성하고, 이를 이해관계자에게 배포하는 자동화를 설계합니다."
+  },
+  {
+    "id": 175,
+    "displayId": 265,
+    "category": "automation",
+    "title": "Automate Customer Win-Back",
+    "titleKo": "고객 윈백 자동화",
+    "prompt": "Design an automated win-back campaign for churned customers. What triggers it, what is the sequence of messages, what offers are made, and when does it give up?",
+    "promptKo": "이탈한 고객을 위한 자동화된 복귀 캠페인을 설계합니다. 무엇이 그것을 유발하고, 메시지의 순서는 무엇이며, 어떤 제안이 이루어지고, 언제 포기합니까?"
+  },
+  {
+    "id": 177,
+    "displayId": 266,
+    "category": "automation",
+    "title": "Automate Performance Reviews",
+    "titleKo": "성과 평가 자동화",
+    "prompt": "Design an automated performance review process that collects peer feedback, self assessments, and manager input, aggregates it, and generates review documents.",
+    "promptKo": "동료 피드백, 자체 평가, 관리자 입력을 수집하고 이를 집계하여 검토 문서를 생성하는 자동화된 성과 검토 프로세스를 설계합니다."
+  },
+  {
+    "id": 166,
+    "displayId": 267,
+    "category": "automation",
+    "title": "Build an Inventory Reorder System",
+    "titleKo": "재고 자동 발주 시스템",
+    "prompt": "Design an automation that monitors inventory levels for [DESCRIBE PRODUCTS], triggers reorder when stock falls below [THRESHOLD], generates purchase orders, and tracks delivery.",
+    "promptKo": "[제품 설명]의 재고 수준을 모니터링하고, 재고가 [THRESHOLD] 미만으로 떨어지면 재주문을 실행하고, 구매 주문을 생성하고, 배송을 추적하는 자동화를 설계하세요."
+  },
+  {
+    "id": 153,
+    "displayId": 268,
+    "category": "automation",
+    "title": "Email Automation Sequence",
+    "titleKo": "이메일 자동 시퀀스",
+    "prompt": "Design an automated email sequence for [DESCRIBE PURPOSE]. Write the copy for each email, define the triggers and timing, and explain the goal of each message.",
+    "promptKo": "[목적 설명]에 대한 자동화된 이메일 시퀀스를 디자인합니다. 각 이메일의 사본을 작성하고, 트리거와 타이밍을 정의하고, 각 메시지의 목표를 설명하세요."
+  },
+  {
+    "id": 162,
+    "displayId": 269,
+    "category": "automation",
+    "title": "Build a Content Publishing Pipeline",
+    "titleKo": "콘텐츠 퍼블리싱 파이프라인",
+    "prompt": "Design an automated content publishing pipeline that takes a draft, runs it through [DESCRIBE CHECKS], formats it for [PLATFORMS], schedules publication, and tracks distribution.",
+    "promptKo": "초안을 가져와 [검사 설명]을 통해 실행하고 [플랫폼]에 맞게 형식을 지정하고 게시를 예약하고 배포를 추적하는 자동화된 콘텐츠 게시 파이프라인을 설계합니다."
+  },
+  {
+    "id": 182,
+    "displayId": 270,
+    "category": "automation",
+    "title": "Build a Content Moderation Pipeline",
+    "titleKo": "콘텐츠 모더레이션 파이프라인",
+    "prompt": "Design an automated content moderation pipeline for [DESCRIBE PLATFORM]. What checks run automatically, what goes to human review, and how are appeals handled?",
+    "promptKo": "[플랫폼 설명]을 위한 자동화된 콘텐츠 조정 파이프라인을 설계합니다. 어떤 확인이 자동으로 실행되고, 어떤 내용이 직접 검토되며, 이의신청은 어떻게 처리되나요?"
+  },
+  {
+    "id": 161,
+    "displayId": 271,
+    "category": "automation",
+    "title": "Automate Customer Support Triage",
+    "titleKo": "고객 지원 티켓 자동 분류",
+    "prompt": "Design an automation that receives support requests, categorizes them by type and priority, routes them to the right team, and sends acknowledgment to the customer.",
+    "promptKo": "지원 요청을 수신하고, 유형과 우선순위별로 분류하고, 적절한 팀에 전달하고, 고객에게 승인을 보내는 자동화를 설계하세요."
+  },
+  {
+    "id": 169,
+    "displayId": 272,
+    "category": "automation",
+    "title": "Automate Financial Reconciliation",
+    "titleKo": "재무 정산 자동화",
+    "prompt": "Design an automation that reconciles [DESCRIBE ACCOUNTS] by matching transactions, flagging discrepancies, generating exception reports, and updating records after review.",
+    "promptKo": "거래 일치, 불일치 표시, 예외 보고서 생성, 검토 후 기록 업데이트를 통해 [계정 설명]을 조정하는 자동화를 설계합니다."
+  },
+  {
+    "id": 172,
+    "displayId": 273,
+    "category": "automation",
+    "title": "Build a Price Monitoring System",
+    "titleKo": "가격 모니터링 시스템",
+    "prompt": "Design an automation that monitors competitor prices for [DESCRIBE PRODUCTS] across [CHANNELS], alerts when significant changes occur, and provides recommendations.",
+    "promptKo": "[CHANNELS] 전체에서 [DESCRIBE PRODUCTS]의 경쟁사 가격을 모니터링하고 중요한 변화가 발생할 때 경고하며 권장 사항을 제공하는 자동화를 설계하세요."
+  },
+  {
+    "id": 190,
+    "displayId": 274,
+    "category": "automation",
+    "title": "Build a Data Quality Monitoring System",
+    "titleKo": "데이터 품질 모니터링",
+    "prompt": "Design an automation that monitors [DESCRIBE DATA SOURCES] for quality issues, alerts when data is missing or anomalous, and generates data quality scorecards.",
+    "promptKo": "[데이터 소스 설명]에서 품질 문제를 모니터링하고, 데이터가 누락되거나 이상할 때 경고하고, 데이터 품질 스코어카드를 생성하는 자동화를 설계하세요."
+  },
+  {
+    "id": 199,
+    "displayId": 275,
+    "category": "automation",
+    "title": "Automate Grant and Proposal Management",
+    "titleKo": "그랜트·제안서 관리 자동화",
+    "prompt": "Design an automation that tracks grant deadlines, compiles required documents, routes for review and approval, submits applications, and tracks outcomes.",
+    "promptKo": "보조금 마감일을 추적하고, 필요한 문서를 수집하고, 검토 및 승인 경로를 지정하고, 신청서를 제출하고, 결과를 추적하는 자동화를 설계하세요."
+  },
+  {
+    "id": 184,
+    "displayId": 276,
+    "category": "automation",
+    "title": "Build a Subscription Management System",
+    "titleKo": "구독 관리 시스템",
+    "prompt": "Design automations for managing [DESCRIBE SUBSCRIPTION BUSINESS]. Handle signups, upgrades, downgrades, failed payments, renewals, and cancellations automatically.",
+    "promptKo": "[구독 비즈니스 설명] 관리를 위한 자동화를 설계합니다. 가입, 업그레이드, 다운그레이드, 결제 실패, 갱신, 취소를 자동으로 처리합니다."
+  },
+  {
+    "id": 170,
+    "displayId": 277,
+    "category": "automation",
+    "title": "Build a Knowledge Base Update System",
+    "titleKo": "지식 베이스 업데이트 시스템",
+    "prompt": "Design an automation that monitors [DESCRIBE SOURCES] for new information, suggests updates to [KNOWLEDGE BASE], routes them for approval, and publishes approved updates.",
+    "promptKo": "새로운 정보에 대해 [소스 설명]을 모니터링하고, [지식 기반]에 대한 업데이트를 제안하고, 승인을 위해 전달하고, 승인된 업데이트를 게시하는 자동화를 설계하세요."
+  },
+  {
+    "id": 159,
+    "displayId": 278,
+    "category": "automation",
+    "title": "Automate Invoice Processing",
+    "titleKo": "인보이스 처리 자동화",
+    "prompt": "Design an automation that receives invoices by [METHOD], extracts key data, validates it against [DESCRIBE RULES], routes for approval, and updates [ACCOUNTING SYSTEM].",
+    "promptKo": "[방법]별로 송장을 받고, 주요 데이터를 추출하고, [규칙 설명]에 따라 유효성을 검사하고, 승인 경로를 지정하고, [회계 시스템]을 업데이트하는 자동화를 설계하세요."
+  },
+  {
+    "id": 195,
+    "displayId": 279,
+    "category": "automation",
+    "title": "Automate Vendor Management",
+    "titleKo": "벤더 관리 자동화",
+    "prompt": "Design automations for vendor management including onboarding, contract renewals, performance reviews, invoice processing, and off-boarding.",
+    "promptKo": "온보딩, 계약 갱신, 성과 검토, 송장 처리, 오프보딩을 포함한 공급업체 관리를 위한 자동화를 설계합니다."
+  },
+  {
+    "id": 155,
+    "displayId": 280,
+    "category": "automation",
+    "title": "Automate Report Generation",
+    "titleKo": "리포트 자동 생성",
+    "prompt": "Design an automation that pulls data from [DESCRIBE SOURCES], calculates [DESCRIBE METRICS], generates a [FORMAT] report, and sends it to [RECIPIENTS] every [FREQUENCY].",
+    "promptKo": "[DESCRIBE SOURCES]에서 데이터를 가져오고, [DESCRIBE METRICS]를 계산하고, [FORMAT] 보고서를 생성하고, [FREQUENCY]마다 [RECIPIENTS]에게 보내는 자동화를 설계하세요."
+  },
+  {
+    "id": 165,
+    "displayId": 281,
+    "category": "automation",
+    "title": "Automate Contract Generation",
+    "titleKo": "계약서 자동 생성",
+    "prompt": "Design an automation that takes [DESCRIBE INPUTS], selects the right contract template, populates it with the correct data, and routes it for signatures via [E-SIGNATURE TOOL].",
+    "promptKo": "[설명 입력]을 사용하여 올바른 계약 템플릿을 선택하고 이를 올바른 데이터로 채우고 [전자 서명 도구]를 통해 서명을 위해 라우팅하는 자동화를 설계합니다."
+  },
+  {
+    "id": 186,
+    "displayId": 282,
+    "category": "automation",
+    "title": "Build an A/B Testing Automation",
+    "titleKo": "A/B 테스트 자동화",
+    "prompt": "Design a system that sets up A/B tests for [DESCRIBE WHAT IS BEING TESTED], monitors results, determines statistical significance, implements winners, and documents learnings.",
+    "promptKo": "[테스트 대상 설명]에 대한 A/B 테스트를 설정하고, 결과를 모니터링하고, 통계적 유의성을 결정하고, 승자를 구현하고, 학습 내용을 문서화하는 시스템을 설계합니다."
+  },
+  {
+    "id": 168,
+    "displayId": 283,
+    "category": "automation",
+    "title": "Build a Feedback Collection System",
+    "titleKo": "피드백 수집 시스템",
+    "prompt": "Design an automated feedback collection system for [DESCRIBE TOUCHPOINTS]. When does it trigger, what questions does it ask, how is data aggregated, and how are action items generated?",
+    "promptKo": "[터치포인트 설명]에 대한 자동화된 피드백 수집 시스템을 설계합니다. 언제 트리거되고, 어떤 질문을 하며, 데이터는 어떻게 집계되고, 작업 항목은 어떻게 생성됩니까?"
+  },
+  {
+    "id": 200,
+    "displayId": 284,
+    "category": "automation",
+    "title": "Build a Crisis Communication Automation",
+    "titleKo": "위기 커뮤니케이션 자동화",
+    "prompt": "Design an automated crisis communication system that detects [DESCRIBE TRIGGER EVENTS], activates the response team, drafts communications, and manages the approval and distribution process.",
+    "promptKo": "[트리거 이벤트 설명]을 감지하고, 대응 팀을 활성화하고, 커뮤니케이션 초안을 작성하고, 승인 및 배포 프로세스를 관리하는 자동화된 위기 커뮤니케이션 시스템을 설계합니다."
+  },
+  {
+    "id": 192,
+    "displayId": 285,
+    "category": "automation",
+    "title": "Build a Customer Communication Automation",
+    "titleKo": "고객 커뮤니케이션 자동화",
+    "prompt": "Design an automation that triggers personalized communications to customers based on [DESCRIBE BEHAVIORS OR EVENTS]. What messages are sent, when, and through which channels?",
+    "promptKo": "[행동 또는 이벤트 설명]을 기반으로 고객과의 맞춤형 커뮤니케이션을 트리거하는 자동화를 설계합니다. 어떤 메시지가, 언제, 어떤 채널을 통해 전송되나요?"
+  },
+  {
+    "id": 188,
+    "displayId": 286,
+    "category": "automation",
+    "title": "Build a User Lifecycle Automation",
+    "titleKo": "사용자 라이프사이클 자동화",
+    "prompt": "Design automated workflows for each stage of the user lifecycle for [DESCRIBE PRODUCT]: activation, engagement, retention, re-engagement, and win-back.",
+    "promptKo": "[제품 설명]에 대한 사용자 라이프사이클의 각 단계(활성화, 참여, 유지, 재참여 및 복귀)에 대해 자동화된 워크플로를 설계합니다."
+  },
+  {
+    "id": 176,
+    "displayId": 287,
+    "category": "automation",
+    "title": "Build a Partner Integration Automation",
+    "titleKo": "파트너 연동 자동화",
+    "prompt": "Design an automation that handles data exchange with [DESCRIBE PARTNER SYSTEM]. How does data flow, how are conflicts resolved, and how are errors handled?",
+    "promptKo": "[DESCRIBE PARTNER SYSTEM]을 사용하여 데이터 교환을 처리하는 자동화를 설계합니다. 데이터 흐름은 어떻게 이루어지고, 충돌은 어떻게 해결되며, 오류는 어떻게 처리되나요?"
+  },
+  {
+    "id": 151,
+    "displayId": 288,
+    "category": "automation",
+    "title": "Map a Manual Process",
+    "titleKo": "수작업 프로세스 매핑",
+    "prompt": "I do this task manually: [DESCRIBE TASK]. Map every step in detail, identify which steps could be automated, and design an automation that handles the full workflow.",
+    "promptKo": "저는 이 작업을 수동으로 수행합니다: [DESCRIBE TASK]. 모든 단계를 자세히 매핑하고, 자동화할 수 있는 단계를 식별하고, 전체 워크플로를 처리하는 자동화를 설계하세요."
+  },
+  {
+    "id": 163,
+    "displayId": 289,
+    "category": "automation",
+    "title": "Automate Competitive Monitoring",
+    "titleKo": "경쟁사 모니터링 자동화",
+    "prompt": "Design an automation that monitors [DESCRIBE COMPETITORS] for changes to [DESCRIBE WHAT TO MONITOR] and delivers a weekly digest with the most important changes.",
+    "promptKo": "[DESCRIBE WHAT TO MONITOR]의 변경 사항을 [DESCRIBE COMPETITORS]에서 모니터링하고 가장 중요한 변경 사항이 포함된 주간 다이제스트를 제공하는 자동화를 설계하세요."
+  },
+  {
+    "id": 167,
+    "displayId": 290,
+    "category": "automation",
+    "title": "Automate Employee Onboarding",
+    "titleKo": "직원 온보딩 자동화",
+    "prompt": "Design an automated employee onboarding workflow that handles account creation, equipment provisioning, training assignments, introduction emails, and 30/60/90 day check-ins.",
+    "promptKo": "계정 생성, 장비 프로비저닝, 교육 할당, 소개 이메일 및 30/60/90일 체크인을 처리하는 자동화된 직원 온보딩 워크플로를 설계합니다."
+  },
+  {
+    "id": 181,
+    "displayId": 291,
+    "category": "automation",
+    "title": "Automate Sales Forecasting",
+    "titleKo": "세일즈 예측 자동화",
+    "prompt": "Design an automation that pulls data from [CRM AND OTHER SOURCES], applies [DESCRIBE FORECASTING MODEL], generates weekly forecast reports, and flags deals needing attention.",
+    "promptKo": "[CRM 및 기타 소스]에서 데이터를 가져오고, [예측 모델 설명]을 적용하고, 주간 예측 보고서를 생성하고, 주의가 필요한 거래에 플래그를 지정하는 자동화를 설계합니다."
+  },
+  {
+    "id": 187,
+    "displayId": 292,
+    "category": "automation",
+    "title": "Automate Expense Management",
+    "titleKo": "경비 관리 자동화",
+    "prompt": "Design an automation that processes expense submissions, validates against [DESCRIBE POLICY], routes for approval, rejects non-compliant expenses, and exports to payroll.",
+    "promptKo": "비용 제출을 처리하고, [정책 설명]에 대해 검증하고, 승인 경로를 지정하고, 비준수 비용을 거부하고, 급여로 내보내는 자동화를 설계합니다."
+  },
+  {
+    "id": 185,
+    "displayId": 293,
+    "category": "automation",
+    "title": "Automate Market Research Collection",
+    "titleKo": "마켓 리서치 수집 자동화",
+    "prompt": "Design an automation that monitors [DESCRIBE SOURCES] for market intelligence on [TOPICS], filters for relevance, deduplicates, and delivers a curated daily briefing.",
+    "promptKo": "[주제]에 대한 시장 정보를 위해 [소스 설명]을 모니터링하고, 관련성을 필터링하고, 중복을 제거하고, 선별된 일일 브리핑을 제공하는 자동화를 설계하세요."
+  },
+  {
+    "id": 179,
+    "displayId": 294,
+    "category": "automation",
+    "title": "Automate Customer Health Scoring",
+    "titleKo": "고객 헬스 스코어 자동화",
+    "prompt": "Design an automation that monitors [DESCRIBE CUSTOMER SIGNALS], calculates health scores, segments customers by risk, and triggers appropriate outreach for at-risk accounts.",
+    "promptKo": "[고객 신호 설명]을 모니터링하고, 상태 점수를 계산하고, 위험별로 고객을 분류하고, 위험에 처한 계정에 대한 적절한 지원을 시작하는 자동화를 설계합니다."
+  },
+  {
+    "id": 198,
+    "displayId": 295,
+    "category": "automation",
+    "title": "Build a Release Management Automation",
+    "titleKo": "릴리즈 관리 자동화",
+    "prompt": "Design an automated release management process for [DESCRIBE APPLICATION]. How are releases staged, tested, approved, deployed, and monitored?",
+    "promptKo": "[애플리케이션 설명]에 대한 자동화된 릴리스 관리 프로세스를 설계합니다. 릴리스는 어떻게 준비, 테스트, 승인, 배포 및 모니터링됩니까?"
+  },
+  {
+    "id": 157,
+    "displayId": 296,
+    "category": "automation",
+    "title": "Automate Social Media Posting",
+    "titleKo": "소셜미디어 자동 게시",
+    "prompt": "Design an automation that takes content from [DESCRIBE SOURCE], formats it for [PLATFORMS], schedules it for optimal times, and tracks performance. What tools would you use?",
+    "promptKo": "[DESCRIBE SOURCE]에서 콘텐츠를 가져와 [PLATFORMS]에 맞게 형식을 지정하고 최적의 시간에 예약하고 성능을 추적하는 자동화를 설계합니다. 어떤 도구를 사용하시겠습니까?"
+  },
+  {
+    "id": 171,
+    "displayId": 297,
+    "category": "automation",
+    "title": "Automate Meeting Follow-Ups",
+    "titleKo": "미팅 팔로업 자동화",
+    "prompt": "Design an automation that processes meeting transcripts, extracts action items, assigns them to owners, creates tasks in [PROJECT MANAGEMENT TOOL], and sends follow-up emails.",
+    "promptKo": "회의 기록을 처리하고, 작업 항목을 추출하고, 소유자에게 할당하고, [프로젝트 관리 도구]에서 작업을 생성하고, 후속 이메일을 보내는 자동화를 설계합니다."
+  },
+  {
+    "id": 183,
+    "displayId": 298,
+    "category": "automation",
+    "title": "Automate IT Ticket Routing",
+    "titleKo": "IT 티켓 자동 라우팅",
+    "prompt": "Design an automation that receives IT support tickets, categorizes them, assigns priority, routes to the right team, and tracks resolution time against SLAs.",
+    "promptKo": "IT 지원 티켓을 수신하고, 분류하고, 우선순위를 지정하고, 적절한 팀에 라우팅하고, SLA에 따라 해결 시간을 추적하는 자동화를 설계하세요."
+  },
+  {
+    "id": 194,
+    "displayId": 299,
+    "category": "automation",
+    "title": "Build a Security Scanning Pipeline",
+    "titleKo": "보안 스캔 파이프라인",
+    "prompt": "Design an automated security scanning pipeline for [DESCRIBE WHAT IS BEING SCANNED]. What tools run, what findings are critical versus informational, and how are remediations tracked?",
+    "promptKo": "[스캔 대상 설명]에 대한 자동화된 보안 스캐닝 파이프라인을 설계합니다. 어떤 도구가 실행되고, 어떤 결과가 정보 제공에 비해 중요한지, 수정 사항은 어떻게 추적됩니까?"
+  },
+  {
+    "id": 189,
+    "displayId": 300,
+    "category": "automation",
+    "title": "Automate Quality Assurance Testing",
+    "titleKo": "QA 테스트 자동화",
+    "prompt": "Design an automated QA pipeline for [DESCRIBE APPLICATION]. What tests run on each commit, what runs nightly, and what blocks deployment if it fails?",
+    "promptKo": "[애플리케이션 설명]에 대한 자동화된 QA 파이프라인을 설계합니다. 각 커밋에서 어떤 테스트가 실행되고, 밤마다 실행되는 테스트는 무엇이며, 실패할 경우 배포를 차단하는 테스트는 무엇입니까?"
+  }
+]

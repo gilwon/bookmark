@@ -10,6 +10,7 @@ import {
   Bookmark,
   MessageSquareText,
   Search,
+  Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
@@ -114,6 +115,13 @@ export function CommandPalette() {
         keywords: "prompt 프롬프트",
         icon: <MessageSquareText className="h-4 w-4" />,
         run: go("/prompts"),
+      },
+      {
+        id: "nav-claude-prompts",
+        label: "Claude Prompts",
+        keywords: "claude prompts 클로드 프롬프트 300 우주보스",
+        icon: <Sparkles className="h-4 w-4" />,
+        run: go("/claude-prompts"),
       },
       {
         id: "nav-agent-docs",

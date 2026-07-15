@@ -13,6 +13,7 @@ import {
   MessageSquareText,
   Moon,
   Search,
+  Sparkles,
   Sun,
   X,
 } from "lucide-react";
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/stars", label: "GitHub Stars", icon: GitFork },
   { href: "/pages", label: "페이지", icon: FileText },
   { href: "/prompts", label: "프롬프트", icon: MessageSquareText },
+  { href: "/claude-prompts", label: "Claude Prompts", icon: Sparkles },
   { href: "/agent-docs", label: "에이전트 문서", icon: Bot },
   { href: "/search", label: "검색", icon: Search },
 ];
