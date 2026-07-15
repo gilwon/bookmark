@@ -922,3 +922,53 @@ export async function searchAgentDocs(
   throwIfError(error, "searchAgentDocs");
   return (data ?? []).map(mapAgentDoc);
 }
+
+/** 프롬프트 검색 (공유 라이브러리 — userId 무시) */
+export async function searchPrompts(
+  _userId: string | undefined,
+  opts: SearchOpts = {}
+): Promise<PromptRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 100);
+  // 다중 토큰 AND 후처리를 위해 여유 있게 가져온 뒤 슬라이스
+  const fetchLim = Math.min(lim * 20, 500);
+  let query = sb()
+    .from("prompts")
+    .select("*")
+    .order("is_favorite", { ascending: false })
+    .order("updated_at", { ascending: false })
+    .limit(fetchLim);
+
+  query = applyDateRange(query, "updated_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    // 첫 토큰으로 DB 1차 필터 (나머지 토큰은 메모리 AND)
+    const first = q.split(/\s+/).filter(Boolean)[0] ?? q;
+    const p = likePat(first);
+    query = query.or(
+      `title.ilike.${p},category.ilike.${p},summary.ilike.${p},when_to_use.ilike.${p},sections.ilike.${p}`
+    );
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchPrompts");
+  let rows = (data ?? []).map(mapPrompt);
+
+  if (q) {
+    const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+    rows = rows.filter((r) => {
+      const hay = [
+        r.title,
+        r.category ?? "",
+        r.summary ?? "",
+        r.whenToUse ?? "",
+        r.sections,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return tokens.every((t) => hay.includes(t));
+    });
+  }
+
+  return rows.slice(0, lim);
+}

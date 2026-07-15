@@ -801,3 +801,58 @@ export async function searchAgentDocs(
     })
     .slice(0, lim);
 }
+
+/** 프롬프트 검색 (공유 라이브러리 — userId 무시) */
+export async function searchPrompts(
+  _userId: string | undefined,
+  opts: SearchOpts = {}
+): Promise<PromptRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 100);
+  const q = opts.q?.trim().toLowerCase();
+  const conditions = [];
+  if (opts.from) {
+    conditions.push(sql`${prompts.updatedAt} >= ${opts.from}`);
+  }
+  if (opts.to) {
+    conditions.push(
+      sql`${prompts.updatedAt} <= ${opts.to + "T23:59:59.999Z"}`
+    );
+  }
+  if (q) {
+    // 공백 토큰 AND — 각 토큰은 제목·카테고리·요약·본문 중 어디에든 매칭
+    // %/_ 는 제거해 LIKE 와일드카드 주입을 막고 ESCAPE 절은 쓰지 않음
+    const tokens = q.split(/\s+/).filter(Boolean);
+    for (const t of tokens) {
+      const safe = t.replace(/[%_]/g, "");
+      if (!safe) continue;
+      const p = `%${safe}%`;
+      conditions.push(
+        sql`(
+          lower(${prompts.title}) like ${p}
+          or lower(coalesce(${prompts.category}, '')) like ${p}
+          or lower(coalesce(${prompts.summary}, '')) like ${p}
+          or lower(coalesce(${prompts.whenToUse}, '')) like ${p}
+          or lower(${prompts.sections}) like ${p}
+        )`
+      );
+    }
+  }
+
+  if (conditions.length === 0) {
+    return qall(
+      db
+        .select()
+        .from(prompts)
+        .orderBy(desc(prompts.isFavorite), desc(prompts.updatedAt))
+        .limit(lim)
+    );
+  }
+  return qall(
+    db
+      .select()
+      .from(prompts)
+      .where(and(...conditions))
+      .orderBy(desc(prompts.isFavorite), desc(prompts.updatedAt))
+      .limit(lim)
+  );
+}

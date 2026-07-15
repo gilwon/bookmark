@@ -10,9 +10,14 @@ import {
   PageResultCard,
   type PageSearchResult,
 } from "@/components/search/page-result-card";
+import {
+  PromptResultCard,
+  type PromptSearchResult,
+} from "@/components/search/prompt-result-card";
 import { StarCard } from "@/components/stars/star-card";
 import { parseBundle } from "@/lib/agent-doc-bundle";
 import { auth } from "@/lib/auth";
+import { parsePromptSections } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
 import { extractTiptapText } from "@/lib/tiptap-text";
 import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
@@ -73,6 +78,7 @@ export default async function SearchPage({
   let starResults: GithubStar[] = [];
   let pageResults: PageSearchResult[] = [];
   let agentDocResults: AgentDocSearchResult[] = [];
+  let promptResults: PromptSearchResult[] = [];
 
   if (type === "all" || type === "bookmark") {
     const rows = await store.searchBookmarks(userId, opts);
@@ -147,6 +153,25 @@ export default async function SearchPage({
     });
   }
 
+  if ((type === "all" || type === "prompt") && !tag && !category) {
+    const rows = await store.searchPrompts(userId, opts);
+    promptResults = rows.map((row) => {
+      const sections = parsePromptSections(row.sections);
+      const body = [
+        row.summary ?? "",
+        row.whenToUse ?? "",
+        ...sections.map((s) => `${s.title}\n${s.body}`),
+      ].join("\n");
+      return {
+        id: row.id,
+        title: row.title,
+        category: row.category,
+        snippet: makeSnippet(body || row.title, q),
+        updatedAt: row.updatedAt,
+      };
+    });
+  }
+
   const hasQuery = Boolean(
     q || tag || category || from || to || (type && type !== "all")
   );
@@ -154,14 +179,15 @@ export default async function SearchPage({
     bookmarkResults.length +
     starResults.length +
     pageResults.length +
-    agentDocResults.length;
+    agentDocResults.length +
+    promptResults.length;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">검색</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          북마크, Stars, 페이지, 에이전트 문서를 통합 검색합니다.
+          북마크, Stars, 페이지, 프롬프트, 에이전트 문서를 통합 검색합니다.
         </p>
       </div>
 
@@ -220,6 +246,18 @@ export default async function SearchPage({
               <div className="grid gap-3 sm:grid-cols-2">
                 {pageResults.map((p) => (
                   <PageResultCard key={p.id} page={p} />
+                ))}
+              </div>
+            </section>
+          )}
+          {promptResults.length > 0 && (
+            <section className="space-y-3">
+              <h2 className="text-sm font-semibold">
+                프롬프트 ({promptResults.length})
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {promptResults.map((p) => (
+                  <PromptResultCard key={p.id} prompt={p} />
                 ))}
               </div>
             </section>

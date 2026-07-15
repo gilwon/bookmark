@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardRecentBookmarks } from "@/components/dashboard/recent-bookmarks";
+import { DashboardSearch } from "@/components/dashboard/dashboard-search";
 import { cn } from "@/lib/utils";
 
 export const runtime = "nodejs";
@@ -124,7 +125,7 @@ export default async function DashboardPage() {
             안녕하세요, {displayName}님
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            북마크·Star·페이지를 한곳에서 확인하세요.
+            북마크·Star·페이지·프롬프트를 한곳에서 검색·확인하세요.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -144,6 +145,9 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* 통합 빠른 검색 — 페이지·프롬프트·에이전트·북마크·Stars */}
+      <DashboardSearch />
 
       {starChanges > 0 && (
         <Link
