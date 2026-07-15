@@ -440,7 +440,7 @@ export async function listAgentDocs(
       .select()
       .from(agentDocs)
       .where(eq(agentDocs.userId, userId))
-      .orderBy(desc(agentDocs.updatedAt))
+      .orderBy(desc(agentDocs.createdAt))
   );
   if (opts?.full === true) return rows;
   return rows.map((r) => ({ ...r, bundle: "[]" }));

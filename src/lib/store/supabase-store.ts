@@ -497,14 +497,14 @@ export async function listAgentDocs(
         .from("agent_docs")
         .select("*")
         .eq("user_id", userId)
-        .order("updated_at", { ascending: false })
+        .order("created_at", { ascending: false })
     : await sb()
         .from("agent_docs")
         .select(
           "id, user_id, kind, filename, title, description, content, created_at, updated_at"
         )
         .eq("user_id", userId)
-        .order("updated_at", { ascending: false });
+        .order("created_at", { ascending: false });
   throwIfError(res.error, "listAgentDocs");
   return (res.data ?? []).map((r) =>
     mapAgentDoc(full ? r : { ...r, bundle: "[]" })

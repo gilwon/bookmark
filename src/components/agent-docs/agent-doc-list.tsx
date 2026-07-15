@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   groupUploadParts,
   isAllowedAgentDocName,
@@ -43,18 +43,47 @@ import {
 import type { AgentDoc, AgentDocKind } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
+import {
+  compareIsoDesc,
+  compareTitleAsc,
+  DEFAULT_PAGE_SIZE,
+  formatListDate,
+  type ListSortKey,
+  matchesSearchTokens,
+  slicePage,
+} from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
 } from "@/components/ui/search-suggest-input";
+import { Select } from "@/components/ui/select";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 const MAX_ZIP_BYTES = 12 * 1024 * 1024;
+
+const SORT_OPTIONS: { value: ListSortKey; label: string }[] = [
+  { value: "created_desc", label: "등록일 최신" },
+  { value: "updated_desc", label: "수정일 최신" },
+  { value: "title_asc", label: "제목 가나다" },
+];
+
+function sortDocs(list: AgentDoc[], sort: ListSortKey): AgentDoc[] {
+  const arr = [...list];
+  if (sort === "title_asc") {
+    arr.sort((a, b) => compareTitleAsc(a.title, b.title));
+  } else if (sort === "updated_desc") {
+    arr.sort((a, b) => compareIsoDesc(a.updatedAt, b.updatedAt));
+  } else {
+    arr.sort((a, b) => compareIsoDesc(a.createdAt, b.createdAt));
+  }
+  return arr;
+}
 
 /** 파일 그룹 → 초안 (제목/설명 본문에서 추출) */
 function draftFromGroup(
@@ -91,6 +120,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [filter, setFilter] = useState<AgentDocKind | "all">("all");
   const [q, setQ] = useState("");
+  const [sort, setSort] = useState<ListSortKey>("created_desc");
+  const [page, setPage] = useState(1);
   const [deleting, setDeleting] = useState(false);
   const templates = getAgentDocTemplates();
 
@@ -145,25 +176,31 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
   }, [docs]);
 
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    return docs.filter((d) => {
+    const matched = docs.filter((d) => {
       if (filter !== "all" && d.kind !== filter) return false;
-      if (!needle) return true;
       const hay = [
         d.title,
         d.filename,
         d.description ?? "",
         d.content,
         ...d.files.flatMap((f) => [f.filename, f.content]),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(needle);
+      ].join(" ");
+      return matchesSearchTokens(hay, q);
     });
-  }, [docs, filter, q]);
+    return sortDocs(matched, sort);
+  }, [docs, filter, q, sort]);
 
-  const filteredIds = useMemo(() => filtered.map((d) => d.id), [filtered]);
-  const selection = useSelection(filteredIds);
+  useEffect(() => {
+    setPage(1);
+  }, [q, sort, filter]);
+
+  const pageItems = useMemo(
+    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
+    [filtered, page]
+  );
+
+  const pageIds = useMemo(() => pageItems.map((d) => d.id), [pageItems]);
+  const selection = useSelection(pageIds);
 
   /** 카테고리 칩 클릭 — 같은 칩 재클릭 시 전체로 */
   function selectKind(next: AgentDocKind | "all") {
@@ -452,16 +489,40 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       {docs.length > 0 && (
         <>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
-            <div className="flex-1 space-y-1">
-              <label className="text-xs text-muted-foreground">검색</label>
+            <div className="min-w-0 flex-1 space-y-1">
+              <label className="text-xs text-muted-foreground">
+                검색 (제목·파일·본문 · 공백 AND)
+              </label>
               <SearchSuggestInput
-                placeholder="파일명, 제목, 본문…"
+                placeholder="예: SKILL 배포 · CLAUDE"
                 value={q}
                 onChange={setQ}
                 suggestions={searchSuggestions}
               />
             </div>
+            <div className="w-full space-y-1 sm:w-44">
+              <label
+                htmlFor="agent-doc-sort"
+                className="text-xs text-muted-foreground"
+              >
+                정렬
+              </label>
+              <Select
+                id="agent-doc-sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as ListSortKey)}
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
+          <p className="text-xs text-muted-foreground">
+            전체 {docs.length}개 · 검색 결과 {filtered.length}개
+          </p>
 
           {/* 카테고리 칩 — skill (N건) 형태, 클릭 시 해당 kind만 */}
           <div className="space-y-2">
@@ -547,7 +608,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       ) : (
         <div className="space-y-3">
           <SelectionToolbar
-            total={filtered.length}
+            total={pageItems.length}
             selectedCount={selection.selectedCount}
             allSelected={selection.allSelected}
             someSelected={selection.someSelected}
@@ -556,7 +617,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             onDeleteSelected={() => void deleteSelected()}
           />
           <div className="grid gap-3 sm:grid-cols-2">
-            {filtered.map((doc) => {
+            {pageItems.map((doc) => {
               const fileCount = doc.files?.length || 1;
               const selected = selection.isSelected(doc.id);
               const kindColor =
@@ -621,7 +682,10 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                         </p>
                       )}
                       <p className="text-xs text-muted-foreground">
-                        수정 {new Date(doc.updatedAt).toLocaleString("ko-KR")}
+                        등록 {formatListDate(doc.createdAt)}
+                        {doc.updatedAt !== doc.createdAt
+                          ? ` · 수정 ${formatListDate(doc.updatedAt)}`
+                          : ""}
                       </p>
                     </div>
                     <div className="flex shrink-0 flex-col gap-1 opacity-0 group-hover:opacity-100">
@@ -652,6 +716,12 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
               );
             })}
           </div>
+          <ListPagination
+            page={page}
+            total={filtered.length}
+            pageSize={DEFAULT_PAGE_SIZE}
+            onChange={setPage}
+          />
         </div>
       )}
     </div>

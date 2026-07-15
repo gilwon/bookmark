@@ -26,6 +26,7 @@ import {
   SearchSuggestInput,
   type SearchSuggestItem,
 } from "@/components/ui/search-suggest-input";
+import { Select } from "@/components/ui/select";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 
@@ -166,18 +167,17 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
               >
                 정렬
               </label>
-              <select
+              <Select
                 id="page-sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value as ListSortKey)}
-                className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
                     {o.label}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
           </div>
 
