@@ -95,6 +95,8 @@ export type AgentDoc = {
 export type PromptSection = {
   title: string;
   body: string;
+  /** 노션형 편집기로 작성한 구조화 본문. 기존 문자열 본문과 함께 저장한다. */
+  content?: unknown;
 };
 
 /** 프롬프트 라이브러리 엔티티 */

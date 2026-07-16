@@ -29,13 +29,13 @@ export default async function PromptEditPage({ params }: Props) {
           목록으로
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">프롬프트 수정</h1>
+          <h1 className="text-2xl font-bold tracking-tight">프롬프트</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            메타 정보와 섹션 본문을 편집한 뒤 저장하세요.
+            블록을 추가하거나 / 를 입력해 노션처럼 작성합니다. 입력은 자동 저장됩니다.
           </p>
         </div>
       </div>
-      <PromptEditor mode="edit" initial={rowToPrompt(row)} />
+      <PromptEditor initial={rowToPrompt(row)} />
     </div>
   );
 }

@@ -135,7 +135,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       <div className="flex justify-end">
         <Button onClick={() => void handleCreate()} disabled={creating}>
           <Plus className="h-4 w-4" />
-          {creating ? "생성 중…" : "새 페이지"}
+          {creating ? "생성 중…" : "새 노션 페이지"}
         </Button>
       </div>
 

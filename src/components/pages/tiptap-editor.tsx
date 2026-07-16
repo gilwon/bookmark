@@ -152,8 +152,17 @@ type Props = {
   initialTitle: string;
   initialContent: unknown;
   initialUpdatedAt?: string;
-  bookmarks: Bookmark[];
-  stars: GithubStar[];
+  bookmarks?: Bookmark[];
+  stars?: GithubStar[];
+  /** 기본 페이지 API 대신 호출할 저장 함수. 프롬프트 편집기에서 사용한다. */
+  onSaveDocument?: (data: {
+    title: string;
+    content: unknown;
+    expectedUpdatedAt: string | null;
+  }) => Promise<{ updatedAt?: string }>;
+  /** 제목 외 메타 정보 변경을 자동 저장 대상으로 표시한다. */
+  externalDirtyVersion?: number;
+  titlePlaceholder?: string;
 };
 
 type SaveState =
@@ -170,19 +179,30 @@ export function TiptapEditor({
   initialTitle,
   initialContent,
   initialUpdatedAt,
-  bookmarks,
-  stars,
+  bookmarks = [],
+  stars = [],
+  onSaveDocument,
+  externalDirtyVersion,
+  titlePlaceholder = "제목 없음",
 }: Props) {
+  /** 저장된 문서 안 리터럴 <aside> 를 callout 노드로 승격 */
+  const seed = useMemo(() => {
+    const base =
+      initialContent && typeof initialContent === "object"
+        ? initialContent
+        : { type: "doc", content: [{ type: "paragraph" }] };
+    return migrateAsideInTiptapDoc(base);
+  }, [initialContent]);
   const [title, setTitle] = useState(initialTitle);
-  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [saveState, setSaveState] = useState<SaveState>(() =>
+    seed.changed ? "dirty" : "idle"
+  );
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(
     initialUpdatedAt ?? null
   );
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const bodyWrapRef = useRef<HTMLDivElement>(null);
-  const dirtyRef = useRef(false);
-  const titleValueRef = useRef(title);
-  titleValueRef.current = title;
+  const dirtyRef = useRef(seed.changed);
   const editorRef = useRef<Editor | null>(null);
   /** 서버가 아는 마지막 updatedAt (낙관적 잠금) */
   const expectedUpdatedAtRef = useRef<string | null>(initialUpdatedAt ?? null);
@@ -193,15 +213,6 @@ export function TiptapEditor({
   /** 저장 중 다시 dirty 되면 완료 후 한 번 더 저장 */
   const pendingResaveRef = useRef(false);
   const [embedOpen, setEmbedOpen] = useState(false);
-
-  /** 저장된 문서 안 리터럴 <aside> 를 callout 노드로 승격 */
-  const seed = useMemo(() => {
-    const base =
-      initialContent && typeof initialContent === "object"
-        ? initialContent
-        : { type: "doc", content: [{ type: "paragraph" }] };
-    return migrateAsideInTiptapDoc(base);
-  }, [initialContent]);
 
   const editor = useEditor({
     extensions: [
@@ -298,14 +309,6 @@ export function TiptapEditor({
     immediatelyRender: false,
   });
 
-  // 시드 마이그레이션이 있었으면 자동 저장 대상
-  useEffect(() => {
-    if (seed.changed) {
-      dirtyRef.current = true;
-      setSaveState("dirty");
-    }
-  }, [seed.changed]);
-
   /** 제목 높이 자동 조절 */
   useEffect(() => {
     const el = titleRef.current;
@@ -316,7 +319,11 @@ export function TiptapEditor({
 
   const markDirty = useCallback(() => {
     dirtyRef.current = true;
-    setSaveState((s) => (s === "saving" ? s : "dirty"));
+    if (savingRef.current) {
+      pendingResaveRef.current = true;
+      return;
+    }
+    setSaveState("dirty");
   }, []);
 
   // 블록 드래그 앤 드롭
@@ -337,27 +344,35 @@ export function TiptapEditor({
       const run = async () => {
         savingRef.current = true;
         setSaveState("saving");
-        const snapTitle =
-          titleValueRef.current.trim() || "제목 없는 페이지";
+        const snapTitle = title.trim() || "제목 없는 페이지";
         const snapContent = editor.getJSON();
         try {
-          const res = await fetch(`/api/pages/${pageId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              title: snapTitle,
-              content: snapContent,
-              expectedUpdatedAt: expectedUpdatedAtRef.current,
-            }),
-          });
-          if (res.status === 409) {
-            setSaveState("conflict");
-            return;
-          }
-          if (!res.ok) throw new Error("저장 실패");
-          const data = (await res.json().catch(() => null)) as {
-            updatedAt?: string;
-          } | null;
+          const data = onSaveDocument
+            ? await onSaveDocument({
+                title: snapTitle,
+                content: snapContent,
+                expectedUpdatedAt: expectedUpdatedAtRef.current,
+              })
+            : await (async () => {
+                const res = await fetch(`/api/pages/${pageId}`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    title: snapTitle,
+                    content: snapContent,
+                    expectedUpdatedAt: expectedUpdatedAtRef.current,
+                  }),
+                });
+                if (res.status === 409) {
+                  setSaveState("conflict");
+                  return null;
+                }
+                if (!res.ok) throw new Error("저장 실패");
+                return (await res.json().catch(() => null)) as {
+                  updatedAt?: string;
+                } | null;
+              })();
+          if (data === null && !onSaveDocument) return;
           if (data?.updatedAt) {
             expectedUpdatedAtRef.current = data.updatedAt;
             setLastSavedAt(data.updatedAt);
@@ -390,7 +405,7 @@ export function TiptapEditor({
         });
       await saveChainRef.current;
     },
-    [editor, pageId]
+    [editor, onSaveDocument, pageId, title]
   );
 
   // 본문 변경 → dirty
@@ -402,6 +417,11 @@ export function TiptapEditor({
       editor.off("update", onUpdate);
     };
   }, [editor, markDirty]);
+
+  useEffect(() => {
+    if (externalDirtyVersion === undefined || externalDirtyVersion === 0) return;
+    markDirty();
+  }, [externalDirtyVersion, markDirty]);
 
   // dirty 후 1.2초 debounce 자동 저장
   useEffect(() => {
@@ -446,7 +466,7 @@ export function TiptapEditor({
   function handleExportMd() {
     if (!editor) return;
     const md = tiptapToMarkdown(editor.getJSON());
-    const base = titleValueRef.current.trim() || "제목 없는 페이지";
+    const base = title.trim() || "제목 없는 페이지";
     downloadMarkdown(base, md);
   }
 
@@ -553,7 +573,7 @@ export function TiptapEditor({
             ref={titleRef}
             value={title}
             rows={1}
-            placeholder="제목 없음"
+            placeholder={titlePlaceholder}
             aria-label="페이지 제목"
             onChange={(e) => {
               setTitle(e.target.value);

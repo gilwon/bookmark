@@ -33,7 +33,7 @@ export default async function PagesPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">페이지</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          노션처럼 바로 입력·수정·자동 저장합니다. 목록은 등록일 최신순·페이지
+          노션처럼 블록을 작성·수정하고 자동 저장합니다. 목록은 등록일 최신순·페이지
           단위로 불러와 가볍게 유지합니다. URL 또는 텍스트 PDF 로 초안을 가져올
           수 있습니다.
         </p>

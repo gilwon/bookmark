@@ -1,7 +1,7 @@
 // 프롬프트 신규 등록
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { PromptEditor } from "@/components/prompts/prompt-editor";
+import { NewPromptButton } from "@/components/prompts/new-prompt-button";
 
 export default function NewPromptPage() {
   return (
@@ -21,7 +21,15 @@ export default function NewPromptPage() {
           </p>
         </div>
       </div>
-      <PromptEditor mode="create" />
+      <div className="rounded-md border border-dashed border-border px-5 py-12 text-center">
+        <h2 className="text-base font-semibold">빈 노션형 프롬프트 문서</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          제목을 입력하고 / 메뉴로 제목, 코드, 체크리스트, 콜아웃 등을 추가할 수 있습니다.
+        </p>
+        <div className="mt-5">
+          <NewPromptButton />
+        </div>
+      </div>
     </div>
   );
 }

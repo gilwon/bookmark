@@ -9,12 +9,14 @@ export function parsePromptSections(raw: string | null | undefined): PromptSecti
     if (!Array.isArray(arr)) return [];
     return arr
       .filter(
-        (x): x is { title?: unknown; body?: unknown } =>
+        (x): x is { title?: unknown; body?: unknown; content?: unknown } =>
           !!x && typeof x === "object"
       )
       .map((x) => ({
         title: typeof x.title === "string" ? x.title : "",
         body: typeof x.body === "string" ? x.body : "",
+        content:
+          x.content && typeof x.content === "object" ? x.content : undefined,
       }));
   } catch {
     return [];
@@ -44,5 +46,6 @@ export function normalizeSections(
   return sections.map((s, i) => ({
     title: s.title.trim() || `${i + 1}차 프롬프트`,
     body: s.body,
+    content: s.content && typeof s.content === "object" ? s.content : undefined,
   }));
 }

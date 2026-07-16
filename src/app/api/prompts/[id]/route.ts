@@ -61,10 +61,12 @@ export async function PATCH(req: Request, ctx: Ctx) {
   if (Array.isArray(body.sections)) {
     const sections: PromptSection[] = normalizeSections(
       body.sections.map((x) => {
-        const o = x as { title?: unknown; body?: unknown };
+        const o = x as { title?: unknown; body?: unknown; content?: unknown };
         return {
           title: typeof o.title === "string" ? o.title : "",
           body: typeof o.body === "string" ? o.body : "",
+          content:
+            o.content && typeof o.content === "object" ? o.content : undefined,
         };
       })
     );

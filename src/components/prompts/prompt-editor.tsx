@@ -1,257 +1,134 @@
-// 프롬프트 등록·수정 — 메타 + 섹션 블록
+// 프롬프트를 노션형 블록 문서와 속성으로 편집한다
 "use client";
 
-import { Copy, Plus, Save, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import type { Prompt, PromptSection } from "@/lib/types";
-import { Button } from "@/components/ui/button";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { TiptapEditor } from "@/components/pages/tiptap-editor";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import { markdownToTiptapDoc } from "@/lib/markdown-to-tiptap";
+import { tiptapToMarkdown } from "@/lib/tiptap-to-markdown";
+import type { Prompt } from "@/lib/types";
 
-type Props = {
-  mode: "create" | "edit";
-  initial?: Prompt | null;
-};
+type Props = { initial: Prompt };
 
-/** 프롬프트 작성/수정 폼 */
-export function PromptEditor({ mode, initial }: Props) {
-  const router = useRouter();
-  const [title, setTitle] = useState(initial?.title ?? "");
-  const [category, setCategory] = useState(initial?.category ?? "");
-  const [summary, setSummary] = useState(initial?.summary ?? "");
-  const [whenToUse, setWhenToUse] = useState(initial?.whenToUse ?? "");
-  const [sections, setSections] = useState<PromptSection[]>(
-    initial?.sections?.length
-      ? initial.sections
-      : [{ title: "1차 프롬프트", body: "" }]
-  );
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
+function legacySectionsToDocument(prompt: Prompt): unknown {
+  const structured = prompt.sections.find(
+    (section) => section.content && typeof section.content === "object"
+  )?.content;
+  if (structured) return structured;
 
-  function updateSection(i: number, patch: Partial<PromptSection>) {
-    setSections((prev) =>
-      prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s))
-    );
-  }
+  const markdown = prompt.sections
+    .map((section) => `## ${section.title}\n\n${section.body}`)
+    .join("\n\n");
+  return markdownToTiptapDoc(markdown);
+}
 
-  function addSection() {
-    setSections((prev) => [
-      ...prev,
-      { title: `${prev.length + 1}차 프롬프트`, body: "" },
-    ]);
-  }
+/** 기존 섹션 데이터도 읽을 수 있는 노션형 프롬프트 편집기. */
+export function PromptEditor({ initial }: Props) {
+  const [category, setCategory] = useState(initial.category ?? "");
+  const [summary, setSummary] = useState(initial.summary ?? "");
+  const [whenToUse, setWhenToUse] = useState(initial.whenToUse ?? "");
+  const [dirtyVersion, setDirtyVersion] = useState(0);
+  const metadataRef = useRef({
+    category: initial.category ?? "",
+    summary: initial.summary ?? "",
+    whenToUse: initial.whenToUse ?? "",
+  });
+  const initialContent = useMemo(() => legacySectionsToDocument(initial), [initial]);
 
-  function removeSection(i: number) {
-    if (sections.length <= 1) return;
-    setSections((prev) => prev.filter((_, idx) => idx !== i));
-  }
+  const markMetadataDirty = useCallback(() => {
+    setDirtyVersion((version) => version + 1);
+  }, []);
 
-  async function copySection(i: number) {
-    const body = sections[i]?.body ?? "";
-    try {
-      await navigator.clipboard.writeText(body);
-      setCopiedIdx(i);
-      setTimeout(() => setCopiedIdx(null), 1500);
-    } catch {
-      alert("복사에 실패했습니다.");
-    }
-  }
-
-  async function handleSave() {
-    if (!title.trim()) {
-      setError("제목을 입력하세요.");
-      return;
-    }
-    setSaving(true);
-    setError(null);
-    try {
-      const payload = {
-        title: title.trim(),
-        category: category.trim() || null,
-        summary: summary.trim() || null,
-        whenToUse: whenToUse.trim() || null,
-        sections,
+  const saveDocument = useCallback(
+    async ({ title, content }: { title: string; content: unknown }) => {
+      const metadata = metadataRef.current;
+      const res = await fetch(`/api/prompts/${initial.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          category: metadata.category.trim() || null,
+          summary: metadata.summary.trim() || null,
+          whenToUse: metadata.whenToUse.trim() || null,
+          sections: [
+            {
+              title: "프롬프트 문서",
+              body: tiptapToMarkdown(content),
+              content,
+            },
+          ],
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        updatedAt?: string;
       };
-      const res =
-        mode === "create"
-          ? await fetch("/api/prompts", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
-            })
-          : await fetch(`/api/prompts/${initial!.id}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
-            });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(
-          (data as { error?: string }).error || "저장 실패"
-        );
-      }
-      const id = (data as { id?: string }).id ?? initial?.id;
-      // replace: 저장 후 뒤로가기 시 편집 폼/다른 메뉴로 튕기지 않게 함
-      if (id) {
-        router.replace(`/prompts/${id}`);
-        router.refresh();
-      } else {
-        router.replace("/prompts");
-        router.refresh();
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "저장 실패");
-    } finally {
-      setSaving(false);
-    }
-  }
+      if (!res.ok) throw new Error(data.error || "저장 실패");
+      return { updatedAt: data.updatedAt };
+    },
+    [initial.id]
+  );
 
   return (
-    <div className="w-full min-w-0 space-y-6">
-      <div className="space-y-4 rounded-xl border border-border bg-card/40 p-5">
-        <div className="space-y-1">
-          <label className="text-xs text-muted-foreground">제목</label>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="예: 우리 회사 톤으로 외부 공문메일 작성하기"
-            disabled={saving}
-            className="text-base font-semibold"
-          />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">목차</label>
+    <div className="w-full min-w-0">
+      <details className="mb-4 rounded-md border border-border bg-card/40 px-4 py-3">
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
+          속성
+        </summary>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="space-y-1 text-sm">
+            <span className="text-muted-foreground">카테고리</span>
             <Input
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="예: 1-1. 하루의 시작_…"
-              disabled={saving}
+              onChange={(event) => {
+                const value = event.target.value;
+                setCategory(value);
+                metadataRef.current.category = value;
+                markMetadataDirty();
+              }}
+              placeholder="예: Claude · 업무 자동화"
             />
-          </div>
-          <div className="space-y-1">
-            <label className="text-xs text-muted-foreground">프롬프트 요약</label>
+          </label>
+          <label className="space-y-1 text-sm">
+            <span className="text-muted-foreground">한 줄 요약</span>
             <Input
               value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              placeholder="예: 하단 본문을 참고해주세요."
-              disabled={saving}
+              onChange={(event) => {
+                const value = event.target.value;
+                setSummary(value);
+                metadataRef.current.summary = value;
+                markMetadataDirty();
+              }}
+              placeholder="이 프롬프트가 하는 일을 적으세요"
             />
-          </div>
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs text-muted-foreground">
-            이런 상황에 사용해요
           </label>
-          <Textarea
-            value={whenToUse}
-            onChange={(e) => setWhenToUse(e.target.value)}
-            placeholder="예: 우리 회사가 평소 쓰던 톤 그대로 꼼꼼하게 공문 메일 작성하고 싶을 때"
-            className="min-h-[72px]"
-            disabled={saving}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold">본문 섹션</h2>
-          <Button
-            type="button"
-            variant="secondary"
-            size="sm"
-            onClick={addSection}
-            disabled={saving}
-          >
-            <Plus className="h-4 w-4" />
-            섹션 추가
-          </Button>
-        </div>
-
-        {sections.map((sec, i) => (
-          <div
-            key={i}
-            className="overflow-hidden rounded-xl border border-border bg-card"
-          >
-            <div className="flex flex-wrap items-center gap-2 border-b border-border px-3 py-2">
-              <Input
-                value={sec.title}
-                onChange={(e) => updateSection(i, { title: e.target.value })}
-                className="h-8 max-w-xs border-0 bg-transparent px-1 font-medium shadow-none focus-visible:ring-0"
-                placeholder={`${i + 1}차 프롬프트`}
-                disabled={saving}
-              />
-              <div className="ml-auto flex gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => void copySection(i)}
-                  disabled={saving || !sec.body}
-                >
-                  <Copy
-                    className={cn(
-                      "h-3.5 w-3.5",
-                      copiedIdx === i && "text-emerald-500"
-                    )}
-                  />
-                  {copiedIdx === i ? "복사됨" : "복사"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-red-400"
-                  onClick={() => removeSection(i)}
-                  disabled={saving || sections.length <= 1}
-                  aria-label="섹션 삭제"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            </div>
+          <label className="space-y-1 text-sm sm:col-span-2">
+            <span className="text-muted-foreground">이런 상황에 사용해요</span>
             <Textarea
-              value={sec.body}
-              onChange={(e) => updateSection(i, { body: e.target.value })}
-              placeholder="프롬프트 본문을 입력하세요…"
-              className={cn(
-                // Input 과 동일 토큰 (bg-input / text-foreground) — 라이트·다크 공통
-                "min-h-[200px] resize-y rounded-none border-0 bg-input px-4 py-3",
-                "font-mono text-sm leading-relaxed text-foreground",
-                "shadow-none focus-visible:ring-0"
-              )}
-              disabled={saving}
+              value={whenToUse}
+              onChange={(event) => {
+                const value = event.target.value;
+                setWhenToUse(value);
+                metadataRef.current.whenToUse = value;
+                markMetadataDirty();
+              }}
+              placeholder="언제 이 프롬프트를 쓰면 좋은지 적으세요"
+              className="min-h-20"
             />
-          </div>
-        ))}
-      </div>
+          </label>
+        </div>
+      </details>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
-
-      <div className="flex flex-wrap gap-2">
-        <Button type="button" onClick={() => void handleSave()} disabled={saving}>
-          <Save className="h-4 w-4" />
-          {saving ? "저장 중…" : "저장"}
-        </Button>
-        <Button
-          type="button"
-          variant="secondary"
-          disabled={saving}
-          onClick={() => {
-            // history.back 대신 고정 경로 — 이전 메뉴(북마크/검색 등)로 튀는 것 방지
-            if (mode === "edit" && initial?.id) {
-              router.push(`/prompts/${initial.id}`);
-            } else {
-              router.push("/prompts");
-            }
-          }}
-        >
-          취소
-        </Button>
-      </div>
+      <TiptapEditor
+        pageId={initial.id}
+        initialTitle={initial.title}
+        initialContent={initialContent}
+        initialUpdatedAt={initial.updatedAt}
+        onSaveDocument={saveDocument}
+        externalDirtyVersion={dirtyVersion}
+        titlePlaceholder="제목 없는 프롬프트"
+      />
     </div>
   );
 }
