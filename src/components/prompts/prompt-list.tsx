@@ -150,7 +150,9 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       map.set(g, (map.get(g) ?? 0) + c.count);
     }
     return [...map.entries()]
-      .sort((a, b) => compareGroup(a[0], b[0]))
+      .sort((a, b) =>
+        compareGroup(groupDisplayName(a[0]), groupDisplayName(b[0]))
+      )
       .map(([key, count]) => ({
         key,
         label: groupDisplayName(key),
