@@ -7,7 +7,6 @@ import {
   gitCheatsheetCategoryLabel,
   type GitCheatsheetItem,
 } from "@/lib/git-cheatsheet";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -61,24 +60,26 @@ export function GitCheatsheetList({ items }: Props) {
           일치하는 명령어가 없습니다.
         </div>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((c) => (
             <Card
               key={c.id}
               className="group transition-colors hover:border-indigo-500/40"
             >
               <CardContent className="space-y-2 p-4">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <Badge variant="secondary">
+                <div>
+                  <span className="block text-sm font-semibold">
+                    {c.title}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
                     {gitCheatsheetCategoryLabel(c.category)}
-                  </Badge>
-                  <span className="text-sm font-semibold">{c.title}</span>
+                  </span>
                 </div>
+                <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                  {c.description}
+                </p>
                 <p className="rounded-md bg-muted px-2.5 py-1.5 font-mono text-xs text-foreground/90">
                   {c.command}
-                </p>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  {c.description}
                 </p>
               </CardContent>
             </Card>
