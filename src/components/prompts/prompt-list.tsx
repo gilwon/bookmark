@@ -46,6 +46,11 @@ const SORT_OPTIONS: { value: ListSortKey; label: string }[] = [
 const ALL = "__all__";
 const UNCATEGORIZED = "미분류";
 const FAVORITES = "⭐ 즐겨찾기";
+const countFormatter = new Intl.NumberFormat("ko-KR");
+
+function formatCount(count: number): string {
+  return countFormatter.format(count);
+}
 
 /** 목차 라벨 정규화 (빈 값 → 미분류) */
 function categoryLabel(p: Prompt): string {
@@ -92,15 +97,7 @@ function compareCategory(a: string, b: string): number {
 }
 
 function compareGroup(a: string, b: string): number {
-  if (a === UNCATEGORIZED && b !== UNCATEGORIZED) return 1;
-  if (b === UNCATEGORIZED && a !== UNCATEGORIZED) return -1;
-  // 일잘러 숫자 우선 정렬
-  const na = a.match(/일잘러 · (\d+)/);
-  const nb = b.match(/일잘러 · (\d+)/);
-  if (na && nb) return Number(na[1]) - Number(nb[1]);
-  if (na) return -1;
-  if (nb) return 1;
-  return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
+  return compareCategory(a, b);
 }
 
 /** 즐겨찾기 우선 → 선택 정렬 */
@@ -389,7 +386,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           </div>
           <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:thin]">
             <FilterChip
-              label={`전체 (${prompts.length})`}
+              label={`전체 (${formatCount(prompts.length)})`}
               active={activeGroup === ALL}
               onClick={() => setActiveGroup(ALL)}
               tone="indigo"
@@ -397,7 +394,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             {groupsMeta.map((g) => (
               <FilterChip
                 key={g.key}
-                label={`${g.label} (${g.count})`}
+                label={`${g.label} (${formatCount(g.count)})`}
                 active={activeGroup === g.key}
                 onClick={() =>
                   setActiveGroup((prev) => (prev === g.key ? ALL : g.key))
@@ -415,7 +412,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
               </p>
               <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:thin]">
                 <FilterChip
-                  label={`그룹 전체 (${subCategories.reduce((s, c) => s + c.count, 0)})`}
+                  label={`그룹 전체 (${formatCount(subCategories.reduce((s, c) => s + c.count, 0))})`}
                   active={activeCat === ALL}
                   onClick={() => setActiveCat(ALL)}
                   tone="indigo"
@@ -424,7 +421,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                 {subCategories.map((c) => (
                   <FilterChip
                     key={c.label}
-                    label={`${shortCatLabel(c.label, activeGroup)} (${c.count})`}
+                    label={`${shortCatLabel(c.label, activeGroup)} (${formatCount(c.count)})`}
                     active={activeCat === c.label}
                     onClick={() =>
                       setActiveCat((prev) =>
@@ -454,9 +451,9 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="text-xs text-muted-foreground">
-              검색 결과 {filtered.length}개
+              검색 결과 {formatCount(filtered.length)}개
               {filtered.length > DEFAULT_PAGE_SIZE
-                ? ` · 이 페이지 ${pageItems.length}개`
+                ? ` · 이 페이지 ${formatCount(pageItems.length)}개`
                 : ""}
               {hasActiveFilter ? " · 필터 적용 중" : ""}
               {showSectionHeaders
@@ -538,7 +535,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                       {group.label}
                     </h2>
                     <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      {group.items.length}
+                      {formatCount(group.items.length)}
                     </span>
                   </button>
                 ) : null}
