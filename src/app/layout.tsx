@@ -1,18 +1,7 @@
-// 루트 레이아웃 — 폰트, Providers, 테마 초기화
+// 루트 레이아웃 — Pretendard, Providers, 테마 초기화
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "MyMark — Personal Bookmark Hub",
@@ -46,7 +35,7 @@ export const metadata: Metadata = {
  * Server Component head 의 네이티브 <script> 로 주입한다.
  */
 const themeInitScript =
-  "(function(){try{var t=localStorage.getItem('theme');var r=document.documentElement;r.classList.remove('light','dark');if(t==='light'){r.classList.add('light');r.style.colorScheme='light';}else{r.classList.add('dark');r.style.colorScheme='dark';}}catch(e){document.documentElement.classList.add('dark');}})();";
+  "(function(){try{var t=localStorage.getItem('theme');var r=document.documentElement;r.classList.remove('light','dark');if(t==='dark'){r.classList.add('dark');r.style.colorScheme='dark';}else{r.classList.add('light');r.style.colorScheme='light';}}catch(e){document.documentElement.classList.add('light');}})();";
 
 /** 앱 루트 HTML 셸 */
 export default function RootLayout({
@@ -57,14 +46,13 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
       suppressHydrationWarning
     >
       <head>
-        <meta name="theme-color" content="#4f46e5" />
+        <meta name="theme-color" content="#f5f5f7" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts -- 테마 FOUC 방지, React 19 next/script 경고 회피 */}
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{ __html: themeInitScript }}

@@ -1,10 +1,9 @@
-// 앱 사이드바 — 네비게이션, 프로필, 테마 토글, 로그아웃
+// Apple식 글로벌 상단 내비게이션과 모바일 메뉴를 제공한다
 "use client";
 
 import {
   Bookmark,
   Bot,
-  ExternalLink,
   FileText,
   GitBranch,
   GitFork,
@@ -19,233 +18,137 @@ import {
   X,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 const navItems = [
   { href: "/dashboard", label: "홈", icon: LayoutDashboard },
   { href: "/bookmarks", label: "북마크", icon: Bookmark },
-  { href: "/stars", label: "GitHub Stars", icon: GitFork },
+  { href: "/stars", label: "Stars", icon: GitFork },
   { href: "/pages", label: "페이지", icon: FileText },
   { href: "/prompts", label: "프롬프트", icon: MessageSquareText },
-  { href: "/claude-prompts", label: "Claude Prompts", icon: Sparkles },
+  { href: "/claude-prompts", label: "Claude", icon: Sparkles },
   { href: "/skills", label: "스킬", icon: GitBranch },
-  { href: "/agent-docs", label: "에이전트 문서", icon: Bot },
+  { href: "/agent-docs", label: "문서", icon: Bot },
   { href: "/search", label: "검색", icon: Search },
 ];
 
-/** 사이드바 본문 (데스크톱 고정 + 모바일 드로어) */
+/** Apple식 글로벌 내비게이션. 모바일에서는 드로어로 전환한다. */
 export function Sidebar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
-  const navLinks = navItems.map(({ href, label, icon: Icon }) => {
-    const active = pathname === href || pathname.startsWith(href + "/");
-    return (
-      <Link
-        key={href}
-        href={href}
-        onClick={() => setOpen(false)}
-        className={cn(
-          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-          active
-            ? "bg-indigo-600/20 text-indigo-600 dark:text-indigo-300"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-        )}
-      >
-        <Icon className="h-4 w-4" />
-        {label}
-      </Link>
-    );
-  });
-
-  const footerProps = {
-    theme,
-    toggleTheme,
-    name: session?.user?.name,
-    email: session?.user?.email,
-    image: session?.user?.image,
-    githubLogin: session?.githubLogin,
-    hasGithub: Boolean(session?.hasGithub),
-  };
+  const navLinks = (mobile = false) =>
+    navItems.map(({ href, label, icon: Icon }) => {
+      const active = pathname === href || pathname.startsWith(`${href}/`);
+      return (
+        <Link
+          key={href}
+          href={href}
+          onClick={() => setOpen(false)}
+          className={cn(
+            "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs transition-colors",
+            mobile
+              ? active
+                ? "bg-white/15 text-white"
+                : "text-white/70 hover:bg-white/10 hover:text-white"
+              : active
+                ? "bg-white/16 text-white"
+                : "text-white/70 hover:text-white"
+          )}
+        >
+          <Icon className="h-3.5 w-3.5" />
+          {label}
+        </Link>
+      );
+    });
 
   return (
     <>
-      <div className="flex items-center justify-between border-b border-border bg-sidebar px-4 py-3 lg:hidden">
-        <Link href="/dashboard" className="text-lg font-bold text-foreground">
-          MyMark
-        </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="메뉴"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
-      </div>
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#1d1d1f]/95 text-white backdrop-blur-xl">
+        <div className="mx-auto flex h-11 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-10">
+          <Link
+            href="/dashboard"
+            className="shrink-0 text-[15px] font-semibold tracking-[-0.03em]"
+          >
+            MyMark
+          </Link>
+
+          <nav className="hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto px-3 lg:flex">
+            {navLinks()}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-1">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/75 transition-colors hover:bg-white/12 hover:text-white"
+            >
+              {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => void signOut({ callbackUrl: "/login" })}
+              aria-label="로그아웃"
+              className="hidden h-8 w-8 items-center justify-center rounded-full text-white/75 transition-colors hover:bg-white/12 hover:text-white lg:inline-flex"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setOpen((value) => !value)}
+              aria-label="메뉴"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/80 hover:bg-white/12 lg:hidden"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+      </header>
 
       {open && (
-        <div className="fixed inset-0 z-40 flex lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/60"
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button
+            type="button"
+            aria-label="메뉴 닫기"
+            className="absolute inset-0 bg-black/45"
             onClick={() => setOpen(false)}
           />
-          {/* 모바일: 하단 프로필 고정, 메뉴만 스크롤 */}
-          <aside className="relative z-50 flex h-full w-64 flex-col border-r border-border bg-sidebar">
-            <div className="shrink-0 px-5 py-4 text-lg font-bold text-foreground">
-              MyMark
+          <aside className="relative flex h-full w-72 flex-col bg-[#1d1d1f] px-4 py-5 text-white shadow-2xl">
+            <div className="mb-5 flex items-center justify-between">
+              <span className="text-lg font-semibold tracking-[-0.03em]">MyMark</span>
+              <button
+                type="button"
+                aria-label="메뉴 닫기"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/80 hover:bg-white/12"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
-            <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
-              {navLinks}
-              <p className="mt-3 px-3 text-[11px] text-muted-foreground/70">
-                검색{" "}
-                <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
-                  ⌘K
-                </kbd>
+            <nav className="flex flex-1 flex-col gap-1">{navLinks(true)}</nav>
+            <div className="border-t border-white/10 pt-4">
+              <p className="truncate px-3 text-xs text-white/55">
+                {session?.user?.name ?? session?.user?.email ?? "MyMark"}
               </p>
-            </nav>
-            <SidebarFooter {...footerProps} />
+              <button
+                type="button"
+                onClick={() => void signOut({ callbackUrl: "/login" })}
+                className="mt-3 inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs text-white/75 hover:bg-white/12 hover:text-white"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                로그아웃
+              </button>
+            </div>
           </aside>
         </div>
       )}
-
-      {/* 데스크톱: 뷰포트 높이 고정 + 하단 푸터 sticky */}
-      <aside className="sticky top-0 hidden h-svh w-60 shrink-0 flex-col border-r border-border bg-sidebar lg:flex">
-        <Link
-          href="/dashboard"
-          className="shrink-0 px-5 py-5 text-xl font-bold tracking-tight text-foreground"
-        >
-          MyMark
-        </Link>
-        <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 pb-2">
-          {navLinks}
-          <p className="mt-3 px-3 text-[11px] text-muted-foreground/70">
-            검색{" "}
-            <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
-              ⌘K
-            </kbd>
-          </p>
-        </nav>
-        <SidebarFooter {...footerProps} />
-      </aside>
     </>
-  );
-}
-
-/** 사이드바 하단 — 프로필·테마·로그아웃 */
-function SidebarFooter({
-  theme,
-  toggleTheme,
-  name,
-  email,
-  image,
-  githubLogin,
-  hasGithub,
-}: {
-  theme: "dark" | "light";
-  toggleTheme: () => void;
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
-  githubLogin?: string | null;
-  hasGithub?: boolean;
-}) {
-  const profileHref = githubLogin
-    ? `https://github.com/${githubLogin}`
-    : null;
-
-  return (
-    <div className="mt-auto shrink-0 space-y-2 border-t border-border bg-sidebar px-3 pb-4 pt-3">
-      <div className="flex items-center gap-3 px-2 py-1">
-        {image ? (
-          <Image
-            src={image}
-            alt=""
-            width={36}
-            height={36}
-            className="h-9 w-9 rounded-full border border-border object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
-            {(name ?? email ?? "?").slice(0, 1).toUpperCase()}
-          </div>
-        )}
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-foreground">
-            {name ?? "사용자"}
-          </p>
-          {githubLogin ? (
-            <a
-              href={profileHref!}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex max-w-full items-center gap-1 truncate text-xs text-muted-foreground hover:text-indigo-500"
-            >
-              @{githubLogin}
-              <ExternalLink className="h-3 w-3 shrink-0 opacity-60" />
-            </a>
-          ) : (
-            <p className="truncate text-xs text-muted-foreground">
-              {email ?? (hasGithub ? "GitHub 연동" : "로컬 계정")}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <Button
-        type="button"
-        variant="ghost"
-        className="w-full justify-start"
-        onClick={toggleTheme}
-        aria-label={
-          theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"
-        }
-      >
-        {theme === "dark" ? (
-          <Sun className="h-4 w-4" />
-        ) : (
-          <Moon className="h-4 w-4" />
-        )}
-        {theme === "dark" ? "라이트 모드" : "다크 모드"}
-      </Button>
-      <Button
-        variant="ghost"
-        className="w-full justify-start text-muted-foreground"
-        onClick={() => {
-          // 로그아웃 전 SW/Cache Storage 의 앱 캐시 제거 (교차 계정 노출 방지)
-          try {
-            if ("serviceWorker" in navigator) {
-              void navigator.serviceWorker.ready.then((reg) => {
-                reg.active?.postMessage({ type: "MYMARK_CLEAR_CACHES" });
-              });
-            }
-            if ("caches" in window) {
-              void caches.keys().then((keys) =>
-                Promise.all(
-                  keys
-                    .filter((k) => k.startsWith("mymark-"))
-                    .map((k) => caches.delete(k))
-                )
-              );
-            }
-          } catch {
-            /* ignore */
-          }
-          void signOut({ callbackUrl: "/login" });
-        }}
-      >
-        <LogOut className="h-4 w-4" />
-        로그아웃
-      </Button>
-    </div>
   );
 }

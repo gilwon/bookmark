@@ -1,14 +1,7 @@
 // 테마 프로바이더 — dark/light를 documentElement 클래스와 CSS 변수로 전환
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 export type Theme = "dark" | "light";
 
@@ -31,29 +24,20 @@ function applyTheme(theme: Theme) {
 
 /** localStorage 또는 현재 DOM에서 테마를 읽는다. */
 function readTheme(): Theme {
+  if (typeof window === "undefined") return "light";
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "light" || stored === "dark") return stored;
   } catch {
     // ignore
   }
-  if (typeof document !== "undefined") {
-    if (document.documentElement.classList.contains("light")) return "light";
-  }
-  return "dark";
+  if (document.documentElement.classList.contains("light")) return "light";
+  return "light";
 }
 
-/** 앱 전역 테마 (기본 dark). */
+/** 앱 전역 테마 (기본 light). */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const initial = readTheme();
-    setThemeState(initial);
-    applyTheme(initial);
-    setReady(true);
-  }, []);
+  const [theme, setThemeState] = useState<Theme>(() => readTheme());
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
@@ -83,12 +67,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     [theme, setTheme, toggleTheme]
   );
 
-  // ready 전에는 깜빡임 최소화를 위해 children은 그대로 렌더
   return (
     <ThemeContext.Provider value={value}>
-      <div data-theme-ready={ready ? "true" : "false"} className="contents">
-        {children}
-      </div>
+      <div className="contents">{children}</div>
     </ThemeContext.Provider>
   );
 }
@@ -98,7 +79,7 @@ export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
     return {
-      theme: "dark",
+        theme: "light",
       setTheme: () => {
         /* no-op */
       },
