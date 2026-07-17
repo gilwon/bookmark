@@ -25,6 +25,15 @@ export type UpsertStarsResult = {
   removedRepos: string[];
 };
 
+function keepKoreanTranslation(description: string | null, previous: string | null) {
+  const marker = "\n\n한국어. ";
+  const translation = previous?.includes(marker)
+    ? previous.slice(previous.indexOf(marker) + marker.length).trim()
+    : "";
+  if (!description) return previous;
+  return translation ? `${description}${marker}${translation}` : description;
+}
+
 /** GitHub access_token으로 starred 레포를 페이지네이션해 가져온다. */
 export async function fetchStarredRepos(
   accessToken: string
@@ -166,9 +175,13 @@ export async function upsertStars(
   for (const repo of repos) {
     const existing = await store.getStarByRepo(userId, repo.repoFullName);
     if (existing) {
+      const description = keepKoreanTranslation(
+        repo.description,
+        existing.description
+      );
       const starsDelta = repo.stars - (existing.stars ?? 0);
       const metaChanged =
-        (existing.description ?? null) !== repo.description ||
+        (existing.description ?? null) !== description ||
         (existing.language ?? null) !== repo.language ||
         existing.url !== repo.url ||
         !topicsEqual(existing.topics, repo.topics);
@@ -179,7 +192,7 @@ export async function upsertStars(
       if (hasChange) {
         updatedRepos.push({ name: repo.repoFullName, starsDelta });
         await store.updateStar(existing.id, userId, {
-          description: repo.description,
+          description,
           language: repo.language,
           stars: repo.stars,
           topics: JSON.stringify(repo.topics),

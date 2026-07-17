@@ -89,7 +89,7 @@ export function StarCard({
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">
         {star.description && (
-          <p className="line-clamp-2 text-xs text-muted-foreground">
+          <p className="whitespace-pre-wrap break-words text-xs text-muted-foreground">
             {star.description}
           </p>
         )}
