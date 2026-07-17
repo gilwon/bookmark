@@ -26,12 +26,12 @@ export type UpsertStarsResult = {
 };
 
 function keepKoreanTranslation(description: string | null, previous: string | null) {
-  const marker = "\n\n한국어. ";
-  const translation = previous?.includes(marker)
-    ? previous.slice(previous.indexOf(marker) + marker.length).trim()
+  const separator = "\n\n";
+  const translation = previous?.includes(separator)
+    ? previous.slice(previous.indexOf(separator) + separator.length).trim()
     : "";
   if (!description) return previous;
-  return translation ? `${description}${marker}${translation}` : description;
+  return translation ? `${description}${separator}${translation}` : description;
 }
 
 /** GitHub access_token으로 starred 레포를 페이지네이션해 가져온다. */

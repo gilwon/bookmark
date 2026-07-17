@@ -90,7 +90,7 @@ const translations = {
   "zubair-trabzada/geo-seo-claude": "Claude Code용 GEO 우선 SEO 스킬. 인용 가능성 점수, AI 크롤러 분석, 브랜드 권위, 스키마 마크업, 플랫폼별 최적화, PDF 보고서를 제공합니다.",
 };
 
-const marker = "\n\n한국어. ";
+const separator = "\n\n";
 const sb = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY,
@@ -104,10 +104,10 @@ if (error) throw error;
 let updated = 0;
 for (const row of rows) {
   const translation = translations[row.repo_full_name];
-  if (!translation || !row.description || row.description.includes(marker)) continue;
+  if (!translation || !row.description || row.description.includes(separator)) continue;
   const { error: updateError } = await sb
     .from("github_stars")
-    .update({ description: `${row.description.trim()}${marker}${translation}` })
+    .update({ description: `${row.description.trim()}${separator}${translation}` })
     .eq("id", row.id);
   if (updateError) throw updateError;
   updated++;
