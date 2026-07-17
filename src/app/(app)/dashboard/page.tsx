@@ -304,7 +304,7 @@ export default async function DashboardPage() {
                         {s.repoFullName}
                       </p>
                       {s.description && (
-                        <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
+                        <p className="mt-0.5 whitespace-pre-wrap break-words text-xs text-muted-foreground">
                           {s.description}
                         </p>
                       )}
