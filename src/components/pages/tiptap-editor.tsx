@@ -6,6 +6,7 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
+import { TableKit } from "@tiptap/extension-table";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -14,8 +15,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Editor } from "@tiptap/react";
 import type { Bookmark, GithubStar } from "@/lib/types";
 import {
+  migrateLegacyMarkdownTablesInTiptapDoc,
   migrateAsideInTiptapDoc,
   pastedAsideToNodes,
+  removeDuplicateLeadingTitle,
 } from "@/lib/migrate-aside-content";
 import { hasLiteralAside } from "@/lib/normalize-to-markdown";
 import {
@@ -191,8 +194,14 @@ export function TiptapEditor({
       initialContent && typeof initialContent === "object"
         ? initialContent
         : { type: "doc", content: [{ type: "paragraph" }] };
-    return migrateAsideInTiptapDoc(base);
-  }, [initialContent]);
+    const aside = migrateAsideInTiptapDoc(base);
+    const tables = migrateLegacyMarkdownTablesInTiptapDoc(aside.content);
+    const heading = removeDuplicateLeadingTitle(tables.content, initialTitle);
+    return {
+      content: heading.content,
+      changed: aside.changed || tables.changed || heading.changed,
+    };
+  }, [initialContent, initialTitle]);
   const [title, setTitle] = useState(initialTitle);
   const [saveState, setSaveState] = useState<SaveState>(() =>
     seed.changed ? "dirty" : "idle"
@@ -220,6 +229,8 @@ export function TiptapEditor({
         heading: { levels: [1, 2, 3] },
         // 커스텀 언어 선택 NodeView 사용
         codeBlock: false,
+        link: false,
+        underline: false,
       }),
       CodeBlockNode.configure({
         defaultLanguage: null,
@@ -254,6 +265,11 @@ export function TiptapEditor({
       TaskList,
       TaskItem.configure({
         nested: true,
+      }),
+      TableKit.configure({
+        table: {
+          resizable: false,
+        },
       }),
     ],
 
@@ -566,8 +582,16 @@ export function TiptapEditor({
         - 폼 박스/점선 테두리 없이 연속된 문서 느낌
         - 제목은 큰 글씨, 본문은 그 아래 자연스럽게 이어짐
       */}
-      <div className="notion-page pb-32">
+      <div
+        className={cn(
+          "notion-page pb-32",
+          !onSaveDocument && "notion-page-editor"
+        )}
+      >
         <div className="notion-page-inner">
+          <div className="notion-page-icon" aria-hidden="true">
+            📄
+          </div>
           <textarea
             id="page-title-input"
             ref={titleRef}

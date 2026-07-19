@@ -75,6 +75,39 @@ function inlineToMd(nodes?: TipTapNode[]): string {
     .join("");
 }
 
+/** 표 노드의 셀 텍스트를 Markdown 안전 문자열로 변환한다. */
+function tableCellToMd(node: TipTapNode | undefined): string {
+  if (!node) return "";
+  return (node.content ?? [])
+    .map((child) =>
+      child.type === "paragraph"
+        ? inlineToMd(child.content)
+        : blockToMd(child).trim()
+    )
+    .join("<br>")
+    .replace(/\|/g, "\\|");
+}
+
+/** Tiptap 표를 GFM Markdown 표로 변환한다. */
+function tableToMd(node: TipTapNode): string {
+  const rows = node.content ?? [];
+  if (rows.length === 0) return "";
+  const columnCount = Math.max(
+    ...rows.map((row) => row.content?.length ?? 0)
+  );
+  const rowToMd = (row: TipTapNode) =>
+    `| ${Array.from({ length: columnCount }, (_, index) =>
+      tableCellToMd(row.content?.[index])
+    ).join(" | ")} |`;
+
+  return [
+    rowToMd(rows[0]!),
+    `| ${Array.from({ length: columnCount }, () => "---").join(" | ")} |`,
+    ...rows.slice(1).map(rowToMd),
+    "",
+  ].join("\n");
+}
+
 /** 리스트를 indent 적용해 Markdown으로. */
 function listToMd(node: TipTapNode, indent: number): string {
   const pad = "  ".repeat(indent);
@@ -166,6 +199,9 @@ function blockToMd(node: TipTapNode): string {
         .trim();
       return `:::callout\n${body}\n:::\n\n`;
     }
+
+    case "table":
+      return tableToMd(node) + "\n";
 
     case "horizontalRule":
       return "---\n\n";

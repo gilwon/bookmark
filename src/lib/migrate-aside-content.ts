@@ -1,4 +1,4 @@
-// 이미 저장된 Tiptap 문서 안의 리터럴 <aside> 텍스트를 callout 노드로 승격
+// 저장된 Tiptap 문서의 구형 aside·표·중복 제목 구조를 현재 노드로 정리한다
 
 import { markdownToTiptapDoc } from "@/lib/markdown-to-tiptap";
 import {
@@ -21,6 +21,68 @@ function collectText(node: TipTapNode | undefined): string {
   if (typeof node.text === "string") return node.text;
   if (!node.content) return "";
   return node.content.map(collectText).join("");
+}
+
+/** 페이지 제목과 같은 첫 H1은 별도 제목 입력과 중복되므로 제거한다. */
+export function removeDuplicateLeadingTitle(
+  content: unknown,
+  title: string
+): { content: unknown; changed: boolean } {
+  if (!content || typeof content !== "object") {
+    return { content, changed: false };
+  }
+  const doc = content as TipTapNode;
+  const first = doc.type === "doc" ? doc.content?.[0] : undefined;
+  if (
+    first?.type !== "heading" ||
+    Number(first.attrs?.level ?? 1) !== 1 ||
+    collectText(first).replace(/\s+/g, " ").trim() !==
+      title.replace(/\s+/g, " ").trim()
+  ) {
+    return { content, changed: false };
+  }
+  return {
+    content: { ...doc, content: doc.content?.slice(1) ?? [] },
+    changed: true,
+  };
+}
+
+/** 예전 파서가 한 문단으로 합친 GFM 표를 실제 table 노드로 복원한다. */
+export function migrateLegacyMarkdownTablesInTiptapDoc(
+  content: unknown
+): { content: unknown; changed: boolean } {
+  if (!content || typeof content !== "object") {
+    return { content, changed: false };
+  }
+  const doc = content as TipTapNode;
+  if (doc.type !== "doc" || !Array.isArray(doc.content)) {
+    return { content, changed: false };
+  }
+
+  let changed = false;
+  const nextContent = doc.content.flatMap((block) => {
+    if (block.type !== "paragraph") return [block];
+    const text = collectText(block).trim();
+    if (!/^\|.+\|\s+\|\s*:?-{3,}/.test(text)) return [block];
+
+    const rows = text
+      .split(/\|\s+\|/)
+      .map((row, index, all) => {
+        const left = index === 0 ? "" : "| ";
+        const right = index === all.length - 1 ? "" : " |";
+        return `${left}${row.trim()}${right}`;
+      })
+      .join("\n");
+    const parsed = markdownToTiptapDoc(rows) as TipTapNode;
+    const table = parsed.content?.find((node) => node.type === "table");
+    if (!table) return [block];
+    changed = true;
+    return [table];
+  });
+
+  return changed
+    ? { content: { ...doc, content: nextContent }, changed: true }
+    : { content, changed: false };
 }
 
 /**

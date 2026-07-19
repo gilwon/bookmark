@@ -9,6 +9,58 @@ type TipTapNode = {
   marks?: { type: string; attrs?: Record<string, unknown> }[];
 };
 
+/** Markdown 표 한 행을 셀 문자열로 나눈다. */
+function splitTableRow(line: string): string[] {
+  const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
+  const cells: string[] = [];
+  let cell = "";
+  let escaped = false;
+
+  for (const char of trimmed) {
+    if (escaped) {
+      cell += char;
+      escaped = false;
+    } else if (char === "\\") {
+      escaped = true;
+    } else if (char === "|") {
+      cells.push(cell.trim());
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+  cells.push(cell.trim());
+  return cells;
+}
+
+/** GFM 표 구분 행인지 확인한다. */
+function isTableDivider(line: string): boolean {
+  const cells = splitTableRow(line);
+  return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+}
+
+/** Markdown 표를 Tiptap TableKit JSON 노드로 변환한다. */
+function parseTable(lines: string[]): TipTapNode {
+  const rows = [lines[0]!, ...lines.slice(2)].map(splitTableRow);
+  const columnCount = Math.max(...rows.map((row) => row.length));
+
+  return {
+    type: "table",
+    content: rows.map((row, rowIndex) => ({
+      type: "tableRow",
+      content: Array.from({ length: columnCount }, (_, columnIndex) => ({
+        type: rowIndex === 0 ? "tableHeader" : "tableCell",
+        content: [
+          {
+            type: "paragraph",
+            content: parseInline(row[columnIndex] ?? ""),
+          },
+        ],
+      })),
+    })),
+  };
+}
+
 /** 인라인 텍스트(볼드/이탤릭/코드/링크)를 대략 파싱한다. */
 function parseInline(text: string): TipTapNode[] {
   if (!text) return [];
@@ -131,6 +183,22 @@ export function markdownToTiptapDoc(md: string): TipTapNode {
         content: parseInline(hm[2]!.trim()),
       });
       i += 1;
+      continue;
+    }
+
+    // GFM table
+    if (
+      line.includes("|") &&
+      i + 1 < lines.length &&
+      isTableDivider(lines[i + 1] ?? "")
+    ) {
+      const tableLines = [line, lines[i + 1] ?? ""];
+      i += 2;
+      while (i < lines.length && (lines[i] ?? "").trim().includes("|")) {
+        tableLines.push(lines[i] ?? "");
+        i += 1;
+      }
+      content.push(parseTable(tableLines));
       continue;
     }
 
