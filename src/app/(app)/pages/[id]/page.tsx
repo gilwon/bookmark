@@ -72,6 +72,7 @@ export default async function PageEditorPage({ params }: Props) {
       url: s.url,
       lastSynced: s.lastSynced,
       createdAt: s.createdAt,
+      isFavorite: Boolean(s.isFavorite),
     };
   });
 

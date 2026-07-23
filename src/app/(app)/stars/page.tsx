@@ -16,8 +16,11 @@ export default async function StarsPage() {
   const rows = await store.listStars(userId);
   const list = rows.map(rowToGithubStar);
 
-  // 변경 있는 항목을 앞으로
+  // 즐겨찾기를 최우선으로, 그다음 변경 있는 항목을 앞으로
   list.sort((a, b) => {
+    const af = a.isFavorite ? 1 : 0;
+    const bf = b.isFavorite ? 1 : 0;
+    if (af !== bf) return bf - af;
     const aw = a.changeKind ? 1 : 0;
     const bw = b.changeKind ? 1 : 0;
     if (aw !== bw) return bw - aw;

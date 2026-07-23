@@ -36,6 +36,7 @@ function toStar(
     starsDelta: row.starsDelta ?? 0,
     changedAt: row.changedAt ?? null,
     source: row.source === "manual" ? "manual" : "sync",
+    isFavorite: Boolean(row.isFavorite),
   };
 }
 
@@ -121,6 +122,7 @@ export async function POST(req: Request) {
         starsDelta: 0,
         changedAt: now,
         source: "manual",
+        isFavorite: 0,
       });
     } catch (insertErr) {
       // unique 제약 등 레이스 시 중복으로 안내

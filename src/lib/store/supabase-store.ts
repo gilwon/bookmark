@@ -253,11 +253,19 @@ export async function ensureCategoriesFromBookmarks(
 
 // --- stars ---
 export async function listStars(userId: string): Promise<GithubStarRow[]> {
-  const { data, error } = await sb()
+  let { data, error } = await sb()
     .from("github_stars")
     .select("*")
     .eq("user_id", userId)
+    .order("is_favorite", { ascending: false })
     .order("stars", { ascending: false });
+  if (error && /is_favorite/i.test(error.message)) {
+    ({ data, error } = await sb()
+      .from("github_stars")
+      .select("*")
+      .eq("user_id", userId)
+      .order("stars", { ascending: false }));
+  }
   throwIfError(error, "listStars");
   return (data ?? []).map(mapStar);
 }
@@ -330,6 +338,7 @@ export async function updateStar(
   if (patch.starsDelta !== undefined) body.stars_delta = patch.starsDelta;
   if (patch.changedAt !== undefined) body.changed_at = patch.changedAt;
   if (patch.source !== undefined) body.source = patch.source;
+  if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
 
   const { error } = await sb()
     .from("github_stars")

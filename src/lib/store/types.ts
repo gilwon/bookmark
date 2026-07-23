@@ -45,6 +45,8 @@ export type GithubStarRow = {
   changedAt: string | null;
   /** sync | manual */
   source: "sync" | "manual";
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
 };
 
 export type CustomPageRow = {

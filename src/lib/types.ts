@@ -45,6 +45,8 @@ export type GithubStar = {
   changedAt?: string | null;
   /** sync | manual — 수동 추가 여부 */
   source?: "sync" | "manual";
+  /** 즐겨찾기 — 목록 상단 고정 */
+  isFavorite: boolean;
 };
 
 /** 커스텀 페이지 엔티티 */

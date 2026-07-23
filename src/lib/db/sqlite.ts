@@ -44,7 +44,7 @@ function createSqlite(): SqliteDb {
       topics TEXT NOT NULL DEFAULT '[]', url TEXT NOT NULL,
       last_synced TEXT NOT NULL, created_at TEXT NOT NULL,
       change_kind TEXT, stars_delta INTEGER NOT NULL DEFAULT 0, changed_at TEXT,
-      source TEXT NOT NULL DEFAULT 'sync'
+      source TEXT NOT NULL DEFAULT 'sync', is_favorite INTEGER NOT NULL DEFAULT 0
     );
     CREATE TABLE IF NOT EXISTS custom_pages (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
@@ -100,6 +100,11 @@ function createSqlite(): SqliteDb {
   if (starCols.length && !starCols.some((c) => c.name === "source")) {
     sqlite.exec(
       `ALTER TABLE github_stars ADD COLUMN source TEXT NOT NULL DEFAULT 'sync'`
+    );
+  }
+  if (starCols.length && !starCols.some((c) => c.name === "is_favorite")) {
+    sqlite.exec(
+      `ALTER TABLE github_stars ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0`
     );
   }
   // 기존 DB: unique 인덱스 보강 (중복 있으면 스킵 로그)

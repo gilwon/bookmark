@@ -41,6 +41,8 @@ export const githubStars = pgTable("github_stars", {
   changedAt: text("changed_at"),
   /** sync | manual */
   source: text("source").notNull().default("sync"),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
 });
 
 export const customPages = pgTable("custom_pages", {

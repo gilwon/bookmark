@@ -45,6 +45,7 @@ create table if not exists public.github_stars (
   stars_delta integer not null default 0,
   changed_at text,
   source text not null default 'sync',
+  is_favorite integer not null default 0,
   unique (user_id, repo_full_name)
 );
 
@@ -57,6 +58,7 @@ alter table public.github_stars add column if not exists change_kind text;
 alter table public.github_stars add column if not exists stars_delta integer not null default 0;
 alter table public.github_stars add column if not exists changed_at text;
 alter table public.github_stars add column if not exists source text not null default 'sync';
+alter table public.github_stars add column if not exists is_favorite integer not null default 0;
 
 create table if not exists public.custom_pages (
   id text primary key,

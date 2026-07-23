@@ -41,6 +41,8 @@ export const githubStars = sqliteTable("github_stars", {
   changedAt: text("changed_at"),
   /** sync | manual — 수동 추가 레포는 동기화 시 삭제하지 않음 */
   source: text("source").notNull().default("sync"),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
 });
 
 export const customPages = sqliteTable("custom_pages", {

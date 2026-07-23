@@ -1,9 +1,12 @@
 // GitHub Star 카드 + 신규/업데이트 뱃지
 "use client";
 
-import { ExternalLink, Star } from "lucide-react";
+import { ExternalLink, Pin, Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { GithubStar } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +24,27 @@ export function StarCard({
   selected,
   onToggleSelect,
 }: Props) {
+  const router = useRouter();
+  const [favoriting, setFavoriting] = useState(false);
   const isNew = star.changeKind === "new";
   const isUpdated = star.changeKind === "updated";
   const delta = star.starsDelta ?? 0;
+
+  /** 즐겨찾기 on/off — 목록 상단 정렬에 반영 */
+  async function toggleFavorite() {
+    if (favoriting) return;
+    setFavoriting(true);
+    try {
+      const res = await fetch(`/api/stars/${star.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isFavorite: !star.isFavorite }),
+      });
+      if (res.ok) router.refresh();
+    } finally {
+      setFavoriting(false);
+    }
+  }
 
   return (
     <Card
@@ -31,7 +52,8 @@ export function StarCard({
         "flex flex-col transition-colors hover:border-border",
         selected && "border-indigo-500 ring-1 ring-indigo-500/40",
         isNew && "border-emerald-500/50",
-        isUpdated && !isNew && "border-amber-500/40"
+        isUpdated && !isNew && "border-amber-500/40",
+        star.isFavorite && "border-amber-500/40"
       )}
     >
       <CardHeader className="pb-2">
@@ -85,6 +107,24 @@ export function StarCard({
               </a>
             </CardTitle>
           </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "h-8 w-8 shrink-0",
+              star.isFavorite ? "text-amber-500 opacity-100" : "text-muted-foreground"
+            )}
+            onClick={() => void toggleFavorite()}
+            disabled={favoriting}
+            title={star.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
+            aria-label={star.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
+            aria-pressed={star.isFavorite}
+          >
+            <Pin
+              className={cn("h-3.5 w-3.5", star.isFavorite && "fill-current")}
+            />
+          </Button>
         </div>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-3">

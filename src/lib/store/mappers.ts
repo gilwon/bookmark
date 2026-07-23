@@ -72,6 +72,7 @@ export function mapStar(r: any): GithubStarRow {
     starsDelta: Number(r.stars_delta ?? r.starsDelta ?? 0) || 0,
     changedAt: r.changed_at ?? r.changedAt ?? null,
     source: r.source === "manual" ? "manual" : "sync",
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
   };
 }
 
@@ -143,6 +144,7 @@ export function starToDb(row: GithubStarRow) {
     stars_delta: row.starsDelta ?? 0,
     changed_at: row.changedAt ?? null,
     source: row.source === "manual" ? "manual" : "sync",
+    is_favorite: toFavoriteFlag(row.isFavorite),
   };
 }
 

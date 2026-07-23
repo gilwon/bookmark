@@ -214,7 +214,7 @@ export async function listStars(userId: string): Promise<GithubStarRow[]> {
       .select()
       .from(githubStars)
       .where(eq(githubStars.userId, userId))
-      .orderBy(desc(githubStars.stars))
+      .orderBy(desc(githubStars.isFavorite), desc(githubStars.stars))
   );
 }
 

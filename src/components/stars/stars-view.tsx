@@ -126,6 +126,10 @@ export function StarsView({
 
     const sorted = [...list];
     sorted.sort((a, b) => {
+      // 즐겨찾기 최우선
+      const af = a.isFavorite ? 1 : 0;
+      const bf = b.isFavorite ? 1 : 0;
+      if (af !== bf) return bf - af;
       // 변경 뱃지 우선은 유지하되, 같은 그룹 안에서 선택 정렬
       const aw = a.changeKind ? 1 : 0;
       const bw = b.changeKind ? 1 : 0;
