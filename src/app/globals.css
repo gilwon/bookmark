@@ -24,6 +24,7 @@ html.light {
   --placeholder: #86868b;
   --code-bg: #f5f5f7;
   --pre-bg: #f5f5f7;
+  --accent-rgb: 0, 113, 227;
 }
 
 html.dark {
@@ -43,6 +44,7 @@ html.dark {
   --placeholder: #86868b;
   --code-bg: #272729;
   --pre-bg: #272729;
+  --accent-rgb: 41, 151, 255;
 }
 
 @theme inline {
@@ -66,6 +68,14 @@ html.dark {
   --color-indigo-500: #0071e3;
   --color-indigo-600: #0066cc;
   --color-indigo-700: #005bb5;
+  /* ComponentDoc 기하 토큰 — 반경/그림자 */
+  --radius-doc-sm: 4px;
+  --radius-doc-md: 8px;
+  --radius-doc-lg: 12px;
+  --shadow-doc-xs: 0 1px 2px 0 rgba(0, 0, 0, .05);
+  --shadow-doc-sm: 0 2px 4px -1px rgba(0, 0, 0, .05);
+  --shadow-doc-primary: 0 2px 8px rgba(var(--accent-rgb), .2);
+  --shadow-doc-primary-hover: 0 4px 12px rgba(var(--accent-rgb), .3);
 }
 
 body {
