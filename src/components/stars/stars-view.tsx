@@ -1,7 +1,7 @@
 // Stars 페이지 — 정렬·수동 추가·필터·동기화·선택 삭제
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus, Star } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { GithubStar } from "@/lib/types";
@@ -126,10 +126,6 @@ export function StarsView({
 
     const sorted = [...list];
     sorted.sort((a, b) => {
-      // 즐겨찾기 최우선
-      const af = a.isFavorite ? 1 : 0;
-      const bf = b.isFavorite ? 1 : 0;
-      if (af !== bf) return bf - af;
       // 변경 뱃지 우선은 유지하되, 같은 그룹 안에서 선택 정렬
       const aw = a.changeKind ? 1 : 0;
       const bw = b.changeKind ? 1 : 0;
@@ -153,6 +149,16 @@ export function StarsView({
     });
     return sorted;
   }, [initialStars, language, q, changeFilter, sortKey]);
+
+  // 즐겨찾기는 별도 섹션으로 분리해서 보여준다
+  const favorites = useMemo(
+    () => filtered.filter((s) => s.isFavorite),
+    [filtered]
+  );
+  const others = useMemo(
+    () => filtered.filter((s) => !s.isFavorite),
+    [filtered]
+  );
 
   const filteredIds = useMemo(() => filtered.map((s) => s.id), [filtered]);
   const selection = useSelection(filteredIds);
@@ -252,6 +258,23 @@ export function StarsView({
   }
 
   const showFilters = initialStars.length > 0;
+
+  // 섹션별 카드 그리드 — 즐겨찾기/전체 두 곳에서 재사용
+  function renderGrid(list: GithubStar[]) {
+    return (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((s) => (
+          <StarCard
+            key={s.id}
+            star={s}
+            selectable
+            selected={selection.isSelected(s.id)}
+            onToggleSelect={() => selection.toggle(s.id)}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -414,16 +437,32 @@ export function StarsView({
               조건에 맞는 Star가 없습니다.
             </p>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((s) => (
-                <StarCard
-                  key={s.id}
-                  star={s}
-                  selectable
-                  selected={selection.isSelected(s.id)}
-                  onToggleSelect={() => selection.toggle(s.id)}
-                />
-              ))}
+            <div className="space-y-6">
+              {favorites.length > 0 && (
+                <section className="space-y-3">
+                  <h2 className="flex items-center gap-1.5 text-sm font-semibold">
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    즐겨찾기
+                    <span className="font-normal text-muted-foreground">
+                      {favorites.length}
+                    </span>
+                  </h2>
+                  {renderGrid(favorites)}
+                </section>
+              )}
+              {others.length > 0 && (
+                <section className="space-y-3">
+                  {favorites.length > 0 && (
+                    <h2 className="text-sm font-semibold">
+                      전체{" "}
+                      <span className="font-normal text-muted-foreground">
+                        {others.length}
+                      </span>
+                    </h2>
+                  )}
+                  {renderGrid(others)}
+                </section>
+              )}
             </div>
           )}
         </div>
