@@ -23,6 +23,7 @@ import {
   setDraftQueue,
   type AgentDocDraft,
 } from "@/lib/agent-doc-draft";
+import { docFingerprint } from "@/lib/agent-doc-dedupe";
 import { extractMetaFromFiles } from "@/lib/agent-doc-meta";
 import {
   AGENT_DOC_KIND_COLOR,
@@ -137,6 +138,17 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       counts[d.kind] = (counts[d.kind] ?? 0) + 1;
     }
     return counts;
+  }, [docs]);
+
+  /** 기존 문서들의 지문 집합 — 업로드 중복 판정에 사용 */
+  const existingFingerprints = useMemo(() => {
+    const set = new Set<string>();
+    for (const d of docs) {
+      const files =
+        d.files?.length > 0 ? d.files : [{ filename: d.filename, content: d.content }];
+      set.add(docFingerprint(files));
+    }
+    return set;
   }, [docs]);
 
   /** 검색 suggest — 제목 · 파일명 · 종류 */
@@ -319,13 +331,39 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       return;
     }
 
-    const fileTabs = drafts.reduce((n, d) => n + d.files.length, 0);
-    setDraftQueue(drafts);
+    // 중복 문서 제외 — 기존 등록 문서와 지문이 같거나, 같은 업로드 배치 안에서 중복인 초안
+    const seenBatch = new Set<string>();
+    const dedupedDrafts: AgentDocDraft[] = [];
+    const duplicateTitles: string[] = [];
+    for (const d of drafts) {
+      const fp = docFingerprint(d.files);
+      if (existingFingerprints.has(fp) || seenBatch.has(fp)) {
+        duplicateTitles.push(d.title || d.files[0]?.filename || "문서");
+        continue;
+      }
+      seenBatch.add(fp);
+      dedupedDrafts.push(d);
+    }
+
+    if (dedupedDrafts.length === 0) {
+      setMsg(
+        `이미 등록된 문서입니다 · 중복 ${duplicateTitles.length}개 제외: ${duplicateTitles.join(", ")}`
+      );
+      setBusy(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    const fileTabs = dedupedDrafts.reduce((n, d) => n + d.files.length, 0);
+    setDraftQueue(dedupedDrafts);
     setMsg(
       [
-        `${drafts.length}개 문서 초안` +
-          (fileTabs > drafts.length ? ` · 탭 ${fileTabs}개 파일` : ""),
+        `${dedupedDrafts.length}개 문서 초안` +
+          (fileTabs > dedupedDrafts.length ? ` · 탭 ${fileTabs}개 파일` : ""),
         archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
+        duplicateTitles.length
+          ? `중복 ${duplicateTitles.length}개 제외: ${duplicateTitles.join(", ")}`
+          : null,
         "저장 버튼을 눌러야 등록됩니다",
         errors.length ? `참고: ${errors.join("; ")}` : null,
       ]
