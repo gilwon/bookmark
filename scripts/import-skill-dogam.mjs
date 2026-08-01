@@ -24,7 +24,7 @@ const SOURCE = "https://skill-dogam.vercel.app/";
 const LOCAL_USER = "dev";
 const PROD_USER = "f72e9a44-79d8-4061-a700-3ec50bb04a97";
 const CATEGORY_PREFIX = "스킬 도감";
-const EXPECTED_COUNT = 55;
+const EXPECTED_COUNT = 82;
 const isCheck = process.argv.includes("--check");
 
 const tsx = createRequire(import.meta.url)("tsx/cjs/api");
