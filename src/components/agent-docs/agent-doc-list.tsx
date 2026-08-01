@@ -23,7 +23,7 @@ import {
   setDraftQueue,
   type AgentDocDraft,
 } from "@/lib/agent-doc-draft";
-import { docFingerprint } from "@/lib/agent-doc-dedupe";
+import { docFingerprint, splitDuplicateDrafts } from "@/lib/agent-doc-dedupe";
 import { extractMetaFromFiles } from "@/lib/agent-doc-meta";
 import {
   AGENT_DOC_KIND_COLOR,
@@ -84,6 +84,13 @@ function sortDocs(list: AgentDoc[], sort: ListSortKey): AgentDoc[] {
     arr.sort((a, b) => compareIsoDesc(a.createdAt, b.createdAt));
   }
   return arr;
+}
+
+/** 중복 제목 목록을 앞 3개만 보여주고 나머지는 "외 N개" 로 접는다 */
+function formatDuplicateTitles(titles: string[]): string {
+  const MAX = 3;
+  if (titles.length <= MAX) return titles.join(", ");
+  return `${titles.slice(0, MAX).join(", ")} 외 ${titles.length - MAX}개`;
 }
 
 /** 파일 그룹 → 초안 (제목/설명 본문에서 추출) */
@@ -332,22 +339,19 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
     }
 
     // 중복 문서 제외 — 기존 등록 문서와 지문이 같거나, 같은 업로드 배치 안에서 중복인 초안
-    const seenBatch = new Set<string>();
-    const dedupedDrafts: AgentDocDraft[] = [];
-    const duplicateTitles: string[] = [];
-    for (const d of drafts) {
-      const fp = docFingerprint(d.files);
-      if (existingFingerprints.has(fp) || seenBatch.has(fp)) {
-        duplicateTitles.push(d.title || d.files[0]?.filename || "문서");
-        continue;
-      }
-      seenBatch.add(fp);
-      dedupedDrafts.push(d);
-    }
+    const { fresh: dedupedDrafts, duplicateTitles } = splitDuplicateDrafts(
+      drafts,
+      existingFingerprints
+    );
 
     if (dedupedDrafts.length === 0) {
       setMsg(
-        `이미 등록된 문서입니다 · 중복 ${duplicateTitles.length}개 제외: ${duplicateTitles.join(", ")}`
+        [
+          `이미 등록된 문서입니다 · 중복 ${duplicateTitles.length}개 제외: ${formatDuplicateTitles(duplicateTitles)}`,
+          errors.length ? `참고: ${errors.join("; ")}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · ")
       );
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -362,7 +366,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
           (fileTabs > dedupedDrafts.length ? ` · 탭 ${fileTabs}개 파일` : ""),
         archiveCount > 0 ? `패키지 ${archiveCount}개 해제` : null,
         duplicateTitles.length
-          ? `중복 ${duplicateTitles.length}개 제외: ${duplicateTitles.join(", ")}`
+          ? `중복 ${duplicateTitles.length}개 제외: ${formatDuplicateTitles(duplicateTitles)}`
           : null,
         "저장 버튼을 눌러야 등록됩니다",
         errors.length ? `참고: ${errors.join("; ")}` : null,

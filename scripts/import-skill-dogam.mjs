@@ -14,7 +14,9 @@ if (existsSync(envPath)) {
   for (const line of readFileSync(envPath, "utf8").split("\n")) {
     const match = line.match(/^([^#=]+)=(.*)$/);
     if (!match || process.env[match[1].trim()]) continue;
-    process.env[match[1].trim()] = match[2].trim().replace(/^("|')|("|')$/g, "");
+    const value = match[2].trim();
+    const quoted = value.match(/^(["'])(.*)\1$/);
+    process.env[match[1].trim()] = quoted ? quoted[2] : value;
   }
 }
 
@@ -132,7 +134,6 @@ function parseSkill(row, sheet, index) {
   if (!id) throw new Error(`${context} row에 data-id가 없습니다.`);
   if (!row.dataset.category) throw new Error(`${context} row에 data-category가 없습니다.`);
   if (!row.dataset.form) throw new Error(`${context} row에 data-form이 없습니다.`);
-  if (row.dataset.jarvis === undefined) throw new Error(`${context} row에 data-jarvis가 없습니다.`);
   required(row, ".row-main", context);
   const title = rowTitle(row, context);
   const rowSummary = normalizedText(required(row, ".row-s", context), `${context} 목록 설명`);
@@ -166,6 +167,11 @@ function parseSkill(row, sheet, index) {
     normalizedText(item, `${context} 메타 ${itemIndex + 1}`)
   );
   if (metadata.length < 2) throw new Error(`${context}의 별·갱신 메타가 부족합니다.`);
+  // .meta > span에는 클래스가 없어 순서로만 라벨을 구분한다. 값 형태를 검증해 순서가 바뀌면 잡아낸다.
+  if (!/^별\s/.test(metadata[0])) throw new Error(`${context}의 첫 메타가 별 표기가 아닙니다. ${metadata[0]}`);
+  if (!/^최근 갱신 \d{4}-\d{2}-\d{2}$/.test(metadata[1])) {
+    throw new Error(`${context}의 두 번째 메타가 최근 갱신 날짜 형식이 아닙니다. ${metadata[1]}`);
+  }
   const sources = [...sheet.querySelectorAll(".srcs > a")].map((link, linkIndex) => ({
     url: absoluteUrl(link.getAttribute("href"), `${context} 찾아본 자료 ${linkIndex + 1}`),
     label: normalizedText(link, `${context} 찾아본 자료 ${linkIndex + 1}`),
@@ -271,6 +277,19 @@ function stats(values) {
   };
 }
 
+// supabase-js의 .in()은 GET 쿼리스트링으로 전송되어 제목이 많으면 URL 길이 한계에 걸린다.
+// 배치로 쪼개 조회한 뒤 결과를 하나로 합친다.
+async function selectByTitles(client, table, select, titles, chunkSize = 20) {
+  const rows = [];
+  for (let i = 0; i < titles.length; i += chunkSize) {
+    const chunk = titles.slice(i, i + chunkSize);
+    const { data, error } = await client.from(table).select(select).eq("user_id", PROD_USER).in("title", chunk);
+    if (error) throw error;
+    rows.push(...(data ?? []));
+  }
+  return rows;
+}
+
 function makePromptSections(prompt, pageId) {
   if (!pageId) throw new Error(`관련 Page ID를 찾지 못했습니다. ${prompt.title}`);
   return JSON.stringify([
@@ -292,8 +311,17 @@ if (isCheck) {
   process.exit(0);
 }
 
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error("Supabase 운영 환경변수가 없습니다.");
+}
+
 const now = new Date().toISOString();
-const db = new Database(resolve(root, "data/mymark.db"));
+const dbPath = resolve(root, "data/mymark.db");
+if (!existsSync(dbPath)) {
+  console.error("로컬 DB가 없습니다. data/mymark.db 파일을 준비한 뒤 다시 실행하세요.");
+  process.exit(1);
+}
+const db = new Database(dbPath);
 let localPages = 0;
 let localPageUpdates = 0;
 let localPrompts = 0;
@@ -335,17 +363,9 @@ try {
   db.close();
 }
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error("Supabase 운영 환경변수가 없습니다.");
-}
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-const { data: existingPages, error: pageLookupError } = await supabase
-  .from("custom_pages")
-  .select("id, title, content")
-  .eq("user_id", PROD_USER)
-  .in("title", skills.map((skill) => skill.title));
-if (pageLookupError) throw pageLookupError;
-const pageMap = new Map((existingPages ?? []).map((page) => [page.title, page]));
+const existingPages = await selectByTitles(supabase, "custom_pages", "id, title, content", skills.map((skill) => skill.title));
+const pageMap = new Map(existingPages.map((page) => [page.title, page]));
 const newPages = [];
 const changedPages = [];
 const prodPageIds = new Map();
@@ -365,13 +385,8 @@ for (const page of changedPages) {
   if (error) throw error;
 }
 
-const { data: existingPrompts, error: promptLookupError } = await supabase
-  .from("prompts")
-  .select("id, title, category, summary, when_to_use, sections")
-  .eq("user_id", PROD_USER)
-  .in("title", prompts.map((prompt) => prompt.title));
-if (promptLookupError) throw promptLookupError;
-const promptMap = new Map((existingPrompts ?? []).map((prompt) => [`${prompt.title}\n${prompt.category}`, prompt]));
+const existingPrompts = await selectByTitles(supabase, "prompts", "id, title, category, summary, when_to_use, sections", prompts.map((prompt) => prompt.title));
+const promptMap = new Map(existingPrompts.map((prompt) => [`${prompt.title}\n${prompt.category}`, prompt]));
 const newPrompts = [];
 const changedPrompts = [];
 for (const prompt of prompts) {
