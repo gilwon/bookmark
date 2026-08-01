@@ -25,6 +25,17 @@ html.light {
   --code-bg: #f5f5f7;
   --pre-bg: #f5f5f7;
   --accent-rgb: 0, 113, 227;
+  /* 글래스모피즘 토큰 — 라이트 */
+  --glass-bg: rgba(255, 255, 255, 0.68);
+  --glass-bg-strong: rgba(255, 255, 255, 0.88);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.45);
+  /* 밝은 배경에서는 흰 테두리가 사라지므로 라이트에서만 어두운 계열로 경계를 만든다 */
+  --glass-border: rgba(0, 0, 0, 0.09);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  --glass-blur: 20px;
+  --glass-blur-sm: 12px;
+  --glass-saturate: 180%;
 }
 
 html.dark {
@@ -45,6 +56,16 @@ html.dark {
   --code-bg: #272729;
   --pre-bg: #272729;
   --accent-rgb: 41, 151, 255;
+  /* 글래스모피즘 토큰 — 다크 */
+  --glass-bg: rgba(29, 29, 31, 0.62);
+  --glass-bg-strong: rgba(29, 29, 31, 0.86);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --glass-blur: 20px;
+  --glass-blur-sm: 12px;
+  --glass-saturate: 160%;
 }
 
 @theme inline {
@@ -76,6 +97,76 @@ html.dark {
   --shadow-doc-sm: 0 2px 4px -1px rgba(0, 0, 0, .05);
   --shadow-doc-primary: 0 2px 8px rgba(var(--accent-rgb), .2);
   --shadow-doc-primary-hover: 0 4px 12px rgba(var(--accent-rgb), .3);
+}
+
+/* 글래스 유틸 — 표준 유리 표면 (카드, 툴바) */
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* 글래스 유틸 — 가독성이 중요한 표면 (입력 필드, 에디터, 모달 본문) */
+@utility glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+}
+
+/* 글래스 유틸 — 아주 약한 표면 (배지, 칩), 그림자 없음 */
+@utility glass-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+/*
+ * 글래스 표면이 비칠 배경 그라데이션 블롭.
+ * 별도 레이어(::before)로 깔면 body 배경에 가려지므로 body 배경에 직접 합성하고,
+ * background-attachment: fixed 로 스크롤해도 블롭 위치가 고정되게 한다.
+ */
+.glass-canvas {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 12% 8%, rgba(0, 102, 204, 0.16), transparent),
+    radial-gradient(ellipse 55% 45% at 92% 12%, rgba(122, 90, 248, 0.14), transparent),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0, 113, 227, 0.12), transparent);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* 배경 그라데이션 블롭 — 다크 */
+html.dark .glass-canvas {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 12% 8%, rgba(41, 151, 255, 0.22), transparent),
+    radial-gradient(ellipse 55% 45% at 92% 12%, rgba(140, 100, 255, 0.18), transparent),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(41, 151, 255, 0.14), transparent);
+}
+
+/* 폴백 — backdrop-filter 미지원 브라우저는 불투명 카드 배경으로 대체 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-strong,
+  .glass-subtle {
+    background: var(--card);
+    backdrop-filter: none;
+  }
+}
+
+/* 폴백 — 투명 효과 축소 설정 시 블러 제거 + 배경 블롭 숨김 */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  .glass-subtle {
+    background: var(--card);
+    backdrop-filter: none;
+  }
+
+  .glass-canvas {
+    background-image: none;
+  }
 }
 
 body {

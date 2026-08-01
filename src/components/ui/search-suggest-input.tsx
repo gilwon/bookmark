@@ -193,7 +193,7 @@ export function SearchSuggestInput({
         <ul
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 max-h-64 overflow-auto rounded-md border border-border bg-card py-1 text-foreground shadow-md"
+          className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 max-h-64 overflow-auto rounded-md glass-strong border border-[var(--glass-border)] py-1 text-foreground shadow-md"
         >
           {filtered.map((item, i) => {
             const active = i === hi;

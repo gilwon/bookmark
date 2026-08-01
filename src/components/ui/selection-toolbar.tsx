@@ -32,7 +32,7 @@ export function SelectionToolbar({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-card/50 px-3 py-2",
+        "flex flex-wrap items-center justify-between gap-2 rounded-lg glass px-3 py-2",
         className
       )}
     >

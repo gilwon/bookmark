@@ -5,9 +5,10 @@ import { Sidebar } from "./sidebar";
 /** 사이드바와 메인 콘텐츠 영역을 배치한다. */
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    // 배경 블롭은 body가 그리므로 셸은 캔버스를 덮지 않는다
+    <div className="min-h-screen text-foreground">
       <Sidebar />
-      <main className="bg-background">
+      <main>
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
           {children}
         </div>

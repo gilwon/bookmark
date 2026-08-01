@@ -58,7 +58,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
       </head>
-      <body className="min-h-full bg-background text-foreground">
+      <body className="glass-canvas min-h-full bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

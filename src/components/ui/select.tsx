@@ -10,7 +10,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <select
         className={cn(
-          "flex h-9 w-full appearance-none rounded-doc-md border border-border bg-input bg-[length:1rem] bg-[right_0.5rem_center] bg-no-repeat px-3 py-1 pr-8 text-sm text-foreground shadow-doc-xs transition-colors",
+          "flex h-9 w-full appearance-none rounded-doc-md glass-strong border border-[var(--glass-border)] bg-[length:1rem] bg-[right_0.5rem_center] bg-no-repeat px-3 py-1 pr-8 text-sm text-foreground transition-colors",
           "focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           "disabled:cursor-not-allowed disabled:opacity-50",
           // 화살표 아이콘 (현재 전경색)

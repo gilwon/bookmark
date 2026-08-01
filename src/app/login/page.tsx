@@ -47,8 +47,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <Card className="w-full max-w-md glass-strong border-[var(--glass-border)]">
         <CardHeader className="text-center space-y-2">
           <CardTitle className="text-2xl">MyMark</CardTitle>
           <p className="text-sm text-muted-foreground">

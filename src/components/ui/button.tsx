@@ -11,10 +11,10 @@ const buttonVariants = cva(
         default:
           "bg-indigo-600 text-white shadow-doc-primary hover:bg-indigo-500 hover:-translate-y-px hover:shadow-doc-primary-hover",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-muted border border-border",
+          "glass text-secondary-foreground hover:glass-strong border border-[var(--glass-border)]",
         outline:
-          "border border-border bg-transparent hover:bg-muted text-foreground",
-        ghost: "hover:bg-muted text-foreground",
+          "border border-[var(--glass-border)] bg-transparent hover:glass-subtle text-foreground",
+        ghost: "hover:glass-subtle text-foreground",
         destructive: "bg-red-600 text-white hover:bg-red-500",
       },
       size: {

@@ -277,7 +277,7 @@ export function CommandPalette() {
         onClick={close}
       />
 
-      <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+      <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-xl border border-[var(--glass-border)] glass-strong shadow-2xl">
         <div className="flex items-center gap-2 border-b border-border px-3">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
