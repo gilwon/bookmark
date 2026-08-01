@@ -123,9 +123,9 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
-  /** 접이식 섹션 — 기본 접힘, 즐겨찾기만 펼침 */
+  /** 접이식 섹션 — 기본 모든 카테고리 펼침 */
   const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set([FAVORITES])
+    () => new Set([FAVORITES, ...prompts.map(categoryLabel)])
   );
 
   const categories = useMemo(() => {
