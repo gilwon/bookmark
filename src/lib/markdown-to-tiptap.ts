@@ -174,6 +174,17 @@ export function markdownToTiptapDoc(md: string): TipTapNode {
       continue;
     }
 
+    // 독립 Markdown 이미지
+    const imageMatch = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(line.trim());
+    if (imageMatch) {
+      content.push({
+        type: "image",
+        attrs: { src: imageMatch[2], alt: imageMatch[1] },
+      });
+      i += 1;
+      continue;
+    }
+
     // heading
     const hm = /^(#{1,6})\s+(.*)$/.exec(line);
     if (hm) {

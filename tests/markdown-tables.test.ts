@@ -13,6 +13,18 @@ const markdown = `| 단계 | 하는 일 | 필요한 것 |
 | 1. 열쇠 발급 | API 신청 | 네이버 계정 |
 | 2. 첫 실행 | 뉴스 수집 | 프롬프트 |`;
 
+test("독립 Markdown 이미지를 이미지 노드로 변환한다", () => {
+  const doc = markdownToTiptapDoc("![플랫 디자인 예시](/imports/ui-design-styles/02-flat-design.jpg)");
+
+  assert.deepEqual(doc.content?.[0], {
+    type: "image",
+    attrs: {
+      src: "/imports/ui-design-styles/02-flat-design.jpg",
+      alt: "플랫 디자인 예시",
+    },
+  });
+});
+
 test("Markdown 표를 TableKit 노드로 변환하고 다시 내보낸다", () => {
   const doc = markdownToTiptapDoc(markdown);
   const table = doc.content?.[0];
