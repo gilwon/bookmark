@@ -1,6 +1,7 @@
 // Octokit으로 GitHub Star 목록을 가져와 upsert / unstar 정리 + 변경 감지
 import { v4 as uuidv4 } from "uuid";
 import { store } from "@/lib/store";
+import { withKoreanTranslation } from "@/lib/star-translation";
 import { Octokit } from "octokit";
 
 export type StarRepo = {
@@ -24,15 +25,6 @@ export type UpsertStarsResult = {
   updatedRepos: { name: string; starsDelta: number }[];
   removedRepos: string[];
 };
-
-function keepKoreanTranslation(description: string | null, previous: string | null) {
-  const separator = "\n\n";
-  const translation = previous?.includes(separator)
-    ? previous.slice(previous.indexOf(separator) + separator.length).trim()
-    : "";
-  if (!description) return previous;
-  return translation ? `${description}${separator}${translation}` : description;
-}
 
 /** GitHub access_token으로 starred 레포를 페이지네이션해 가져온다. */
 export async function fetchStarredRepos(
@@ -175,7 +167,7 @@ export async function upsertStars(
   for (const repo of repos) {
     const existing = await store.getStarByRepo(userId, repo.repoFullName);
     if (existing) {
-      const description = keepKoreanTranslation(
+      const description = await withKoreanTranslation(
         repo.description,
         existing.description
       );
@@ -216,7 +208,7 @@ export async function upsertStars(
         id: uuidv4(),
         userId,
         repoFullName: repo.repoFullName,
-        description: repo.description,
+        description: await withKoreanTranslation(repo.description, null),
         language: repo.language,
         stars: repo.stars,
         topics: JSON.stringify(repo.topics),
