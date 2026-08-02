@@ -85,9 +85,79 @@ const translations = {
   "volition79/gpt-5.6-router": "Codex용 적응형 GPT-5.6 Sol, Terra, Luna 라우팅 스킬.",
   "VoltAgent/awesome-design-md": "인기 브랜드 디자인 시스템의 DESIGN.md 분석 모음. 프로젝트에 넣으면 코딩 에이전트가 어울리는 UI를 생성합니다.",
   "yan-labs/serenity-aleabitoreddit": "설치 가능한 Serenity 트윗 아카이브와 AI·반도체 공급망 스킬. npx skills add로 설치합니다.",
-  "Yeachan-Heo/gajae-code": "Gajae Code MVP.",
+  "Yeachan-Heo/gajae-code": "Gajae Code의 MVP.",
   "Yeachan-Heo/oh-my-claudecode": "Claude Code를 위한 팀 우선 멀티에이전트 오케스트레이션.",
   "zubair-trabzada/geo-seo-claude": "Claude Code용 GEO 우선 SEO 스킬. 인용 가능성 점수, AI 크롤러 분석, 브랜드 권위, 스키마 마크업, 플랫폼별 최적화, PDF 보고서를 제공합니다.",
+  "AgriciDaniel/claude-ads": "Claude Code에서 12개 광고 플랫폼을 다루는 Claude 우선 퍼포먼스 마케팅 운영 스킬. 근거 기반 감사, 결정론적 점수화, 버전 관리 JSON 보고서와 계정 변경을 제공합니다.",
+  "aidenybai/react-grab": "에이전트를 위해 어떤 UI 요소든 복사하는 도구.",
+  "alibaba/open-code-review": "Alibaba 규모에서 검증된 오픈소스 코드 리뷰 도구. 결정론적 파이프라인과 LLM 에이전트를 결합하고, 정밀한 라인 단위 댓글과 다국어 규칙을 제공합니다.",
+  "artemnovitckii/content-skills": "Claude의 글쓰기를 개선하는 Claude Code 스킬 5종. 단순화, 스토리텔링, 바이럴 훅, AI 문체 제거, 보이스 DNA 가이드를 포함합니다.",
+  "AThevon/genjutsu": "Claude Code용 크리에이티브 코딩 스킬. 애니메이션, 3D, 디자인 시스템과 모션 원칙을 다룹니다.",
+  "block/buzz": "집단 지성 커뮤니케이션 플랫폼.",
+  "bradautomates/claude-video": "Claude가 모든 영상을 볼 수 있게 합니다. /watch 명령으로 영상을 내려받고 프레임 추출과 전사를 거쳐 Claude에 전달합니다.",
+  "browser-use/video-use": "코딩 에이전트로 영상을 편집하는 도구.",
+  "Canner/WrenAI": "AI 에이전트를 위한 생성형 BI. 자연어 질문을 신뢰할 수 있는 대시보드, 차트와 SQL로 바꾸는 오픈소스 텍스트-SQL 플랫폼입니다.",
+  "ckissi/kinetics": "고정된 지속 시간의 이징 대신 스프링 물리 기반으로 인터페이스 애니메이션을 만드는 라이브러리.",
+  "cocoindex-io/cocoindex": "장기 작업 에이전트를 위한 증분 처리 엔진.",
+  "coollabsio/coolify": "자체 서버에서 정적 사이트, 데이터베이스, 풀스택 애플리케이션과 280개 이상의 원클릭 서비스를 배포할 수 있는 오픈소스 PaaS.",
+  "D4Vinci/Scrapling": "단일 요청부터 전체 크롤링까지 처리하는 적응형 웹 스크래핑 프레임워크.",
+  "dandacompany/bluekiwi": "MCP 통합을 지원하는 오픈소스 AI 워크플로 엔진 BlueKiwi.",
+  "dandacompany/oh-my-wiki": "Karpathy 스타일의 LLM Wiki 스킬. 출처를 수집하고 구조화된 위키를 만든 뒤 인용이 포함된 답변을 제공합니다.",
+  "decolua/9router": "Claude Code, Codex, Cursor, Cline, Copilot, Antigravity를 40개 이상의 공급자를 통한 무료 Claude, GPT, Gemini에 연결하는 무제한 무료 AI 코딩 도구.",
+  "dqev/reicon": "디자이너와 개발자를 위한 오픈소스 아이콘 라이브러리 Reicon.",
+  "drumih/turbo-fieldfare": "M 시리즈 MacBook에서 약 2GB 메모리로 Gemma 4 26B-A4B를 추론하는 도구.",
+  "Egonex-AI/Understand-Anything": "코드를 탐색하고 검색하며 질문할 수 있는 인터랙티브 지식 그래프. Claude Code, Codex, Cursor, Copilot, Gemini CLI 등을 지원합니다.",
+  "eisenjimmy/Jimmy-s-Claude": "Claude 지침과 서브에이전트 모음.",
+  "Fincept-Corporation/FinceptTerminal": "시장 분석, 투자 리서치와 경제 데이터 도구를 제공하는 현대적인 금융 애플리케이션.",
+  "fivetaku/insane-research": "Claude Code용 멀티에이전트 심층 리서치 도구. 출처 대조와 품질 평가를 포함한 7단계 파이프라인을 제공합니다.",
+  "Graphify-Labs/graphify": "문서, SQL 스키마, 설정과 PDF를 질의 가능한 지식 그래프로 변환하는 Claude Code, Cursor, Codex, Gemini CLI용 스킬.",
+  "greensock/gsap-skills": "GSAP를 올바르게 사용하도록 AI 코딩 에이전트를 가르치는 공식 AI 스킬. 모범 사례, 애니메이션 패턴과 플러그인 사용법을 다룹니다.",
+  "headroomlabs-ai/headroom": "LLM에 전달되기 전에 도구 출력, 로그, 파일과 RAG 청크를 압축하는 라이브러리·프록시·MCP 서버.",
+  "heroiclabs/nakama": "게임을 위한 확장 가능한 오픈소스 게임 백엔드 서버. 멀티플레이, 매치메이킹, 리더보드, 채팅과 소셜 기능을 제공합니다.",
+  "heygen-com/hyperframes": "HTML을 작성하고 영상을 렌더링하는 에이전트용 도구.",
+  "HKUDS/Vibe-Trading": "개인 트레이딩 에이전트 Vibe-Trading.",
+  "img2threejs/img2threejs": "참조 이미지의 대상을 코드만으로 절차적이며 품질 검증된 애니메이션용 Three.js 모델로 재구성합니다.",
+  "kimyoungwopo/frontend-token-trim-skillpack": "Ponytail, Graphify와 Headroom을 결합한 Hermes Agent 프론트엔드 토큰 절감 워크플로.",
+  "koala73/worldmonitor": "AI 뉴스 집계, 지정학적 모니터링과 인프라 추적을 하나로 제공하는 실시간 글로벌 정보 대시보드.",
+  "kwakseongjae/oh-my-design": "Claude Code, Codex, Cursor와 OpenCode에 400개 이상의 품질 평가 DESIGN.md 레퍼런스와 스킬을 설치하는 디자인 시스템.",
+  "langchain-ai/langgraph": "회복력 있는 에이전트를 구축하는 프레임워크.",
+  "leodavinci1/kanbots": "각 작업을 Claude Code 또는 Codex 에이전트로 처리하는 칸반 보드 협업 인터페이스.",
+  "lidge-jun/opencodex": "Codex CLI, 앱, SDK와 Claude Code에서 Claude, Gemini, Grok, DeepSeek, Ollama 등 어떤 LLM이든 사용할 수 있게 하는 범용 공급자 프록시.",
+  "LottieFiles/motion-design-skill": "타이밍, 이징, 안무와 디즈니 애니메이션 원칙을 UI에 맞게 적용한 AI 에이전트용 범용 모션 디자인 원칙.",
+  "MengTo/Skills": "Codex, Claude, Cursor 등 AI 코딩 에이전트를 사용하는 디자이너와 빌더를 위한 에이전트 스킬.",
+  "midudev/autoskills": "한 번의 명령으로 전체 AI 스킬 스택을 설치하는 도구.",
+  "millionco/react-doctor": "에이전트가 잘못 작성한 React 코드를 찾아내는 도구.",
+  "mksglu/context-mode": "AI 코딩 에이전트의 컨텍스트 창을 최적화하는 도구. MCP와 훅을 통해 도구 출력을 샌드박싱하고 세션 메모리와 라우팅을 관리합니다.",
+  "monarchjuno/tradingcodex": "Codex를 투자 워크플로 팀으로 바꾸는 도구.",
+  "Nagi-ovo/voyager": "AI Studio, Gemini, Claude와 ChatGPT를 위한 올인원 확장 기능. 타임라인, 폴더, 프롬프트, 사용량 추적, 채팅 내보내기와 플러그인을 제공합니다.",
+  "nathankim0/clean-architecture-skills": "Clean Architecture 원칙에 따라 코드를 검토하고 설계하는 Claude Code 스킬.",
+  "NousResearch/hermes-agent": "사용자와 함께 성장하는 에이전트.",
+  "nowork-studio/NotFair": "사업 목표를 24시간 추진하는 목표 지향 루프 기반 마케팅 에이전트.",
+  "openai/codex-plugin-cc": "Claude Code에서 Codex를 사용해 코드를 리뷰하거나 작업을 위임하는 플러그인.",
+  "openclaw/openclaw": "어떤 운영체제와 플랫폼에서도 사용할 수 있는 개인 AI 어시스턴트.",
+  "oso95/scroll-world": "어떤 브랜드든 스크롤 가능한 3D 세계로 바꾸는 스킬.",
+  "palmier-io/palmier-pro": "AI를 위해 만들어진 macOS 영상 편집기.",
+  "Panniantong/Agent-Reach": "AI 에이전트가 인터넷 전체를 볼 수 있게 합니다. Twitter, Reddit, YouTube, GitHub, Bilibili, 샤오홍슈를 API 비용 없이 하나의 CLI로 읽고 검색합니다.",
+  "paperclipai/paperclip": "업무용 에이전트를 관리하는 오픈소스 애플리케이션.",
+  "pbakaus/impeccable": "AI 하니스의 디자인 능력을 향상시키는 디자인 언어.",
+  "pireel/pireel": "MCP를 통해 어떤 AI 에이전트로도 조작할 수 있는 CapCut·ChatCut 오픈소스 대안.",
+  "Q00/ouroboros": "프롬프트 대신 명세로 작업하는 에이전트 운영체제.",
+  "ruvnet/ruflo": "지능형 멀티플레이어 에이전트 군집을 배포하고 자율 워크플로를 조율하는 에이전트 메타 하니스.",
+  "sangrokjung/claude-forge": "oh-my-zsh에서 영감을 받은 Claude Code 플러그인 프레임워크. AI 에이전트 11개, 명령 36개, 스킬 15개와 6단계 보안 훅을 제공합니다.",
+  "santifer/career-ops": "AI 코딩 CLI에서 실행되는 오픈소스 AI 취업 검색 도구. 공고를 검색하고 평가하며 이력서를 맞춤화하고 지원 현황을 추적합니다.",
+  "songguoxs/seedance-prompt-skill": "Seedance 2.0 영상 프롬프트를 생성하는 프롬프트 스킬.",
+  "The-Swarm-Corporation/AutoHedge": "몇 분 만에 자율 헤지펀드를 구축하는 도구. 군집 지능과 AI 에이전트로 시장 분석, 리스크 관리와 거래 실행을 자동화합니다.",
+  "tirth8205/code-review-graph": "MCP와 CLI를 위한 로컬 우선 코드 인텔리전스 그래프. 코드베이스를 영속적으로 매핑해 AI 코딩 도구가 필요한 부분만 읽게 합니다.",
+  "tw93/Mole": "터미널에서 Mac을 정리, 삭제, 분석, 최적화하고 모니터링하는 도구.",
+  "unclecode/crawl4ai": "LLM 친화적인 오픈소스 웹 크롤러와 스크래퍼 Crawl4AI.",
+  "VectifyAI/PageIndex": "벡터 데이터베이스 없이 추론 기반 RAG를 수행하는 문서 인덱스.",
+  "virattt/ai-hedge-fund": "AI 헤지펀드 팀.",
+  "wassgha/rescript": "브라우저에서 실행되는 오픈소스 트랜스크립트 기반 영상·오디오 편집기.",
+  "wjgoarxiv/youtube-digest-skill": "YouTube 영상을 TL;DR, 핵심 요점, 타임스탬프 주장, 주제 타임라인과 주요 인용구가 담긴 구조화된 지식으로 바꾸는 Claude Code·Codex·Gemini 스킬.",
+  "wshobson/agents": "Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot과 Gemini CLI를 위한 멀티 하니스 에이전트 플러그인 마켓플레이스.",
+  "yetone/kill-ai-slop": "AI가 생성한 제품의 시각·카피 습관을 설명하고 프로젝트에서 이를 제거하는 Agent Skill.",
+  "YouMind-OpenLab/awesome-gpt-image-2": "GPT Image 2 프롬프트 라이브러리. 매일 갱신되는 2,000개 이상의 프롬프트와 미리보기 이미지를 제공하며 16개 언어를 지원합니다.",
+  "zanwei/design-dna": "참조 UI, 스크린샷과 URL을 정량화된 Design DNA JSON으로 바꾸고 동일한 스타일의 UI를 생성하는 도구.",
 };
 
 const separator = "\n\n";
@@ -104,10 +174,17 @@ if (error) throw error;
 let updated = 0;
 for (const row of rows) {
   const translation = translations[row.repo_full_name];
-  if (!translation || !row.description || row.description.includes(separator)) continue;
+  if (!translation || !row.description) continue;
+  const existingTranslation = row.description
+    .split(separator)
+    .slice(1)
+    .join(separator)
+    .trim();
+  if (existingTranslation && /[가-힣]/.test(existingTranslation)) continue;
+  const original = row.description.split(separator)[0].trim();
   const { error: updateError } = await sb
     .from("github_stars")
-    .update({ description: `${row.description.trim()}${separator}${translation}` })
+    .update({ description: `${original}${separator}${translation}` })
     .eq("id", row.id);
   if (updateError) throw updateError;
   updated++;
