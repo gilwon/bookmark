@@ -167,7 +167,8 @@ export async function upsertStars(
   for (const repo of repos) {
     const existing = await store.getStarByRepo(userId, repo.repoFullName);
     if (existing) {
-      const description = await withKoreanTranslation(
+      const description = withKoreanTranslation(
+        repo.repoFullName,
         repo.description,
         existing.description
       );
@@ -208,7 +209,11 @@ export async function upsertStars(
         id: uuidv4(),
         userId,
         repoFullName: repo.repoFullName,
-        description: await withKoreanTranslation(repo.description, null),
+        description: withKoreanTranslation(
+          repo.repoFullName,
+          repo.description,
+          null
+        ),
         language: repo.language,
         stars: repo.stars,
         topics: JSON.stringify(repo.topics),

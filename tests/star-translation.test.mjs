@@ -1,10 +1,9 @@
-// GitHub Star 설명의 한국어 병기와 번역 API 응답 처리를 검증한다.
+// GitHub Star 설명의 정적 한국어 병기 처리를 검증한다.
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   hasKorean,
   splitStarDescription,
-  translateToKorean,
   withKoreanTranslation,
 } from "../src/lib/star-translation.ts";
 
@@ -17,17 +16,18 @@ describe("Star 설명 번역", () => {
     assert.equal(splitStarDescription("English\n\nStill English").korean, null);
   });
 
-  it("설명에 한글이 있으면 API 없이 그대로 사용한다", async () => {
+  it("설명에 한글이 있으면 그대로 사용한다", () => {
     assert.equal(hasKorean("이미 한국어 설명"), true);
     assert.equal(
-      await withKoreanTranslation("이미 한국어 설명", null),
+      withKoreanTranslation("unknown/repo", "이미 한국어 설명", null),
       "이미 한국어 설명"
     );
   });
 
-  it("같은 영문 설명이면 저장된 번역을 재사용한다", async () => {
+  it("같은 영문 설명이면 저장된 번역을 재사용한다", () => {
     assert.equal(
-      await withKoreanTranslation(
+      withKoreanTranslation(
+        "unknown/repo",
         "English description",
         "English description\n\n저장된 번역"
       ),
@@ -35,29 +35,14 @@ describe("Star 설명 번역", () => {
     );
   });
 
-  it("Responses API의 output_text를 번역 결과로 사용한다", async () => {
-    const previousKey = process.env.OPENAI_API_KEY;
-    const previousFetch = globalThis.fetch;
-    process.env.OPENAI_API_KEY = "test-key";
-    globalThis.fetch = async (_input, init) => {
-      assert.equal(init?.method, "POST");
-      const body = JSON.parse(String(init?.body));
-      assert.equal(body.store, false);
-      return new Response(JSON.stringify({ output_text: "한국어 번역" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    };
-
-    try {
-      assert.equal(
-        await translateToKorean("English description"),
-        "한국어 번역"
-      );
-    } finally {
-      globalThis.fetch = previousFetch;
-      if (previousKey === undefined) delete process.env.OPENAI_API_KEY;
-      else process.env.OPENAI_API_KEY = previousKey;
-    }
+  it("정적 번역 매핑이 있으면 한국어를 병기한다", () => {
+    assert.equal(
+      withKoreanTranslation(
+        "addyosmani/agent-skills",
+        "Production-grade engineering skills for AI coding agents.",
+        null
+      ),
+      "Production-grade engineering skills for AI coding agents.\n\nAI 코딩 에이전트를 위한 프로덕션급 엔지니어링 스킬 모음."
+    );
   });
 });
