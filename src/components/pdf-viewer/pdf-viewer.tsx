@@ -1,15 +1,28 @@
 // 브라우저에서 PDF 파일을 선택해 즉시 미리보는 뷰어
 "use client";
 
-import { FileText, RotateCcw, Upload } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+import { ExternalLink, FileText, RotateCcw, Save, Trash2, Upload } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  PDF_STORAGE_BUCKET,
+  PDF_STORAGE_MIME,
+} from "@/lib/pdf-storage";
 import { cn } from "@/lib/utils";
 
 type Preview = {
   name: string;
   size: number;
   url: string;
+  file: File;
+};
+
+type SavedPdf = {
+  id: string;
+  name: string;
+  size: number;
+  createdAt: string | null;
 };
 
 /** PDF를 서버에 전송하지 않고 브라우저의 기본 PDF 뷰어로 표시한다. */
@@ -17,15 +30,35 @@ export function PdfViewer() {
   const inputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
+  const [savedPdfs, setSavedPdfs] = useState<SavedPdf[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [loadingList, setLoadingList] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  useEffect(
-    () => () => {
+  const loadSavedPdfs = useCallback(async () => {
+    try {
+      const response = await fetch("/api/pdfs");
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(body?.error || "저장된 PDF 목록을 불러오지 못했습니다.");
+      }
+      setSavedPdfs(body as SavedPdf[]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "저장된 PDF 목록을 불러오지 못했습니다.");
+    } finally {
+      setLoadingList(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    queueMicrotask(() => void loadSavedPdfs());
+    return () => {
       if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-    },
-    []
-  );
+    };
+  }, [loadSavedPdfs]);
 
   async function selectFile(file: File) {
     if (file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) {
@@ -48,8 +81,9 @@ export function PdfViewer() {
     if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
     const url = URL.createObjectURL(file);
     objectUrlRef.current = url;
-    setPreview({ name: file.name, size: file.size, url });
+    setPreview({ name: file.name, size: file.size, url, file });
     setError(null);
+    setStatus(null);
     if (inputRef.current) inputRef.current.value = "";
   }
 
@@ -58,8 +92,76 @@ export function PdfViewer() {
     objectUrlRef.current = null;
     setPreview(null);
     setError(null);
+    setStatus(null);
     setDragOver(false);
     if (inputRef.current) inputRef.current.value = "";
+  }
+
+  async function savePdf() {
+    if (!preview) return;
+    setSaving(true);
+    setError(null);
+    setStatus("저장 준비 중…");
+    try {
+      const response = await fetch("/api/pdfs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: preview.name,
+          type: PDF_STORAGE_MIME,
+          size: preview.size,
+        }),
+      });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(body?.error || "PDF 저장을 준비하지 못했습니다.");
+      }
+
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      if (!url || !anonKey) {
+        throw new Error("Supabase 공개 환경 변수가 설정되지 않았습니다.");
+      }
+      setStatus("PDF 저장 중…");
+      const { error: uploadError } = await createClient(url, anonKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      })
+        .storage.from(PDF_STORAGE_BUCKET)
+        .uploadToSignedUrl(body.path, body.token, preview.file, {
+          contentType: PDF_STORAGE_MIME,
+          upsert: false,
+        });
+      if (uploadError) throw uploadError;
+
+      await loadSavedPdfs();
+      setStatus("PDF를 저장했습니다.");
+    } catch (err) {
+      setStatus(null);
+      setError(err instanceof Error ? err.message : "PDF를 저장하지 못했습니다.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function deletePdf(pdf: SavedPdf) {
+    if (!window.confirm(`\"${pdf.name}\"을 삭제할까요?`)) return;
+    setDeletingId(pdf.id);
+    setError(null);
+    setStatus("PDF 삭제 중…");
+    try {
+      const response = await fetch(`/api/pdfs/${pdf.id}`, { method: "DELETE" });
+      if (!response.ok) {
+        const body = await response.json().catch(() => null);
+        throw new Error(body?.error || "PDF를 삭제하지 못했습니다.");
+      }
+      setSavedPdfs((files) => files.filter((file) => file.id !== pdf.id));
+      setStatus("PDF를 삭제했습니다.");
+    } catch (err) {
+      setStatus(null);
+      setError(err instanceof Error ? err.message : "PDF를 삭제하지 못했습니다.");
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -111,7 +213,7 @@ export function PdfViewer() {
             {dragOver ? "여기에 놓으세요" : "PDF를 끌어다 놓거나 클릭해서 선택"}
           </p>
           <p className="text-xs text-muted-foreground">
-            파일은 서버에 업로드되지 않고 이 브라우저에서만 열립니다.
+            선택 즉시 이 브라우저에서 열리며 저장 버튼을 눌러 보관할 수 있습니다.
           </p>
         </div>
         <input
@@ -131,6 +233,11 @@ export function PdfViewer() {
           {error}
         </p>
       )}
+      {status && (
+        <p role="status" className="text-sm text-muted-foreground">
+          {status}
+        </p>
+      )}
 
       {preview && (
         <section className="space-y-3" aria-label="PDF 미리보기">
@@ -145,10 +252,29 @@ export function PdfViewer() {
                 MB
               </span>
             </p>
-            <Button type="button" variant="outline" size="sm" onClick={reset}>
-              <RotateCcw className="h-3.5 w-3.5" />
-              초기화
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                size="sm"
+                className="min-h-11 sm:min-h-8"
+                disabled={saving}
+                onClick={() => void savePdf()}
+              >
+                <Save className="h-3.5 w-3.5" />
+                {saving ? "저장 중…" : "저장"}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="min-h-11 sm:min-h-8"
+                disabled={saving}
+                onClick={reset}
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                초기화
+              </Button>
+            </div>
           </div>
 
           <iframe
@@ -158,6 +284,68 @@ export function PdfViewer() {
           />
         </section>
       )}
+
+      <section className="space-y-3" aria-labelledby="saved-pdfs-title">
+        <div className="flex items-center justify-between gap-3">
+          <h2 id="saved-pdfs-title" className="text-lg font-semibold tracking-tight">
+            저장된 PDF
+          </h2>
+          <span className="text-xs text-muted-foreground">최근 {savedPdfs.length}개</span>
+        </div>
+
+        {loadingList ? (
+          <p className="rounded-xl border border-border bg-card/40 p-4 text-sm text-muted-foreground">
+            목록을 불러오는 중…
+          </p>
+        ) : savedPdfs.length === 0 ? (
+          <p className="rounded-xl border border-border bg-card/40 p-4 text-sm text-muted-foreground">
+            저장된 PDF가 없습니다.
+          </p>
+        ) : (
+          <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card/40">
+            {savedPdfs.map((pdf) => (
+              <li
+                key={pdf.id}
+                className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{pdf.name}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {(pdf.size / 1024 / 1024).toLocaleString("ko-KR", {
+                      maximumFractionDigits: 2,
+                    })}
+                    MB
+                    {pdf.createdAt &&
+                      ` · ${new Date(pdf.createdAt).toLocaleString("ko-KR")}`}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`/api/pdfs/${pdf.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-doc-sm border border-[var(--glass-border)] px-3 text-xs font-semibold text-foreground transition-all hover:glass-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-8"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    열기
+                  </a>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="min-h-11 sm:min-h-8"
+                    disabled={deletingId === pdf.id}
+                    onClick={() => void deletePdf(pdf)}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    {deletingId === pdf.id ? "삭제 중…" : "삭제"}
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

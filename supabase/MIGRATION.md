@@ -55,3 +55,14 @@ npm run dev
 로그인/세션은 계속 **Auth.js** (GitHub / Dev Login) 입니다.  
 Supabase Auth 로 바꾸지 않았습니다.  
 `user_id` 컬럼 = Auth.js `session.user.id`.
+
+## 6. PDF Storage
+
+다음 스크립트로 `pdf-files` 버킷을 생성하거나 설정을 확인합니다.
+
+```bash
+node scripts/setup-pdf-storage.mjs
+```
+
+버킷은 비공개이며 파일당 최대 20MB, `application/pdf`만 허용합니다.
+브라우저의 서명 업로드에는 `NEXT_PUBLIC_SUPABASE_ANON_KEY`가 필수입니다.

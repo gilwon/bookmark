@@ -7,7 +7,7 @@ export default function PdfViewerPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">PDF 뷰어</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          PDF 파일을 선택하면 서버 저장 없이 바로 확인할 수 있습니다.
+          PDF 파일을 선택해 바로 확인하고 비공개 Storage에 저장할 수 있습니다.
         </p>
       </div>
       <PdfViewer />
