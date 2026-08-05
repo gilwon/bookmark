@@ -1,6 +1,7 @@
 // 목록 정렬·검색·페이징 공통 유틸
 
 export type ListSortKey = "created_desc" | "updated_desc" | "title_asc";
+export type PdfListSortKey = "name_asc" | "created_desc";
 
 export const DEFAULT_PAGE_SIZE = 24;
 
@@ -15,9 +16,9 @@ export function matchesSearchTokens(haystack: string, query: string): boolean {
 }
 
 /** ISO 날짜 내림차순 비교 (잘못된 값은 뒤로) */
-export function compareIsoDesc(a: string, b: string): number {
-  const ta = Date.parse(a);
-  const tb = Date.parse(b);
+export function compareIsoDesc(a: string | null, b: string | null): number {
+  const ta = Date.parse(a ?? "");
+  const tb = Date.parse(b ?? "");
   if (Number.isNaN(ta) && Number.isNaN(tb)) return 0;
   if (Number.isNaN(ta)) return 1;
   if (Number.isNaN(tb)) return -1;
@@ -26,6 +27,17 @@ export function compareIsoDesc(a: string, b: string): number {
 
 export function compareTitleAsc(a: string, b: string): number {
   return a.localeCompare(b, "ko", { numeric: true, sensitivity: "base" });
+}
+
+export function sortSavedPdfs<T extends { name: string; createdAt: string | null }>(
+  list: T[],
+  sort: PdfListSortKey = "name_asc"
+): T[] {
+  return [...list].sort((a, b) => {
+    const byName = compareTitleAsc(a.name, b.name);
+    const byCreatedAt = compareIsoDesc(a.createdAt, b.createdAt);
+    return sort === "name_asc" ? byName || byCreatedAt : byCreatedAt || byName;
+  });
 }
 
 export function totalPages(total: number, pageSize: number): number {

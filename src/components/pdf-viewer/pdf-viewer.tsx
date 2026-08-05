@@ -3,8 +3,10 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { ExternalLink, FileText, RotateCcw, Save, Trash2, Upload } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
+import { sortSavedPdfs, type PdfListSortKey } from "@/lib/list-utils";
 import {
   PDF_STORAGE_BUCKET,
   PDF_STORAGE_MIME,
@@ -32,6 +34,7 @@ export function PdfViewer() {
   const objectUrlRef = useRef<string | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [savedPdfs, setSavedPdfs] = useState<SavedPdf[]>([]);
+  const [sort, setSort] = useState<PdfListSortKey>("name_asc");
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -39,6 +42,10 @@ export function PdfViewer() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const sortedSavedPdfs = useMemo(
+    () => sortSavedPdfs(savedPdfs, sort),
+    [savedPdfs, sort]
+  );
 
   const loadSavedPdfs = useCallback(async () => {
     try {
@@ -306,11 +313,27 @@ export function PdfViewer() {
       )}
 
       <section className="space-y-3" aria-labelledby="saved-pdfs-title">
-        <div className="flex items-center justify-between gap-3">
-          <h2 id="saved-pdfs-title" className="text-lg font-semibold tracking-tight">
-            저장된 PDF
-          </h2>
-          <span className="text-xs text-muted-foreground">최근 {savedPdfs.length}개</span>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <h2 id="saved-pdfs-title" className="text-lg font-semibold tracking-tight">
+              저장된 PDF
+            </h2>
+            <span className="text-xs text-muted-foreground">최근 {savedPdfs.length}개</span>
+          </div>
+          <div className="w-full space-y-1 sm:w-44">
+            <label htmlFor="pdf-sort" className="text-xs text-muted-foreground">
+              정렬
+            </label>
+            <Select
+              id="pdf-sort"
+              className="h-11 sm:h-9"
+              value={sort}
+              onChange={(event) => setSort(event.target.value as PdfListSortKey)}
+            >
+              <option value="name_asc">이름 가나다</option>
+              <option value="created_desc">등록일 최신</option>
+            </Select>
+          </div>
         </div>
 
         {loadingList ? (
@@ -323,7 +346,7 @@ export function PdfViewer() {
           </p>
         ) : (
           <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card/40">
-            {savedPdfs.map((pdf) => (
+            {sortedSavedPdfs.map((pdf) => (
               <li
                 key={pdf.id}
                 className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
