@@ -1,0 +1,722 @@
+[
+  {
+    "title": "Stitch Skills (Google Labs 에이전트 스킬 라이브러리)",
+    "description": "Google Stitch와 연동해 디자인 생성과 코드 추출, 디자인 시스템 작업을 돕는 범용 에이전트 스킬 모음이다.",
+    "category": "기타 (AI 에이전트 도구)",
+    "url": "https://github.com/google-labs-code/stitch-skills"
+  },
+  {
+    "title": "Oh my Claude Code",
+    "description": "Claude Code에서 여러 전문 에이전트를 팀처럼 운영하고 자동 실행하는 오케스트레이션 플러그인이다.",
+    "category": "클로드",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode"
+  },
+  {
+    "title": "Claude skills",
+    "description": "문서, 디자인, 테스트, MCP 제작 등 Anthropic이 공개한 공식 Agent Skills 예시 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/anthropics/skills"
+  },
+  {
+    "title": "Everything Claude Code (해커톤 우승자)",
+    "description": "Claude Code 설정과 워크플로, 에이전트와 명령 구성을 실전 사례로 정리한 자료다.",
+    "category": "클로드",
+    "url": "https://github.com/affaan-m/everything-claude-code"
+  },
+  {
+    "title": "Claude scientific skills",
+    "description": "연구 분석, 실험실 자동화, 금융과 논문 작성 등 과학 업무용 Claude 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/K-Dense-AI/claude-scientific-skills"
+  },
+  {
+    "title": "UI/UX Pro Max skill",
+    "description": "스타일, 색상, 글꼴, UX 지침을 검색해 여러 프론트엔드 스택의 UI 제작을 지원하는 디자인 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+  },
+  {
+    "title": "PM-skills",
+    "description": "제품 발견부터 전략, PRD, OKR, 출시와 분석까지 PM 업무를 위한 스킬과 워크플로 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/phuryn/pm-skills"
+  },
+  {
+    "title": "Vercel agent-browser",
+    "description": "AI 에이전트가 웹페이지를 탐색하고 클릭, 입력, 캡처할 수 있게 하는 Vercel의 브라우저 자동화 CLI다.",
+    "category": "클로드",
+    "url": "https://github.com/vercel-labs/agent-browser"
+  },
+  {
+    "title": "Hermes Agent Desktop (멀티 에이전트 AI 팀 데스크톱 클라이언트)",
+    "description": "여러 전문 에이전트의 분업과 모델 전환, 스킬 관리를 제공하는 데스크톱 작업 환경이다.",
+    "category": "기타 (AI Agent)",
+    "url": "https://github.com/Felix-Forever/hermes-agent-desktop"
+  },
+  {
+    "title": "Hermes Workspace (헤르메스 에이전트 워크스페이스)",
+    "description": "Hermes의 채팅, 터미널, 메모리와 스킬을 한 화면에서 관리하고 다중 에이전트 실행을 관찰하는 인터페이스다.",
+    "category": "기타",
+    "url": "https://github.com/outsourc-e/hermes-workspace"
+  },
+  {
+    "title": "Mnemo Cortex (AI 에이전트를 위한 오픈소스 메모리 보조 프로세서)",
+    "description": "에이전트에 세션 간 영구 기억, 의미 검색, 지식 동기화 기능을 제공하는 로컬 MCP 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/GuyMannDude/mnemo-cortex"
+  },
+  {
+    "title": "im-not-ai (한글 AI 티 제거기)",
+    "description": "번역투와 기계적 문장 패턴을 찾아 원뜻을 유지하면서 자연스러운 한국어로 다듬는 에이전트 워크플로다.",
+    "category": "클로드",
+    "url": "https://github.com/epoko77-ai/im-not-ai"
+  },
+  {
+    "title": "goose (구스)",
+    "description": "여러 LLM과 MCP를 연결해 코드 설치, 실행, 편집과 테스트까지 수행하는 오픈소스 AI 에이전트다.",
+    "category": "기타",
+    "url": "https://github.com/aaif-goose/goose"
+  },
+  {
+    "title": "PaddleOCR (패들OCR)",
+    "description": "이미지와 PDF를 100개 이상 언어의 구조화 데이터나 Markdown으로 바꾸는 문서 OCR 도구 모음이다.",
+    "category": "기타",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR"
+  },
+  {
+    "title": "codex-image-generation-skill (Hermes용 Codex 이미지 생성 스킬)",
+    "description": "Hermes에서 Codex 인증을 이용해 이미지 생성과 참조 이미지 기반 편집을 수행하는 스킬이다.",
+    "category": "코덱스",
+    "url": "https://github.com/Gyu-bot/codex-image-generation-skill"
+  },
+  {
+    "title": "Design Diversity (디자인 다양성 확보 스킬)",
+    "description": "AI가 반복적인 시각 스타일을 벗어나도록 여러 웹·PPT 디자인 방향과 명세를 제공하는 카탈로그형 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/epoko77-ai/design-diversity"
+  },
+  {
+    "title": "OpenClaw Agent Skills (에이전트 워크플로우 기술 모음)",
+    "description": "코드 리뷰, 원격 검증, 작업 인계 등 반복되는 에이전트 워크플로를 재사용하게 하는 스킬 라이브러리다.",
+    "category": "클로드",
+    "url": "https://github.com/openclaw/agent-skills"
+  },
+  {
+    "title": "Financialdatasets MCP server 문서",
+    "description": "Claude나 Cursor에서 주가, 재무제표, SEC 공시, 암호화폐와 뉴스를 조회하는 금융 데이터 MCP 안내서다.",
+    "category": "클로드",
+    "url": "https://docs.financialdatasets.ai/mcp-server"
+  },
+  {
+    "title": "Premiere Auto-Edit (프리미어 프로 자동 컷편집 및 자막 에이전트)",
+    "description": "Apple Silicon에서 영상의 무음과 말버릇을 정리해 수정 가능한 Premiere XML 시퀀스를 만드는 자동 편집 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/biblcontentofficial-art/Premiere-Pro-edit-bibl"
+  },
+  {
+    "title": "qiaomu-goal-meta-skill (Codex 용 목표 구체화 도구)",
+    "description": "모호한 요청을 검증 기준과 제약, 경계 조건을 포함한 실행 가능한 Codex 목표로 바꾸는 메타 스킬이다.",
+    "category": "코덱스",
+    "url": "https://github.com/joeseesun/qiaomu-goal-meta-skill"
+  },
+  {
+    "title": "book-to-skill (기술 도서의 에이전트 스킬 자동 변환 도구)",
+    "description": "PDF, EPUB, DOCX 기술서를 용어집과 패턴을 갖춘 재사용 가능한 에이전트 스킬로 변환한다.",
+    "category": "클로드",
+    "url": "https://github.com/virgiliojr94/book-to-skill"
+  },
+  {
+    "title": "Harness 100 (클로드 코드용 프로덕션 에이전트 팀 모음)",
+    "description": "여러 업무 영역의 전문 에이전트 팀과 조정 스킬을 바로 쓸 수 있게 구성한 Claude Code 하네스 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/revfactory/harness-100"
+  },
+  {
+    "title": "autonovel (AI 자율 소설 집필 파이프라인)",
+    "description": "소설 기획, 집필, 교정, 삽화와 오디오북 제작까지 반복 평가하며 진행하는 자동화 파이프라인이다.",
+    "category": "클로드",
+    "url": "https://github.com/NousResearch/autonovel"
+  },
+  {
+    "title": "Hermes Paperclip Adapter (Hermes 에이전트 용 Paperclip 연동 어댑터)",
+    "description": "Hermes Agent를 Paperclip 환경의 관리형 에이전트로 연결하고 세션과 실행 기록을 다루는 어댑터다.",
+    "category": "기타",
+    "url": "https://github.com/NousResearch/hermes-paperclip-adapter"
+  },
+  {
+    "title": "Hermes Agent Self-Evolution (에이전트 자체 진화 프레임워크)",
+    "description": "실행 추적을 바탕으로 Hermes의 스킬, 프롬프트와 도구 설명을 자동 평가하고 최적화한다.",
+    "category": "기타",
+    "url": "https://github.com/NousResearch/hermes-agent-self-evolution"
+  },
+  {
+    "title": "Agent Skills (AI 코딩 에이전트를 위한 전문 엔지니어링 기술셋)",
+    "description": "AI 코딩 에이전트에 계획부터 배포까지 시니어 엔지니어의 절차와 품질 기준을 적용하는 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/addyosmani/agent-skills"
+  },
+  {
+    "title": "korean-patent-mcp (한국 특허 KIPRIS MCP 서버)",
+    "description": "KIPRIS Plus API로 국내 특허, 실용신안, 상표와 디자인을 검색하는 MCP 서버다.",
+    "category": "클로드",
+    "url": "https://github.com/chrisryugj/korean-patent-mcp"
+  },
+  {
+    "title": "Excalidraw diagram skill",
+    "description": "자연어 설명을 Excalidraw JSON과 PNG로 만들고 시각 검증까지 수행하는 Claude Code 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/coleam00/excalidraw-diagram-skill"
+  },
+  {
+    "title": "last30days-skill (최근 30일 트렌드 분석 AI 에이전트)",
+    "description": "Reddit, X, YouTube 등에서 최근 한 달의 반응과 흐름을 조사해 요약하는 에이전트 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/mvanhorn/last30days-skill"
+  },
+  {
+    "title": "insane-search (클로드 코드용 차단 우회 및 웹 검색 도구)",
+    "description": "여러 공개 웹 플랫폼의 봇 차단 상황에 대응하도록 브라우저 기반 수집 경로를 제공하는 Claude Code 검색 플러그인이다.",
+    "category": "클로드",
+    "url": "https://github.com/fivetaku/insane-search"
+  },
+  {
+    "title": "translate-book-to-korean (클로드 코드용 도서 번역 및 출판 스킬)",
+    "description": "영어 PDF를 단계적으로 한국어로 번역하고 용어집과 단행본 형태 PDF까지 만드는 Claude Code 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/wineny/translate-book-to-korean"
+  },
+  {
+    "title": "Ponytail (AI 에이전트를 위한 게으른 시니어 개발자 프롬프트)",
+    "description": "YAGNI와 최소 변경 원칙으로 AI 에이전트의 불필요한 코드 생성을 억제하는 프롬프트 규칙이다.",
+    "category": "클로드",
+    "url": "https://github.com/DietrichGebert/ponytail"
+  },
+  {
+    "title": "notebooklm-mcp-cli (구글 NotebookLM의 프로그래밍적 인터페이스)",
+    "description": "NotebookLM의 노트북, 소스와 오디오 생성을 CLI 및 MCP에서 자동화하는 비공식 인터페이스다.",
+    "category": "클로드",
+    "url": "https://github.com/jacob-bd/notebooklm-mcp-cli"
+  },
+  {
+    "title": "Gajae-Code (가재 코드)",
+    "description": "tmux 실행 환경과 알림, 조사 모드로 사용자 의도를 구조적인 개발 작업으로 실행하는 코딩 에이전트 도구다.",
+    "category": "코딩 에이전트",
+    "url": "https://github.com/Yeachan-Heo/gajae-code"
+  },
+  {
+    "title": "Webtoon Harness (웹툰 자동 제작 하네스)",
+    "description": "조사와 각본부터 캐릭터 일관성, 이미지 생성, 검수와 세로형 뷰어 조립까지 웹툰 제작을 분업한다.",
+    "category": "클로드",
+    "url": "https://github.com/revfactory/webtoon-harness"
+  },
+  {
+    "title": "Agency Agents (AI 에이전트 드림팀)",
+    "description": "개발, 디자인, 마케팅 등 직무별 성격과 작업 방식을 정의한 AI 에이전트 페르소나 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/msitarzewski/agency-agents"
+  },
+  {
+    "title": "Memory Bank (메모리 뱅크)",
+    "description": "Claude Code 대화에서 결정과 선호를 추출해 프로젝트별 지식 그래프로 보존하고 검색하는 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/jung-wan-kim/memory-bank"
+  },
+  {
+    "title": "Orca (AI 에이전트 오케스트레이션을 위한 ADE)",
+    "description": "여러 코딩 에이전트를 독립 워크트리에서 병렬 실행하고 상태와 결과를 비교하는 개발 환경이다.",
+    "category": "클로드",
+    "url": "https://github.com/stablyai/orca"
+  },
+  {
+    "title": "gstack (Garry Tan's Claude Code setup)",
+    "description": "CEO, 디자이너, 엔지니어와 QA 역할을 명령형 워크플로로 구성한 Claude Code 스킬셋이다.",
+    "category": "클로드",
+    "url": "https://github.com/garrytan/gstack"
+  },
+  {
+    "title": "Jetendard (제텐다드)",
+    "description": "JetBrains Mono Nerd Font와 Pretendard를 결합해 한글과 영문의 폭과 가독성을 조정한 개발용 글꼴이다.",
+    "category": "기타",
+    "url": "https://github.com/kuskhan/jetendard"
+  },
+  {
+    "title": "Marketing Skills (AI 에이전트용 마케팅 스킬셋)",
+    "description": "SEO, 카피라이팅, 데이터 분석과 성장 업무에 쓰는 마케팅 프레임워크와 에이전트 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/coreyhaines31/marketingskills"
+  },
+  {
+    "title": "Omnigent (옴니전트 AI 에이전트 오케스트레이터)",
+    "description": "여러 코딩 에이전트를 샌드박스와 정책 아래 운영하고 기기 간 세션을 동기화하는 오픈소스 메타 하네스다.",
+    "category": "기타",
+    "url": "https://github.com/omnigent-ai/omnigent"
+  },
+  {
+    "title": "PhotoGIMP (포토샵 스타일 GIMP 패치)",
+    "description": "GIMP의 레이아웃, 단축키와 메뉴를 Photoshop 사용자에게 익숙한 형태로 바꾸는 패치다.",
+    "category": "디자인 도구",
+    "url": "https://github.com/Diolinux/PhotoGIMP"
+  },
+  {
+    "title": "Skills (Agent Skills for Builders)",
+    "description": "화면과 디자인 시스템을 분석해 고품질 UI 제작을 반복 가능한 과정으로 만드는 빌더용 에이전트 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/MengTo/Skills"
+  },
+  {
+    "title": "obsidian-skills (옵시디언용 에이전트 스킬 세트)",
+    "description": "에이전트가 Obsidian Markdown, Canvas와 CLI를 편집하고 지식 저장소를 자동 관리하게 하는 스킬 모음이다.",
+    "category": "클로드 / 코덱스",
+    "url": "https://github.com/kepano/obsidian-skills"
+  },
+  {
+    "title": "baidu/Unlimited-OCR (바이두 언리미티드 OCR)",
+    "description": "여러 언어의 이미지와 다중 페이지 문서를 긴 문맥을 유지하며 텍스트로 읽는 시각 언어 OCR 모델이다.",
+    "category": "모델 / Vision-Language OCR",
+    "url": "https://huggingface.co/baidu/Unlimited-OCR"
+  },
+  {
+    "title": "Buzz (오프라인 음성 인식 및 번역 도구)",
+    "description": "Whisper 계열 모델로 파일이나 마이크 음성을 로컬에서 받아쓰고 번역해 자막으로 내보내는 앱이다.",
+    "category": "기타",
+    "url": "https://github.com/chidiwilliams/buzz"
+  },
+  {
+    "title": "codex-fleet (Claude Code용 Codex 병렬 스폰 오케스트레이터)",
+    "description": "Claude Code가 여러 `codex exec` 워커를 병렬 실행하고 작업 배분과 결과 회수를 관리하게 한다.",
+    "category": "클로드",
+    "url": "https://github.com/kimsh-1/codex-fleet"
+  },
+  {
+    "title": "makaibeauty AI Seeding Report (인플루언서 시딩 의사결정 지원 시스템)",
+    "description": "인플루언서 시딩 데이터를 정규화해 제품 적합도, 성과와 매출 변화 실험을 분석하는 도구다.",
+    "category": "기타",
+    "url": "https://github.com/makaidev/makaibeauty-seeding-report/tree/main"
+  },
+  {
+    "title": "공냥 프롬프트 킷 (Gongnyang Prompt Kit)",
+    "description": "짧은 요청을 조명, 구도와 색상까지 지정한 GPT Image용 한국어 프롬프트로 확장하는 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/kimsh-1/gongnyang-prompt-kit"
+  },
+  {
+    "title": "Graphify (그래프 기반 AI 코딩 지식 자동화 도구)",
+    "description": "코드와 문서를 정적 분석해 탐색하고 질의할 수 있는 프로젝트 지식 그래프로 변환한다.",
+    "category": "기타",
+    "url": "https://github.com/Graphify-Labs/graphify"
+  },
+  {
+    "title": "AutoClip",
+    "description": "YouTube와 Bilibili 영상을 내려받아 자막을 추출하고 하이라이트 클립과 합본을 자동 생성한다.",
+    "category": "클로드",
+    "url": "https://github.com/zhouxiaoka/autoclip"
+  },
+  {
+    "title": "VITS (엔드투엔드 텍스트 음성 합성 모델)",
+    "description": "변분 추론과 적대적 학습을 결합해 자연스러운 음성을 한 단계로 합성하는 TTS 모델 구현이다.",
+    "category": "기타 (음성 합성/TTS)",
+    "url": "https://github.com/jaywalnut310/vits"
+  },
+  {
+    "title": "KEZ-ProductPage-skill (Claude Code용 피그마 상세페이지 제작 스킬)",
+    "description": "자연어 요구를 Figma 오토레이아웃 기반 커머스 상세페이지로 생성하고 브랜드 규칙에 맞춰 검수하는 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/HarinJin/KEZ-ProductPage-skill"
+  },
+  {
+    "title": "OfficeCLI (AI 에이전트용 오피스 자동화 도구)",
+    "description": "Office 설치 없이 에이전트가 Word, Excel과 PowerPoint 파일을 읽고 만들고 시각적으로 검토하게 하는 CLI다.",
+    "category": "클로드",
+    "url": "https://github.com/iOfficeAI/OfficeCLI"
+  },
+  {
+    "title": "god-tibo-imagen (Codex 기반 이미지 생성 도구)",
+    "description": "로컬 인증을 이용해 Codex 계열 이미지 요청과 크기 조절, 기존 이미지 편집을 수행하는 도구다.",
+    "category": "코덱스",
+    "url": "https://github.com/NomaDamas/god-tibo-imagen"
+  },
+  {
+    "title": "Openship (오픈소스 셀프 호스팅 배포 플랫폼)",
+    "description": "자체 서버의 컨테이너 배포, 데이터베이스, 도메인, 백업과 모니터링을 한 화면에서 관리하는 플랫폼이다.",
+    "category": "데브옵스(DevOps)",
+    "url": "https://github.com/oblien/openship"
+  },
+  {
+    "title": "claude-video (클로드 비디오 분석 플러그인)",
+    "description": "YouTube나 로컬 영상에서 프레임과 음성을 추출해 Claude가 내용을 요약하고 분석하게 하는 플러그인이다.",
+    "category": "클로드",
+    "url": "https://github.com/bradautomates/claude-video"
+  },
+  {
+    "title": "Codex Security (코덱스 보안 스캔 도구)",
+    "description": "저장소와 코드 변경에서 보안 취약점을 찾아 검증하고 수정하는 OpenAI의 CLI 및 TypeScript SDK다.",
+    "category": "코덱스",
+    "url": "https://github.com/openai/codex-security"
+  },
+  {
+    "title": "MoneyPrinterTurbo (AI 숏폼 비디오 원스톱 자동 생성기)",
+    "description": "주제에서 대본, 자막, 배경음악과 영상 소재를 구성해 세로형 숏폼 영상을 자동 제작한다.",
+    "category": "기타",
+    "url": "https://github.com/harry0703/MoneyPrinterTurbo/"
+  },
+  {
+    "title": "ir-search (한국 정부 지원사업 전수조사 에이전트 스킬)",
+    "description": "공공기관 지원사업 공고를 수집해 프로젝트 적합도와 신청 전략을 단계별 보고서로 만드는 에이전트 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/djfksjd/ir-search"
+  },
+  {
+    "title": "Agent Reach (AI 에이전트용 인터넷 접속 허브)",
+    "description": "AI 에이전트가 Twitter, Reddit, YouTube와 Bilibili 등 여러 플랫폼을 읽고 검색하게 하는 통합 도구다.",
+    "category": "기타",
+    "url": "https://github.com/Panniantong/agent-reach"
+  },
+  {
+    "title": "AI 에이전트용 인터페이스 제작 기술 모음 도표 그래프",
+    "description": "애니메이션, 접근성, 타이포그래피와 UX 글쓰기를 포함해 인터페이스 품질을 높이는 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/jakubkrehel/skills"
+  },
+  {
+    "title": "mattpocock/skills (실무 엔지니어를 위한 AI 에이전트 스킬셋)",
+    "description": "이슈 관리, 문서화와 절차 제어로 코딩 에이전트가 실무 개발 과정을 정확히 따르게 하는 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/mattpocock/skills"
+  },
+  {
+    "title": "Matt Pocock Skills (엔지니어용 AI 에이전트 스킬셋)",
+    "description": "같은 저장소의 `grill-me` 스킬로, 구현 전 질문을 통해 요구와 결정을 구체화하는 인터뷰 절차를 제공한다.",
+    "category": "클로드",
+    "url": "https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md"
+  },
+  {
+    "title": "OpenWhip (오픈휩)",
+    "description": "느리거나 멈춘 Claude Code 세션을 중단하고 메시지를 보내는 기능을 장난스러운 채찍 UI로 표현한 데스크톱 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/GitFrog1111/OpenWhip"
+  },
+  {
+    "title": "pdf-inspector (Rust 기반 PDF 분석 및 텍스트 추출 도구)",
+    "description": "PDF의 텍스트·스캔 여부와 표, 단 구성, 제목 구조를 분석해 Markdown으로 추출하는 Rust 도구다.",
+    "category": "기타",
+    "url": "https://github.com/firecrawl/pdf-inspector"
+  },
+  {
+    "title": "Oh My Prompt",
+    "description": "Claude Code와 Codex의 프롬프트 상호작용을 수집하고 분석하는 셀프 호스팅 대시보드와 CLI다.",
+    "category": "클로드",
+    "url": "https://github.com/jiunbae/oh-my-prompt"
+  },
+  {
+    "title": "pi-autoresearch",
+    "description": "Shopify의 Pi 코딩 에이전트가 코드 최적화 실험을 반복 수행하고 결과를 평가하게 하는 플러그인이다.",
+    "category": "클로드",
+    "url": "https://github.com/davebcn87/pi-autoresearch"
+  },
+  {
+    "title": "AutoResearchClaw",
+    "description": "아이디어에서 문헌 조사, 실험과 평가를 거쳐 LaTeX 논문까지 생성하는 자율 연구 파이프라인이다.",
+    "category": "클로드",
+    "url": "https://github.com/aiming-lab/AutoResearchClaw"
+  },
+  {
+    "title": "NomaDamas k-skill (한국인 스킬 모음)",
+    "description": "교통, 스포츠, 메신저와 쇼핑 등 국내 서비스 사용에 맞춘 한국형 Claude 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/NomaDamas/k-skill"
+  },
+  {
+    "title": "Claude Health",
+    "description": "프로젝트 지침, 규칙, 스킬, 훅, 하위 에이전트와 검증 설정을 계층별로 점검해 보고하는 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/tw93/claude-health"
+  },
+  {
+    "title": "Prompt Master",
+    "description": "여러 AI 도구에 맞춰 요구를 명확하고 간결한 프롬프트로 재구성하는 Claude 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/nidhinjs/prompt-master"
+  },
+  {
+    "title": "AI Marketing Skills",
+    "description": "성장 실험, 영업, 콘텐츠와 SEO 업무를 자동화하는 Claude Code용 마케팅 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/ericosiu/ai-marketing-skills"
+  },
+  {
+    "title": "geo-seo-claude",
+    "description": "웹사이트의 AI 검색 인용 가능성, 크롤러 접근성과 브랜드 권위를 분석해 GEO 보고서를 만드는 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/zubair-trabzada/geo-seo-claude"
+  },
+  {
+    "title": "AI Website Cloner Template",
+    "description": "AI 코딩 에이전트가 URL을 분석해 웹사이트를 재구현하는 데 쓰는 Next.js 기반 템플릿이다.",
+    "category": "클로드",
+    "url": "https://github.com/JCodesMore/ai-website-cloner-template"
+  },
+  {
+    "title": "Go Viral or Die",
+    "description": "논쟁성을 활용한 바이럴 마케팅 아이디어를 생성하도록 구성한 Claude Code 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/crealwork/go-viral-or-die"
+  },
+  {
+    "title": "MiroFish",
+    "description": "시드 정보를 바탕으로 다중 에이전트 사회를 시뮬레이션해 예측 보고서를 만드는 군집지능 엔진이다.",
+    "category": "클로드",
+    "url": "https://github.com/666ghj/MiroFish"
+  },
+  {
+    "title": "VoltAgent awesome-design-md",
+    "description": "여러 브랜드의 디자인 시스템을 에이전트가 읽을 수 있는 `DESIGN.md` 형태로 모은 자료다.",
+    "category": "클로드",
+    "url": "https://github.com/VoltAgent/awesome-design-md"
+  },
+  {
+    "title": "Clawd on Desk",
+    "description": "Claude Code, Codex와 Copilot 세션 상태에 실시간 반응하는 데스크톱 펫이다.",
+    "category": "클로드",
+    "url": "https://github.com/rullerzhou-afk/clawd-on-desk"
+  },
+  {
+    "title": "CL4R1T4S Claude Design 시스템 프롬프트",
+    "description": "공개된 여러 AI 시스템 프롬프트 모음에서 Claude Design 관련 텍스트를 직접 가리키는 항목이다.",
+    "category": "클로드",
+    "url": "https://github.com/elder-plinius/CL4R1T4S/blob/main/ANTHROPIC/Claude-Design-Sys-Prompt.txt"
+  },
+  {
+    "title": "HeyGen Skills",
+    "description": "AI 에이전트가 HeyGen의 아바타 생성과 영상 제작 작업을 수행하게 하는 스킬 모음이다.",
+    "category": "클로드",
+    "url": "https://github.com/heygen-com/skills"
+  },
+  {
+    "title": "Firecrawl open-lovable",
+    "description": "웹사이트를 크롤링해 참고하면서 대화형으로 React 앱을 생성하는 오픈소스 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/firecrawl/open-lovable"
+  },
+  {
+    "title": "Browser-use video-use",
+    "description": "Claude Code로 필러 제거, 자막, 색보정과 오버레이를 포함한 영상 편집을 자동화한다.",
+    "category": "클로드",
+    "url": "https://github.com/browser-use/video-use"
+  },
+  {
+    "title": "design-md-chrome",
+    "description": "웹사이트 스타일을 추출해 AI 에이전트용 `DESIGN.md`와 `SKILL.md`로 저장하는 Chrome 확장이다.",
+    "category": "클로드",
+    "url": "https://github.com/bergside/design-md-chrome"
+  },
+  {
+    "title": "http://DESIGN.md Style Extractor (TypeUI)",
+    "description": "웹페이지 CSS를 분석해 Claude Code나 Codex가 재사용할 디자인 지침 파일을 만드는 Chrome 웹스토어 확장이다.",
+    "category": "클로드",
+    "url": "https://chromewebstore.google.com/detail/designmd-style-extractor/ogpdnchdjiibhobphelbbkemnnemkfma"
+  },
+  {
+    "title": "htekdev vidpipe",
+    "description": "녹화 영상을 자동 편집해 자막, 숏폼 클립과 소셜 게시물로 변환하는 AI 비디오 CLI다.",
+    "category": "클로드",
+    "url": "https://github.com/htekdev/vidpipe"
+  },
+  {
+    "title": "Claude-Book (소설 작성 멀티에이전트)",
+    "description": "문체 분석, 장별 생성과 AI 문체 완화를 나눠 수행하는 Claude Code 소설 집필 프레임워크다.",
+    "category": "클로드",
+    "url": "https://github.com/ThomasHoussin/Claude-Book"
+  },
+  {
+    "title": "boam79 gov_support_mcp",
+    "description": "국내 정부지원사업의 탐색, 자격 판정, 신청 준비와 수혜 관리를 자연어로 지원하는 MCP 서버다.",
+    "category": "클로드",
+    "url": "https://github.com/boam79/gov_support_mcp"
+  },
+  {
+    "title": "Docufinder",
+    "description": "HWP, PDF와 Office 문서 본문을 로컬에서 색인하고 검색하는 Tauri 기반 오프라인 앱이다.",
+    "category": "클로드",
+    "url": "https://github.com/chrisryugj/Docufinder"
+  },
+  {
+    "title": "ai-readable-gazette-kr",
+    "description": "대한민국 관보를 OCR 보정한 Markdown으로 변환해 사람과 AI가 검색하기 쉽게 만든 코퍼스다.",
+    "category": "클로드",
+    "url": "https://github.com/hosungseo/ai-readable-gazette-kr"
+  },
+  {
+    "title": "OpenDataLoader PDF",
+    "description": "PDF를 Markdown, JSON이나 HTML로 바꾸며 OCR과 표 추출을 지원하는 AI 데이터용 파서다.",
+    "category": "클로드",
+    "url": "https://github.com/opendataloader-project/opendataloader-pdf"
+  },
+  {
+    "title": "korean-privacy-terms (개인정보처리방침 자동생성)",
+    "description": "한국 개인정보 법령과 GDPR을 고려해 개인정보처리방침과 이용약관 초안을 만드는 Claude Code 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/kimlawtech/korean-privacy-terms"
+  },
+  {
+    "title": "OpenShorts",
+    "description": "클립 편집, AI UGC 숏폼과 YouTube 운영 기능을 제공하는 오픈소스 영상 플랫폼이다.",
+    "category": "클로드",
+    "url": "https://github.com/mutonby/openshorts"
+  },
+  {
+    "title": "mckinsey-pptx",
+    "description": "대화를 통해 컨설팅 스타일 프레젠테이션을 만들 수 있도록 슬라이드 템플릿을 제공하는 Claude Code 플러그인이다.",
+    "category": "클로드",
+    "url": "https://github.com/seulee26/mckinsey-pptx"
+  },
+  {
+    "title": "Voicebox",
+    "description": "음성 복제, TTS 생성과 받아쓰기를 로컬에서 실행하는 오픈소스 음성 스튜디오다.",
+    "category": "클로드",
+    "url": "https://github.com/jamiepine/voicebox"
+  },
+  {
+    "title": "Reclip",
+    "description": "`yt-dlp`를 사용해 여러 동영상·음원 사이트의 콘텐츠를 내려받는 셀프 호스팅 웹 앱이다.",
+    "category": "클로드",
+    "url": "https://github.com/averygan/reclip"
+  },
+  {
+    "title": "ACE-Step UI",
+    "description": "ACE-Step 계열 모델로 음악을 로컬에서 생성하는 오픈소스 사용자 인터페이스다.",
+    "category": "클로드",
+    "url": "https://github.com/fspecii/ace-step-ui"
+  },
+  {
+    "title": "Microsoft MarkItDown",
+    "description": "PDF, Office 문서와 이미지 등 여러 파일 형식을 LLM 처리에 적합한 Markdown으로 바꾸는 Python 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/microsoft/markitdown"
+  },
+  {
+    "title": "Neuphonic NeuTTS",
+    "description": "짧은 음성 샘플로 목소리를 복제하고 모바일이나 임베디드 기기에서 구동하는 온디바이스 TTS 모델이다.",
+    "category": "클로드",
+    "url": "https://github.com/neuphonic/neutts"
+  },
+  {
+    "title": "Browser Harness",
+    "description": "CDP를 통해 LLM의 브라우저 작업을 실행하고 실패한 동작을 스스로 복구하게 하는 프레임워크 독립형 하네스다.",
+    "category": "클로드",
+    "url": "https://github.com/browser-use/browser-harness"
+  },
+  {
+    "title": "Humanizer (AI 글쓰기 탈피 스킬)",
+    "description": "AI가 생성한 문장의 특징을 줄여 사람이 쓴 듯한 문체로 다듬는 Claude Code 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/blader/humanizer"
+  },
+  {
+    "title": "SentrySearch",
+    "description": "텍스트나 이미지 질의로 영상 속 장면을 의미 기반 검색하며 Gemini와 로컬 비전 모델을 지원한다.",
+    "category": "클로드",
+    "url": "https://github.com/ssrajadh/sentrysearch"
+  },
+  {
+    "title": "Nexu open-design",
+    "description": "디자인 스킬과 시스템, 격리된 미리보기, HTML·PDF·PPTX 내보내기를 제공하는 오픈 디자인 작업 환경이다.",
+    "category": "클로드",
+    "url": "https://github.com/nexu-io/open-design"
+  },
+  {
+    "title": "GENEXIS-AI chromex",
+    "description": "Codex를 사용해 현재 웹페이지와 탭, 음성 및 이미지 작업을 처리하는 Chrome 사이드패널 도구다.",
+    "category": "클로드",
+    "url": "https://github.com/GENEXIS-AI/chromex"
+  },
+  {
+    "title": "OpenAI Codex app-server",
+    "description": "Codex CLI와 클라이언트 사이의 양방향 JSON-RPC 통신을 제공하는 Rust 앱 서버 모듈이다.",
+    "category": "클로드",
+    "url": "https://github.com/openai/codex/tree/main/codex-rs/app-server"
+  },
+  {
+    "title": "MeiGen AI Design MCP",
+    "description": "GPT Image와 ComfyUI를 MCP로 연결하고 대규모 프롬프트 라이브러리를 제공하는 이미지 생성 서버다.",
+    "category": "클로드",
+    "url": "https://github.com/jau123/MeiGen-AI-Design-MCP"
+  },
+  {
+    "title": "Google langextract",
+    "description": "LLM으로 비정형 텍스트에서 근거 위치가 연결된 구조화 정보를 추출하고 시각화하는 Python 라이브러리다.",
+    "category": "클로드",
+    "url": "https://github.com/google/langextract"
+  },
+  {
+    "title": "automate-faceless-content",
+    "description": "얼굴을 드러내지 않는 소셜 영상의 생성과 예약 게시 과정을 설명하는 자동화 가이드 저장소다.",
+    "category": "클로드",
+    "url": "https://github.com/cporter202/automate-faceless-content/tree/main"
+  },
+  {
+    "title": "Q00 ouroboros",
+    "description": "인터뷰에서 스펙을 만들고 실행과 평가를 반복하는 AI 코딩 에이전트용 작업 운영체제다.",
+    "category": "클로드",
+    "url": "https://github.com/Q00/ouroboros"
+  },
+  {
+    "title": "Codex startup-pressure-test-skill",
+    "description": "스타트업 아이디어의 핵심 가정과 치명적 약점을 점검하고 최소 제품 방향을 제안하는 Codex 스킬이다.",
+    "category": "클로드",
+    "url": "https://github.com/Kappaemme-git/codex-startup-pressure-test-skill"
+  },
+  {
+    "title": "OpenScreen (Screen Studio 대안)",
+    "description": "화면 녹화, 자동 확대와 모션 효과로 제품 데모 영상을 만드는 Screen Studio의 오픈소스 대안이며 저장소는 보관 상태다.",
+    "category": "클로드",
+    "url": "https://github.com/siddharthvaddem/openscreen"
+  },
+  {
+    "title": "Awesome Codex Skills",
+    "description": "Codex CLI와 API에서 개발, 생산성과 데이터 분석 작업을 자동화하는 스킬 모음이다.",
+    "category": "코덱스",
+    "url": "https://github.com/ComposioHQ/awesome-codex-skills"
+  },
+  {
+    "title": "autopreso",
+    "description": "실시간 음성을 인식해 Excalidraw 화이트보드 프레젠테이션으로 바꾸는 도구다.",
+    "category": "코덱스",
+    "url": "https://github.com/kunchenguid/autopreso"
+  },
+  {
+    "title": "Claude Ads (광고 감사 스킬)",
+    "description": "Google, Meta와 YouTube 등 여러 광고 플랫폼을 정해진 점검표로 감사하고 개선안을 내는 Claude Code 스킬이다.",
+    "category": "기타",
+    "url": "https://github.com/AgriciDaniel/claude-ads"
+  },
+  {
+    "title": "Anthropic claude-for-legal",
+    "description": "계약 검토, NDA, 개인정보와 소송 등 법률 실무를 지원하는 Anthropic 공식 플러그인 모음이다.",
+    "category": "기타",
+    "url": "https://github.com/anthropics/claude-for-legal"
+  },
+  {
+    "title": "OpenCut",
+    "description": "웹과 데스크톱, 모바일에서 동작하도록 개발 중인 프라이버시 중심의 오픈소스 영상 편집기다.",
+    "category": "기타",
+    "url": "https://github.com/OpenCut-app/OpenCut"
+  },
+  {
+    "title": "gaebalai claudecode-to",
+    "description": "Claude Code의 여러 생산성 플러그인을 모아 설치하고 배포하기 위한 마켓플레이스 저장소다.",
+    "category": "기타",
+    "url": "https://github.com/gaebalai/claudecode-to"
+  },
+  {
+    "title": "Andrej Karpathy Skills",
+    "description": "간결한 코드와 목표 중심 실행 등 Andrej Karpathy의 LLM 코딩 원칙을 에이전트 지침으로 정리한 자료다.",
+    "category": "기타",
+    "url": "https://github.com/multica-ai/andrej-karpathy-skills"
+  },
+  {
+    "title": "Archora-skills",
+    "description": "가설 수립, 실험 설계, 논문 초안과 동료 평가 모의를 지원하는 Claude Code 학술 연구 스킬 모음이다.",
+    "category": "기타",
+    "url": "https://github.com/richard-kim-79/archora-skills"
+  }
+]
