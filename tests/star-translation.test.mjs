@@ -45,4 +45,15 @@ describe("Star 설명 번역", () => {
       "Production-grade engineering skills for AI coding agents.\n\nAI 코딩 에이전트를 위한 프로덕션급 엔지니어링 스킬 모음."
     );
   });
+
+  it("신규 Star의 정적 번역을 병기한다", () => {
+    assert.equal(
+      withKoreanTranslation(
+        "DoHyun468/claw-hwp",
+        "Read, create & edit Korean Hangul Word Processor (.hwp / .hwpx) documents in Claude — Agent Skill built on rhwp WASM, with built-in browser preview. Runs locally, no Hancom Office, no cloud.",
+        null
+      ),
+      "Read, create & edit Korean Hangul Word Processor (.hwp / .hwpx) documents in Claude — Agent Skill built on rhwp WASM, with built-in browser preview. Runs locally, no Hancom Office, no cloud.\n\nClaude에서 한글 문서(.hwp, .hwpx)를 읽고 생성·편집하는 에이전트 스킬. rhwp WASM과 브라우저 미리 보기를 내장해 한컴오피스나 클라우드 없이 로컬에서 실행됩니다."
+    );
+  });
 });
