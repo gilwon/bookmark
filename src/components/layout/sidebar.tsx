@@ -30,6 +30,7 @@ const navItems = [
   { href: "/bookmarks", label: "북마크", icon: Bookmark },
   { href: "/stars", label: "Stars", icon: GitFork },
   { href: "/github-links", label: "GitHub 링크", icon: Github },
+  { href: "/pdf-viewer", label: "PDF 뷰어", icon: FileText },
   { href: "/pages", label: "페이지", icon: FileText },
   { href: "/prompts", label: "프롬프트", icon: MessageSquareText },
   { href: "/claude-prompts", label: "Claude", icon: Sparkles },
