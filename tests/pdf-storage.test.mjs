@@ -1,10 +1,14 @@
 // PDF Storage 업로드 메타와 소유 경로 입력 검증을 확인한다.
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import * as pdfStorage from "../src/lib/pdf-storage.ts";
 import {
   MAX_PDF_STORAGE_BYTES,
+  createPdfFingerprintObjectName,
   createPdfObjectName,
+  isPdfContentFingerprint,
   isPdfStorageId,
+  parsePdfFingerprintObjectName,
   parsePdfObjectName,
   pdfUserFolder,
   validatePdfUploadMeta,
@@ -64,6 +68,15 @@ describe("PDF Storage 공개 경계", () => {
       id,
       name: "한글 문서 #1?.pdf",
     });
+    const fingerprint = "a".repeat(64);
+    assert.equal(
+      createPdfFingerprintObjectName(fingerprint),
+      `${fingerprint}.pdf`
+    );
+    assert.equal(
+      parsePdfFingerprintObjectName(`${fingerprint}.pdf`),
+      fingerprint
+    );
   });
 
   it("잘못된 object name과 UTF-8 255바이트 초과 이름을 거절한다", () => {
@@ -77,5 +90,41 @@ describe("PDF Storage 공개 경계", () => {
       }),
       /파일명/
     );
+    assert.equal(isPdfContentFingerprint("a".repeat(64)), true);
+    assert.equal(isPdfContentFingerprint("A".repeat(64)), false);
+    assert.equal(createPdfFingerprintObjectName("not-a-sha256"), null);
+  });
+
+  it("내용이 같으면 파일명이 달라도 중복으로 판정한다", async () => {
+    const bytes = new TextEncoder().encode("%PDF-1.7\n동일한 문서 내용");
+    const existing = {
+      name: "원본.pdf",
+      fingerprint: await pdfStorage.pdfContentFingerprint(bytes),
+    };
+    const candidate = {
+      name: "이름만 바꾼 문서.pdf",
+      fingerprint: await pdfStorage.pdfContentFingerprint(bytes),
+    };
+
+    assert.notEqual(existing.name, candidate.name);
+    assert.equal(existing.fingerprint, candidate.fingerprint);
+    assert.equal(
+      pdfStorage.isDuplicatePdfFingerprint(candidate.fingerprint, [
+        existing.fingerprint,
+      ]),
+      true
+    );
+  });
+
+  it("파일명이 같아도 내용이 다르면 중복으로 판정하지 않는다", async () => {
+    const existing = await pdfStorage.pdfContentFingerprint(
+      new TextEncoder().encode("%PDF-1.7\n첫 번째 내용")
+    );
+    const candidate = await pdfStorage.pdfContentFingerprint(
+      new TextEncoder().encode("%PDF-1.7\n두 번째 내용")
+    );
+
+    assert.notEqual(existing, candidate);
+    assert.equal(pdfStorage.isDuplicatePdfFingerprint(candidate, [existing]), false);
   });
 });

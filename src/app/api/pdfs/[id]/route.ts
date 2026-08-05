@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import {
   PDF_STORAGE_BUCKET,
-  isPdfStorageId,
+  createPdfFingerprintObjectName,
+  isPdfContentFingerprint,
+  isPdfStorageIdentifier,
   parsePdfObjectName,
   pdfUserFolder,
 } from "@/lib/pdf-storage";
@@ -15,6 +17,18 @@ type PdfRouteContext = { params: Promise<{ id: string }> };
 
 async function findOwnedPath(userId: string, id: string) {
   const folder = pdfUserFolder(userId);
+  if (isPdfContentFingerprint(id)) {
+    const objectName = createPdfFingerprintObjectName(id);
+    if (!objectName) return null;
+    const path = `${folder}/${objectName}`;
+    const { data, error } = await getSupabaseAdmin()
+      .storage.from(PDF_STORAGE_BUCKET)
+      .info(path);
+    if (error?.status === 404 || error?.statusCode === "404") return null;
+    if (error) throw error;
+    return data ? path : null;
+  }
+
   const { data, error } = await getSupabaseAdmin()
     .storage.from(PDF_STORAGE_BUCKET)
     .list(folder, { limit: 2, search: id });
@@ -29,7 +43,7 @@ export async function GET(_request: Request, { params }: PdfRouteContext) {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
   const { id } = await params;
-  if (!isPdfStorageId(id)) {
+  if (!isPdfStorageIdentifier(id)) {
     return NextResponse.json({ error: "PDF 식별자가 올바르지 않습니다." }, { status: 400 });
   }
 
@@ -58,7 +72,7 @@ export async function DELETE(_request: Request, { params }: PdfRouteContext) {
     return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
   }
   const { id } = await params;
-  if (!isPdfStorageId(id)) {
+  if (!isPdfStorageIdentifier(id)) {
     return NextResponse.json({ error: "PDF 식별자가 올바르지 않습니다." }, { status: 400 });
   }
 

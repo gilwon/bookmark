@@ -4,6 +4,33 @@ export const PDF_STORAGE_MIME = "application/pdf";
 export const MAX_PDF_STORAGE_BYTES = 20 * 1024 * 1024;
 export const MAX_PDF_ORIGINAL_NAME_BYTES = 255;
 
+/** PDF 바이트의 SHA-256 지문을 64자리 hex로 만든다. */
+export async function pdfContentFingerprint(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", bytes.slice().buffer);
+  return Array.from(new Uint8Array(digest), (byte) =>
+    byte.toString(16).padStart(2, "0")
+  ).join("");
+}
+
+/** SHA-256 PDF 지문 형식인지 확인한다. */
+export function isPdfContentFingerprint(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{64}$/.test(value);
+}
+
+/** 기존 지문 목록에 같은 PDF 내용이 있는지 확인한다. */
+export function isDuplicatePdfFingerprint(
+  candidate: string,
+  existing: string[]
+): boolean {
+  return (
+    isPdfContentFingerprint(candidate) &&
+    existing.some(
+      (fingerprint) =>
+        isPdfContentFingerprint(fingerprint) && fingerprint === candidate
+    )
+  );
+}
+
 function encodeBase64Url(value: string): string {
   const bytes = new TextEncoder().encode(value);
   return btoa(String.fromCharCode(...bytes))
@@ -69,15 +96,37 @@ export function isPdfStorageId(value: unknown): value is string {
   );
 }
 
+/** 저장 PDF의 UUID 또는 SHA-256 식별자인지 확인한다. */
+export function isPdfStorageIdentifier(value: unknown): value is string {
+  return isPdfStorageId(value) || isPdfContentFingerprint(value);
+}
+
 /** Auth.js 사용자 ID를 Storage 경로에 안전한 base64url 폴더 키로 바꾼다. */
 export function pdfUserFolder(userId: string): string {
   return encodeBase64Url(userId);
 }
 
-/** 서버 UUID와 원본 파일명을 경로 안전한 Storage object name으로 만든다. */
+/** 레거시 서버 UUID와 원본 파일명을 경로 안전한 object name으로 만든다. */
 export function createPdfObjectName(id: string, name: string): string | null {
   if (!isPdfStorageId(id) || !isValidOriginalName(name)) return null;
   return `${id}--${encodeBase64Url(name)}`;
+}
+
+/** SHA-256 지문으로 결정적인 신규 Storage object name을 만든다. */
+export function createPdfFingerprintObjectName(
+  fingerprint: string
+): string | null {
+  return isPdfContentFingerprint(fingerprint) ? `${fingerprint}.pdf` : null;
+}
+
+/** 신규 Storage object name에서 SHA-256 지문을 읽는다. */
+export function parsePdfFingerprintObjectName(
+  objectName: string
+): string | null {
+  const fingerprint = objectName.match(/^([0-9a-f]{64})\.pdf$/)?.[1];
+  return fingerprint && isPdfContentFingerprint(fingerprint)
+    ? fingerprint
+    : null;
 }
 
 /** Storage object name에서 서버 UUID와 원본 파일명을 복원한다. */

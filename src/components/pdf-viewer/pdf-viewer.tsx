@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   PDF_STORAGE_BUCKET,
   PDF_STORAGE_MIME,
+  pdfContentFingerprint,
 } from "@/lib/pdf-storage";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +37,7 @@ export function PdfViewer() {
   const [dragOver, setDragOver] = useState(false);
   const [loadingList, setLoadingList] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadSavedPdfs = useCallback(async () => {
@@ -84,6 +86,7 @@ export function PdfViewer() {
     setPreview({ name: file.name, size: file.size, url, file });
     setError(null);
     setStatus(null);
+    setSaved(false);
     if (inputRef.current) inputRef.current.value = "";
   }
 
@@ -93,6 +96,7 @@ export function PdfViewer() {
     setPreview(null);
     setError(null);
     setStatus(null);
+    setSaved(false);
     setDragOver(false);
     if (inputRef.current) inputRef.current.value = "";
   }
@@ -103,6 +107,9 @@ export function PdfViewer() {
     setError(null);
     setStatus("저장 준비 중…");
     try {
+      const fingerprint = await pdfContentFingerprint(
+        new Uint8Array(await preview.file.arrayBuffer())
+      );
       const response = await fetch("/api/pdfs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -110,6 +117,7 @@ export function PdfViewer() {
           name: preview.name,
           type: PDF_STORAGE_MIME,
           size: preview.size,
+          fingerprint,
         }),
       });
       const body = await response.json().catch(() => null);
@@ -130,10 +138,22 @@ export function PdfViewer() {
         .uploadToSignedUrl(body.path, body.token, preview.file, {
           contentType: PDF_STORAGE_MIME,
           upsert: false,
+          metadata: { originalName: preview.name },
         });
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        const duplicate =
+          uploadError.status === 409 ||
+          uploadError.statusCode === "409" ||
+          /already exists|resource already exists|duplicate/i.test(
+            uploadError.message
+          );
+        throw new Error(
+          duplicate ? "이미 저장된 PDF입니다." : uploadError.message
+        );
+      }
 
       await loadSavedPdfs();
+      setSaved(true);
       setStatus("PDF를 저장했습니다.");
     } catch (err) {
       setStatus(null);
@@ -257,11 +277,11 @@ export function PdfViewer() {
                 type="button"
                 size="sm"
                 className="min-h-11 sm:min-h-8"
-                disabled={saving}
+                disabled={saving || saved}
                 onClick={() => void savePdf()}
               >
                 <Save className="h-3.5 w-3.5" />
-                {saving ? "저장 중…" : "저장"}
+                {saving ? "저장 중…" : saved ? "저장됨" : "저장"}
               </Button>
               <Button
                 type="button"
