@@ -80,3 +80,13 @@
 - [x] 저장된 제목·본문·프롬프트·원문 링크와 재실행 중복 방지 확인
 - [x] 변경 스크립트 린트·전체 테스트·빌드 통과
 - [x] Standards·Spec 코드 리뷰 통과
+
+<!-- Session Wrap·Daily Wrap 문서와 프롬프트 이관 체크리스트 -->
+# Session Wrap·Daily Wrap Pages·Prompts 이관
+
+- [x] 공개 Notion 블록·제목·원문 링크 확인
+- [x] 코드 블록 22개의 재사용 프롬프트 경계 확인
+- [x] Page 1건과 Prompt 4건을 로컬·Supabase에 저장
+- [x] 재실행 중복 방지와 저장 본문 확인
+- [x] 변경 스크립트 린트·전체 테스트·빌드 통과
+- [x] Standards·Spec 코드 리뷰 통과

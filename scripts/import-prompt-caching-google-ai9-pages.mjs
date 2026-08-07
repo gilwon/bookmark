@@ -1,4 +1,4 @@
-// AI 활용 문서 11건을 Pages에, 재사용 프롬프트 10건을 Prompts에 저장한다
+// AI 활용 문서 12건을 Pages에, 재사용 프롬프트 14건을 Prompts에 저장한다
 import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { existsSync, readFileSync } from "node:fs";
@@ -40,11 +40,16 @@ const analyticsTitle = "조회수 오른 영상 분석법 — CTR·30초·지속
 const brandSourceUrl = "https://app.notion.com/p/AI-5-3a072cc75bf681c49eedca06d317f322";
 const brandPageId = "3a072cc7-5bf6-81c4-9eed-ca06d317f322";
 const brandTitle = "AI에게 맡기면 안 되는 5가지 — 자동화해도 내 브랜드를 지키는 법";
+const sessionWrapSourceUrl =
+  "https://app.notion.com/p/10-Session-Wrap-Daily-Wrap-3b58b06f1cb9802c842ddb6a813ee6cf";
+const sessionWrapPageId = "3b58b06f-1cb9-802c-842d-db6a813ee6cf";
+const sessionWrapTitle = "10초면 클로드가 똑똑해져요 — Session Wrap + Daily Wrap 설치 가이드";
 const notionEndpoint = "https://app.notion.com/api/v3/loadPageChunk";
 const playlistPromptCategory = "AI · 플레이리스트 빌더";
 const sunoPromptCategory = "Suno · 첫 자작곡 실습";
 const thumbnailPromptCategory = "AI · 썸네일 제작";
 const teamPromptCategory = "AI · 콘텐츠 팀";
+const sessionWrapPromptCategory = "Claude Code · 세션 정리";
 const localUser = "dev";
 const productionUser = "f72e9a44-79d8-4061-a700-3ec50bb04a97";
 const retryDelays = [15000, 30000];
@@ -121,6 +126,29 @@ const teamPromptConfigs = {
     title: "AI 콘텐츠 팀 · 역할 카드 템플릿",
     summary: "AI 콘텐츠 팀원의 역할과 입력, 출력 기준을 정하는 템플릿입니다.",
     whenToUse: "혼자 운영하는 콘텐츠 작업을 AI 역할별로 분담할 때 사용하세요.",
+  },
+};
+
+const sessionWrapPromptConfigs = {
+  "3b58b06f-1cb9-8021-bc86-e4062daf5b34": {
+    title: "Session Wrap · 세션 정리 스킬 지시문",
+    summary: "Claude Code 세션을 안전하게 요약하고 기록하는 스킬 지시문입니다.",
+    whenToUse: "세션별 활동·학습·막힘·후속 작업을 안전한 기록으로 남길 때 사용하세요.",
+  },
+  "3b58b06f-1cb9-802c-8645-d1dddb0ceece": {
+    title: "Daily Wrap · 일일 통합 스킬 지시문",
+    summary: "여러 Session Wrap 기록을 하루 단위로 통합하는 스킬 지시문입니다.",
+    whenToUse: "하루의 세션 기록에서 반복 패턴과 자동화 우선순위를 정리할 때 사용하세요.",
+  },
+  "3b58b06f-1cb9-8066-a395-e1de86f83c4d": {
+    title: "Session Wrap · 훅 설정 병합 요청",
+    summary: "기존 Claude 설정을 보존하며 Session Wrap 훅을 병합하는 프롬프트입니다.",
+    whenToUse: "기존 settings.json에 SessionEnd·SessionStart 훅을 안전하게 추가할 때 사용하세요.",
+  },
+  "3b58b06f-1cb9-8009-93f5-e0e41d90dc66": {
+    title: "Session Wrap · 민감 세션 제외 요청",
+    summary: "민감한 세션을 요약하지 않고 처리 대상에서 제외하는 프롬프트입니다.",
+    whenToUse: "현재 세션에 민감정보가 있어 기록을 남기지 않아야 할 때 사용하세요.",
   },
 };
 
@@ -350,6 +378,7 @@ const uploadSource = await collectNotionBlocks(uploadPageId);
 const teamSource = await collectNotionBlocks(teamPageId);
 const analyticsSource = await collectNotionBlocks(analyticsPageId);
 const brandSource = await collectNotionBlocks(brandPageId);
+const sessionWrapSource = await collectNotionBlocks(sessionWrapPageId);
 const ai9Document = buildNotionDocument(ai9Source, ai9PageId, ai9SourceUrl);
 const playlistDocument = buildNotionDocument(playlistSource, playlistPageId, playlistSourceUrl);
 const sunoDocument = buildNotionDocument(sunoSource, sunoPageId, sunoSourceUrl);
@@ -360,6 +389,11 @@ const uploadDocument = buildNotionDocument(uploadSource, uploadPageId, uploadSou
 const teamDocument = buildNotionDocument(teamSource, teamPageId, teamSourceUrl);
 const analyticsDocument = buildNotionDocument(analyticsSource, analyticsPageId, analyticsSourceUrl);
 const brandDocument = buildNotionDocument(brandSource, brandPageId, brandSourceUrl);
+const sessionWrapDocument = buildNotionDocument(
+  sessionWrapSource,
+  sessionWrapPageId,
+  sessionWrapSourceUrl
+);
 const pages = [
   { title: qjc.title, markdown: qjc.markdown },
   { title: ai9Document.title, markdown: ai9Document.markdown },
@@ -372,6 +406,7 @@ const pages = [
   { title: teamDocument.title, markdown: teamDocument.markdown },
   { title: analyticsDocument.title, markdown: analyticsDocument.markdown },
   { title: brandDocument.title, markdown: brandDocument.markdown },
+  { title: sessionWrapDocument.title, markdown: sessionWrapDocument.markdown },
 ].map((page) => ({
   ...page,
   content: JSON.stringify(markdownToTiptapDoc(page.markdown)),
@@ -418,7 +453,19 @@ const thumbnailPrompts = promptsFromCodes(
   thumbnailSourceUrl
 );
 const teamPrompts = promptsFromCodes(teamDocument, teamPromptConfigs, teamPromptCategory, teamSourceUrl);
-const prompts = [...playlistPrompts, ...sunoPrompts, ...thumbnailPrompts, ...teamPrompts];
+const sessionWrapPrompts = promptsFromCodes(
+  sessionWrapDocument,
+  sessionWrapPromptConfigs,
+  sessionWrapPromptCategory,
+  sessionWrapSourceUrl
+);
+const prompts = [
+  ...playlistPrompts,
+  ...sunoPrompts,
+  ...thumbnailPrompts,
+  ...teamPrompts,
+  ...sessionWrapPrompts,
+];
 
 function typeCounts(source) {
   const counts = {};
@@ -461,6 +508,7 @@ const uploadCodes = [...uploadSource.blocks.values()].filter((block) => block.ty
 const teamCodes = [...teamSource.blocks.values()].filter((block) => block.type === "code");
 const analyticsCodes = [...analyticsSource.blocks.values()].filter((block) => block.type === "code");
 const brandCodes = [...brandSource.blocks.values()].filter((block) => block.type === "code");
+const sessionWrapCodes = [...sessionWrapSource.blocks.values()].filter((block) => block.type === "code");
 const qjcRequiredSections = [
   "프롬프트 캐싱이란 무엇인가",
   "Anthropic이 공개한 6가지 캐싱 최적화 전략",
@@ -481,8 +529,9 @@ const sourceUrls = [
   teamSourceUrl,
   analyticsSourceUrl,
   brandSourceUrl,
+  sessionWrapSourceUrl,
 ];
-if (new Set(sourceUrls).size !== 11) throw new Error("원문 URL이 중복됐습니다.");
+if (new Set(sourceUrls).size !== 12) throw new Error("원문 URL이 중복됐습니다.");
 for (const sourceUrl of sourceUrls) {
   if (new URL(sourceUrl).search) throw new Error(`원문 URL에 query가 있습니다: ${sourceUrl}`);
 }
@@ -644,6 +693,23 @@ validateNotionDocument("브랜드 Notion", brandSource, brandDocument, brandPage
     table_row: 6,
   },
 });
+validateNotionDocument("Session Wrap Notion", sessionWrapSource, sessionWrapDocument, sessionWrapPageId, {
+  title: sessionWrapTitle,
+  blocks: 157,
+  rootChildren: 156,
+  types: {
+    page: 1,
+    text: 43,
+    divider: 17,
+    sub_header: 16,
+    bulleted_list: 24,
+    numbered_list: 16,
+    code: 22,
+    header: 1,
+    sub_sub_header: 16,
+    quote: 1,
+  },
+});
 if (ai9Sections.length !== 9 || ai9Bookmarks.length !== 9) {
   throw new Error(`AI 9 Notion 구성 불일치: 섹션 ${ai9Sections.length}개, 북마크 ${ai9Bookmarks.length}개`);
 }
@@ -693,9 +759,15 @@ if (analyticsCodes.length !== 1 || analyticsDocument.codeBlocks.length !== 1) {
 if (brandCodes.length || brandDocument.codeBlocks.length) {
   throw new Error(`브랜드 code 수 불일치: ${brandCodes.length}개`);
 }
+if (sessionWrapCodes.length !== 22 || sessionWrapPrompts.length !== 4) {
+  throw new Error(
+    `Session Wrap 구성 불일치: code ${sessionWrapCodes.length}개, prompt ${sessionWrapPrompts.length}개`
+  );
+}
 for (const [document, configs] of [
   [thumbnailDocument, thumbnailPromptConfigs],
   [teamDocument, teamPromptConfigs],
+  [sessionWrapDocument, sessionWrapPromptConfigs],
 ]) {
   for (const id of Object.keys(configs)) {
     if (!document.codeBlocks.some((block) => block.id === id)) {
@@ -712,6 +784,7 @@ for (const [document, sourceUrl] of [
   [teamDocument, teamSourceUrl],
   [analyticsDocument, analyticsSourceUrl],
   [brandDocument, brandSourceUrl],
+  [sessionWrapDocument, sessionWrapSourceUrl],
 ]) {
   if (!document.markdown.includes(sourceUrl)) throw new Error(`${document.title} 원문 URL이 누락됐습니다.`);
 }
@@ -725,7 +798,7 @@ for (const [document, link] of [
 ]) {
   if (!document.markdown.includes(link)) throw new Error(`${document.title} 인라인 링크 누락: ${link}`);
 }
-if (pages.length !== 11 || prompts.length !== 10 || prompts.some((prompt) => !prompt.body)) {
+if (pages.length !== 12 || prompts.length !== 14 || prompts.some((prompt) => !prompt.body)) {
   throw new Error("가져올 Pages 또는 Prompts 수가 다르거나 본문이 비었습니다.");
 }
 for (const page of pages) {
@@ -819,6 +892,15 @@ if (process.argv.includes("--check")) {
       types: typeCounts(brandSource),
       codeCount: brandCodes.length,
       promptCount: 0,
+    },
+    sessionWrap: {
+      title: sessionWrapDocument.title,
+      blockCount: sessionWrapSource.blocks.size,
+      rootChildren: sessionWrapSource.blocks.get(sessionWrapPageId).content.length,
+      types: typeCounts(sessionWrapSource),
+      codeCount: sessionWrapCodes.length,
+      promptTitles: sessionWrapPrompts.map((prompt) => prompt.title),
+      promptLengths: sessionWrapPrompts.map((prompt) => prompt.body.length),
     },
     tiptapNodes: Object.fromEntries(pages.map((page) => [page.title, JSON.parse(page.content).content.length])),
   });

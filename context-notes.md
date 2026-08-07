@@ -136,3 +136,22 @@
 - 변경 스크립트 ESLint와 전체 테스트 32개가 통과했다.
 - 첫 빌드는 프로덕션 필수 `AUTH_SECRET` 부재로 실패했고, 일회성 검증 값을 주입한 빌드는 TypeScript와 정적 페이지 31개 생성을 포함해 통과했다.
 - Spec 재검토에서 인라인 링크 보존을 확인했고 Standards·Spec 리뷰 모두 통과했다.
+
+## Session Wrap·Daily Wrap Pages·Prompts 이관 메모
+
+- 원문은 `https://app.notion.com/p/10-Session-Wrap-Daily-Wrap-3b58b06f1cb9802c842ddb6a813ee6cf`이며 query는 저장하지 않는다.
+- 제목은 `10초면 클로드가 똑똑해져요 — Session Wrap + Daily Wrap 설치 가이드`다.
+- 공개 Notion API 기준 블록 157개, 루트 하위 블록 156개이며 누락 블록은 없다.
+- 코드 블록 22개 중 Session Wrap·Daily Wrap 스킬 지시문 2개, 설정 병합 요청 1개, 민감 세션 제외 요청 1개를 Prompt로 분리한다.
+- 셸·JSON·파일 구조·슬래시 명령 예시는 실행 자료이므로 Page에만 보존한다.
+- 기존 이관 스크립트와 중복 판정 규칙을 재사용하며 앱 코드는 수정하지 않는다.
+- 완료 기준은 Page 1건과 Prompt 4건이 로컬·Supabase에 각 1건 존재하고 재실행 시 추가·수정 0건인 것이다.
+
+### Session Wrap·Daily Wrap 이관 결과
+
+- 첫 실행은 로컬·Supabase 모두 기존 Page 11건과 Prompt 10건을 스킵하고 신규 Page 1건과 Prompt 4건을 추가했다.
+- 재실행은 양쪽 모두 Page 12건과 Prompt 14건을 스킵했고 추가·수정은 0건이었다.
+- Advisor 조회에서 양쪽 Page 본문 198개 TipTap 노드와 Prompt 본문 길이 2,287·1,748·150·36자가 동일했다.
+- query가 제거된 원문 URL과 필수 본문, Prompt category·요약·사용 시점을 확인했다.
+- 자체 검증은 한 차례 Notion 429로 실패했으나 재시도에서 블록 157개·Prompt 4개를 포함해 통과했다.
+- 변경 스크립트 문법·ESLint, 전체 테스트 32개, 프로덕션 빌드와 Standards·Spec 리뷰가 통과했다.
