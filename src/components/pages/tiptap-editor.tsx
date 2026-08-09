@@ -255,7 +255,7 @@ export function TiptapEditor({
         showOnlyCurrent: true,
       }),
       Link.configure({
-        openOnClick: false,
+        openOnClick: true,
         HTMLAttributes: {
           class: "text-indigo-500 underline underline-offset-2",
         },
