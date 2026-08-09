@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/**/*.test.mjs",
+    "test": "node --test --import tsx tests/**/*.test.mjs tests/**/*.test.ts",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:check": "node -e \"const u=process.env.NEXT_PUBLIC_SUPABASE_URL; const k=process.env.SUPABASE_SERVICE_ROLE_KEY; console.log(u&&k?'supabase-js':'sqlite')\""
