@@ -277,7 +277,8 @@ export function markdownToTiptapDoc(md: string): TipTapNode {
       (lines[i] ?? "").trim() &&
       !/^(#{1,6}\s|```|>\s?|[-*+]\s+|\d+\.\s+|(-{3,}|\*{3,}|_{3,})$)/.test(
         lines[i] ?? ""
-      )
+      ) &&
+      !/^!\[[^\]]*\]\([^)]+\)$/.test((lines[i] ?? "").trim())
     ) {
       pLines.push(lines[i] ?? "");
       i += 1;

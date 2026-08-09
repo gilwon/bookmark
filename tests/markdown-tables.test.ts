@@ -25,6 +25,21 @@ test("독립 Markdown 이미지를 이미지 노드로 변환한다", () => {
   });
 });
 
+test("문장 다음의 빈 줄 없는 Markdown 이미지도 이미지 노드로 보존한다", () => {
+  const doc = markdownToTiptapDoc(
+    "설명 문장\n\t![](data:image/png;base64,AAAA)"
+  );
+
+  assert.deepEqual(
+    doc.content?.map((node) => node.type),
+    ["paragraph", "image"]
+  );
+  assert.equal(
+    doc.content?.[1]?.attrs?.src,
+    "data:image/png;base64,AAAA"
+  );
+});
+
 test("Markdown 표를 TableKit 노드로 변환하고 다시 내보낸다", () => {
   const doc = markdownToTiptapDoc(markdown);
   const table = doc.content?.[0];
