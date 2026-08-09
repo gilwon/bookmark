@@ -36,7 +36,27 @@ function contentFromNotion(text) {
   return (text.match(/<content>\n([\s\S]*?)\n<\/content>/)?.[1] ?? text).trim();
 }
 
-function preserveNotionReferences(value) {
+function mediaReferences(value, pageSource) {
+  const embeds = [...value.matchAll(/<embed\b([^>]*)>/g)].map((match) => {
+    const url = match[1].match(/\bsrc="(https:[^"]+)"/)?.[1];
+    return url ? { label: `임베드 · ${new URL(url).hostname}`, href: url.replace(/[()]/g, (character) => character === "(" ? "%28" : "%29") } : null;
+  }).filter(Boolean);
+  const files = [...value.matchAll(/<(video|file)\b([^>]*)>/g)].map((match) => {
+    const encoded = match[2].match(/\bsrc="file:\/\/([^"]+)"/)?.[1];
+    if (!encoded) return null;
+    try {
+      const record = JSON.parse(decodeURIComponent(encoded));
+      const filename = String(record.source ?? "").split(/[/:]/).pop();
+      const blockId = record.permissionRecord?.id;
+      return filename && blockId ? { label: `${match[1] === "video" ? "영상" : "파일"} · ${filename}`, href: `${pageSource}#${blockId}` } : null;
+    } catch {
+      return null;
+    }
+  }).filter(Boolean);
+  return [...embeds, ...files];
+}
+
+function preserveNotionReferences(value, pageSource) {
   return value
     .replace(/<(page|database)\b([^>]*)>([\s\S]*?)<\/\1>/g, (_match, tag, attributes, label) => {
       const url = attributes.match(/\burl="([^"]+)"/)?.[1];
@@ -46,6 +66,14 @@ function preserveNotionReferences(value) {
       const url = attributes.match(/\burl="([^"]+)"/)?.[1];
       const label = attributes.match(/\balt="([^"]+)"/)?.[1] ?? "참조";
       return url ? `[${label}](${url})` : "";
+    })
+    .replace(/<embed\b[^>]*>/g, (tag) => {
+      const reference = mediaReferences(tag, pageSource)[0];
+      return reference ? `[${reference.label}](${reference.href})` : "";
+    })
+    .replace(/<(video|file)\b[^>]*>/g, (tag) => {
+      const reference = mediaReferences(tag, pageSource)[0];
+      return reference ? `[${reference.label}](${reference.href})` : "";
     });
 }
 
@@ -88,13 +116,15 @@ function databaseMarkdown(database) {
 
 const pageRecords = pageData.map((page) => {
   const sourceBody = contentFromNotion(page.notionContent);
-  const body = normalizePasteToMarkdown(preserveNotionReferences(sourceBody)).trim();
+  const embedded = mediaReferences(sourceBody, page.source);
+  const body = normalizePasteToMarkdown(preserveNotionReferences(sourceBody, page.source)).trim();
   const title = `📝 노시언 · ${page.title}`;
   const content = JSON.stringify(markdownToTiptapDoc([`# ${title}`, `> 원문. [Notion](${page.source})`, body].join("\n\n")));
   return {
     ...page,
     title,
     body,
+    embedded,
     content,
     fingerprint: pageFingerprint(content),
     prompts: page.promptBodies.map((body, index) => ({
@@ -123,21 +153,22 @@ const totals = {
   toggles: pageRecords.reduce((sum, record) => sum + record.sourceToggles, 0),
   images: records.reduce((sum, record) => sum + (record.content.match(/"type":"image"/g)?.length ?? 0), 0),
   links: records.reduce((sum, record) => sum + linkCount(record.content), 0),
+  embeddedLinks: pageRecords.reduce((sum, record) => sum + record.embedded.length, 0),
   unknowns: pageRecords.reduce((sum, record) => sum + record.sourceUnknowns, 0),
   references: pageRecords.reduce((sum, record) => sum + record.sourceReferences, 0),
 };
 
 if (
-  totals.childPages !== 44 || totals.databasePages !== 2 || totals.databaseRows !== 508 || totals.pages !== 46 || totals.prompts !== 3 || totals.images !== 196 ||
+  totals.childPages !== 44 || totals.databasePages !== 2 || totals.databaseRows !== 508 || totals.pages !== 46 || totals.prompts !== 3 || totals.images !== 196 || totals.embeddedLinks !== 75 ||
   new Set(records.map((record) => normalizeTitle(record.title))).size !== totals.pages ||
   records.some((record) => !record.body || !record.content.includes(record.source) || !record.fingerprint) ||
-  pageRecords.some((record) => record.content.includes("prod-files-secure") || linkCount(record.content) < record.sourceReferences + 1) ||
+  pageRecords.some((record) => record.content.includes("prod-files-secure") || linkCount(record.content) < record.sourceReferences + 1 || record.embedded.some((reference) => !record.content.includes(reference.href))) ||
   databaseRecords.some((record) => !record.content.includes(record.collection))
 ) throw new Error("Notion 원문, 컬렉션, 프롬프트 또는 이미지 무결성 검증에 실패했습니다.");
 
 if (process.argv.includes("--check")) {
   console.log(JSON.stringify({
-    pages: records.map((record) => ({ title: record.title, source: record.source, toggles: record.sourceToggles, images: record.content.match(/"type":"image"/g)?.length ?? 0, links: linkCount(record.content), unknowns: record.sourceUnknowns, prompts: record.prompts.length, rows: record.rowCount ?? 0 })),
+    pages: records.map((record) => ({ title: record.title, source: record.source, toggles: record.sourceToggles, images: record.content.match(/"type":"image"/g)?.length ?? 0, links: linkCount(record.content), embeddedLinks: record.embedded?.length ?? 0, unknowns: record.sourceUnknowns, prompts: record.prompts.length, rows: record.rowCount ?? 0 })),
     totals,
     unknownBlockLimitation: "Notion fetch의 unknown bookmark/button은 원문이 제공한 source page#block 링크와 표시명을 보존했으며, 제공되지 않은 외부 대상 URL은 추정하지 않았습니다.",
   }, null, 2));
@@ -161,15 +192,21 @@ const now = new Date().toISOString();
 
 function importLocal() {
   const db = new Database(resolve(root, "data/mymark.db"));
-  const result = { pagesInserted: 0, pagesSkipped: 0, promptsInserted: 0, promptsSkipped: 0 };
+  const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0, promptsInserted: 0, promptsSkipped: 0 };
   const transaction = db.transaction(() => {
-    const pages = db.prepare("SELECT title, content FROM custom_pages WHERE user_id = ?").all(localUser);
+    const pages = db.prepare("SELECT id, title, content FROM custom_pages WHERE user_id = ?").all(localUser);
     const prompts = db.prepare("SELECT title, category, sections FROM prompts WHERE user_id = ?").all(localUser);
     const insertPage = db.prepare("INSERT INTO custom_pages (id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+    const updatePage = db.prepare("UPDATE custom_pages SET content = ? WHERE id = ?");
     const insertPrompt = db.prepare("INSERT INTO prompts (id, user_id, title, category, summary, when_to_use, sections, is_favorite, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)");
     for (const record of records) {
-      if (pageExists(pages, record)) result.pagesSkipped += 1;
-      else { insertPage.run(randomUUID(), localUser, record.title, record.content, now, now); pages.push({ title: record.title, content: record.content }); result.pagesInserted += 1; }
+      const sameTitle = pages.find((page) => normalizeTitle(page.title) === normalizeTitle(record.title));
+      if (sameTitle && sameTitle.content.includes(record.source) && sameTitle.content !== record.content) {
+        updatePage.run(record.content, sameTitle.id);
+        sameTitle.content = record.content;
+        result.pagesUpdated += 1;
+      } else if (pageExists(pages, record)) result.pagesSkipped += 1;
+      else { const id = randomUUID(); insertPage.run(id, localUser, record.title, record.content, now, now); pages.push({ id, title: record.title, content: record.content }); result.pagesInserted += 1; }
       for (const prompt of record.prompts) {
         if (promptExists(prompts, prompt)) result.promptsSkipped += 1;
         else { insertPrompt.run(randomUUID(), localUser, prompt.title, prompt.category, prompt.summary, prompt.when_to_use, prompt.sections, now, now); prompts.push(prompt); result.promptsInserted += 1; }
@@ -193,11 +230,17 @@ async function allRows(query) {
 
 async function importProduction() {
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-  const result = { pagesInserted: 0, pagesSkipped: 0, promptsInserted: 0, promptsSkipped: 0 };
-  const pages = await allRows(supabase.from("custom_pages").select("title, content").eq("user_id", productionUser));
+  const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0, promptsInserted: 0, promptsSkipped: 0 };
+  const pages = await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser));
   const prompts = await allRows(supabase.from("prompts").select("title, category, sections").eq("user_id", productionUser));
   for (const record of records) {
-    if (pageExists(pages, record)) result.pagesSkipped += 1;
+    const sameTitle = pages.find((page) => normalizeTitle(page.title) === normalizeTitle(record.title));
+    if (sameTitle && sameTitle.content.includes(record.source) && sameTitle.content !== record.content) {
+      const { error } = await supabase.from("custom_pages").update({ content: record.content }).eq("id", sameTitle.id).eq("user_id", productionUser);
+      if (error) throw error;
+      sameTitle.content = record.content;
+      result.pagesUpdated += 1;
+    } else if (pageExists(pages, record)) result.pagesSkipped += 1;
     else {
       const { error } = await supabase.from("custom_pages").insert({ id: randomUUID(), user_id: productionUser, title: record.title, content: record.content, created_at: now, updated_at: now });
       if (error) throw error;
@@ -223,12 +266,13 @@ function verifyRows(pages, prompts) {
   const sourceMatches = matches.filter((page, index) => page?.content.includes(records[index].source)).length;
   const imageMatches = matches.reduce((sum, page) => sum + (page?.content.match(/"type":"image"/g)?.length ?? 0), 0);
   const referencesPreserved = pageRecords.every((record, index) => linkCount(matches[index]?.content ?? "") >= record.sourceReferences + 1);
+  const embeddedLinksPreserved = pageRecords.every((record, index) => record.embedded.every((reference) => matches[index]?.content.includes(reference.href)));
   const collectionRowsPreserved = databaseRecords.every((record, index) => {
     const page = matches[pageRecords.length + index];
     return page?.content.includes(record.collection) && databaseData[index].rows.every((row) => page.content.includes(row.url));
   });
-  if (matches.some((page, index) => !page || page.content !== records[index].content) || promptMatches !== totals.prompts || sourceMatches !== totals.pages || imageMatches !== totals.images || !referencesPreserved || !collectionRowsPreserved) throw new Error("저장 DB 검증에 실패했습니다.");
-  return { pages: matches.length, childPages: totals.childPages, databasePages: totals.databasePages, databaseRows: totals.databaseRows, prompts: promptMatches, images: imageMatches, sources: sourceMatches, links: matches.reduce((sum, page) => sum + linkCount(page.content), 0), unknowns: totals.unknowns };
+  if (matches.some((page, index) => !page || page.content !== records[index].content) || promptMatches !== totals.prompts || sourceMatches !== totals.pages || imageMatches !== totals.images || !referencesPreserved || !embeddedLinksPreserved || !collectionRowsPreserved) throw new Error("저장 DB 검증에 실패했습니다.");
+  return { pages: matches.length, childPages: totals.childPages, databasePages: totals.databasePages, databaseRows: totals.databaseRows, prompts: promptMatches, images: imageMatches, sources: sourceMatches, links: matches.reduce((sum, page) => sum + linkCount(page.content), 0), embeddedLinks: totals.embeddedLinks, unknowns: totals.unknowns };
 }
 
 function localVerification() {
