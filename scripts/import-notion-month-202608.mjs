@@ -31,6 +31,19 @@ function contentFromNotion(text) {
   return (text.match(/<content>\n([\s\S]*?)\n<\/content>/)?.[1] ?? text).trim();
 }
 
+function preserveNotionReferences(value) {
+  return value
+    .replace(/<(page|database)\b([^>]*)>([\s\S]*?)<\/\1>/g, (_match, tag, attributes, label) => {
+      const url = attributes.match(/\burl="([^"]+)"/)?.[1];
+      return url ? `[${label.trim() || tag}](${url})` : label;
+    })
+    .replace(/<(unknown(?:_mention)?)\b([^>]*)\/>/g, (_match, _tag, attributes) => {
+      const url = attributes.match(/\burl="([^"]+)"/)?.[1];
+      const label = attributes.match(/\balt="([^"]+)"/)?.[1] ?? "참조";
+      return url ? `[${label}](${url})` : "";
+    });
+}
+
 function normalizeText(value) {
   return value.replace(/\s+/g, " ").trim();
 }
@@ -43,15 +56,10 @@ function normalizeTitle(value) {
     .toLocaleLowerCase("ko-KR");
 }
 
-function nodeText(node) {
-  if (!node || typeof node !== "object") return "";
-  return [node.text ?? "", ...(node.content ?? []).map(nodeText)].join(" ");
-}
-
 function pageFingerprint(content) {
   try {
     const doc = JSON.parse(content);
-    return createHash("sha256").update(normalizeText((doc.content ?? []).slice(2).map(nodeText).join(" "))).digest("hex");
+    return createHash("sha256").update(JSON.stringify((doc.content ?? []).slice(2))).digest("hex");
   } catch {
     return "";
   }
@@ -89,7 +97,8 @@ const promptCounts = {
 };
 
 const records = pageData.map((page) => {
-  const body = normalizePasteToMarkdown(contentFromNotion(page.notionContent)).trim();
+  const sourceBody = contentFromNotion(page.notionContent);
+  const body = normalizePasteToMarkdown(preserveNotionReferences(sourceBody)).trim();
   const markdown = [`# ${page.title}`, `> 원문. [Notion](${page.source})`, body].join("\n\n");
   const content = JSON.stringify(markdownToTiptapDoc(markdown));
   let bodies = page.promptFenceIndexes.map((index) => fencedBodies(body)[index - 1]).filter(Boolean);
@@ -108,6 +117,7 @@ const records = pageData.map((page) => {
     body,
     content,
     fingerprint: pageFingerprint(content),
+    references: (sourceBody.match(/<(?:page|database|unknown(?:_mention)?)\b[^>]*\burl="[^"]+"[^>]*(?:\/>|>[\s\S]*?<\/(?:page|database)>)/g) ?? []).length,
     prompts: bodies.map((prompt, index) => ({
       title: `${page.title} · 프롬프트 ${String(index + 1).padStart(2, "0")}`,
       category,
@@ -123,12 +133,16 @@ const records = pageData.map((page) => {
 });
 
 const imageCount = records.reduce((count, record) => count + (record.content.match(/"type":"image"/g)?.length ?? 0), 0);
+const linkCount = (content) => content.match(/"type":"link"/g)?.length ?? 0;
+const templateLinks = linkCount(records.find((record) => record.title === "📝 노시언의 30가지 노션템플릿")?.content ?? "");
 const actualPromptCounts = Object.fromEntries(records.map((record) => [record.title, record.prompts.length]));
 if (
   records.length !== 9 ||
   new Set(records.map((record) => normalizeTitle(record.title))).size !== 9 ||
   imageCount !== 1 ||
+  templateLinks < 47 ||
   records.some((record) => !record.body || !record.content.includes(record.source) || !record.fingerprint) ||
+  records.some((record) => linkCount(record.content) < record.references + 1) ||
   records.some((record) => actualPromptCounts[record.title] !== promptCounts[record.title]) ||
   records.some((record) => record.prompts.some((prompt) => !prompt.sections.includes(record.source)))
 ) {
@@ -137,9 +151,10 @@ if (
 
 if (process.argv.includes("--check")) {
   console.log(JSON.stringify({
-    pages: records.map((record) => ({ title: record.title, characters: record.body.length, prompts: record.prompts.length, images: record.content.match(/"type":"image"/g)?.length ?? 0 })),
+    pages: records.map((record) => ({ title: record.title, characters: record.body.length, prompts: record.prompts.length, images: record.content.match(/"type":"image"/g)?.length ?? 0, links: linkCount(record.content), references: record.references })),
     prompts: records.reduce((count, record) => count + record.prompts.length, 0),
     images: imageCount,
+    templateLinks,
   }, null, 2));
   process.exit(0);
 }
@@ -238,17 +253,25 @@ function localVerification() {
 }
 
 function verifyRows(pages, prompts) {
-  const pageMatches = records.filter((record) => pageExists(pages, record));
+  const pageMatches = records.map((record) => pages.find((page) => normalizeTitle(page.title) === normalizeTitle(record.title)));
   const promptMatches = records.reduce((count, record) => count + record.prompts.filter((prompt) => promptExists(prompts, prompt)).length, 0);
-  const pageSources = pageMatches.filter((record) => pages.some((page) => normalizeTitle(page.title) === normalizeTitle(record.title) && page.content.includes(record.source))).length;
-  const storedImages = pageMatches.reduce((count, record) => {
-    const page = pages.find((candidate) => normalizeTitle(candidate.title) === normalizeTitle(record.title));
+  const pageSources = records.filter((record, index) => pageMatches[index]?.content.includes(record.source)).length;
+  const storedImages = pageMatches.reduce((count, page) => {
     return count + (page?.content.match(/"type":"image"/g)?.length ?? 0);
   }, 0);
-  if (pageMatches.length !== 9 || promptMatches !== records.reduce((count, record) => count + record.prompts.length, 0) || pageSources !== 9 || storedImages !== 1) {
+  const storedTemplateLinks = linkCount(pageMatches[records.findIndex((record) => record.title === "📝 노시언의 30가지 노션템플릿")]?.content ?? "");
+  const referencesPreserved = records.every((record, index) => linkCount(pageMatches[index]?.content ?? "") >= record.references + 1);
+  if (
+    pageMatches.some((page, index) => !page || page.content !== records[index].content) ||
+    promptMatches !== records.reduce((count, record) => count + record.prompts.length, 0) ||
+    pageSources !== 9 ||
+    storedImages !== 1 ||
+    storedTemplateLinks < 47 ||
+    !referencesPreserved
+  ) {
     throw new Error("저장 DB 검증에 실패했습니다.");
   }
-  return { pages: pageMatches.length, prompts: promptMatches, images: storedImages, sources: pageSources };
+  return { pages: pageMatches.length, prompts: promptMatches, images: storedImages, sources: pageSources, templateLinks: storedTemplateLinks };
 }
 
 const local = importLocal();
