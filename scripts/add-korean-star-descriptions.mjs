@@ -30,6 +30,7 @@ let updated = 0;
 for (const row of rows) {
   const translation = translations[row.repo_full_name];
   if (!translation || !row.description) continue;
+  if (/[가-힣]/.test(row.description)) continue;
   const existingTranslation = row.description
     .split(separator)
     .slice(1)

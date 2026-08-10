@@ -56,4 +56,15 @@ describe("Star 설명 번역", () => {
       "Read, create & edit Korean Hangul Word Processor (.hwp / .hwpx) documents in Claude — Agent Skill built on rhwp WASM, with built-in browser preview. Runs locally, no Hancom Office, no cloud.\n\nClaude에서 한글 문서(.hwp, .hwpx)를 읽고 생성·편집하는 에이전트 스킬. rhwp WASM과 브라우저 미리 보기를 내장해 한컴오피스나 클라우드 없이 로컬에서 실행됩니다."
     );
   });
+
+  it("새 정적 번역을 병기한다", () => {
+    assert.equal(
+      withKoreanTranslation(
+        "abi/screenshot-to-code",
+        "Drop in a screenshot and convert it to clean code (HTML/Tailwind/React/Vue)",
+        null
+      ),
+      "Drop in a screenshot and convert it to clean code (HTML/Tailwind/React/Vue)\n\n스크린샷을 넣으면 깔끔한 코드(HTML, Tailwind, React, Vue)로 변환합니다."
+    );
+  });
 });
