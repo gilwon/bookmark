@@ -175,7 +175,16 @@ export function AgentDocEditor(props: Props) {
             files,
           }),
         });
-        if (!res.ok) throw new Error("저장 실패");
+        if (!res.ok) {
+          if (res.status === 409) {
+            const body = await res.json().catch(() => null);
+            if (typeof body?.error === "string") {
+              setStatus(body.error);
+              return;
+            }
+          }
+          throw new Error("저장 실패");
+        }
         const created = (await res.json()) as AgentDoc;
         shiftDraft();
         const remaining = draftQueueLength();

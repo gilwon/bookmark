@@ -1,8 +1,11 @@
 // 에이전트 문서 목록 / 생성
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 import type { AgentDocFilePart } from "@/lib/agent-doc-bundle";
 import { pickPrimaryFile } from "@/lib/agent-doc-bundle";
+import {
+  agentDocId,
+  isDuplicateAgentDoc,
+} from "@/lib/agent-doc-dedupe";
 import { fieldsFromFiles, rowToAgentDoc } from "@/lib/agent-doc-mapper";
 import {
   getAgentDocTemplates,
@@ -50,7 +53,7 @@ function normalizeFilesInput(body: Record<string, unknown>): AgentDocFilePart[] 
   if (!Array.isArray(body.files)) return [];
   return body.files
     .filter(
-      (x): x is { filename: string; content: string } =>
+      (x): x is AgentDocFilePart =>
         !!x &&
         typeof x === "object" &&
         typeof (x as { filename?: unknown }).filename === "string" &&
@@ -60,6 +63,23 @@ function normalizeFilesInput(body: Record<string, unknown>): AgentDocFilePart[] 
       filename: normalizeFilename(x.filename),
       content: x.content,
     }));
+}
+
+function isUniqueViolation(error: unknown): boolean {
+  const code =
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    typeof error.code === "string"
+      ? error.code
+      : "";
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    code === "SQLITE_CONSTRAINT_PRIMARYKEY" ||
+    /UNIQUE constraint failed: agent_docs\.id|duplicate key value violates unique constraint "agent_docs_pkey"/i.test(
+      message
+    )
+  );
 }
 
 export async function GET() {
@@ -131,20 +151,56 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: sizeErr }, { status: 400 });
   }
 
+  const existing = await store.listAgentDocs(gate.user.userId, { full: true });
+  if (
+    isDuplicateAgentDoc(
+      files,
+      existing.map((row) => rowToAgentDoc(row).files)
+    )
+  ) {
+    return NextResponse.json(
+      { error: "이미 등록된 문서입니다." },
+      { status: 409 }
+    );
+  }
+
   const stored = fieldsFromFiles(files, filename);
   const now = new Date().toISOString();
-  const row = await store.insertAgentDoc({
-    id: uuidv4(),
-    userId: gate.user.userId,
-    kind,
-    filename: stored.filename,
-    title,
-    description,
-    content: stored.content,
-    bundle: stored.bundle,
-    createdAt: now,
-    updatedAt: now,
-  });
-
-  return NextResponse.json(rowToAgentDoc(row), { status: 201 });
+  let lastInsertError: unknown;
+  for (let slot = 0; slot <= existing.length; slot += 1) {
+    const id = agentDocId(gate.user.userId, files, slot);
+    try {
+      const row = await store.insertAgentDoc({
+        id,
+        userId: gate.user.userId,
+        kind,
+        filename: stored.filename,
+        title,
+        description,
+        content: stored.content,
+        bundle: stored.bundle,
+        createdAt: now,
+        updatedAt: now,
+      });
+      return NextResponse.json(rowToAgentDoc(row), { status: 201 });
+    } catch (insertError) {
+      if (!isUniqueViolation(insertError)) throw insertError;
+      lastInsertError = insertError;
+      try {
+        const collided = await store.getAgentDoc(id, gate.user.userId);
+        if (
+          collided &&
+          isDuplicateAgentDoc(files, [rowToAgentDoc(collided).files])
+        ) {
+          return NextResponse.json(
+            { error: "이미 등록된 문서입니다." },
+            { status: 409 }
+          );
+        }
+      } catch {
+        throw insertError;
+      }
+    }
+  }
+  throw lastInsertError;
 }

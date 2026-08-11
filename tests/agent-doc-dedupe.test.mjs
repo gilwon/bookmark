@@ -1,7 +1,12 @@
 // 에이전트 문서 중복 판정 지문 함수 테스트
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { docFingerprint, splitDuplicateDrafts } from "../src/lib/agent-doc-dedupe.ts";
+import {
+  agentDocId,
+  docFingerprint,
+  isDuplicateAgentDoc,
+  splitDuplicateDrafts,
+} from "../src/lib/agent-doc-dedupe.ts";
 
 describe("docFingerprint", () => {
   it("파일 순서만 다르면 같은 지문", () => {
@@ -47,6 +52,28 @@ describe("docFingerprint", () => {
   });
 });
 
+describe("agentDocId", () => {
+  it("같은 사용자와 같은 파일 묶음은 같은 ID를 만든다", () => {
+    const files = [{ filename: "SKILL.md", content: "hello" }];
+    assert.equal(agentDocId("user-a", files), agentDocId("user-a", files));
+  });
+
+  it("같은 파일 묶음도 슬롯이 다르면 다른 ID를 만든다", () => {
+    const files = [{ filename: "SKILL.md", content: "hello" }];
+    assert.equal(agentDocId("user-a", files, 1), agentDocId("user-a", files, 1));
+    assert.notEqual(agentDocId("user-a", files, 0), agentDocId("user-a", files, 1));
+  });
+
+  it("사용자나 본문이 다르면 다른 ID를 만든다", () => {
+    const files = [{ filename: "SKILL.md", content: "hello" }];
+    assert.notEqual(agentDocId("user-a", files), agentDocId("user-b", files));
+    assert.notEqual(
+      agentDocId("user-a", files),
+      agentDocId("user-a", [{ filename: "SKILL.md", content: "world" }])
+    );
+  });
+});
+
 describe("splitDuplicateDrafts", () => {
   function draft(title, content) {
     return { title, files: [{ filename: "a.md", content }] };
@@ -72,5 +99,37 @@ describe("splitDuplicateDrafts", () => {
     const drafts = [draft("", "hello"), draft("", "hello")];
     const { duplicateTitles } = splitDuplicateDrafts(drafts, new Set());
     assert.deepEqual(duplicateTitles, ["a.md"]);
+  });
+});
+
+describe("isDuplicateAgentDoc", () => {
+  it("기존 다중 파일 문서와 같은 파일 묶음을 중복으로 판정한다", () => {
+    const existing = [
+      [
+        { filename: "SKILL.md", content: "---\nname: demo\n---\n" },
+        { filename: "AGENTS.md", content: "instructions\n" },
+      ],
+    ];
+
+    assert.equal(
+      isDuplicateAgentDoc(
+        [
+          { filename: "agents.md", content: "instructions" },
+          { filename: "skill.md", content: "\uFEFF---\r\nname: demo\r\n---" },
+        ],
+        existing
+      ),
+      true
+    );
+  });
+
+  it("본문이 다른 문서는 중복으로 판정하지 않는다", () => {
+    assert.equal(
+      isDuplicateAgentDoc(
+        [{ filename: "SKILL.md", content: "new content" }],
+        [[{ filename: "skill.md", content: "old content" }]]
+      ),
+      false
+    );
   });
 });
