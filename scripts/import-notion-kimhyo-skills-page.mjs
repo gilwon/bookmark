@@ -47,12 +47,14 @@ const {
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   PAGE_ATTACHMENT_STORAGE_MIME,
   createPageAttachmentObjectPath,
+  selectPageAttachmentImportTarget,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
 const pageAttachmentBucketOptions = {
   public: false,
   fileSizeLimit: 1024 * 1024,
   allowedMimeTypes: [PAGE_ATTACHMENT_STORAGE_MIME],
 };
+const pageSourceMarkers = [sourceUrl, legacySourceUrl, PAGE_ATTACHMENT_SOURCE_ID, legacySourceId];
 
 function plainText(value) {
   if (typeof value === "string") return value;
@@ -210,25 +212,14 @@ function documentStats(content) {
   return stats;
 }
 
-function hasSource(content) {
-  const value = String(content);
-  return value.includes(sourceUrl) || value.includes(legacySourceUrl) || value.includes(PAGE_ATTACHMENT_SOURCE_ID) || value.includes(legacySourceId);
-}
-
-function matchingPages(rows, page) {
-  return rows.filter((row) => row.title === page.title || hasSource(row.content));
-}
-
 function verifyRows(rows, page) {
   const exactTitle = rows.filter((row) => row.title === page.title);
-  const sourceMatches = rows.filter((row) => hasSource(row.content));
-  const matching = matchingPages(rows, page);
-  const saved = exactTitle[0] ?? sourceMatches[0];
+  const saved = exactTitle[0];
   const stats = saved ? documentStats(saved.content) : null;
   const fileLabelsPresent = [...fileLabels.values()].every((label) => String(saved?.content).includes(label));
   const attachmentUrls = PAGE_ATTACHMENT_FILENAMES.map((filename) => `/api/page-attachments/${PAGE_ATTACHMENT_SOURCE_ID}/${encodeURIComponent(filename)}`);
-  if (matching.length !== 1 || !saved || !stats || saved.content !== page.content || !String(saved.content).includes(sourceUrl) || String(saved.content).includes(legacySourceUrl) || !fileLabelsPresent || stats.codeBlocks.length !== 10 || !stats.codeBlocks.every((language) => language === "text" || language === "") || stats.images !== 0 || stats.callouts < 7 || unsafeStringCount(saved.content) !== 0 || stats.links.filter((link) => link.href === externalUrl).length !== 1 || stats.links.filter((link) => link.href === sourceUrl).length !== 1 || attachmentUrls.some((url) => stats.links.filter((link) => link.href === url).length !== 1)) throw new Error("저장 데이터 무결성 검증에 실패했습니다.");
-  return { pages: matching.length, codes: stats.codeBlocks.length, images: stats.images, callouts: stats.callouts, zipLinks: 2, externalLinks: 1, sources: 1, unsafeStrings: 0 };
+  if (exactTitle.length !== 1 || !saved || !stats || saved.content !== page.content || !String(saved.content).includes(sourceUrl) || String(saved.content).includes(legacySourceUrl) || !fileLabelsPresent || stats.codeBlocks.length !== 10 || !stats.codeBlocks.every((language) => language === "text" || language === "") || stats.images !== 0 || stats.callouts < 7 || unsafeStringCount(saved.content) !== 0 || stats.links.filter((link) => link.href === externalUrl).length !== 1 || stats.links.filter((link) => link.href === sourceUrl).length !== 1 || attachmentUrls.some((url) => stats.links.filter((link) => link.href === url).length !== 1)) throw new Error("저장 데이터 무결성 검증에 실패했습니다.");
+  return { pages: exactTitle.length, codes: stats.codeBlocks.length, images: stats.images, callouts: stats.callouts, zipLinks: 2, externalLinks: 1, sources: 1, unsafeStrings: 0 };
 }
 
 function importLocal(page) {
@@ -236,7 +227,7 @@ function importLocal(page) {
   const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0 };
   db.transaction(() => {
     const rows = db.prepare("SELECT id, title, content FROM custom_pages WHERE user_id = ?").all(localUser);
-    const existing = matchingPages(rows, page)[0];
+    const existing = selectPageAttachmentImportTarget(rows, page.title, pageSourceMarkers);
     if (!existing) {
       const now = new Date().toISOString();
       db.prepare("INSERT INTO custom_pages (id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)").run(randomUUID(), localUser, page.title, page.content, now, now);
@@ -265,7 +256,7 @@ async function allRows(query) {
 async function importProduction(page, supabase) {
   const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0 };
   const rows = await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser));
-  const existing = matchingPages(rows, page)[0];
+  const existing = selectPageAttachmentImportTarget(rows, page.title, pageSourceMarkers);
   if (!existing) {
     const now = new Date().toISOString();
     const { error } = await supabase.from("custom_pages").insert({ id: randomUUID(), user_id: productionUser, title: page.title, content: page.content, created_at: now, updated_at: now });
@@ -295,8 +286,7 @@ function isNotFound(error) {
   return error?.status === 404 || error?.statusCode === "404";
 }
 
-async function downloadAttachments(blocks) {
-  const attachments = attachmentRecords(blocks);
+async function downloadAttachments(attachments) {
   const { signedUrls } = await (async () => {
     const response = await fetch(signedFileEndpoint, {
       method: "POST",
@@ -352,6 +342,7 @@ async function uploadAttachments(supabase, attachments) {
 
 const { blocks, page: sourcePage, requestCount } = await collectBlocks();
 const sourceInvariant = assertSourceInvariant(blocks, sourcePage, requestCount);
+const sourceAttachments = attachmentRecords(blocks);
 const page = documentFrom(blocks, sourcePage);
 const sourceStats = documentStats(page.content);
 const fileLabelsPresent = [...fileLabels.values()].every((label) => page.markdown.includes(label) && page.content.includes(label));
@@ -361,13 +352,13 @@ const attachmentUrls = PAGE_ATTACHMENT_FILENAMES.map((filename) => `/api/page-at
 if (page.title !== "김효율 스킬팩" || page.codeLanguages.length !== 10 || !page.codeLanguages.every((language) => language === "text" || language === "") || !zipLabelsMatch || sourceStats.codeBlocks.length !== 10 || !sourceStats.codeBlocks.every((language) => language === "text" || language === "") || sourceStats.images !== 0 || sourceStats.callouts < 7 || sourceStats.links.filter((link) => link.href === externalUrl).length !== 1 || sourceStats.externalBoldLinks !== 1 || sourceStats.links.filter((link) => link.href === sourceUrl).length !== 1 || attachmentUrls.some((url) => sourceStats.links.filter((link) => link.href === url).length !== 1) || !page.markdown.includes(licenseContact) || !page.content.includes(licenseContact) || !page.content.includes(sourceUrl) || page.content.includes(legacySourceUrl) || !fileLabelsPresent || unsafeStringCount(page.markdown) !== 0 || unsafeStringCount(page.content) !== 0) throw new Error("원문 변환 무결성 검증에 실패했습니다.");
 
 if (process.argv.includes("--check")) {
-  console.log(JSON.stringify({ title: page.title, total: sourceInvariant.total, rootDirectChildren: sourceInvariant.rootChildren, typeCounts: sourceInvariant.types, requestCount: sourceInvariant.requestCount, codeBlocks: sourceStats.codeBlocks.length, codeLanguages: sourceStats.codeBlocks, images: sourceStats.images, callouts: sourceStats.callouts, zipLinks: page.zipLabels, attachmentUrls, externalLinks: sourceStats.links.filter((link) => link.href === externalUrl).length, externalBoldLinks: sourceStats.externalBoldLinks, sourceLinks: sourceStats.links.filter((link) => link.href === sourceUrl).length, licenseContact: page.content.includes(licenseContact), unsafeStrings: unsafeStringCount(page.content), writes: 0 }, null, 2));
+  console.log(JSON.stringify({ title: page.title, total: sourceInvariant.total, rootDirectChildren: sourceInvariant.rootChildren, typeCounts: sourceInvariant.types, requestCount: sourceInvariant.requestCount, codeBlocks: sourceStats.codeBlocks.length, codeLanguages: sourceStats.codeBlocks, images: sourceStats.images, callouts: sourceStats.callouts, zipLinks: page.zipLabels, attachmentNames: sourceAttachments.map(({ filename }) => filename), attachmentUrls, externalLinks: sourceStats.links.filter((link) => link.href === externalUrl).length, externalBoldLinks: sourceStats.externalBoldLinks, sourceLinks: sourceStats.links.filter((link) => link.href === sourceUrl).length, licenseContact: page.content.includes(licenseContact), unsafeStrings: unsafeStringCount(page.content), writes: 0 }, null, 2));
   process.exit(0);
 }
 
 for (const key of ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) if (!process.env[key]) throw new Error(`필수 환경변수 누락: ${key}`);
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-const attachments = await downloadAttachments(blocks);
+const attachments = await downloadAttachments(sourceAttachments);
 const bucket = await ensurePageAttachmentBucket(supabase);
 const uploads = await uploadAttachments(supabase, attachments);
 const local = importLocal(page);

@@ -5,6 +5,8 @@ import {
   createPageAttachmentObjectPath,
   isPageAttachmentFilename,
   isPageAttachmentSourceId,
+  pageAttachmentDownloadOutcome,
+  selectPageAttachmentImportTarget,
 } from "../src/lib/page-attachment-storage.ts";
 
 const sourceId = "5a5b256827ac8287b9b381e50f142820";
@@ -58,5 +60,71 @@ describe("Pages 첨부 Storage 공개 경계", () => {
       createPageAttachmentObjectPath("github/123", sourceId, "../archive.zip"),
       null
     );
+  });
+});
+
+describe("김효율 스킬팩 저장 대상 선택", () => {
+  const title = "김효율 스킬팩";
+  const sourceMarkers = ["5a5b256827ac8287b9b381e50f142820", "3b5003c7f7be80bbb275eda06077f238"];
+
+  it("정확한 제목 한 건만 갱신 대상으로 선택한다", () => {
+    const exact = { id: "page-1", title, content: "기존 본문" };
+    assert.equal(
+      selectPageAttachmentImportTarget(
+        [exact, { id: "other", title: "다른 문서", content: "본문" }],
+        title,
+        sourceMarkers
+      ),
+      exact
+    );
+  });
+
+  it("정확한 제목이 중복되면 쓰기 전에 거절한다", () => {
+    assert.throws(
+      () => selectPageAttachmentImportTarget([
+        { id: "page-1", title, content: "첫 본문" },
+        { id: "page-2", title, content: "둘째 본문" },
+      ], title, sourceMarkers),
+      /제목이 중복/
+    );
+  });
+
+  it("제목 없이 source만 인용한 문서는 이름 변경으로 추측하지 않는다", () => {
+    assert.throws(
+      () => selectPageAttachmentImportTarget([
+        { id: "other", title: "다른 문서", content: "https://app.notion.com/p/gilwon/5a5b256827ac8287b9b381e50f142820" },
+      ], title, sourceMarkers),
+      /원문 식별자만 일치/
+    );
+  });
+
+  it("제목과 원문 식별자 후보가 모두 없으면 신규 저장을 선택한다", () => {
+    assert.equal(
+      selectPageAttachmentImportTarget(
+        [{ id: "other", title: "다른 문서", content: "본문" }],
+        title,
+        sourceMarkers
+      ),
+      null
+    );
+  });
+});
+
+describe("Pages 첨부 다운로드 Storage 결과", () => {
+  it("없는 파일과 Storage 오류를 각각 404와 500으로 계산한다", () => {
+    assert.deepEqual(pageAttachmentDownloadOutcome({ status: 404 }, null), {
+      status: 404,
+    });
+    assert.deepEqual(pageAttachmentDownloadOutcome({ status: 500 }, null), {
+      status: 500,
+    });
+  });
+
+  it("서명 URL이 있으면 307 redirect 결과를 계산한다", () => {
+    assert.deepEqual(
+      pageAttachmentDownloadOutcome(null, "https://storage.example/signed"),
+      { status: 307, signedUrl: "https://storage.example/signed" }
+    );
+    assert.deepEqual(pageAttachmentDownloadOutcome(null, null), { status: 500 });
   });
 });

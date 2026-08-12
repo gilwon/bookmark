@@ -4,6 +4,7 @@ import { ownershipError, requireUser } from "@/lib/authz";
 import {
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   createPageAttachmentObjectPath,
+  pageAttachmentDownloadOutcome,
 } from "@/lib/page-attachment-storage";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 
@@ -12,10 +13,6 @@ export const runtime = "nodejs";
 type PageAttachmentRouteContext = {
   params: Promise<{ sourceId: string; filename: string }>;
 };
-
-function isNotFound(error: { status?: number; statusCode?: string } | null) {
-  return error?.status === 404 || error?.statusCode === "404";
-}
 
 export async function GET(
   _request: Request,
@@ -36,15 +33,19 @@ export async function GET(
   try {
     const storage = getSupabaseAdmin().storage.from(PAGE_ATTACHMENT_STORAGE_BUCKET);
     const { error: infoError } = await storage.info(path);
-    if (isNotFound(infoError)) return ownershipError();
-    if (infoError) throw infoError;
+    if (infoError) {
+      const outcome = pageAttachmentDownloadOutcome(infoError, null);
+      if (outcome.status === 404) return ownershipError();
+      throw infoError;
+    }
 
     const { data, error } = await storage.createSignedUrl(path, 60, {
       download: filename,
     });
-    if (isNotFound(error)) return ownershipError();
-    if (error || !data?.signedUrl) throw error ?? new Error("서명 URL이 없습니다.");
-    return NextResponse.redirect(data.signedUrl);
+    const outcome = pageAttachmentDownloadOutcome(error, data?.signedUrl);
+    if (outcome.status === 404) return ownershipError();
+    if (outcome.status === 500) throw error ?? new Error("서명 URL이 없습니다.");
+    return NextResponse.redirect(outcome.signedUrl);
   } catch (error) {
     console.error("[page-attachments] 서명 다운로드 URL 생성 실패", error);
     return NextResponse.json(
