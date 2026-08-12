@@ -12,9 +12,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const localUser = "dev";
 const productionUser = "f72e9a44-79d8-4061-a700-3ec50bb04a97";
 const assetDirectory = "/Users/gilwon/Downloads/notion-week-20260810";
-const moodmodeSourceId = "0e7b256827ac82de8fce8194c7e6a4c7";
 const moodmodeAssetId = "0e7b2568-27ac-82de-8fce-8194c7e6a4c7";
-const moodmodeFilename = "moodmode-insta-saver.zip";
 const moodmodeBytes = 10279989;
 const cutoff = "2026-08-09T15:00:00.000Z";
 const unsafeParts = ["bl" + "ob:", "expiration" + "Timestamp", "prod" + "-files-secure", "X-" + "Amz", "Security" + "-Token"];
@@ -34,12 +32,16 @@ tsx.register({ tsconfig: resolve(root, "tsconfig.json") });
 const { markdownToTiptapDoc } = require(resolve(root, "src/lib/markdown-to-tiptap.ts"));
 const { normalizePasteToMarkdown } = require(resolve(root, "src/lib/normalize-to-markdown.ts"));
 const {
+  PAGE_ATTACHMENT_MOODMODE_FILENAME,
+  PAGE_ATTACHMENT_MOODMODE_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   PAGE_ATTACHMENT_STORAGE_MIME,
   createPageAttachmentObjectPath,
   planNotionWeekPageAction,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
+const moodmodeSourceId = PAGE_ATTACHMENT_MOODMODE_SOURCE_ID;
+const moodmodeFilename = PAGE_ATTACHMENT_MOODMODE_FILENAME;
 
 function contentFromNotion(text) {
   return (text.match(/<content>\n([\s\S]*?)\n<\/content>/)?.[1] ?? text).trim();
@@ -157,10 +159,15 @@ function plansFor(rows) {
 
 function verifyRows(rows) {
   const plans = plansFor(rows);
-  for (const { record, row } of plans) {
-    if (!row || row.content !== record.content) throw new Error("저장 Page 무결성 검증에 실패했습니다.");
+  for (const { record, action, row } of plans) {
+    if (!row) throw new Error("저장 Page 무결성 검증에 실패했습니다.");
     const stats = documentStats(row.content);
-    if (stats.images !== record.images || record.attachments.some((url) => !stats.links.includes(url)) || unsafeParts.some((part) => row.content.includes(part))) {
+    if (
+      stats.images < record.images ||
+      record.attachments.some((url) => !stats.links.includes(url)) ||
+      unsafeParts.some((part) => row.content.includes(part)) ||
+      (action !== "skip" && !row.content.includes(record.source))
+    ) {
       throw new Error("저장 Page 미디어 무결성 검증에 실패했습니다.");
     }
   }
@@ -245,11 +252,19 @@ function moodmodeZip() {
   return bytes;
 }
 
+function moodmodeObjectPaths() {
+  const paths = [localUser, productionUser].map((userId) => createPageAttachmentObjectPath(
+    userId,
+    PAGE_ATTACHMENT_MOODMODE_SOURCE_ID,
+    PAGE_ATTACHMENT_MOODMODE_FILENAME
+  ));
+  if (paths.some((path) => !path)) throw new Error("moodmode ZIP Storage 경로 검증에 실패했습니다.");
+  return paths;
+}
+
 async function uploadMoodmode(supabase) {
   const bytes = moodmodeZip();
-  for (const userId of [localUser, productionUser]) {
-    const path = createPageAttachmentObjectPath(userId, PAGE_ATTACHMENT_MOODMODE_SOURCE_ID, PAGE_ATTACHMENT_MOODMODE_FILENAME);
-    if (!path) throw new Error("moodmode ZIP Storage 경로 검증에 실패했습니다.");
+  for (const path of moodmodeObjectPaths()) {
     const { error } = await supabase.storage.from(PAGE_ATTACHMENT_STORAGE_BUCKET).upload(path, bytes, {
       contentType: PAGE_ATTACHMENT_STORAGE_MIME,
       upsert: true,
@@ -282,11 +297,13 @@ async function importProduction(supabase) {
 
 if (process.argv.includes("--check")) {
   const zip = moodmodeZip();
+  const attachmentPaths = moodmodeObjectPaths();
   console.log(JSON.stringify({
     pages: records.map((record) => ({ title: record.title, images: record.images, attachments: record.attachments.length })),
     pagesTotal: records.length,
     images: totalImages,
     attachments: totalAttachments,
+    attachmentPaths,
     zipBytes: zip.byteLength,
     writes: 0,
   }, null, 2));

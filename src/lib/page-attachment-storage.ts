@@ -19,6 +19,15 @@ type PageAttachmentStorageError = {
   statusCode?: string;
 };
 
+function normalizedNotionWeekTitle(value: unknown): string {
+  if (typeof value !== "string") return "";
+  return value
+    .replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/u, "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLocaleLowerCase("ko-KR");
+}
+
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
   return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID;
@@ -56,7 +65,8 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   expectedImages: number,
   attachmentUrls: readonly string[]
 ): { action: "insert"; row: null } | { action: "update" | "skip"; row: T } {
-  const exactTitles = rows.filter((row) => row.title === title);
+  const normalizedTitle = normalizedNotionWeekTitle(title);
+  const exactTitles = rows.filter((row) => normalizedNotionWeekTitle(row.title) === normalizedTitle);
   if (exactTitles.length > 1) {
     throw new Error("Notion Page 제목이 중복되어 저장을 중단했습니다.");
   }

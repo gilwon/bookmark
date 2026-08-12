@@ -177,6 +177,26 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
     );
   });
 
+  it("아이콘 없는 기존 제목의 완비 미디어도 건너뛴다", () => {
+    const row = {
+      id: "page-1",
+      title: "Parabolic+인스타 무료 툴 설치가이드",
+      content: '{"type":"image"}{"href":"/api/page-attachments/source/file.zip"}',
+    };
+    assert.deepEqual(
+      planNotionWeekPageAction([row], "📷 Parabolic+인스타 무료 툴 설치가이드", sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
+      { action: "skip", row }
+    );
+  });
+
+  it("아이콘 없는 기존 제목의 결손 미디어는 갱신한다", () => {
+    const row = { id: "page-1", title: "Parabolic+인스타 무료 툴 설치가이드", content: '{"type":"doc"}' };
+    assert.deepEqual(
+      planNotionWeekPageAction([row], "📷 Parabolic+인스타 무료 툴 설치가이드", sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
+      { action: "update", row }
+    );
+  });
+
   it("중복 제목과 source-only 후보를 쓰기 전에 거절한다", () => {
     assert.throws(
       () => planNotionWeekPageAction([
