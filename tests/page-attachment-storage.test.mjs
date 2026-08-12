@@ -5,6 +5,7 @@ import {
   createPageAttachmentObjectPath,
   isPageAttachmentFilename,
   isPageAttachmentSourceId,
+  planNotionWeekPageAction,
   pageAttachmentDownloadOutcome,
   selectPageAttachmentImportTarget,
 } from "../src/lib/page-attachment-storage.ts";
@@ -28,6 +29,14 @@ describe("Pages 첨부 Storage 공개 경계", () => {
         "ui-inspector-skill-20260807.zip"
       ),
       "Z2l0aHViLzEyMw/5a5b256827ac8287b9b381e50f142820/ui-inspector-skill-20260807.zip"
+    );
+    assert.equal(
+      createPageAttachmentObjectPath(
+        "github/123",
+        "0e7b256827ac82de8fce8194c7e6a4c7",
+        "moodmode-insta-saver.zip"
+      ),
+      "Z2l0aHViLzEyMw/0e7b256827ac82de8fce8194c7e6a4c7/moodmode-insta-saver.zip"
     );
   });
 
@@ -56,6 +65,14 @@ describe("Pages 첨부 Storage 공개 경계", () => {
     assert.equal(isPageAttachmentFilename("../archive.zip"), false);
     assert.equal(isPageAttachmentFilename("archive.zip"), false);
     assert.equal(isPageAttachmentFilename("notes.txt"), false);
+    assert.equal(
+      createPageAttachmentObjectPath(
+        "github/123",
+        sourceId,
+        "moodmode-insta-saver.zip"
+      ),
+      null
+    );
     assert.equal(
       createPageAttachmentObjectPath("github/123", sourceId, "../archive.zip"),
       null
@@ -126,5 +143,53 @@ describe("Pages 첨부 다운로드 Storage 결과", () => {
       { status: 307, signedUrl: "https://storage.example/signed" }
     );
     assert.deepEqual(pageAttachmentDownloadOutcome(null, null), { status: 500 });
+  });
+});
+
+describe("2026년 8월 10일 Notion Page 이관 계획", () => {
+  const title = "새 Page";
+  const sourceMarkers = ["new-source-id", "https://app.notion.com/p/new-source-id"];
+
+  it("기존 제목이 없으면 삽입을 계획한다", () => {
+    assert.deepEqual(
+      planNotionWeekPageAction([], title, sourceMarkers, 1, []),
+      { action: "insert", row: null }
+    );
+  });
+
+  it("기존 제목의 미디어가 모자라면 본문 갱신을 계획한다", () => {
+    const row = { id: "page-1", title, content: '{"type":"doc"}' };
+    assert.deepEqual(
+      planNotionWeekPageAction([row], title, sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
+      { action: "update", row }
+    );
+  });
+
+  it("기존 제목의 미디어가 완비되면 건너뛴다", () => {
+    const row = {
+      id: "page-1",
+      title,
+      content: '{"type":"image"}{"href":"/api/page-attachments/source/file.zip"}',
+    };
+    assert.deepEqual(
+      planNotionWeekPageAction([row], title, sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
+      { action: "skip", row }
+    );
+  });
+
+  it("중복 제목과 source-only 후보를 쓰기 전에 거절한다", () => {
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "page-1", title, content: "본문" },
+        { id: "page-2", title, content: "본문" },
+      ], title, sourceMarkers, 0, []),
+      /제목이 중복/
+    );
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "other", title: "다른 Page", content: "new-source-id" },
+      ], title, sourceMarkers, 0, []),
+      /원문 식별자만 일치/
+    );
   });
 });

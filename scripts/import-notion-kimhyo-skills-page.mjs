@@ -45,13 +45,14 @@ const {
   PAGE_ATTACHMENT_FILENAMES,
   PAGE_ATTACHMENT_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_BUCKET,
+  PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   PAGE_ATTACHMENT_STORAGE_MIME,
   createPageAttachmentObjectPath,
   selectPageAttachmentImportTarget,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
 const pageAttachmentBucketOptions = {
   public: false,
-  fileSizeLimit: 1024 * 1024,
+  fileSizeLimit: PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   allowedMimeTypes: [PAGE_ATTACHMENT_STORAGE_MIME],
 };
 const pageSourceMarkers = [sourceUrl, legacySourceUrl, PAGE_ATTACHMENT_SOURCE_ID, legacySourceId];
