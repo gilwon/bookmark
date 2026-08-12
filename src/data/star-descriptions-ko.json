@@ -195,7 +195,7 @@
   "nerdlab-dev/meta-ads-mcp": "Claude Code나 Codex CLI에 자연어로 요청해 Meta 광고를 시작하고 관리합니다. 이 저장소는 npx 명령 한 번으로 에이전트를 Nerdboard의 호스팅 MCP 서버에 연결하는 소형 MIT 라이선스 설치 프로그램으로, Meta 개발자 토큰, 자체 호스팅과 로컬 API 키가 필요 없습니다.",
   "opengeos/GeoLibre": "지리공간 데이터를 시각화·탐색·분석하는 경량 클라우드 네이티브 GIS 플랫폼. 웹 브라우저, 데스크톱, 모바일과 Jupyter Notebook에서 실행됩니다.",
   "PleasePrompto/notebooklm-mcp": "NotebookLM용 MCP 서버. AI 에이전트(Claude Code, Codex)가 Gemini의 근거 및 인용 기반 답변으로 문서를 직접 조사할 수 있게 합니다. 영속 인증, 라이브러리 관리와 클라이언트 간 공유를 지원하며, 환각 없이 사용자의 지식 베이스만 활용합니다.",
-  "pranshuparmar/witr": "이 프로세스가 왜 실행 중인지 알려주는 도구.",
+  "pranshuparmar/witr": "왜 이 프로세스가 실행 중일까요? 프로세스, 포트, 컨테이너 또는 파일을 시작한 원인까지 추적합니다. CLI + TUI.",
   "PrimeIntellect-ai/prime-agent": "코딩 워크플로와 장기 실행 자율 작업을 위한 자기 개선형 RLM 에이전트.",
   "proofofplay/piratenation-art": "Pirate Nation의 아트워크.",
   "proofofplay/piratenation-game": "Proof of Play의 Web3 게임인 Pirate Nation Unity 클라이언트를 보존 목적으로 공개한 오픈소스 릴리스.",
@@ -205,5 +205,14 @@
   "sundial-org/awesome-openclaw-skills": "가장 인기 있고 유용한 OpenClaw 스킬 모음.",
   "supertone-inc/supertonic": "ONNX로 네이티브 실행되는 초고속 온디바이스 다국어 TTS.",
   "virgiliojr94/book-to-skill": "어떤 기술 서적 PDF든 학습하고 참고해 실무에 바로 사용할 수 있는 Claude Code 스킬로 변환합니다.",
-  "vitali87/code-graph-rag": "모노레포를 위한 강력한 RAG. AI와 지식 그래프로 다국어 코드베이스를 질의하고 이해하며 편집합니다."
+  "vitali87/code-graph-rag": "모노레포를 위한 강력한 RAG. AI와 지식 그래프로 다국어 코드베이스를 질의하고 이해하며 편집합니다.",
+  "ai-for-developers/awesome-ai-coding-tools": "AI 기반 코딩 도구를 엄선한 목록.",
+  "elizaOS/eliza": "오픈소스 에이전트 운영체제.",
+  "gmickel/flow-next": "반복 가능한 에이전틱 엔지니어링. AI 코딩 에이전트를 규율 있는 공장으로 바꾸는 워크플로 레이어로, 내구성 있는 명세, 새로운 컨텍스트의 워커, 적대적 크로스 모델 리뷰, 작업 증빙을 제공합니다. 모든 것이 저장소 안에 있으며 의존성은 없습니다. Claude Code · Codex · Cursor · Droid.",
+  "gooseworks-ai/goose-skills": "그로스 및 GTM 스킬과 데이터 API 라이브러리. Claude Code, Codex, Cursor가 광고, 소셜, 콘텐츠, 리드 생성, SEO와 데이터 스크래핑을 실행하도록 합니다.",
+  "khoj-ai/khoj": "나만의 AI 세컨드 브레인. 자체 호스팅할 수 있으며 웹이나 문서에서 답을 얻고, 커스텀 에이전트를 만들고, 자동화를 예약하고, 심층 리서치를 수행할 수 있습니다. 온라인 또는 로컬 LLM(gpt, claude, gemini, llama, qwen, mistral)을 개인용 자율 AI로 바꿔 줍니다. 무료로 시작하세요.",
+  "nowork-studio/notfair-plugin": "AI 에이전트를 위한 오픈소스 SEO, GEO 및 마케팅 스킬.",
+  "NVIDIA/elements": "AI/ML 팩토리, 로보틱스 및 자율주행 차량을 위한 NVIDIA 디자인 시스템 및 UI 에이전트 하니스.",
+  "SmythOS/smythos-studio": "SmythOS의 오픈소스 비주얼 AI 에이전트 빌더이자 배포 가능한 런타임 스택. 직관적인 드래그 앤 드롭 작업 공간에서 시작해 커스텀 코드로 확장하고, 완전한 거버넌스와 제어 기능을 바탕으로 로컬, 클라우드 또는 엣지 어디에나 에이전트를 배포하세요.",
+  "vectorize-io/hindsight": "Hindsight: 학습하는 에이전트 메모리."
 }
