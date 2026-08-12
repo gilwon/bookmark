@@ -34,14 +34,22 @@ const { normalizePasteToMarkdown } = require(resolve(root, "src/lib/normalize-to
 const {
   PAGE_ATTACHMENT_MOODMODE_FILENAME,
   PAGE_ATTACHMENT_MOODMODE_SOURCE_ID,
+  PAGE_ATTACHMENT_FILENAMES,
+  PAGE_ATTACHMENT_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   PAGE_ATTACHMENT_STORAGE_MIME,
+  countDisplayablePageImages,
   createPageAttachmentObjectPath,
   planNotionWeekPageAction,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
 const moodmodeSourceId = PAGE_ATTACHMENT_MOODMODE_SOURCE_ID;
 const moodmodeFilename = PAGE_ATTACHMENT_MOODMODE_FILENAME;
+const kimhyoExpected = {
+  title: "김효율 스킬팩",
+  sourceMarkers: ["https://app.notion.com/p/gilwon/5a5b256827ac8287b9b381e50f142820", PAGE_ATTACHMENT_SOURCE_ID],
+  attachmentUrls: PAGE_ATTACHMENT_FILENAMES.map((filename) => `/api/page-attachments/${PAGE_ATTACHMENT_SOURCE_ID}/${encodeURIComponent(filename)}`),
+};
 
 function contentFromNotion(text) {
   return (text.match(/<content>\n([\s\S]*?)\n<\/content>/)?.[1] ?? text).trim();
@@ -107,9 +115,8 @@ function markdownFor(page, paths) {
 }
 
 function documentStats(content) {
-  const stats = { images: 0, links: [] };
+  const stats = { images: countDisplayablePageImages(content), links: [] };
   function visit(node) {
-    if (node.type === "image") stats.images += 1;
     for (const mark of node.marks ?? []) {
       if (mark.type === "link" && mark.attrs?.href) stats.links.push(mark.attrs.href);
     }
@@ -157,7 +164,22 @@ function plansFor(rows) {
   }));
 }
 
+function assertKimhyoComplete(rows) {
+  const plan = planNotionWeekPageAction(
+    rows,
+    kimhyoExpected.title,
+    kimhyoExpected.sourceMarkers,
+    0,
+    kimhyoExpected.attachmentUrls
+  );
+  if (plan.action !== "skip") {
+    throw new Error("김효율 스킬팩은 scripts/import-notion-kimhyo-skills-page.mjs로 먼저 보완해야 합니다.");
+  }
+  return plan.row;
+}
+
 function verifyRows(rows) {
+  assertKimhyoComplete(rows);
   const plans = plansFor(rows);
   for (const { record, action, row } of plans) {
     if (!row) throw new Error("저장 Page 무결성 검증에 실패했습니다.");
@@ -179,6 +201,7 @@ function importLocal() {
   const result = { inserted: 0, updated: 0, skipped: 0 };
   db.transaction(() => {
     const rows = db.prepare("SELECT id, title, content FROM custom_pages WHERE user_id = ?").all(localUser);
+    assertKimhyoComplete(rows);
     const plans = plansFor(rows);
     const insert = db.prepare("INSERT INTO custom_pages (id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
     const update = db.prepare("UPDATE custom_pages SET content = ?, updated_at = ? WHERE id = ? AND user_id = ?");
@@ -246,7 +269,7 @@ async function ensureBucket(supabase) {
 
 function moodmodeZip() {
   const bytes = new Uint8Array(readFileSync(resolve(assetDirectory, `${moodmodeAssetId}-${moodmodeFilename}`)));
-  if (bytes.byteLength !== moodmodeBytes || bytes[0] !== 0x50 || bytes[1] !== 0x4b || bytes[2] !== 0x03 || bytes[3] !== 0x04) {
+  if (moodmodeBytes > PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT || bytes.byteLength !== moodmodeBytes || bytes[0] !== 0x50 || bytes[1] !== 0x4b || bytes[2] !== 0x03 || bytes[3] !== 0x04) {
     throw new Error("moodmode ZIP 무결성 검증에 실패했습니다.");
   }
   return bytes;
@@ -276,6 +299,7 @@ async function uploadMoodmode(supabase) {
 
 async function importProduction(supabase) {
   const rows = await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser));
+  assertKimhyoComplete(rows);
   const plans = plansFor(rows);
   const result = { inserted: 0, updated: 0, skipped: 0 };
   for (const { record, action, row } of plans) {
@@ -300,7 +324,10 @@ if (process.argv.includes("--check")) {
   const attachmentPaths = moodmodeObjectPaths();
   console.log(JSON.stringify({
     pages: records.map((record) => ({ title: record.title, images: record.images, attachments: record.attachments.length })),
-    pagesTotal: records.length,
+    pagesTotal: records.length + 1,
+    writeCandidates: records.length,
+    existingCompleteCandidates: 1,
+    existingComplete: kimhyoExpected,
     images: totalImages,
     attachments: totalAttachments,
     attachmentPaths,
@@ -314,8 +341,12 @@ for (const key of ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) {
   if (!process.env[key]) throw new Error(`필수 환경변수 누락: ${key}`);
 }
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
-plansFor(localRows());
-plansFor(await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser)));
+const localPreflightRows = localRows();
+plansFor(localPreflightRows);
+assertKimhyoComplete(localPreflightRows);
+const productionPreflightRows = await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser));
+plansFor(productionPreflightRows);
+assertKimhyoComplete(productionPreflightRows);
 const bucket = await ensureBucket(supabase);
 const uploads = await uploadMoodmode(supabase);
 const local = importLocal();

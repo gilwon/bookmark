@@ -28,6 +28,36 @@ function normalizedNotionWeekTitle(value: unknown): string {
     .toLocaleLowerCase("ko-KR");
 }
 
+function isDisplayablePageImageSource(value: unknown): boolean {
+  if (typeof value !== "string" || !value) return false;
+  if (value.startsWith("data:image/")) return true;
+  if (value.startsWith("/") && !value.startsWith("//")) return true;
+  if (!/^https?:\/\//.test(value)) return false;
+  const lowerValue = value.toLocaleLowerCase("en-US");
+  return !["bl" + "ob:", "prod" + "-files-secure", "x-" + "amz", "security" + "-token", "expiration" + "timestamp"].some(
+    (part) => lowerValue.includes(part)
+  );
+}
+
+/** 저장한 TipTap 문서에서 실제로 표시할 수 있는 이미지를 센다. */
+export function countDisplayablePageImages(content: unknown): number {
+  let document: unknown;
+  try {
+    document = JSON.parse(String(content));
+  } catch {
+    return 0;
+  }
+  let count = 0;
+  function visit(node: unknown) {
+    if (!node || typeof node !== "object") return;
+    const item = node as { type?: unknown; attrs?: { src?: unknown }; content?: unknown[] };
+    if (item.type === "image" && isDisplayablePageImageSource(item.attrs?.src)) count += 1;
+    for (const child of item.content ?? []) visit(child);
+  }
+  visit(document);
+  return count;
+}
+
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
   return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID;
@@ -78,7 +108,11 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   }
   const row = exactTitles[0];
   const content = String(row.content);
-  const imageCount = content.match(/"type":"image"/g)?.length ?? 0;
+  const sourceRows = rows.filter((candidate) => sourceMarkers.some((marker) => String(candidate.content).includes(marker)));
+  if (sourceRows.length !== 1 || sourceRows[0] !== row) {
+    throw new Error("Notion Page 제목과 원문 식별자 후보가 달라 저장을 중단했습니다.");
+  }
+  const imageCount = countDisplayablePageImages(content);
   const mediaMissing = imageCount < expectedImages || attachmentUrls.some((url) => !content.includes(url));
   return { action: mediaMissing ? "update" : "skip", row };
 }

@@ -5,12 +5,22 @@ import {
   createPageAttachmentObjectPath,
   isPageAttachmentFilename,
   isPageAttachmentSourceId,
+  PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   planNotionWeekPageAction,
   pageAttachmentDownloadOutcome,
   selectPageAttachmentImportTarget,
 } from "../src/lib/page-attachment-storage.ts";
 
 const sourceId = "5a5b256827ac8287b9b381e50f142820";
+
+function pageContent({ src, source = "new-source-id", attachment } = {}) {
+  return JSON.stringify({
+    type: "doc",
+    source,
+    attachment,
+    content: src === undefined ? [] : [{ type: "image", attrs: { src } }],
+  });
+}
 
 describe("Pages 첨부 Storage 공개 경계", () => {
   it("두 허용 ZIP의 사용자별 경로를 결정적으로 만든다", () => {
@@ -77,6 +87,10 @@ describe("Pages 첨부 Storage 공개 경계", () => {
       createPageAttachmentObjectPath("github/123", sourceId, "../archive.zip"),
       null
     );
+  });
+
+  it("moodmode ZIP은 버킷 파일 제한보다 작다", () => {
+    assert.ok(10279989 < PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT);
   });
 });
 
@@ -158,7 +172,7 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
   });
 
   it("기존 제목의 미디어가 모자라면 본문 갱신을 계획한다", () => {
-    const row = { id: "page-1", title, content: '{"type":"doc"}' };
+    const row = { id: "page-1", title, content: pageContent() };
     assert.deepEqual(
       planNotionWeekPageAction([row], title, sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
       { action: "update", row }
@@ -169,7 +183,7 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
     const row = {
       id: "page-1",
       title,
-      content: '{"type":"image"}{"href":"/api/page-attachments/source/file.zip"}',
+      content: pageContent({ src: "data:image/png;base64,AA", attachment: "/api/page-attachments/source/file.zip" }),
     };
     assert.deepEqual(
       planNotionWeekPageAction([row], title, sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
@@ -181,7 +195,7 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
     const row = {
       id: "page-1",
       title: "Parabolic+인스타 무료 툴 설치가이드",
-      content: '{"type":"image"}{"href":"/api/page-attachments/source/file.zip"}',
+      content: pageContent({ src: "data:image/png;base64,AA", attachment: "/api/page-attachments/source/file.zip" }),
     };
     assert.deepEqual(
       planNotionWeekPageAction([row], "📷 Parabolic+인스타 무료 툴 설치가이드", sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
@@ -190,7 +204,7 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
   });
 
   it("아이콘 없는 기존 제목의 결손 미디어는 갱신한다", () => {
-    const row = { id: "page-1", title: "Parabolic+인스타 무료 툴 설치가이드", content: '{"type":"doc"}' };
+    const row = { id: "page-1", title: "Parabolic+인스타 무료 툴 설치가이드", content: pageContent() };
     assert.deepEqual(
       planNotionWeekPageAction([row], "📷 Parabolic+인스타 무료 툴 설치가이드", sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
       { action: "update", row }
@@ -211,5 +225,47 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
       ], title, sourceMarkers, 0, []),
       /원문 식별자만 일치/
     );
+  });
+
+  it("제목과 원문 후보가 서로 다른 두 행이면 거절한다", () => {
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "title", title, content: pageContent({ source: "다른 원문" }) },
+        { id: "source", title: "다른 Page", content: pageContent() },
+      ], title, sourceMarkers, 0, []),
+      /제목과 원문 식별자/
+    );
+  });
+
+  it("제목만 같은 한 행은 원문이 없어 거절한다", () => {
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "title", title, content: pageContent({ source: "다른 원문" }) },
+      ], title, sourceMarkers, 0, []),
+      /제목과 원문 식별자/
+    );
+  });
+
+  it("제목과 원문이 같은 한 행은 미디어 상태대로 계획한다", () => {
+    const complete = { id: "page-1", title, content: pageContent({ src: "data:image/png;base64,AA", attachment: "/api/page-attachments/source/file.zip" }) };
+    const missing = { id: "page-2", title, content: pageContent() };
+    assert.deepEqual(
+      planNotionWeekPageAction([complete], title, sourceMarkers, 1, ["/api/page-attachments/source/file.zip"]),
+      { action: "skip", row: complete }
+    );
+    assert.deepEqual(
+      planNotionWeekPageAction([missing], title, sourceMarkers, 1, []),
+      { action: "update", row: missing }
+    );
+  });
+
+  it("빈 값, 만료 서명 URL, 임의 문자열 이미지가 있으면 갱신한다", () => {
+    for (const src of ["", "https://prod-files-secure.example/file?X-Amz-Signature=value", "image.png"]) {
+      const row = { id: src || "empty", title, content: pageContent({ src }) };
+      assert.deepEqual(
+        planNotionWeekPageAction([row], title, sourceMarkers, 1, []),
+        { action: "update", row }
+      );
+    }
   });
 });
