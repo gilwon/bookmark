@@ -8,17 +8,23 @@ import { createClient } from "@supabase/supabase-js";
 import Database from "better-sqlite3";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const sourceUrl = "https://sparkly-room-cb6.notion.site/3b5003c7f7be80bbb275eda06077f238";
+const sourceUrl = "https://app.notion.com/p/gilwon/5a5b256827ac8287b9b381e50f142820";
 const pageId = "3b5003c7-f7be-80bb-b275-eda06077f238";
-const sourceId = pageId.replaceAll("-", "");
+const legacySourceUrl = "https://sparkly-room-cb6.notion.site/3b5003c7f7be80bbb275eda06077f238";
+const legacySourceId = pageId.replaceAll("-", "");
 const endpoint = "https://www.notion.so/api/v3/loadPageChunk";
+const signedFileEndpoint = "https://www.notion.so/api/v3/getSignedFileUrls";
 const localUser = "dev";
 const productionUser = "f72e9a44-79d8-4061-a700-3ec50bb04a97";
 const externalUrl = "https://claude.com/product/claude-code";
-const expectedTypeCounts = { page: 1, sub_header: 8, text: 45, divider: 8, callout: 7, sub_sub_header: 10, code: 10, file: 2, bulleted_list: 10, numbered_list: 3 };
+const expectedTypeCounts = { page: 1, sub_header: 8, text: 48, divider: 8, callout: 9, sub_sub_header: 10, code: 10, file: 2, bulleted_list: 11, numbered_list: 5 };
 const fileLabels = new Map([
   ["intranet-style-skill-20260807.zip", "intranet-style-skill-20260807.zip · 111.7 KiB"],
   ["ui-inspector-skill-20260807.zip", "ui-inspector-skill-20260807.zip · 11.6 KiB"],
+]);
+const expectedFileSizes = new Map([
+  ["intranet-style-skill-20260807.zip", 114372],
+  ["ui-inspector-skill-20260807.zip", 11853],
 ]);
 const licenseContact = "이용 범위 문의 · 팀·기업 라이선스: «lean8kim@gmail.com / 010-8110-0828»";
 
@@ -35,6 +41,18 @@ const require = createRequire(import.meta.url);
 const tsx = require("tsx/cjs/api");
 tsx.register({ tsconfig: resolve(root, "tsconfig.json") });
 const { markdownToTiptapDoc } = require(resolve(root, "src/lib/markdown-to-tiptap.ts"));
+const {
+  PAGE_ATTACHMENT_FILENAMES,
+  PAGE_ATTACHMENT_SOURCE_ID,
+  PAGE_ATTACHMENT_STORAGE_BUCKET,
+  PAGE_ATTACHMENT_STORAGE_MIME,
+  createPageAttachmentObjectPath,
+} = require(resolve(root, "src/lib/page-attachment-storage.ts"));
+const pageAttachmentBucketOptions = {
+  public: false,
+  fileSizeLimit: 1024 * 1024,
+  allowedMimeTypes: [PAGE_ATTACHMENT_STORAGE_MIME],
+};
 
 function plainText(value) {
   if (typeof value === "string") return value;
@@ -94,7 +112,7 @@ function assertSourceInvariant(blocks, page, requestCount) {
   const typesMatch = Object.keys(counts).length === Object.keys(expectedTypeCounts).length && Object.entries(expectedTypeCounts).every(([type, count]) => counts[type] === count);
   const expectedFiles = new Set(fileLabels.keys());
   const filesMatch = files.length === expectedFiles.size && new Set(files).size === expectedFiles.size && files.every((file) => expectedFiles.has(file));
-  if (blocks.size !== 104 || page.content?.length !== 101 || !typesMatch || !filesMatch || codeLanguages.length !== 10 || !codeLanguages.every((language) => language === "text" || language === "")) throw new Error("원문 구조 무결성 검증에 실패했습니다.");
+  if (blocks.size !== 112 || page.content?.length !== 107 || !typesMatch || !filesMatch || codeLanguages.length !== 10 || !codeLanguages.every((language) => language === "text" || language === "")) throw new Error("원문 구조 무결성 검증에 실패했습니다.");
   return { total: blocks.size, rootChildren: page.content.length, requestCount, types: counts, files, codeLanguages };
 }
 
@@ -146,7 +164,7 @@ function documentFrom(blocks, page) {
       const label = fileLabels.get(rawTitle);
       if (!label) throw new Error(`예상하지 못한 첨부 파일: ${rawTitle}`);
       zipLabels.push(label);
-      return `[${label}](${sourceUrl})`;
+      return `[${label}](/api/page-attachments/${PAGE_ATTACHMENT_SOURCE_ID}/${encodeURIComponent(rawTitle)})`;
     }
     if (block.type === "divider") return "---";
     if (block.type === "callout") return `:::callout\n${[title, children].filter(Boolean).join("\n\n")}\n:::`;
@@ -194,34 +212,40 @@ function documentStats(content) {
 
 function hasSource(content) {
   const value = String(content);
-  return value.includes(sourceId) || value.includes(pageId);
+  return value.includes(sourceUrl) || value.includes(legacySourceUrl) || value.includes(PAGE_ATTACHMENT_SOURCE_ID) || value.includes(legacySourceId);
 }
 
-function pageExists(rows, page) {
-  return rows.some((row) => row.title === page.title || hasSource(row.content));
+function matchingPages(rows, page) {
+  return rows.filter((row) => row.title === page.title || hasSource(row.content));
 }
 
 function verifyRows(rows, page) {
   const exactTitle = rows.filter((row) => row.title === page.title);
   const sourceMatches = rows.filter((row) => hasSource(row.content));
-  const matching = rows.filter((row) => row.title === page.title || hasSource(row.content));
+  const matching = matchingPages(rows, page);
   const saved = exactTitle[0] ?? sourceMatches[0];
   const stats = saved ? documentStats(saved.content) : null;
   const fileLabelsPresent = [...fileLabels.values()].every((label) => String(saved?.content).includes(label));
-  if (matching.length !== 1 || !saved || !stats || saved.content !== page.content || !String(saved.content).includes(sourceUrl) || !fileLabelsPresent || stats.codeBlocks.length !== 10 || !stats.codeBlocks.every((language) => language === "text" || language === "") || stats.images !== 0 || stats.callouts < 7 || unsafeStringCount(saved.content) !== 0 || stats.links.filter((link) => link.href === externalUrl).length !== 1 || stats.links.filter((link) => link.href === sourceUrl).length !== 3) throw new Error("저장 데이터 무결성 검증에 실패했습니다.");
+  const attachmentUrls = PAGE_ATTACHMENT_FILENAMES.map((filename) => `/api/page-attachments/${PAGE_ATTACHMENT_SOURCE_ID}/${encodeURIComponent(filename)}`);
+  if (matching.length !== 1 || !saved || !stats || saved.content !== page.content || !String(saved.content).includes(sourceUrl) || String(saved.content).includes(legacySourceUrl) || !fileLabelsPresent || stats.codeBlocks.length !== 10 || !stats.codeBlocks.every((language) => language === "text" || language === "") || stats.images !== 0 || stats.callouts < 7 || unsafeStringCount(saved.content) !== 0 || stats.links.filter((link) => link.href === externalUrl).length !== 1 || stats.links.filter((link) => link.href === sourceUrl).length !== 1 || attachmentUrls.some((url) => stats.links.filter((link) => link.href === url).length !== 1)) throw new Error("저장 데이터 무결성 검증에 실패했습니다.");
   return { pages: matching.length, codes: stats.codeBlocks.length, images: stats.images, callouts: stats.callouts, zipLinks: 2, externalLinks: 1, sources: 1, unsafeStrings: 0 };
 }
 
 function importLocal(page) {
   const db = new Database(resolve(root, "data/mymark.db"));
-  const result = { pagesInserted: 0, pagesSkipped: 0 };
+  const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0 };
   db.transaction(() => {
-    const rows = db.prepare("SELECT title, content FROM custom_pages WHERE user_id = ?").all(localUser);
-    if (pageExists(rows, page)) result.pagesSkipped += 1;
-    else {
+    const rows = db.prepare("SELECT id, title, content FROM custom_pages WHERE user_id = ?").all(localUser);
+    const existing = matchingPages(rows, page)[0];
+    if (!existing) {
       const now = new Date().toISOString();
       db.prepare("INSERT INTO custom_pages (id, user_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)").run(randomUUID(), localUser, page.title, page.content, now, now);
       result.pagesInserted += 1;
+    } else if (existing.title !== page.title || existing.content !== page.content) {
+      db.prepare("UPDATE custom_pages SET title = ?, content = ?, updated_at = ? WHERE id = ? AND user_id = ?").run(page.title, page.content, new Date().toISOString(), existing.id, localUser);
+      result.pagesUpdated += 1;
+    } else {
+      result.pagesSkipped += 1;
     }
   })();
   db.close();
@@ -239,16 +263,91 @@ async function allRows(query) {
 }
 
 async function importProduction(page, supabase) {
-  const result = { pagesInserted: 0, pagesSkipped: 0 };
-  const rows = await allRows(supabase.from("custom_pages").select("title, content").eq("user_id", productionUser));
-  if (pageExists(rows, page)) result.pagesSkipped += 1;
-  else {
+  const result = { pagesInserted: 0, pagesUpdated: 0, pagesSkipped: 0 };
+  const rows = await allRows(supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser));
+  const existing = matchingPages(rows, page)[0];
+  if (!existing) {
     const now = new Date().toISOString();
     const { error } = await supabase.from("custom_pages").insert({ id: randomUUID(), user_id: productionUser, title: page.title, content: page.content, created_at: now, updated_at: now });
     if (error) throw error;
     result.pagesInserted += 1;
+  } else if (existing.title !== page.title || existing.content !== page.content) {
+    const { error } = await supabase.from("custom_pages").update({ title: page.title, content: page.content, updated_at: new Date().toISOString() }).eq("id", existing.id).eq("user_id", productionUser);
+    if (error) throw error;
+    result.pagesUpdated += 1;
+  } else {
+    result.pagesSkipped += 1;
   }
   return result;
+}
+
+function attachmentRecords(blocks) {
+  const attachments = [...blocks.values()].filter((block) => block.type === "file").map((block) => ({
+    block,
+    filename: rawTitleOf(block),
+    source: plainText(block.properties?.source).trim(),
+  }));
+  if (attachments.length !== PAGE_ATTACHMENT_FILENAMES.length || attachments.some(({ filename, source }) => !expectedFileSizes.has(filename) || !source.startsWith("attachment:"))) throw new Error("첨부 파일 원문 무결성 검증에 실패했습니다.");
+  return attachments;
+}
+
+function isNotFound(error) {
+  return error?.status === 404 || error?.statusCode === "404";
+}
+
+async function downloadAttachments(blocks) {
+  const attachments = attachmentRecords(blocks);
+  const { signedUrls } = await (async () => {
+    const response = await fetch(signedFileEndpoint, {
+      method: "POST",
+      headers: { accept: "application/json", "content-type": "application/json", "user-agent": "Mozilla/5.0" },
+      body: JSON.stringify({ urls: attachments.map(({ block, source }) => ({ permissionRecord: { table: "block", id: block.id, spaceId: block.space_id }, url: source })) }),
+    });
+    if (!response.ok) throw new Error(`Notion 첨부 서명 HTTP ${response.status}`);
+    return response.json();
+  })();
+  if (!Array.isArray(signedUrls) || signedUrls.length !== attachments.length || signedUrls.some((url) => typeof url !== "string")) throw new Error("Notion 첨부 서명 URL 검증에 실패했습니다.");
+  return Promise.all(attachments.map(async ({ filename }, index) => {
+    const response = await fetch(signedUrls[index]);
+    if (!response.ok) throw new Error(`Notion 첨부 다운로드 HTTP ${response.status} (${filename})`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.byteLength !== expectedFileSizes.get(filename) || bytes[0] !== 0x50 || bytes[1] !== 0x4b || bytes[2] !== 0x03 || bytes[3] !== 0x04) throw new Error(`Notion 첨부 바이트 검증에 실패했습니다: ${filename}`);
+    return { filename, bytes };
+  }));
+}
+
+function bucketMatches(bucket) {
+  return bucket.public === false && bucket.file_size_limit === pageAttachmentBucketOptions.fileSizeLimit && Array.isArray(bucket.allowed_mime_types) && bucket.allowed_mime_types.length === 1 && bucket.allowed_mime_types[0] === PAGE_ATTACHMENT_STORAGE_MIME;
+}
+
+async function ensurePageAttachmentBucket(supabase) {
+  const { data: bucket, error } = await supabase.storage.getBucket(PAGE_ATTACHMENT_STORAGE_BUCKET);
+  if (error && !isNotFound(error)) throw error;
+  if (!bucket) {
+    const { error: createError } = await supabase.storage.createBucket(PAGE_ATTACHMENT_STORAGE_BUCKET, pageAttachmentBucketOptions);
+    if (createError) throw createError;
+    return "created";
+  }
+  if (!bucketMatches(bucket)) {
+    const { error: updateError } = await supabase.storage.updateBucket(PAGE_ATTACHMENT_STORAGE_BUCKET, pageAttachmentBucketOptions);
+    if (updateError) throw updateError;
+    return "updated";
+  }
+  return "unchanged";
+}
+
+async function uploadAttachments(supabase, attachments) {
+  let uploads = 0;
+  for (const userId of [localUser, productionUser]) {
+    for (const { filename, bytes } of attachments) {
+      const path = createPageAttachmentObjectPath(userId, PAGE_ATTACHMENT_SOURCE_ID, filename);
+      if (!path) throw new Error(`첨부 Storage 경로 검증에 실패했습니다: ${filename}`);
+      const { error } = await supabase.storage.from(PAGE_ATTACHMENT_STORAGE_BUCKET).upload(path, bytes, { contentType: PAGE_ATTACHMENT_STORAGE_MIME, upsert: true });
+      if (error) throw error;
+      uploads += 1;
+    }
+  }
+  return uploads;
 }
 
 const { blocks, page: sourcePage, requestCount } = await collectBlocks();
@@ -258,19 +357,23 @@ const sourceStats = documentStats(page.content);
 const fileLabelsPresent = [...fileLabels.values()].every((label) => page.markdown.includes(label) && page.content.includes(label));
 const expectedZipLabels = new Set(fileLabels.values());
 const zipLabelsMatch = page.zipLabels.length === expectedZipLabels.size && new Set(page.zipLabels).size === expectedZipLabels.size && page.zipLabels.every((label) => expectedZipLabels.has(label));
-if (page.title !== "김효율 스킬팩" || page.codeLanguages.length !== 10 || !page.codeLanguages.every((language) => language === "text" || language === "") || !zipLabelsMatch || sourceStats.codeBlocks.length !== 10 || !sourceStats.codeBlocks.every((language) => language === "text" || language === "") || sourceStats.images !== 0 || sourceStats.callouts < 7 || sourceStats.links.filter((link) => link.href === externalUrl).length !== 1 || sourceStats.externalBoldLinks !== 1 || sourceStats.links.filter((link) => link.href === sourceUrl).length !== 3 || !page.markdown.includes(licenseContact) || !page.content.includes(licenseContact) || !page.content.includes(sourceUrl) || !fileLabelsPresent || unsafeStringCount(page.markdown) !== 0 || unsafeStringCount(page.content) !== 0) throw new Error("원문 변환 무결성 검증에 실패했습니다.");
+const attachmentUrls = PAGE_ATTACHMENT_FILENAMES.map((filename) => `/api/page-attachments/${PAGE_ATTACHMENT_SOURCE_ID}/${encodeURIComponent(filename)}`);
+if (page.title !== "김효율 스킬팩" || page.codeLanguages.length !== 10 || !page.codeLanguages.every((language) => language === "text" || language === "") || !zipLabelsMatch || sourceStats.codeBlocks.length !== 10 || !sourceStats.codeBlocks.every((language) => language === "text" || language === "") || sourceStats.images !== 0 || sourceStats.callouts < 7 || sourceStats.links.filter((link) => link.href === externalUrl).length !== 1 || sourceStats.externalBoldLinks !== 1 || sourceStats.links.filter((link) => link.href === sourceUrl).length !== 1 || attachmentUrls.some((url) => sourceStats.links.filter((link) => link.href === url).length !== 1) || !page.markdown.includes(licenseContact) || !page.content.includes(licenseContact) || !page.content.includes(sourceUrl) || page.content.includes(legacySourceUrl) || !fileLabelsPresent || unsafeStringCount(page.markdown) !== 0 || unsafeStringCount(page.content) !== 0) throw new Error("원문 변환 무결성 검증에 실패했습니다.");
 
 if (process.argv.includes("--check")) {
-  console.log(JSON.stringify({ title: page.title, total: sourceInvariant.total, rootDirectChildren: sourceInvariant.rootChildren, typeCounts: sourceInvariant.types, requestCount: sourceInvariant.requestCount, codeBlocks: sourceStats.codeBlocks.length, codeLanguages: sourceStats.codeBlocks, images: sourceStats.images, callouts: sourceStats.callouts, zipLinks: page.zipLabels, externalLinks: sourceStats.links.filter((link) => link.href === externalUrl).length, externalBoldLinks: sourceStats.externalBoldLinks, sourceLinks: sourceStats.links.filter((link) => link.href === sourceUrl).length, licenseContact: page.content.includes(licenseContact), unsafeStrings: unsafeStringCount(page.content), writes: 0 }, null, 2));
+  console.log(JSON.stringify({ title: page.title, total: sourceInvariant.total, rootDirectChildren: sourceInvariant.rootChildren, typeCounts: sourceInvariant.types, requestCount: sourceInvariant.requestCount, codeBlocks: sourceStats.codeBlocks.length, codeLanguages: sourceStats.codeBlocks, images: sourceStats.images, callouts: sourceStats.callouts, zipLinks: page.zipLabels, attachmentUrls, externalLinks: sourceStats.links.filter((link) => link.href === externalUrl).length, externalBoldLinks: sourceStats.externalBoldLinks, sourceLinks: sourceStats.links.filter((link) => link.href === sourceUrl).length, licenseContact: page.content.includes(licenseContact), unsafeStrings: unsafeStringCount(page.content), writes: 0 }, null, 2));
   process.exit(0);
 }
 
 for (const key of ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) if (!process.env[key]) throw new Error(`필수 환경변수 누락: ${key}`);
-const local = importLocal(page);
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+const attachments = await downloadAttachments(blocks);
+const bucket = await ensurePageAttachmentBucket(supabase);
+const uploads = await uploadAttachments(supabase, attachments);
+const local = importLocal(page);
 const production = await importProduction(page, supabase);
 const localDb = new Database(resolve(root, "data/mymark.db"), { readonly: true });
 const localVerification = verifyRows(localDb.prepare("SELECT title, content FROM custom_pages WHERE user_id = ?").all(localUser), page);
 localDb.close();
 const productionVerification = verifyRows(await allRows(supabase.from("custom_pages").select("title, content").eq("user_id", productionUser)), page);
-console.log(JSON.stringify({ local, production, verify: { local: localVerification, production: productionVerification } }, null, 2));
+console.log(JSON.stringify({ bucket, uploads, local, production, verify: { local: localVerification, production: productionVerification } }, null, 2));
