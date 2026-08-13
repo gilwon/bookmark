@@ -1,5 +1,6 @@
 // Pages 첨부 다운로드의 안전한 Storage 경로를 만든다
 import { pdfUserFolder } from "@/lib/pdf-storage";
+import { removeDuplicateLeadingTitle } from "@/lib/migrate-aside-content";
 
 export const PAGE_ATTACHMENT_STORAGE_BUCKET = "page-attachments";
 export const PAGE_ATTACHMENT_STORAGE_MIME = "application/zip";
@@ -119,6 +120,88 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   const mediaReferences = extractPageMediaReferences(content);
   const mediaMissing = expectedImageSources.some((source) => !mediaReferences.imageSources.includes(source)) || attachmentUrls.some((url) => !mediaReferences.linkHrefs.includes(url));
   return { action: mediaMissing ? "update" : "skip", row };
+}
+
+function editorCanonicalNode(value: unknown, omittedLinkHrefs: readonly string[]): unknown {
+  if (Array.isArray(value)) {
+    const nodes: Record<string, unknown>[] = [];
+    for (const item of value) {
+      const node = editorCanonicalNode(item, omittedLinkHrefs);
+      if (!node || typeof node !== "object" || Array.isArray(node)) continue;
+      const current = node as Record<string, unknown>;
+      const previous = nodes.at(-1);
+      if (
+        previous?.type === "text" &&
+        current.type === "text" &&
+        JSON.stringify(previous.marks ?? []) === JSON.stringify(current.marks ?? []) &&
+        JSON.stringify(previous.attrs ?? {}) === JSON.stringify(current.attrs ?? {})
+      ) {
+        previous.text = `${String(previous.text ?? "")}${String(current.text ?? "")}`;
+      } else {
+        nodes.push(current);
+      }
+    }
+    return nodes;
+  }
+  if (!value || typeof value !== "object") return value;
+  const node = { ...(value as Record<string, unknown>) };
+  if (
+    node.type === "text" &&
+    Array.isArray(node.marks) &&
+    node.marks.some((mark) => {
+      if (!mark || typeof mark !== "object") return false;
+      const link = mark as { type?: unknown; attrs?: { href?: unknown } };
+      return link.type === "link" && typeof link.attrs?.href === "string" && omittedLinkHrefs.includes(link.attrs.href);
+    })
+  ) {
+    return undefined;
+  }
+  if (node.type === "link" && node.attrs && typeof node.attrs === "object") {
+    const attrs = { ...(node.attrs as Record<string, unknown>) };
+    if (attrs.target === "_blank") delete attrs.target;
+    if (attrs.rel === "noopener noreferrer nofollow") delete attrs.rel;
+    if (attrs.class === "text-indigo-500 underline underline-offset-2") delete attrs.class;
+    if (attrs.title === null) delete attrs.title;
+    node.attrs = attrs;
+  }
+  const output: Record<string, unknown> = {};
+  for (const key of Object.keys(node).sort()) output[key] = editorCanonicalNode(node[key], omittedLinkHrefs);
+  if (output.type === "paragraph" && Array.isArray(output.content) && output.content.length === 0) return undefined;
+  return output;
+}
+
+function canonicalPageContent(content: unknown, title: string, omittedLinkHrefs: readonly string[] = []): string {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(String(content));
+  } catch {
+    throw new Error("Page 본문 JSON이 올바르지 않아 저장을 중단했습니다.");
+  }
+  return JSON.stringify(editorCanonicalNode(removeDuplicateLeadingTitle(parsed, title).content, omittedLinkHrefs));
+}
+
+/** 편집기 정규화 외의 본문 차이는 덮어쓰지 않고 첨부 결손만 갱신한다. */
+export function planExactPageAttachmentAction<T extends PageAttachmentImportRow>(
+  rows: readonly T[],
+  title: string,
+  sourceMarkers: readonly string[],
+  expectedContent: unknown,
+  attachmentUrls: readonly string[]
+): { action: "insert"; row: null } | { action: "update" | "skip"; row: T } {
+  const mediaPlan = planNotionWeekPageAction(rows, title, sourceMarkers, [], attachmentUrls);
+  if (mediaPlan.action === "insert") return mediaPlan;
+  if (canonicalPageContent(mediaPlan.row.content, title) === canonicalPageContent(expectedContent, title)) {
+    return { action: "skip", row: mediaPlan.row };
+  }
+  const media = extractPageMediaReferences(mediaPlan.row.content);
+  const attachmentMissing = attachmentUrls.some((url) => !media.linkHrefs.includes(url));
+  if (
+    attachmentMissing &&
+    canonicalPageContent(mediaPlan.row.content, title, attachmentUrls) === canonicalPageContent(expectedContent, title, attachmentUrls)
+  ) {
+    return { action: "update", row: mediaPlan.row };
+  }
+  throw new Error("기존 Page 본문이 달라 덮어쓰지 않고 중단했습니다.");
 }
 
 /** 정확한 제목만 갱신 대상으로 고르고 모호한 원문 후보는 중단한다. */

@@ -1,4 +1,5 @@
 // 방구석 클로드코드 세팅팩 원문과 ZIP 첨부를 Pages에 안전하게 이관한다
+import assert from "node:assert/strict";
 import { createHash, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { existsSync, readFileSync } from "node:fs";
@@ -48,7 +49,7 @@ const {
   PAGE_ATTACHMENT_STORAGE_MIME,
   createPageAttachmentObjectPath,
   extractPageMediaReferences,
-  planNotionWeekPageAction,
+  planExactPageAttachmentAction,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
 
 const attachmentUrl = `/api/page-attachments/${PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID}/${encodeURIComponent(PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME)}`;
@@ -120,6 +121,16 @@ export function verifyClaudeSetupZip(bytes) {
   return { bytes: bytes.byteLength, sha256: hash, entries };
 }
 
+function verifyInvalidZipRejection(bytes) {
+  const altered = bytes.slice();
+  altered[100] ^= 1;
+  const invalidFiles = [altered, bytes.slice(0, -1)];
+  for (const invalid of invalidFiles) {
+    assert.throws(() => verifyClaudeSetupZip(invalid), /ZIP/);
+  }
+  return invalidFiles.length;
+}
+
 async function downloadAttachment(file) {
   const signedResponse = await fetch(signedFileEndpoint, {
     method: "POST",
@@ -159,7 +170,7 @@ function pageRecord(paragraphs) {
 }
 
 function plan(rows, page) {
-  return planNotionWeekPageAction(rows, page.title, sourceMarkers, [], [attachmentUrl]);
+  return planExactPageAttachmentAction(rows, page.title, sourceMarkers, page.content, [attachmentUrl]);
 }
 
 function localRows() {
@@ -287,10 +298,11 @@ const { data: bucket, error: bucketError } = await supabase.storage.getBucket(PA
 if (bucketError) throw bucketError;
 
 if (process.argv.includes("--check")) {
+  const invalidZipRejections = verifyInvalidZipRejection(attachment.bytes);
   console.log(JSON.stringify({
     title,
     source: { pageId, directChildren: 4, paragraphs: source.paragraphs.length, attachmentBlockId, filename: source.file.filename },
-    zip: attachment.integrity,
+    zip: { ...attachment.integrity, invalidZipRejections },
     attachmentUrl,
     objectPaths: objectPaths(),
     bucket: { name: bucket.name, matches: bucketMatches(bucket) },

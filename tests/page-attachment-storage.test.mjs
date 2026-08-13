@@ -8,6 +8,7 @@ import {
   PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME,
   PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
+  planExactPageAttachmentAction,
   planNotionWeekPageAction,
   pageAttachmentDownloadOutcome,
   selectPageAttachmentImportTarget,
@@ -321,12 +322,100 @@ describe("방구석 클로드코드 세팅팩 Page 이관 계획", () => {
   const title = "방구석 클로드코드 세팅팩 — CLAUDE.md 무료 배포";
   const sourceMarkers = [claudeSetupSourceId, "https://past-teacher-021.notion.site/CLAUDE-md-3bb3de874c4d80189cf4f2c0599b9296"];
   const attachment = `/api/page-attachments/${claudeSetupSourceId}/${encodeURIComponent(claudeSetupFilename)}`;
+  const paragraphs = ["첫 문단", "둘째 문단", "셋째 문단"];
+
+  function setupContent(texts) {
+    return JSON.stringify({
+      type: "doc",
+      source: claudeSetupSourceId,
+      content: [
+        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: title }] },
+        ...texts.map((text) => ({ type: "paragraph", content: [{ type: "text", text }] })),
+        { type: "paragraph", content: [{ type: "text", text: "첨부", marks: [{ type: "link", attrs: { href: attachment } }] }] },
+      ],
+    });
+  }
+
+  function expectedContent({ attachmentIncluded = true, leadingTitle = true, extraParagraph } = {}) {
+    const document = JSON.parse(setupContent(paragraphs));
+    if (!leadingTitle) document.content.shift();
+    if (!attachmentIncluded) document.content.pop();
+    if (extraParagraph) document.content.push({ type: "paragraph", content: [{ type: "text", text: extraParagraph }] });
+    return JSON.stringify(document);
+  }
 
   it("첨부 링크가 없으면 갱신하고 링크가 있으면 건너뛴다", () => {
     const missing = { id: "missing", title, content: pageContent({ source: claudeSetupSourceId }) };
     const complete = { id: "complete", title, content: pageContent({ source: claudeSetupSourceId, attachment }) };
     assert.deepEqual(planNotionWeekPageAction([missing], title, sourceMarkers, [], [attachment]), { action: "update", row: missing });
     assert.deepEqual(planNotionWeekPageAction([complete], title, sourceMarkers, [], [attachment]), { action: "skip", row: complete });
+  });
+
+  it("제목·원문·첨부가 있어도 원문 3문단이 빠지거나 변조되면 중단한다", () => {
+    const expected = expectedContent();
+    for (const texts of [[], paragraphs.slice(0, 2), [paragraphs[0], "변조된 문단", paragraphs[2]]]) {
+      const row = { id: texts.join("-") || "empty", title, content: setupContent(texts) };
+      assert.throws(
+        () => planExactPageAttachmentAction([row], title, sourceMarkers, expected, [attachment]),
+        /본문이 달라/
+      );
+    }
+  });
+
+  it("기대 본문과 같으면 건너뛰고 첨부 링크만 없으면 갱신한다", () => {
+    const expected = expectedContent();
+    const complete = { id: "complete", title, content: expected };
+    const missingAttachment = { id: "missing-attachment", title, content: expectedContent({ attachmentIncluded: false }) };
+    assert.deepEqual(
+      planExactPageAttachmentAction([complete], title, sourceMarkers, expected, [attachment]),
+      { action: "skip", row: complete }
+    );
+    assert.deepEqual(
+      planExactPageAttachmentAction([missingAttachment], title, sourceMarkers, expected, [attachment]),
+      { action: "update", row: missingAttachment }
+    );
+  });
+
+  it("편집기가 선행 제목을 제거하고 링크 기본 attrs를 추가해도 건너뛴다", () => {
+    const expected = expectedContent();
+    const editorDocument = JSON.parse(expectedContent({ leadingTitle: false }));
+    const paragraphText = editorDocument.content[1].content[0].text;
+    editorDocument.content[1].content = [
+      { type: "text", text: paragraphText.slice(0, 5) },
+      { type: "text", text: paragraphText.slice(5) },
+    ];
+    const links = [];
+    const visit = (node) => {
+      for (const mark of node.marks ?? []) if (mark.type === "link") links.push(mark);
+      for (const child of node.content ?? []) visit(child);
+    };
+    visit(editorDocument);
+    for (const link of links) Object.assign(link.attrs, { target: "_blank", rel: "noopener noreferrer nofollow", class: "text-indigo-500 underline underline-offset-2", title: null });
+    const row = { id: "editor", title, content: JSON.stringify(editorDocument) };
+    assert.deepEqual(
+      planExactPageAttachmentAction([row], title, sourceMarkers, expected, [attachment]),
+      { action: "skip", row }
+    );
+  });
+
+  it("사용자 추가·구조 변경·링크 변경 본문은 덮어쓰지 않고 중단한다", () => {
+    const expected = expectedContent();
+    const structureChanged = JSON.parse(expected);
+    structureChanged.content[2].type = "heading";
+    structureChanged.content[2].attrs = { level: 2 };
+    const linkChanged = JSON.parse(expected);
+    linkChanged.content.at(-1).content[0].marks[0].attrs.href = "/api/page-attachments/wrong/file.zip";
+    for (const [id, content] of [
+      ["extra", expectedContent({ extraParagraph: "사용자 추가 메모" })],
+      ["structure", JSON.stringify(structureChanged)],
+      ["link", JSON.stringify(linkChanged)],
+    ]) {
+      const row = { id, title, content };
+      assert.throws(
+        () => planExactPageAttachmentAction([row], title, sourceMarkers, expected, [attachment]),
+        /본문이 달라/
+      );
+    }
   });
 
   it("중복 제목과 제목·원문 후보 분리는 저장 전에 거절한다", () => {
