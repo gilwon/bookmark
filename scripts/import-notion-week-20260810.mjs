@@ -39,7 +39,7 @@ const {
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   PAGE_ATTACHMENT_STORAGE_MIME,
-  countDisplayablePageImages,
+  extractPageImageSources,
   createPageAttachmentObjectPath,
   planNotionWeekPageAction,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
@@ -115,7 +115,7 @@ function markdownFor(page, paths) {
 }
 
 function documentStats(content) {
-  const stats = { images: countDisplayablePageImages(content), links: [] };
+  const stats = { imageSources: extractPageImageSources(content), links: [] };
   function visit(node) {
     for (const mark of node.marks ?? []) {
       if (mark.type === "link" && mark.attrs?.href) stats.links.push(mark.attrs.href);
@@ -134,13 +134,13 @@ const records = pageData.map((page) => {
   const content = JSON.stringify(markdownToTiptapDoc(markdown));
   const attachments = sourceId === moodmodeSourceId ? [attachmentUrl(sourceId)] : [];
   const stats = documentStats(content);
-  if (unsafeParts.some((part) => content.includes(part)) || stats.images !== paths.length || attachments.some((url) => !stats.links.includes(url))) {
+  if (unsafeParts.some((part) => content.includes(part)) || stats.imageSources.length !== paths.length || attachments.some((url) => !stats.links.includes(url))) {
     throw new Error(`Notion Page 변환 무결성 검증에 실패했습니다: ${page.title}`);
   }
-  return { ...page, sourceId, content, images: paths.length, attachments };
+  return { ...page, sourceId, content, imageSources: stats.imageSources, attachments };
 });
 
-const totalImages = records.reduce((count, record) => count + record.images, 0);
+const totalImages = records.reduce((count, record) => count + record.imageSources.length, 0);
 const totalAttachments = records.reduce((count, record) => count + record.attachments.length, 0);
 const integrity = {
   pages: records.length === 14,
@@ -160,7 +160,7 @@ function sourceMarkers(record) {
 function plansFor(rows) {
   return records.map((record) => ({
     record,
-    ...planNotionWeekPageAction(rows, record.title, sourceMarkers(record), record.images, record.attachments),
+    ...planNotionWeekPageAction(rows, record.title, sourceMarkers(record), record.imageSources, record.attachments),
   }));
 }
 
@@ -169,7 +169,7 @@ function assertKimhyoComplete(rows) {
     rows,
     kimhyoExpected.title,
     kimhyoExpected.sourceMarkers,
-    0,
+    [],
     kimhyoExpected.attachmentUrls
   );
   if (plan.action !== "skip") {
@@ -185,7 +185,7 @@ function verifyRows(rows) {
     if (!row) throw new Error("저장 Page 무결성 검증에 실패했습니다.");
     const stats = documentStats(row.content);
     if (
-      stats.images < record.images ||
+      record.imageSources.some((source) => !stats.imageSources.includes(source)) ||
       record.attachments.some((url) => !stats.links.includes(url)) ||
       unsafeParts.some((part) => row.content.includes(part)) ||
       (action !== "skip" && !row.content.includes(record.source))
@@ -323,7 +323,7 @@ if (process.argv.includes("--check")) {
   const zip = moodmodeZip();
   const attachmentPaths = moodmodeObjectPaths();
   console.log(JSON.stringify({
-    pages: records.map((record) => ({ title: record.title, images: record.images, attachments: record.attachments.length })),
+    pages: records.map((record) => ({ title: record.title, images: record.imageSources.length, attachments: record.attachments.length })),
     pagesTotal: records.length + 1,
     writeCandidates: records.length,
     existingCompleteCandidates: 1,

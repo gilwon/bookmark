@@ -28,102 +28,23 @@ function normalizedNotionWeekTitle(value: unknown): string {
     .toLocaleLowerCase("ko-KR");
 }
 
-function hasBytes(bytes: Uint8Array, offset: number, expected: number[]): boolean {
-  return expected.every((byte, index) => bytes[offset + index] === byte);
-}
-
-function readUint32(bytes: Uint8Array, offset: number, littleEndian = false): number {
-  if (offset + 4 > bytes.length) return -1;
-  if (littleEndian) return (bytes[offset] | bytes[offset + 1] << 8 | bytes[offset + 2] << 16 | bytes[offset + 3] << 24) >>> 0;
-  return (bytes[offset] * 0x1000000 + (bytes[offset + 1] << 16) + (bytes[offset + 2] << 8) + bytes[offset + 3]) >>> 0;
-}
-
-function isPngImageBytes(bytes: Uint8Array): boolean {
-  if (bytes.length < 45 || !hasBytes(bytes, 0, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return false;
-  let offset = 8;
-  let foundImageData = false;
-  while (offset + 12 <= bytes.length) {
-    const length = readUint32(bytes, offset);
-    const type = bytes.slice(offset + 4, offset + 8);
-    const end = offset + 12 + length;
-    if (end > bytes.length) return false;
-    if (offset === 8 && (length !== 13 || !hasBytes(type, 0, [0x49, 0x48, 0x44, 0x52]))) return false;
-    if (hasBytes(type, 0, [0x49, 0x44, 0x41, 0x54])) foundImageData = true;
-    if (hasBytes(type, 0, [0x49, 0x45, 0x4e, 0x44])) {
-      return foundImageData && length === 0 && end === bytes.length && hasBytes(bytes, offset, [0, 0, 0, 0, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
-    }
-    offset = end;
-  }
-  return false;
-}
-
-function isJpegImageBytes(bytes: Uint8Array): boolean {
-  if (bytes.length < 128 || !hasBytes(bytes, 0, [0xff, 0xd8]) || !hasBytes(bytes, bytes.length - 2, [0xff, 0xd9])) return false;
-  let offset = 2;
-  let foundSof = false;
-  while (offset < bytes.length - 2) {
-    if (bytes[offset] !== 0xff) return false;
-    while (bytes[offset] === 0xff) offset += 1;
-    const marker = bytes[offset++];
-    if (marker === 0 || marker === 0xd9) return false;
-    if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
-    if (offset + 2 > bytes.length) return false;
-    const length = (bytes[offset] << 8) + bytes[offset + 1];
-    const end = offset + length;
-    if (length < 2 || end > bytes.length - 2) return false;
-    if ((marker >= 0xc0 && marker <= 0xc3) || (marker >= 0xc5 && marker <= 0xc7) || (marker >= 0xc9 && marker <= 0xcb) || (marker >= 0xcd && marker <= 0xcf)) foundSof = true;
-    if (marker === 0xda) return foundSof && end < bytes.length - 2;
-    offset = end;
-  }
-  return false;
-}
-
-function isWebpImageBytes(bytes: Uint8Array): boolean {
-  if (bytes.length < 20 || !hasBytes(bytes, 0, [0x52, 0x49, 0x46, 0x46]) || !hasBytes(bytes, 8, [0x57, 0x45, 0x42, 0x50]) || readUint32(bytes, 4, true) + 8 !== bytes.length) return false;
-  let offset = 12;
-  let foundImageChunk = false;
-  while (offset + 8 <= bytes.length) {
-    const type = bytes.slice(offset, offset + 4);
-    const length = readUint32(bytes, offset + 4, true);
-    const end = offset + 8 + length;
-    if (end > bytes.length) return false;
-    if (hasBytes(type, 0, [0x56, 0x50, 0x38, 0x20]) || hasBytes(type, 0, [0x56, 0x50, 0x38, 0x4c]) || hasBytes(type, 0, [0x56, 0x50, 0x38, 0x58])) foundImageChunk = true;
-    offset = end + length % 2;
-  }
-  return foundImageChunk && offset === bytes.length;
-}
-
-function isDisplayablePageImageSource(value: unknown): boolean {
-  if (typeof value !== "string") return false;
-  const match = value.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]*={0,2})$/);
-  if (!match || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(match[2])) return false;
-  try {
-    const bytes = Uint8Array.from(atob(match[2]), (character) => character.charCodeAt(0));
-    if (match[1] === "png") return isPngImageBytes(bytes);
-    if (match[1] === "jpeg") return isJpegImageBytes(bytes);
-    return isWebpImageBytes(bytes);
-  } catch {
-    return false;
-  }
-}
-
-/** 저장한 TipTap 문서에서 실제로 표시할 수 있는 이미지를 센다. */
-export function countDisplayablePageImages(content: unknown): number {
+/** 저장한 TipTap 문서에서 image 노드의 source 문자열을 읽는다. */
+export function extractPageImageSources(content: unknown): string[] {
   let document: unknown;
   try {
     document = JSON.parse(String(content));
   } catch {
-    return 0;
+    return [];
   }
-  let count = 0;
+  const sources: string[] = [];
   function visit(node: unknown) {
     if (!node || typeof node !== "object") return;
     const item = node as { type?: unknown; attrs?: { src?: unknown }; content?: unknown[] };
-    if (item.type === "image" && isDisplayablePageImageSource(item.attrs?.src)) count += 1;
+    if (item.type === "image" && typeof item.attrs?.src === "string") sources.push(item.attrs.src);
     for (const child of item.content ?? []) visit(child);
   }
   visit(document);
-  return count;
+  return sources;
 }
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
@@ -160,7 +81,7 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   rows: readonly T[],
   title: string,
   sourceMarkers: readonly string[],
-  expectedImages: number,
+  expectedImageSources: readonly string[],
   attachmentUrls: readonly string[]
 ): { action: "insert"; row: null } | { action: "update" | "skip"; row: T } {
   const normalizedTitle = normalizedNotionWeekTitle(title);
@@ -180,8 +101,8 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   if (sourceRows.length !== 1 || sourceRows[0] !== row) {
     throw new Error("Notion Page 제목과 원문 식별자 후보가 달라 저장을 중단했습니다.");
   }
-  const imageCount = countDisplayablePageImages(content);
-  const mediaMissing = imageCount < expectedImages || attachmentUrls.some((url) => !content.includes(url));
+  const actualImageSources = extractPageImageSources(content);
+  const mediaMissing = expectedImageSources.some((source) => !actualImageSources.includes(source)) || attachmentUrls.some((url) => !content.includes(url));
   return { action: mediaMissing ? "update" : "skip", row };
 }
 
