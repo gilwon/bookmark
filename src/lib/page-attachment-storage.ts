@@ -11,6 +11,8 @@ export const PAGE_ATTACHMENT_FILENAMES = [
 ] as const;
 export const PAGE_ATTACHMENT_MOODMODE_SOURCE_ID = "0e7b256827ac82de8fce8194c7e6a4c7";
 export const PAGE_ATTACHMENT_MOODMODE_FILENAME = "moodmode-insta-saver.zip";
+export const PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID = "3bb3de874c4d80189cf4f2c0599b9296";
+export const PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME = "방구석-클로드코드-세팅팩.zip";
 
 type PageAttachmentImportRow = { title: unknown; content: unknown };
 
@@ -60,14 +62,15 @@ export function extractPageMediaReferences(content: unknown): { imageSources: st
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
-  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID;
+  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID;
 }
 
 /** 허용된 Pages ZIP 첨부 파일명인지 확인한다. */
 export function isPageAttachmentFilename(value: unknown): value is string {
   return typeof value === "string" && (
     PAGE_ATTACHMENT_FILENAMES.includes(value as (typeof PAGE_ATTACHMENT_FILENAMES)[number]) ||
-    value === PAGE_ATTACHMENT_MOODMODE_FILENAME
+    value === PAGE_ATTACHMENT_MOODMODE_FILENAME ||
+    value === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME
   );
 }
 
@@ -81,7 +84,8 @@ export function createPageAttachmentObjectPath(
     filename as (typeof PAGE_ATTACHMENT_FILENAMES)[number]
   );
   const isMoodmodeFile = sourceId === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID && filename === PAGE_ATTACHMENT_MOODMODE_FILENAME;
-  if (!isKimhyoFile && !isMoodmodeFile) {
+  const isClaudeSetupFile = sourceId === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID && filename === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME;
+  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile) {
     return null;
   }
   return `${pdfUserFolder(userId)}/${sourceId}/${filename}`;

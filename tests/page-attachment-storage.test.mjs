@@ -5,6 +5,8 @@ import {
   createPageAttachmentObjectPath,
   isPageAttachmentFilename,
   isPageAttachmentSourceId,
+  PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME,
+  PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   planNotionWeekPageAction,
   pageAttachmentDownloadOutcome,
@@ -12,6 +14,8 @@ import {
 } from "../src/lib/page-attachment-storage.ts";
 
 const sourceId = "5a5b256827ac8287b9b381e50f142820";
+const claudeSetupSourceId = PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID;
+const claudeSetupFilename = PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME;
 const pngDataUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
 const otherPngDataUrl = pngDataUrl.replace(";base64,", ";name=other;base64,");
 
@@ -74,6 +78,18 @@ describe("Pages 첨부 Storage 공개 경계", () => {
     assert.ok(second);
     assert.notEqual(first, second);
     assert.doesNotMatch(first.split("/")[0], /[\\/]/);
+  });
+
+  it("방구석 클로드코드 세팅팩의 한글 ZIP 경로만 허용한다", () => {
+    assert.equal(isPageAttachmentSourceId(claudeSetupSourceId), true);
+    assert.equal(isPageAttachmentFilename(claudeSetupFilename), true);
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", claudeSetupSourceId, claudeSetupFilename),
+      `Z2l0aHViLzEyMw/${claudeSetupSourceId}/${claudeSetupFilename}`
+    );
+    assert.equal(createPageAttachmentObjectPath("github/123", sourceId, claudeSetupFilename), null);
+    assert.equal(createPageAttachmentObjectPath("github/123", claudeSetupSourceId, "moodmode-insta-saver.zip"), null);
+    assert.equal(createPageAttachmentObjectPath("github/123", claudeSetupSourceId, `../${claudeSetupFilename}`), null);
   });
 
   it("경로 탈출, 잘못된 sourceId, ZIP 이외 파일을 거절한다", () => {
@@ -297,6 +313,36 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
     assert.deepEqual(
       planNotionWeekPageAction([row], title, sourceMarkers, [pngDataUrl, otherPngDataUrl], []),
       { action: "update", row }
+    );
+  });
+});
+
+describe("방구석 클로드코드 세팅팩 Page 이관 계획", () => {
+  const title = "방구석 클로드코드 세팅팩 — CLAUDE.md 무료 배포";
+  const sourceMarkers = [claudeSetupSourceId, "https://past-teacher-021.notion.site/CLAUDE-md-3bb3de874c4d80189cf4f2c0599b9296"];
+  const attachment = `/api/page-attachments/${claudeSetupSourceId}/${encodeURIComponent(claudeSetupFilename)}`;
+
+  it("첨부 링크가 없으면 갱신하고 링크가 있으면 건너뛴다", () => {
+    const missing = { id: "missing", title, content: pageContent({ source: claudeSetupSourceId }) };
+    const complete = { id: "complete", title, content: pageContent({ source: claudeSetupSourceId, attachment }) };
+    assert.deepEqual(planNotionWeekPageAction([missing], title, sourceMarkers, [], [attachment]), { action: "update", row: missing });
+    assert.deepEqual(planNotionWeekPageAction([complete], title, sourceMarkers, [], [attachment]), { action: "skip", row: complete });
+  });
+
+  it("중복 제목과 제목·원문 후보 분리는 저장 전에 거절한다", () => {
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "one", title, content: pageContent({ source: claudeSetupSourceId }) },
+        { id: "two", title, content: pageContent({ source: claudeSetupSourceId }) },
+      ], title, sourceMarkers, [], [attachment]),
+      /제목이 중복/
+    );
+    assert.throws(
+      () => planNotionWeekPageAction([
+        { id: "title", title, content: pageContent({ source: "다른 원문" }) },
+        { id: "source", title: "다른 Page", content: pageContent({ source: claudeSetupSourceId }) },
+      ], title, sourceMarkers, [], [attachment]),
+      /제목과 원문 식별자/
     );
   });
 });
