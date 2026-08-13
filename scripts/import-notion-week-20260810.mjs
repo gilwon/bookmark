@@ -219,11 +219,11 @@ function localRows() {
 
 async function allRows(query) {
   const rows = [];
-  for (let from = 0; ; from += 1000) {
-    const { data, error } = await query.range(from, from + 999);
+  for (let from = 0; ; from += 100) {
+    const { data, error } = await query.range(from, from + 99);
     if (error) throw error;
     rows.push(...(data ?? []));
-    if (!data || data.length < 1000) return rows;
+    if (!data || data.length < 100) return rows;
   }
 }
 
