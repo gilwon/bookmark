@@ -10,22 +10,77 @@ import { newPageData } from "./notion-session-message-pages-data.mjs";
 import { oldChatPageData } from "./notion-session-message-old-chat-data.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const require = createRequire(import.meta.url);
+const tsx = require("tsx/cjs/api");
+tsx.register({ tsconfig: resolve(root, "tsconfig.json") });
+const { markdownToTiptapDoc } = require(resolve(root, "src/lib/markdown-to-tiptap.ts"));
+const { removeDuplicateLeadingTitle } = require(resolve(root, "src/lib/migrate-aside-content.ts"));
 const localUser = "dev";
 const productionUser = "f72e9a44-79d8-4061-a700-3ec50bb04a97";
 const oldChatSource = "https://app.notion.com/p/174b256827ac824288c401f5bfcd6224";
 const newChatSource = "https://app.notion.com/p/gilwon/ChatGPT-40-6edb256827ac838abfda01aac69d9b29";
 const chatTitle = "업무시간 단축시켜주는 ChatGPT 프롬프 40가지";
 
-function canonicalContent(content, sourceAliases) {
+function editorCanonicalNode(value, sourceAliases) {
+  if (Array.isArray(value)) {
+    const nodes = [];
+    for (const node of value.map((item) => editorCanonicalNode(item, sourceAliases))) {
+      const previous = nodes.at(-1);
+      if (
+        previous?.type === "text" &&
+        node?.type === "text" &&
+        JSON.stringify(previous.marks ?? []) === JSON.stringify(node.marks ?? []) &&
+        JSON.stringify(previous.attrs ?? {}) === JSON.stringify(node.attrs ?? {})
+      ) {
+        previous.text += node.text ?? "";
+      } else {
+        nodes.push(node);
+      }
+    }
+    return nodes;
+  }
+  if (!value || typeof value !== "object") return value;
+  const node = { ...value };
+  if (node.type === "link" && node.attrs) {
+    const attrs = { ...node.attrs };
+    if (sourceAliases.includes(attrs.href)) attrs.href = "__NOTION_SOURCE__";
+    if (attrs.target === "_blank") delete attrs.target;
+    if (attrs.rel === "noopener noreferrer nofollow") delete attrs.rel;
+    if (attrs.class === "text-indigo-500 underline underline-offset-2") delete attrs.class;
+    if (attrs.title === null) delete attrs.title;
+    node.attrs = attrs;
+  } else if (
+    node.type === "orderedList" &&
+    Object.keys(node.attrs ?? {}).length === 2 &&
+    node.attrs?.start === 1 &&
+    node.attrs?.type === null
+  ) {
+    delete node.attrs;
+  } else if (
+    ["tableCell", "tableHeader"].includes(node.type) &&
+    Object.keys(node.attrs ?? {}).length === 4 &&
+    node.attrs?.colspan === 1 &&
+    node.attrs?.rowspan === 1 &&
+    node.attrs?.colwidth === null &&
+    node.attrs?.align === null
+  ) {
+    delete node.attrs;
+  }
+  const output = {};
+  for (const key of Object.keys(node).sort()) {
+    output[key] = editorCanonicalNode(node[key], sourceAliases);
+  }
+  return output;
+}
+
+function canonicalContent(content, title, sourceAliases) {
   let parsed;
   try {
     parsed = JSON.parse(String(content));
   } catch {
     throw new Error("Page 본문 JSON이 올바르지 않아 저장을 중단했습니다.");
   }
-  return JSON.stringify(parsed, (key, value) => (
-    key === "href" && sourceAliases.includes(value) ? "__NOTION_SOURCE__" : value
-  ));
+  return JSON.stringify(editorCanonicalNode(removeDuplicateLeadingTitle(parsed, title).content, sourceAliases));
 }
 
 export function planNotionSessionMessagePage(rows, record) {
@@ -46,7 +101,10 @@ export function planNotionSessionMessagePage(rows, record) {
   if (sourceRows.some((candidate) => candidate !== row)) {
     throw new Error("Page 제목과 원문 식별자 후보가 달라 저장을 중단했습니다.");
   }
-  if (canonicalContent(row.content, record.sourceAliases) === canonicalContent(record.content, record.sourceAliases)) {
+  if (
+    canonicalContent(row.content, record.title, record.sourceAliases) ===
+    canonicalContent(record.content, record.title, record.sourceAliases)
+  ) {
     return { action: "skip", row };
   }
   if (record.exactDuplicateOnly) {
@@ -73,10 +131,6 @@ function pageMarkdown(title, source, body) {
 }
 
 function buildRecords() {
-  const require = createRequire(import.meta.url);
-  const tsx = require("tsx/cjs/api");
-  tsx.register({ tsconfig: resolve(root, "tsconfig.json") });
-  const { markdownToTiptapDoc } = require(resolve(root, "src/lib/markdown-to-tiptap.ts"));
   const oldPage = oldChatPageData;
   if (oldPage.title !== chatTitle || oldPage.source !== oldChatSource) {
     throw new Error("기존 ChatGPT Page 원문이 올바르지 않습니다.");
@@ -224,10 +278,11 @@ async function main() {
       records
     );
     assertCompleteDuplicate(productionPlans);
+    const checkActions = productionPlans.map(({ action }) => action);
     console.log(JSON.stringify({
       records: records.length,
-      completeDuplicate: 1,
-      writeCandidates: 3,
+      completeDuplicates: checkActions.filter((action) => action === "skip").length,
+      writeCandidates: checkActions.filter((action) => action !== "skip").length,
       images: 0,
       attachments: 0,
       writes: 0,
