@@ -28,23 +28,34 @@ function normalizedNotionWeekTitle(value: unknown): string {
     .toLocaleLowerCase("ko-KR");
 }
 
-/** 저장한 TipTap 문서에서 image 노드의 source 문자열을 읽는다. */
-export function extractPageImageSources(content: unknown): string[] {
+/** 저장한 TipTap 문서에서 이미지 source와 link mark href를 읽는다. */
+export function extractPageMediaReferences(content: unknown): { imageSources: string[]; linkHrefs: string[] } {
   let document: unknown;
   try {
     document = JSON.parse(String(content));
   } catch {
-    return [];
+    return { imageSources: [], linkHrefs: [] };
   }
-  const sources: string[] = [];
+  const imageSources: string[] = [];
+  const linkHrefs: string[] = [];
   function visit(node: unknown) {
     if (!node || typeof node !== "object") return;
-    const item = node as { type?: unknown; attrs?: { src?: unknown }; content?: unknown[] };
-    if (item.type === "image" && typeof item.attrs?.src === "string") sources.push(item.attrs.src);
+    const item = node as {
+      type?: unknown;
+      attrs?: { src?: unknown };
+      marks?: unknown[];
+      content?: unknown[];
+    };
+    if (item.type === "image" && typeof item.attrs?.src === "string") imageSources.push(item.attrs.src);
+    for (const mark of item.marks ?? []) {
+      if (!mark || typeof mark !== "object") continue;
+      const link = mark as { type?: unknown; attrs?: { href?: unknown } };
+      if (link.type === "link" && typeof link.attrs?.href === "string") linkHrefs.push(link.attrs.href);
+    }
     for (const child of item.content ?? []) visit(child);
   }
   visit(document);
-  return sources;
+  return { imageSources, linkHrefs };
 }
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
@@ -101,8 +112,8 @@ export function planNotionWeekPageAction<T extends PageAttachmentImportRow>(
   if (sourceRows.length !== 1 || sourceRows[0] !== row) {
     throw new Error("Notion Page 제목과 원문 식별자 후보가 달라 저장을 중단했습니다.");
   }
-  const actualImageSources = extractPageImageSources(content);
-  const mediaMissing = expectedImageSources.some((source) => !actualImageSources.includes(source)) || attachmentUrls.some((url) => !content.includes(url));
+  const mediaReferences = extractPageMediaReferences(content);
+  const mediaMissing = expectedImageSources.some((source) => !mediaReferences.imageSources.includes(source)) || attachmentUrls.some((url) => !mediaReferences.linkHrefs.includes(url));
   return { action: mediaMissing ? "update" : "skip", row };
 }
 

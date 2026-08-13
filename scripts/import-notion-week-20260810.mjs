@@ -39,7 +39,7 @@ const {
   PAGE_ATTACHMENT_STORAGE_BUCKET,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   PAGE_ATTACHMENT_STORAGE_MIME,
-  extractPageImageSources,
+  extractPageMediaReferences,
   createPageAttachmentObjectPath,
   planNotionWeekPageAction,
 } = require(resolve(root, "src/lib/page-attachment-storage.ts"));
@@ -114,18 +114,6 @@ function markdownFor(page, paths) {
   ].join("\n\n")).trim();
 }
 
-function documentStats(content) {
-  const stats = { imageSources: extractPageImageSources(content), links: [] };
-  function visit(node) {
-    for (const mark of node.marks ?? []) {
-      if (mark.type === "link" && mark.attrs?.href) stats.links.push(mark.attrs.href);
-    }
-    for (const child of node.content ?? []) visit(child);
-  }
-  visit(JSON.parse(content));
-  return stats;
-}
-
 const allImagePaths = imagePaths();
 const records = pageData.map((page) => {
   const sourceId = page.id.replaceAll("-", "");
@@ -133,11 +121,11 @@ const records = pageData.map((page) => {
   const markdown = markdownFor(page, paths);
   const content = JSON.stringify(markdownToTiptapDoc(markdown));
   const attachments = sourceId === moodmodeSourceId ? [attachmentUrl(sourceId)] : [];
-  const stats = documentStats(content);
-  if (unsafeParts.some((part) => content.includes(part)) || stats.imageSources.length !== paths.length || attachments.some((url) => !stats.links.includes(url))) {
+  const mediaReferences = extractPageMediaReferences(content);
+  if (unsafeParts.some((part) => content.includes(part)) || mediaReferences.imageSources.length !== paths.length || attachments.some((url) => !mediaReferences.linkHrefs.includes(url))) {
     throw new Error(`Notion Page 변환 무결성 검증에 실패했습니다: ${page.title}`);
   }
-  return { ...page, sourceId, content, imageSources: stats.imageSources, attachments };
+  return { ...page, sourceId, content, imageSources: mediaReferences.imageSources, attachments };
 });
 
 const totalImages = records.reduce((count, record) => count + record.imageSources.length, 0);
@@ -183,10 +171,10 @@ function verifyRows(rows) {
   const plans = plansFor(rows);
   for (const { record, action, row } of plans) {
     if (!row) throw new Error("저장 Page 무결성 검증에 실패했습니다.");
-    const stats = documentStats(row.content);
+    const mediaReferences = extractPageMediaReferences(row.content);
     if (
-      record.imageSources.some((source) => !stats.imageSources.includes(source)) ||
-      record.attachments.some((url) => !stats.links.includes(url)) ||
+      record.imageSources.some((source) => !mediaReferences.imageSources.includes(source)) ||
+      record.attachments.some((url) => !mediaReferences.linkHrefs.includes(url)) ||
       unsafeParts.some((part) => row.content.includes(part)) ||
       (action !== "skip" && !row.content.includes(record.source))
     ) {

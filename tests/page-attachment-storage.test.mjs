@@ -15,12 +15,19 @@ const sourceId = "5a5b256827ac8287b9b381e50f142820";
 const pngDataUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
 const otherPngDataUrl = pngDataUrl.replace(";base64,", ";name=other;base64,");
 
-function pageContent({ src, sources, source = "new-source-id", attachment } = {}) {
+function pageContent({ src, sources, source = "new-source-id", attachment, plainAttachment, topLevelAttachment } = {}) {
+  const content = (sources ?? (src === undefined ? [] : [src])).map((imageSource) => ({ type: "image", attrs: { src: imageSource } }));
+  if (attachment) {
+    content.push({ type: "text", text: "첨부", marks: [{ type: "link", attrs: { href: attachment } }] });
+  }
+  if (plainAttachment) {
+    content.push({ type: "text", text: plainAttachment });
+  }
   return JSON.stringify({
     type: "doc",
     source,
-    attachment,
-    content: (sources ?? (src === undefined ? [] : [src])).map((imageSource) => ({ type: "image", attrs: { src: imageSource } })),
+    attachment: topLevelAttachment,
+    content,
   });
 }
 
@@ -191,6 +198,20 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
       planNotionWeekPageAction([row], title, sourceMarkers, [pngDataUrl], ["/api/page-attachments/source/file.zip"]),
       { action: "skip", row }
     );
+  });
+
+  it("일반 텍스트나 최상위 필드의 첨부 URL은 갱신한다", () => {
+    const attachment = "/api/page-attachments/source/file.zip";
+    for (const content of [
+      pageContent({ src: pngDataUrl, plainAttachment: attachment }),
+      pageContent({ src: pngDataUrl, topLevelAttachment: attachment }),
+    ]) {
+      const row = { id: content, title, content };
+      assert.deepEqual(
+        planNotionWeekPageAction([row], title, sourceMarkers, [pngDataUrl], [attachment]),
+        { action: "update", row }
+      );
+    }
   });
 
   it("아이콘 없는 기존 제목의 완비 미디어도 건너뛴다", () => {
