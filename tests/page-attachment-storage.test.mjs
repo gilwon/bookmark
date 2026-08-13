@@ -13,9 +13,9 @@ import {
 } from "../src/lib/page-attachment-storage.ts";
 
 const sourceId = "5a5b256827ac8287b9b381e50f142820";
-const pngDataUrl = "data:image/png;base64,iVBORw0KGgo=";
-const jpegDataUrl = "data:image/jpeg;base64,/9j/";
-const webpDataUrl = "data:image/webp;base64,UklGRgAAAABXRUJQ";
+const pngDataUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=";
+const jpegDataUrl = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAg+Pkk+SVVVVVVVVWRdZGhoaGRkZGRoaGhwcHCDg4NwcHBoaHBwfHyDg4+Tj4eHg4eTk5ubm7q6srLZ2eD/////xABLAAEBAAAAAAAAAAAAAAAAAAAACAEBAAAAAAAAAAAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/AABEIAAEAAQMBIgACEQADEQD/2gAMAwEAAhEDEQA/AJ/AB//Z";
+const webpDataUrl = "data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAgA0JaQAA3AA/vv9UAA=";
 
 function pageContent({ src, source = "new-source-id", attachment } = {}) {
   return JSON.stringify({
@@ -24,6 +24,12 @@ function pageContent({ src, source = "new-source-id", attachment } = {}) {
     attachment,
     content: src === undefined ? [] : [{ type: "image", attrs: { src } }],
   });
+}
+
+function alteredDataUrl(value, change) {
+  const [prefix, base64] = value.split(",");
+  const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
+  return `${prefix},${btoa(String.fromCharCode(...change(bytes)))}`;
 }
 
 describe("Pages 첨부 Storage 공개 경계", () => {
@@ -299,5 +305,30 @@ describe("2026년 8월 10일 Notion Page 이관 계획", () => {
         { action: "update", row }
       );
     }
+  });
+
+  it("끝이 잘린 실제 1x1 이미지 파일은 갱신한다", () => {
+    for (const src of [pngDataUrl, jpegDataUrl, webpDataUrl]) {
+      const truncated = alteredDataUrl(src, (bytes) => bytes.slice(0, -1));
+      const row = { id: truncated, title, content: pageContent({ src: truncated }) };
+      assert.equal(countDisplayablePageImages(row.content), 0);
+      assert.deepEqual(
+        planNotionWeekPageAction([row], title, sourceMarkers, 1, []),
+        { action: "update", row }
+      );
+    }
+  });
+
+  it("선언한 길이가 다른 WebP 파일은 갱신한다", () => {
+    const forged = alteredDataUrl(webpDataUrl, (bytes) => {
+      bytes[4] += 1;
+      return bytes;
+    });
+    const row = { id: forged, title, content: pageContent({ src: forged }) };
+    assert.equal(countDisplayablePageImages(row.content), 0);
+    assert.deepEqual(
+      planNotionWeekPageAction([row], title, sourceMarkers, 1, []),
+      { action: "update", row }
+    );
   });
 });
