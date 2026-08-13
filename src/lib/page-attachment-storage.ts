@@ -29,14 +29,18 @@ function normalizedNotionWeekTitle(value: unknown): string {
 }
 
 function isDisplayablePageImageSource(value: unknown): boolean {
-  if (typeof value !== "string" || !value) return false;
-  if (value.startsWith("data:image/")) return true;
-  if (value.startsWith("/") && !value.startsWith("//")) return true;
-  if (!/^https?:\/\//.test(value)) return false;
-  const lowerValue = value.toLocaleLowerCase("en-US");
-  return !["bl" + "ob:", "prod" + "-files-secure", "x-" + "amz", "security" + "-token", "expiration" + "timestamp"].some(
-    (part) => lowerValue.includes(part)
-  );
+  if (typeof value !== "string") return false;
+  const match = value.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/]*={0,2})$/);
+  if (!match || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(match[2])) return false;
+  try {
+    const bytes = Uint8Array.from(atob(match[2]), (character) => character.charCodeAt(0));
+    if (match[1] === "png") return [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every((byte, index) => bytes[index] === byte);
+    if (match[1] === "jpeg") return [0xff, 0xd8, 0xff].every((byte, index) => bytes[index] === byte);
+    return [0x52, 0x49, 0x46, 0x46].every((byte, index) => bytes[index] === byte) &&
+      [0x57, 0x45, 0x42, 0x50].every((byte, index) => bytes[index + 8] === byte);
+  } catch {
+    return false;
+  }
 }
 
 /** 저장한 TipTap 문서에서 실제로 표시할 수 있는 이미지를 센다. */
