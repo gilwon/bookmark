@@ -33,6 +33,7 @@ const sources = [
     blocks: 154,
     chunks: 2,
     images: 5,
+    legacyContentSha256: "4ab3895f6071ad76e569c66d3c5e4c1e7426df4f06fb555276b4190b1cbdf90a",
   },
   {
     id: "3bc64e2b-5936-80a3-ac8e-eb1a8892113a",
@@ -41,6 +42,7 @@ const sources = [
     blocks: 63,
     chunks: 1,
     images: 10,
+    legacyContentSha256: "4277a0c4183227aef2049f0b91b03803c02a705107e6c8be84b0b403e6c26d28",
   },
   {
     id: "3bc91cb2-3c4d-80d4-b865-c2bcce09d5b0",
@@ -58,6 +60,7 @@ const sources = [
     blocks: 186,
     chunks: 3,
     images: 0,
+    legacyContentSha256: "8c2d7d3b152f1fba80aa617228d2a83d2f8a048161d706e7711b712586a43a28",
   },
 ];
 
@@ -73,7 +76,7 @@ if (existsSync(envPath)) {
 const require = createRequire(import.meta.url);
 const tsx = require("tsx/cjs/api");
 tsx.register({ tsconfig: resolve(root, "tsconfig.json") });
-const { extractPageMediaReferences, planNotionWeekPageAction } = require(
+const { extractPageMediaReferences, normalizedNotionWeekTitle, planNotionWeekPageAction } = require(
   resolve(root, "src/lib/page-attachment-storage.ts")
 );
 
@@ -279,7 +282,11 @@ function documentFor(item, images) {
   ];
   const cover = images.get(`${source.id}:cover`);
   if (cover) content.push({ type: "image", attrs: { src: cover, alt: "Notion 표지" } });
-  content.push(...(page.content ?? []).flatMap((id) => render(id)));
+  for (const node of (page.content ?? []).flatMap((id) => render(id))) {
+    const previous = content.at(-1);
+    if (["bulletList", "orderedList"].includes(node.type) && previous?.type === node.type) previous.content.push(...node.content);
+    else content.push(node);
+  }
   const document = { type: "doc", content };
   if (source.attachment && !pdfRendered) throw new Error(`PDF 링크 변환 실패: ${source.title}`);
   return JSON.stringify(document);
@@ -293,6 +300,10 @@ function tableDimensions(content) {
   const document = JSON.parse(content);
   const table = document.content.find((node) => node.type === "table");
   return table ? [table.content.length, table.content[0]?.content?.length ?? 0] : null;
+}
+
+function orderedListDimensions(content) {
+  return JSON.parse(content).content.filter((node) => node.type === "orderedList").map((node) => node.content.length);
 }
 
 function validateRecords(records) {
@@ -310,10 +321,10 @@ function validateRecords(records) {
     };
     if (Object.values(checks).some((value) => !value)) throw new Error(`Page 변환 무결성 검증 실패: ${record.source.title} ${JSON.stringify(checks)}`);
   }
-  if (totalImages !== 17 || JSON.stringify(tableDimensions(records[0].content)) !== JSON.stringify([6, 3])) {
-    throw new Error("전체 이미지 또는 6×3 표 무결성 검증 실패");
+  if (totalImages !== 17 || JSON.stringify(tableDimensions(records[0].content)) !== JSON.stringify([6, 3]) || JSON.stringify(orderedListDimensions(records[2].content)) !== JSON.stringify([2])) {
+    throw new Error("전체 이미지, 6×3 표 또는 2단계 목록 무결성 검증 실패");
   }
-  return { pages: records.length, images: totalImages, table: tableDimensions(records[0].content) };
+  return { pages: records.length, images: totalImages, table: tableDimensions(records[0].content), orderedList: orderedListDimensions(records[2].content) };
 }
 
 function sourceMarkers(record) {
@@ -321,10 +332,15 @@ function sourceMarkers(record) {
 }
 
 function plansFor(rows, records) {
-  return records.map((record) => ({
-    record,
-    ...planNotionWeekPageAction(rows, record.source.title, sourceMarkers(record), record.imageSources, record.attachments),
-  }));
+  return records.map((record) => {
+    const plan = planNotionWeekPageAction(rows, record.source.title, sourceMarkers(record), record.imageSources, record.attachments);
+    const existingHash = plan.row ? createHash("sha256").update(String(plan.row.content)).digest("hex") : "";
+    const expectedHash = createHash("sha256").update(record.content).digest("hex");
+    if (plan.action === "skip" && record.source.legacyContentSha256 === existingHash && existingHash !== expectedHash) {
+      return { record, action: "update", row: plan.row };
+    }
+    return { record, ...plan };
+  });
 }
 
 function localRows() {
@@ -332,12 +348,6 @@ function localRows() {
   const rows = db.prepare("SELECT id, title, content FROM custom_pages WHERE user_id = ?").all(localUser);
   db.close();
   return rows;
-}
-
-function normalizedTitle(value) {
-  return typeof value === "string"
-    ? value.replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/u, "").trim().replace(/\s+/g, " ").toLocaleLowerCase("ko-KR")
-    : "";
 }
 
 async function productionRows(supabase) {
@@ -349,8 +359,8 @@ async function productionRows(supabase) {
     if (!data || data.length < 1000) break;
   }
   // ponytail: 운영에서는 제목 후보만 읽는다. 이름 변경 중복까지 필요하면 source ID 전용 컬럼과 인덱스를 추가한다.
-  const expectedTitles = new Set(sources.map((source) => normalizedTitle(source.title)));
-  const ids = metadata.filter((row) => expectedTitles.has(normalizedTitle(row.title))).map((row) => row.id);
+  const expectedTitles = new Set(sources.map((source) => normalizedNotionWeekTitle(source.title)));
+  const ids = metadata.filter((row) => expectedTitles.has(normalizedNotionWeekTitle(row.title))).map((row) => row.id);
   if (!ids.length) return [];
   const { data, error } = await supabase.from("custom_pages").select("id, title, content").eq("user_id", productionUser).in("id", ids);
   if (error) throw error;

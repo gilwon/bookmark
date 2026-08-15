@@ -22,7 +22,7 @@ type PageAttachmentStorageError = {
   statusCode?: string;
 };
 
-function normalizedNotionWeekTitle(value: unknown): string {
+export function normalizedNotionWeekTitle(value: unknown): string {
   if (typeof value !== "string") return "";
   return value
     .replace(/^[\s\p{Extended_Pictographic}\uFE0F\u200D]+/u, "")
