@@ -306,7 +306,7 @@ function orderedListDimensions(content) {
   return JSON.parse(content).content.filter((node) => node.type === "orderedList").map((node) => node.content.length);
 }
 
-function validateRecords(records) {
+function validateRecords(records, stored = false) {
   let totalImages = 0;
   for (const record of records) {
     const media = extractPageMediaReferences(record.content);
@@ -315,7 +315,7 @@ function validateRecords(records) {
     const checks = {
       images: media.imageSources.length === record.source.images,
       source: countOccurrences(record.content, record.source.url) === 1,
-      title: countOccurrences(record.content, record.source.title) === 1,
+      title: stored ? countOccurrences(record.content, record.source.title) <= 1 : countOccurrences(record.content, record.source.title) === 1,
       safe: !unsafeParts.some((part) => record.content.includes(part)) && !record.content.includes("fbclid=") && !/https?:[^" ]*[?&]source=/.test(record.content),
       attachment: !record.source.attachment || media.linkHrefs.filter((href) => href === record.source.attachment).length === 1,
     };
@@ -407,7 +407,11 @@ async function importProduction(supabase, records) {
 function verifyRows(rows, records) {
   const plans = plansFor(rows, records);
   if (plans.some(({ action }) => action !== "skip")) throw new Error("저장 Page 후검증 실패");
-  return validateRecords(plans.map(({ record, row }) => ({ ...record, content: row.content })));
+  const storedRecords = plans.map(({ record, row }) => {
+    if (row.title !== record.source.title) throw new Error("저장 Page 제목 후검증 실패");
+    return { ...record, content: row.content };
+  });
+  return validateRecords(storedRecords, true);
 }
 
 for (const key of ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]) {
