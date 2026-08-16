@@ -3,10 +3,14 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   createPageAttachmentObjectPath,
+  PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME,
+  PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID,
   isPageAttachmentFilename,
   isPageAttachmentSourceId,
   PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME,
   PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID,
+  PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME,
+  PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   planExactPageAttachmentAction,
   planNotionWeekPageAction,
@@ -91,6 +95,31 @@ describe("Pages 첨부 Storage 공개 경계", () => {
     assert.equal(createPageAttachmentObjectPath("github/123", sourceId, claudeSetupFilename), null);
     assert.equal(createPageAttachmentObjectPath("github/123", claudeSetupSourceId, "moodmode-insta-saver.zip"), null);
     assert.equal(createPageAttachmentObjectPath("github/123", claudeSetupSourceId, `../${claudeSetupFilename}`), null);
+  });
+
+  it("신규 Notion 이관 ZIP 두 개의 경로를 허용한다", () => {
+    for (const [attachmentSourceId, attachmentFilename, objectFilename] of [
+      [PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID, PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME, "image-automation-skillpack.zip"],
+      [PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID, PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME, "second-brain-starter-kit.zip"],
+    ]) {
+      assert.equal(isPageAttachmentSourceId(attachmentSourceId), true);
+      assert.equal(isPageAttachmentFilename(attachmentFilename), true);
+      assert.equal(
+        createPageAttachmentObjectPath("github/123", attachmentSourceId, attachmentFilename),
+        `Z2l0aHViLzEyMw/${attachmentSourceId}/${objectFilename}`
+      );
+    }
+  });
+
+  it("신규 Notion 이관 ZIP의 잘못된 조합을 거절한다", () => {
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID, PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME),
+      null
+    );
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID, PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME),
+      null
+    );
   });
 
   it("경로 탈출, 잘못된 sourceId, ZIP 이외 파일을 거절한다", () => {

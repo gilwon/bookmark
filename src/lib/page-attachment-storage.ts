@@ -14,6 +14,10 @@ export const PAGE_ATTACHMENT_MOODMODE_SOURCE_ID = "0e7b256827ac82de8fce8194c7e6a
 export const PAGE_ATTACHMENT_MOODMODE_FILENAME = "moodmode-insta-saver.zip";
 export const PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID = "3bb3de874c4d80189cf4f2c0599b9296";
 export const PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME = "방구석-클로드코드-세팅팩.zip";
+export const PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID = "3b23de874c4d81e9ad29ca198f8a93b2";
+export const PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME = "이미지-자동화-스킬팩_방구석컴퍼니.zip";
+export const PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID = "3b53de874c4d81f89456cd3a3cbf4849";
+export const PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME = "세컨드브레인-스타터키트_방구석컴퍼니.zip";
 
 type PageAttachmentImportRow = { title: unknown; content: unknown };
 
@@ -63,7 +67,7 @@ export function extractPageMediaReferences(content: unknown): { imageSources: st
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
-  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID;
+  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID || value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID || value === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID;
 }
 
 /** 허용된 Pages ZIP 첨부 파일명인지 확인한다. */
@@ -71,7 +75,9 @@ export function isPageAttachmentFilename(value: unknown): value is string {
   return typeof value === "string" && (
     PAGE_ATTACHMENT_FILENAMES.includes(value as (typeof PAGE_ATTACHMENT_FILENAMES)[number]) ||
     value === PAGE_ATTACHMENT_MOODMODE_FILENAME ||
-    value === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME
+    value === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME ||
+    value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME ||
+    value === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME
   );
 }
 
@@ -86,10 +92,13 @@ export function createPageAttachmentObjectPath(
   );
   const isMoodmodeFile = sourceId === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID && filename === PAGE_ATTACHMENT_MOODMODE_FILENAME;
   const isClaudeSetupFile = sourceId === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID && filename === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME;
-  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile) {
+  const isImageAutomationFile = sourceId === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID && filename === PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME;
+  const isSecondBrainFile = sourceId === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID && filename === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME;
+  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile && !isImageAutomationFile && !isSecondBrainFile) {
     return null;
   }
-  return `${pdfUserFolder(userId)}/${sourceId}/${filename}`;
+  const objectFilename = isImageAutomationFile ? "image-automation-skillpack.zip" : isSecondBrainFile ? "second-brain-starter-kit.zip" : filename;
+  return `${pdfUserFolder(userId)}/${sourceId}/${objectFilename}`;
 }
 
 /** 기존 Page 행과 기대 미디어를 비교해 안전한 이관 동작을 정한다. */
