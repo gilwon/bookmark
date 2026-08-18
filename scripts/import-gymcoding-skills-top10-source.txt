@@ -1,0 +1,379 @@
+클로드 코드 스킬·도구 추천 10개: 설치법과 실전 프롬프트
+
+2026년 클로드 코드 스킬·도구 10개를 비교합니다. GitHub 설치 명령어, 바로 쓰는 프롬프트, 요구사항, 한계와 추천 순서를 정리했습니다.
+
+2026년 8월 17일
+약 12분
+출처 10곳
+draw-your-font GitHub
+open-image-prompts GitHub
+claude-quest GitHub
+Finn-loop GitHub
+graph-engineering GitHub
+humanizer-stack GitHub
+story-to-handdrawn-video GitHub
+andrej-karpathy-skills GitHub
+agents-council GitHub (2026-08-18 접근 불가)
+pi-config GitHub
+이런 분을 위한 글입니다
+Claude Code에 어떤 스킬을 설치할지 고민하는 분
+설치 명령어와 실제 사용 프롬프트가 필요한 분
+읽고 나면 이렇게 달라집니다
+도구 10개의 차이와 한계를 이해한다
+설치법과 첫 실행 프롬프트를 바로 활용한다
+
+Claude Code 스킬은 특정 작업의 절차와 판단 기준을 담은 지침 묶음입니다. 하지만 많이 설치한다고 결과가 무조건 좋아지지는 않습니다. 비슷한 역할의 스킬이 겹치면 무엇을 언제 써야 하는지 판단하기가 어려워집니다.
+
+한눈에 답하면: 개발 작업에는 andrej-karpathy-skills, 이미지 레퍼런스 검색에는 open-image-prompts, 팀 개발 흐름에는 Finn-loop부터 검토하는 것이 좋습니다. 처음에는 하나만 설치해 일주일 동안 실제 작업에 사용해 보세요.
+
+이 글은 Claude Code 스킬뿐 아니라 함께 사용할 수 있는 커뮤니티 도구까지 10개를 비교합니다. claude-quest는 작업 로그 뷰어이고, pi-config는 별도 코딩 에이전트 Pi의 설정 묶음입니다. 각 항목을 용도, 설치법, 바로 쓰는 프롬프트, 요구사항과 한계 순서로 정리했습니다.
+
+2026년 8월 18일 각 프로젝트의 공식 GitHub README를 기준으로 다시 확인했습니다. 모두 Anthropic 공식 기능이 아닌 커뮤니티 프로젝트이며, 설치 명령과 요구사항은 이후 바뀔 수 있습니다. 스크립트를 실행하기 전에 현재 README와 변경되는 파일을 확인하세요.
+
+먼저 결론: 무엇부터 설치할까?
+
+하고 싶은 일	먼저 볼 도구
+Claude Code의 과한 구현을 줄이고 싶다	andrej-karpathy-skills
+이미지 생성 참고 자료를 찾고 싶다	open-image-prompts
+손글씨를 폰트로 만들고 싶다	draw-your-font
+개발 작업을 기획·구현·검수로 나누고 싶다	Finn-loop
+여러 AI의 의견을 비교하고 싶다	agents-council (현재 링크 확인 필요)
+AI가 쓴 영어 글을 다듬고 싶다	humanizer-stack
+글을 손그림 영상으로 만들고 싶다	story-to-handdrawn-video
+지식그래프와 작업그래프를 배우고 싶다	graph-engineering
+Claude Code 작업 화면을 재미있게 보고 싶다	claude-quest
+Pi 코딩 에이전트 환경을 한 번에 구성하고 싶다	pi-config
+
+처음이라면 한 번에 하나만 설치하세요. 일주일 동안 실제 작업에 써보고, 반복해서 사용하게 될 때 다음 도구를 추가하는 편이 안전합니다.
+
+1. draw-your-font: 손글씨 사진을 실제 폰트로 만들기
+
+draw-your-font는 종이에 쓴 알파벳 사진을 TTF, WOFF, WOFF2 폰트로 바꿉니다. 모든 처리가 로컬에서 이루어지며 Node.js 18 이상에서 동작합니다. 스크립트언어
+
+설치
+
+Claude Code 스킬로 설치하는 가장 간단한 방법입니다.
+
+npx skills add danilo-znamerovszkij/draw-your-font
+
+AI 없이 CLI만 사용할 수도 있습니다.
+
+npx draw-your-font template -o template.pdf --charset minimal
+npx draw-your-font make page1.jpg page2.jpg --charset minimal --name "My Hand"
+바로 써볼 프롬프트
+/draw-your-font
+첨부한 손글씨 사진으로 "My Hand"라는 폰트를 만들어줘.
+먼저 글자 인식 결과와 미리보기를 보여주고,
+문제가 있는 글자는 다시 촬영해야 하는지 알려줘.
+최종 결과는 TTF, WOFF2, CSS 형식으로 내보내줘.
+
+결과를 다듬을 때는 “전체 획을 조금 더 굵게 해줘”, “곡선을 더 둥글게 해줘”, “g 글자만 다시 잘라서 확인해줘”처럼 말하면 됩니다.
+
+한계
+
+현재 제공되는 문자 세트는 라틴 알파벳 중심입니다. 한글 폰트 제작용으로 보기 어렵습니다. 커닝, 합자, 글자별 여러 변형도 아직 제한적입니다.
+
+2. open-image-prompts: 이미지와 프롬프트를 함께 검색하기
+
+open-image-prompts는 생성 이미지와 원본 프롬프트를 연결해 둔 로컬 우선 자료 창고입니다. 웹 갤러리로 구경할 수도 있고, 설치 후 에이전트가 로컬 DB를 검색하게 만들 수도 있습니다.
+
+공개 데이터 규모는 계속 바뀝니다. 2026년 8월 18일 README 기준으로 원본 프롬프트 15,989개와 이미지 28,132개가 안내되어 있습니다.
+
+설치
+
+Node.js 20.19 이상 또는 22.12 이상을 준비합니다.
+
+git clone https://github.com/NanmiCoder/open-image-prompts.git
+cd open-image-prompts
+# macOS / Linux
+./start.sh
+# Windows
+start.bat
+
+이미지 전체를 받지 않고 검색 DB만 받고 싶다면 다음 명령을 사용합니다.
+
+npm run data:pull:db
+
+에이전트 스킬 두 개만 설치하려면 다음처럼 실행합니다.
+
+npx skills add NanmiCoder/open-image-prompts --list
+npx skills add NanmiCoder/open-image-prompts -g
+바로 써볼 프롬프트
+20대 직장인을 위한 생산성 앱 인스타그램 광고 이미지를 만들 거야.
+open-image-prompts에서 다음 조건과 가까운 레퍼런스 5개를 찾아줘.
+- 미니멀한 SaaS 광고
+- 밝은 배경
+- 파란색 포인트 컬러
+- 스마트폰 UI가 중심
+- 과한 3D 표현은 제외
+각 결과마다 원본 프롬프트, 참고할 요소, 그대로 복제하면 안 되는 요소를 정리하고
+마지막에 내 목적에 맞는 새 프롬프트 하나를 작성해줘.
+한계
+
+전체 이미지 팩은 약 4.3GB입니다. DB만 설치하면 검색은 가능하지만 일부 이미지는 원본 URL에 의존합니다. 레퍼런스를 그대로 복제하기보다 구도, 색, 조명처럼 재사용할 요소를 분리해 활용하는 것이 좋습니다.
+
+3. claude-quest: 터미널을 픽셀아트 RPG로 바꾸기
+
+claude-quest는 Claude Code의 로컬 대화 로그를 읽어 작업 상태를 픽셀아트 애니메이션으로 보여줍니다. 파일을 읽으면 마법을 쓰고, 명령을 실행하면 공격하고, 오류가 나면 데미지를 받습니다.
+
+설치와 실행
+npm install -g claude-quest
+
+Claude Code가 실행 중인 프로젝트와 같은 폴더에서 새 터미널 탭을 열고 실행합니다.
+
+cq
+
+문제가 생기면 진단 명령을 사용할 수 있습니다.
+
+cq doctor
+이렇게 활용해 보세요
+
+이 도구는 Claude에게 프롬프트를 주는 스킬이 아니라 작업 상태를 보여주는 뷰어입니다. 긴 코딩 세션을 녹화하거나 라이브 스트리밍할 때 특히 잘 맞습니다.
+
+cq watch /absolute/path/to/project
+cq replay conversation.jsonl
+한계
+
+실시간 모드는 Claude Code 세션이 필요합니다. 시각 효과가 집중을 방해하는 사람에게는 맞지 않습니다. 로컬 로그를 읽는 방식이므로 로그 파일 접근 권한도 확인해야 합니다.
+
+4. Finn-loop: 기획·개발·검수를 분리하기
+
+Finn-loop는 하나의 만능 에이전트에게 모든 일을 맡기지 않습니다. finn-spec이 요구사항을 정리하고, finn-build가 승인된 범위만 구현하며, finn-review가 결과를 검토합니다. 최종 병합은 사람이 합니다.
+
+설치 전 준비물
+GitHub에 연결된 Git 저장소
+Claude Code 2.1.71 이상
+Linear 워크스페이스와 팀
+Claude Code의 Linear 커넥터
+인증된 GitHub CLI
+가능하면 필수 CI 체크
+
+설정 항목이 많으므로 아래 프롬프트를 프로젝트 폴더에서 Claude Code에 그대로 붙여넣는 방식이 가장 편합니다.
+
+설치 프롬프트
+이 저장소에 Finn-loop를 설치해줘.
+원본은 https://github.com/finna/Finn-loop 이야.
+먼저 내 환경을 변경하지 말고 아래 조건부터 점검해줘.
+1. Claude Code 버전이 2.1.71 이상인지 확인해줘.
+2. GitHub origin과 기본 브랜치를 확인해줘.
+3. gh 인증과 저장소 쓰기 권한을 확인해줘.
+4. Linear 연결 여부를 확인하고, 필요한 팀 키를 나에게 질문해줘.
+5. 필요한 세 스킬을 .claude/skills 아래에 복사할 계획을 보여줘.
+점검 결과와 변경될 파일을 먼저 보여주고 내가 승인한 뒤 설치해줘.
+설치 후에는 /skills에서 finn-spec, finn-build, finn-review가 보이는지 검증해줘.
+첫 작업 프롬프트
+/finn-spec
+회원가입 폼에 비밀번호 표시 버튼을 추가하려고 해.
+기존 동작을 깨지 않는 범위에서 요구사항과 완료 조건을 질문으로 정리해줘.
+내가 승인하기 전에는 agent-ready 상태로 넘기지 마.
+한계
+
+작은 개인 프로젝트에는 설정 비용이 더 클 수 있습니다. Linear와 GitHub를 작업의 기준으로 삼는 팀에 적합합니다. /loop는 Claude Code 세션이 열려 있는 동안만 실행되며, 에이전트가 병합까지 자동으로 처리하는 도구도 아닙니다.
+
+5. graph-engineering: 프롬프트보다 정보 구조와 작업 순서를 설계하기
+
+graph-engineering은 지식그래프와 작업그래프를 설계하는 방법을 가르치는 스킬입니다. 문서 속 개체와 관계를 어떻게 표현할지, 여러 에이전트의 작업 의존성을 어떻게 나눌지 다룹니다.
+
+설치
+git clone https://github.com/codejunkie99/graph-engineering.git
+cp -r graph-engineering/graph-engineering ~/.claude/skills/
+학습용 프롬프트
+graph engineering을 내 블로그 운영을 예시로 가르쳐줘.
+독자, 아티클, 카테고리, 강의, 검색어를 주요 개체 후보로 사용해줘.
+9단계 지식그래프 파이프라인을 한 단계씩 설명하고,
+각 단계마다 결과 예시와 내가 결정해야 할 질문을 하나씩 줘.
+내 답을 받기 전에는 다음 단계로 넘어가지 마.
+설계용 프롬프트
+내 콘텐츠 제작 과정을 작업그래프로 설계해줘.
+작업은 자료 조사, 개요 작성, 초안 작성, 사실 검증, 교정, 발행이야.
+실제로 의존성이 있는 작업만 간선으로 연결하고,
+병렬로 처리할 수 있는 작업과 반드시 순차로 해야 하는 작업을 구분해줘.
+최종 발행 직전에는 사람의 승인 단계를 넣어줘.
+Mermaid 다이어그램과 역할별 체크리스트로 보여줘.
+한계
+
+설치한다고 자동으로 지식그래프 시스템이 완성되는 것은 아닙니다. 설계와 학습을 돕는 지침에 가깝습니다. 작은 작업에는 오히려 복잡도가 커질 수 있습니다.
+
+6. humanizer-stack: AI 글의 단어와 구조를 두 번 다듬기
+
+humanizer-stack은 표면 표현을 다듬는 humanizer와 글의 구조를 점검하는 structural-humanizer를 순서대로 실행합니다.
+
+설치
+git clone https://github.com/NulightJens/humanizer-stack.git
+cd humanizer-stack
+./install.sh
+
+기본 설치는 두 스킬을 ~/.claude/skills/에 심볼릭 링크로 연결합니다. 파일을 독립적으로 복사하려면 ./install.sh --copy를 사용합니다.
+
+바로 써볼 프롬프트
+이 영어 뉴스레터 초안을 두 단계로 다듬어줘.
+1단계에서는 과장된 표현, 반복되는 문장 패턴, 불필요한 수식어를 찾아 수정해줘.
+2단계에서는 모든 문단이 지나치게 반듯한 구조인지, 결론을 과하게 설명하는지,
+구체적인 경험 없이 일반론만 이어지는지 점검해줘.
+내 말투와 핵심 주장은 유지해줘.
+수정 전후의 중요한 차이 5개를 마지막에 설명해줘.
+초안: [여기에 글 붙여넣기]
+한계
+
+근거 연구는 약 5천 단어 분량의 영어 소설을 중심으로 진행됐습니다. 짧은 한국어 마케팅 글에 같은 효과가 난다고 볼 수 없습니다. 어떤 도구도 글을 “AI 탐지 불가능”하게 보장하지 않습니다. 사실과 경험을 직접 보태는 사람의 편집이 여전히 중요합니다.
+
+7. story-to-handdrawn-video: 이야기를 손그림 영상으로 만들기
+
+story-to-handdrawn-video는 중국어 이야기 또는 순서가 있는 이미지를 3:4 세로형 손그림 애니메이션으로 바꿉니다. Remotion 기반이며 기본 출력은 음성·음악이 없는 H.264 영상입니다.
+
+준비 환경
+
+Node.js 20 이상, Python 3.10 이상, FFmpeg, npm, Chrome 또는 Remotion 호환 브라우저가 필요합니다.
+
+git clone https://github.com/gnipbao/story-to-handdrawn-video.git
+cd story-to-handdrawn-video
+npm ci
+npm run check
+
+Claude Code에 설치하려면 다음처럼 복사합니다. 프로젝트 폴더 밖에서 실행할 때는 README 안내에 따라 STORY_VIDEO_PROJECT 환경변수에 렌더러의 절대 경로를 지정해야 합니다.
+
+cp -R skill-package/story-to-handdrawn-video ~/.claude/skills/
+바로 써볼 프롬프트
+$story-to-handdrawn-video를 사용해서 아래 이야기를
+나중에 한국어 내레이션을 입힐 수 있는 무음 손그림 영상으로 만들어줘.
+먼저 문장을 장면별로 나누고,
+각 장면의 화면 구성과 자막을 표로 보여줘.
+내가 승인하면 720x960 미리보기를 만들고,
+최종 승인 후에만 1080x1440으로 렌더링해줘.
+이야기:
+[여기에 이야기 붙여넣기]
+한계
+
+원본 프로젝트는 중국어 스토리 처리에 초점이 맞춰져 있습니다. 한국어 자막과 문장 분리는 실제 샘플로 먼저 검증해야 합니다. 이미지 생성 과정에서 사용하는 서비스에 따라 API 키나 비용이 생길 수 있으며, 음성과 음악은 별도로 작업해야 합니다.
+
+8. andrej-karpathy-skills: Claude Code의 과한 구현을 줄이는 규칙집
+
+andrej-karpathy-skills는 네 가지 원칙을 담은 지침입니다.
+
+코딩 전에 가정과 불확실성을 밝힙니다.
+요청에 필요한 최소한의 코드만 작성합니다.
+관련 없는 파일과 코드는 건드리지 않습니다.
+성공 조건을 정하고 검증할 때까지 반복합니다.
+플러그인으로 설치
+
+Claude Code에서 다음 명령을 차례로 실행합니다. 현재 GitHub 페이지는 multica-ai 아래에 보이지만 README의 설치 명령은 이전 경로인 forrestchang을 사용합니다. 리디렉션이 바뀔 수 있으므로 실행 전 현재 README의 명령을 다시 확인하세요.
+
+/plugin marketplace add forrestchang/andrej-karpathy-skills
+/plugin install andrej-karpathy-skills@karpathy-skills
+
+프로젝트의 CLAUDE.md에 직접 추가할 수도 있지만, 기존 파일이 있다면 덮어쓰지 않도록 주의해야 합니다.
+
+설치 없이 먼저 시험할 프롬프트
+이 작업을 바로 구현하지 말고 먼저 다음 순서로 검토해줘.
+1. 내가 말하지 않아 네가 가정해야 하는 부분을 모두 적어줘.
+2. 요구사항을 만족하는 가장 단순한 구현 범위를 제안해줘.
+3. 변경할 파일과 변경하지 않을 파일을 구분해줘.
+4. 완료 여부를 확인할 테스트와 성공 조건을 적어줘.
+5. 내가 승인한 뒤에만 구현을 시작해줘.
+작업: [여기에 개발 작업 입력]
+한계
+
+이 지침은 신중함과 최소 변경을 우선합니다. 오타 수정처럼 아주 단순한 작업에서는 절차가 답답하게 느껴질 수 있습니다. 프로젝트 고유 규칙이 있다면 함께 적어야 더 잘 동작합니다.
+
+9. agents-council: 여러 AI에게 같은 질문을 묻기
+
+agents-council은 설치된 Claude Code, Codex CLI, Gemini CLI 등에 같은 질문을 보내고 결과를 종합하는 커뮤니티 프로젝트로 소개됐습니다. 다만 이 글에서 참고한 원본 저장소 0xwilliamortiz/agents-council은 2026년 8월 18일 현재 GitHub에서 404로 확인됩니다. 기술관련 뉴스
+
+현재 설치 상태
+현재 원본 저장소에 접근할 수 없어 설치를 권하지 않습니다. 과거에 안내된 명령이나 제3자 복사본을 그대로 실행하지 말고, 원본 저장소가 다시 공개됐는지 먼저 확인하세요.
+
+비슷한 이름의 다른 agent-council, agents-council 프로젝트가 여러 개 있지만 구현 방식과 설치 명령이 서로 다릅니다. 같은 프로젝트라고 가정해 대체 설치하면 안 됩니다.
+
+저장소가 복구되면 확인할 항목
+https://github.com/0xwilliamortiz/agents-council 상태를 확인해줘.
+설치하기 전에 다음을 검증해줘.
+1. 저장소가 현재 공개 상태인지 확인해줘.
+2. README의 최신 설치 명령을 그대로 인용해줘.
+3. 지원하는 AI CLI와 필요한 Node.js 버전을 확인해줘.
+4. 질문 내용이 어느 CLI와 프로세스로 전달되는지 설명해줘.
+5. 생성하거나 수정하는 파일을 보여줘.
+6. 내가 승인하기 전에는 설치하지 마.
+한계
+
+현재는 원본 코드와 최신 README를 확인할 수 없으므로 실제 동작, 보안, 지원 환경을 검증할 수 없습니다. 저장소가 복구되기 전까지는 후보 목록으로만 보고 설치는 보류하세요.
+
+10. pi-config: Pi 코딩 에이전트 환경을 한 번에 구성하기
+
+pi-config는 Claude Code 스킬 하나가 아닙니다. 오픈소스 터미널 코딩 에이전트 Pi를 위한 개인 설정 묶음입니다. README 기준 17개 플러그인, 18개 전역 스킬, 2개 MCP 서버를 설치합니다.
+
+설치
+
+Pi부터 설치합니다.
+
+npm install -g @earendil-works/pi-coding-agent
+
+그다음 설정 저장소를 설치합니다.
+
+git clone https://github.com/realchendahuang/pi-config.git
+cd pi-config
+bash install.sh
+
+설치 후 모델 제공자와 API 키는 pi config에서 직접 설정해야 합니다.
+
+설치 전 검토 프롬프트
+
+17개 플러그인을 한 번에 넣는 작업이므로 먼저 내용을 검토하는 편이 좋습니다.
+
+https://github.com/realchendahuang/pi-config 를 검토해줘.
+아직 install.sh를 실행하지 마.
+config.json, mcp.json, install.sh를 읽고 다음을 표로 정리해줘.
+- 설치되는 플러그인과 역할
+- 새로 생성하거나 수정하는 파일
+- 필요한 외부 프로그램과 API 키
+- 내 기존 설정과 충돌할 수 있는 항목
+- 지금 내 용도에 불필요해 보이는 항목
+그다음 전체 설치와 최소 설치 두 가지 방안을 제안해줘.
+내가 승인한 방안만 실행해줘.
+한계
+
+제작자의 개인 설정을 통째로 복제하는 구성입니다. 특히 mcp.json의 로컬 실행 파일 경로는 다른 컴퓨터에서 수정해야 할 수 있습니다. Claude Code만 사용하는 사람에게는 필요하지 않습니다.
+
+마무리
+
+설치가 막힐 때 가장 잘 통하는 프롬프트
+
+GitHub 저장소마다 설치 방식이 다릅니다. README가 길거나 내 운영체제에 맞는 명령을 찾기 어려울 때는 링크와 함께 아래 프롬프트를 붙여넣어 보세요.
+
+이 GitHub 프로젝트를 내 환경에 설치하는 방법을 단계별로 알려줘.
+저장소: [GitHub URL]
+내 환경을 먼저 확인하고, 아직 어떤 파일도 수정하지 마.
+README와 설치 스크립트를 읽은 뒤 다음을 알려줘.
+1. 이 도구가 실제로 하는 일
+2. 필요한 운영체제, 런타임, 외부 프로그램
+3. 설치 과정에서 생성하거나 수정하는 파일
+4. API 키, 로그인, 유료 서비스 필요 여부
+5. 내 기존 설정과 충돌할 가능성
+6. 설치 명령어
+7. 설치 성공을 확인하는 명령어
+8. 제거하거나 원상 복구하는 방법
+설치 계획을 먼저 보여주고 내가 승인한 뒤 실행해줘.
+가장 좋은 시작점은 andrej-karpathy-skills처럼 가볍고 되돌리기 쉬운 도구입니다. 콘텐츠 작업이 많다면 open-image-prompts는 설치 전에 웹 갤러리부터 둘러보세요.
+
+마지막 정리
+
+좋은 스킬을 많이 아는 것과 내 업무에 맞는 스킬을 꾸준히 쓰는 것은 다릅니다. 지금 가장 자주 반복하는 일 하나를 고르고, 그 일을 줄여주는 도구 하나만 설치해 보세요.
+
+일주일 뒤에도 계속 사용한다면 남겨두고, 그렇지 않다면 제거하세요. 스킬 목록을 늘리는 것보다 내가 어떤 상황에서 어떤 스킬을 부를지 분명하게 정하는 것이 더 중요합니다.
+
+자주 묻는 질문
+
+Claude Code 스킬이란 무엇인가요?
+처음 설치한다면 무엇부터 시작하면 되나요?
+여러 스킬을 한꺼번에 설치해도 되나요?
+설치한 스킬은 어떻게 삭제하나요?
+GitHub 스킬은 안전한가요?
+개발자가 아니어도 사용할 수 있나요?
+
+draw-your-font, open-image-prompts, claude-quest처럼 결과가 직관적인 도구는 비교적 쉽게 시작할 수 있습니다. 반면 Finn-loop, graph-engineering, pi-config는 Git, 터미널, 외부 서비스 설정에 대한 기본 이해가 필요합니다.
+
+짐코딩 뉴스레터
+AI 개발·클로드 코드 실전 노하우를 이메일로 받아보세요. 도움 되는 글만.
+이메일 주소
+동의하고 구독하기
+
+구독하면 마케팅 정보 수신 및 개인정보처리방침에 따른 이메일 수집·이용에 동의하게 됩니다. 언제든 수신거부할 수 있어요.
