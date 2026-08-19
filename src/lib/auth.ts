@@ -8,6 +8,7 @@ import {
   hasGithubToken,
   saveGithubToken,
 } from "@/lib/oauth-tokens";
+import { stableUserId } from "@/lib/auth-user-id";
 
 const devSecret = "mymark-dev-secret-change-me";
 const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
@@ -93,8 +94,23 @@ export const authConfig: NextAuthConfig = {
      * access_token은 JWT/세션에 넣지 않고 서버 DB에 암호화 저장한다.
      */
     async jwt({ token, user, account, profile }) {
-      if (user?.id) {
-        token.sub = user.id;
+      const githubLogin =
+        profile &&
+        typeof profile === "object" &&
+        "login" in profile &&
+        typeof (profile as { login?: unknown }).login === "string"
+          ? (profile as { login: string }).login
+          : typeof token.githubLogin === "string"
+            ? token.githubLogin
+            : undefined;
+      const userId = stableUserId(
+        account?.provider,
+        account?.providerAccountId,
+        user?.id ?? token.sub,
+        githubLogin
+      );
+      if (userId) {
+        token.sub = userId;
       }
 
       if (
