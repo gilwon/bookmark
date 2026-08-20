@@ -50,10 +50,11 @@ export function StarCard({
     <Card
       className={cn(
         "flex flex-col transition-colors hover:border-border",
-        selected && "border-indigo-500 ring-1 ring-indigo-500/40",
         isNew && "border-emerald-500/50",
-        isUpdated && !isNew && "border-amber-500/40",
-        star.isFavorite && "border-amber-500/40"
+        isUpdated && !isNew && !star.isFavorite && "border-amber-500/40",
+        star.isFavorite &&
+          "border-sky-300/80 [background:rgba(0,113,227,0.10)] hover:border-sky-400 dark:border-sky-500/45 dark:[background:rgba(41,151,255,0.14)]",
+        selected && "border-indigo-500 ring-1 ring-indigo-500/40",
       )}
     >
       <CardHeader className="pb-2">
@@ -113,7 +114,7 @@ export function StarCard({
             size="icon"
             className={cn(
               "h-8 w-8 shrink-0",
-              star.isFavorite ? "text-amber-500 opacity-100" : "text-muted-foreground"
+              star.isFavorite ? "text-sky-600 opacity-100 dark:text-sky-400" : "text-muted-foreground"
             )}
             onClick={() => void toggleFavorite()}
             disabled={favoriting}
