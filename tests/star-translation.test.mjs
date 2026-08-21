@@ -150,4 +150,45 @@ describe("Star 설명 번역", () => {
       "Hindsight: Agent Memory That Learns\n\nHindsight: 학습하는 에이전트 메모리."
     );
   });
+
+  it("영문 전용 신규 Star 29개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["anthropics/defending-code-reference-harness", "Skills for threat modeling, scanning, triage, patching, plus an autonomous scanning harness you can /customize"],
+      ["anthropics/knowledge-work-plugins", "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork"],
+      ["arknow91/liquid-taffy", "Three liquid interactions you can grab, pull, and let snap back — anchored dropdown, morphing dropdown and speed dial on one goo engine."],
+      ["ayghri/i-have-adhd", "A skill to stop your coding agent from burying the answer. ADHD-friendly output."],
+      ["baidu/Unlimited-OCR", "Unlimited OCR Works: Welcome the Era of One-shot Long-horizon Parsing."],
+      ["CodebuffAI/freebuff", "The free coding agent"],
+      ["CopilotKit/OpenBot", "Open-source AI coworkers that each get a computer of their own: a browser, files and tools, with every action decided before it happens and recorded after. Bring any AG-UI agent."],
+      ["deepseek-ai/deepseek-harness", "DeepSeek Harness: Everything is a Plugin."],
+      ["drawdb-io/drawdb", "Free, simple, and intuitive online database diagram editor and SQL generator."],
+      ["firecrawl/pdf-inspector", "Fast Rust library for PDF inspection, classification, and text extraction. Intelligently detects scanned vs text-based PDFs to enable smart routing decisions."],
+      ["FoundationAgents/MetaGPT", "🌟 The Multi-Agent Framework: First AI Software Company, Towards Natural Language Programming"],
+      ["getagentseal/codeburn", "Free, local tool to track AI coding token usage and cost across 37 tools and agents (Claude Code, Cursor, Codex, Gemini and more), by model, project, and task. npx codeburn"],
+      ["holaboss-ai/holaOS", "Open-source All in One AI agent workspace. Run any agent — Claude Code, Codex — across your tools (100+ integrations + MCP), apps, browser, and files, with shared memory. Built-in models or BYOK."],
+      ["ifixai-ai/iFixAi", "Independent Auditing of AI Agents. Run by human or the agent itself, to answer the most crucial question in the AI Agent Economy. Is the agent doing what is supposed to do? With iFixAi you can have this answer in less than 120 seconds."],
+      ["lightningpixel/modly", "Desktop app to generate 3D models from images or prompt using local AI — runs entirely on your GPU"],
+      ["MapleTechLabs/maple", "OpenTelemetry observability platform"],
+      ["MarsZ42/OrbitOS", "An AI-powered personal productivity system where knowledge management and daily task planning are intelligently orchestrated by your AI assistant."],
+      ["odysseus-dev/odysseus", "Self-hosted AI workspace. "],
+      ["shadcn/improve", "Use your most capable model to audit your codebase and write plans for cheaper models to execute."],
+      ["SteveTheKiller/KillerPDF", "Free and open-source PDF editor for Windows. View, annotate, OCR, merge, split, edit text, draw, sign, fill forms, print, flatten, and open password-protected PDFs without a subscription. Install or run portable. GPLv3"],
+      ["TanStack/query", "🤖 Powerful asynchronous state management, server-state utilities and data fetching for the web. TS/JS, React Query, Solid Query, Svelte Query and Vue Query."],
+      ["TanStack/router", "🤖 A client-first, server-capable, fully type-safe router and full-stack framework for the web (React and more)."],
+      ["unclebob/swarm-forge", "A simple tool for coordinating several AI agents."],
+      ["unslothai/unsloth", "Local UI to run and train LLMs and diffusion models, including Qwen3.8, Kimi K3, MiniMax-H3, Gemma 4, DeepSeek-V4, FLUX and more."],
+      ["vercel-labs/agent-browser", "Browser automation CLI for AI agents"],
+      ["wandb/openui", "OpenUI let's you describe UI using your imagination, then see it rendered live."],
+      ["xai-org/x-algorithm", "Algorithm powering the For You feed on X"],
+      ["zubair-trabzada/ai-marketing-claude", "AI Marketing Suite for Claude Code. 15 marketing skills with parallel subagents — audit any website, generate copy, email sequences, ad campaigns, content calendars, competitive intelligence, and client-ready PDF reports."],
+      ["zulip/zulip", "Zulip server and web application. Open-source team chat that helps teams stay productive and focused."],
+    ];
+    assert.equal(cases.length, 29);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
