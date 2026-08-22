@@ -785,3 +785,12 @@
 - 같은 제목이고 본문이 같으면 스킵한다. 본문이 다르면 같은 제목 행을 갱신한다.
 - 저장 id는 `b0460eac-0a9a-464c-82e6-1ee3083958f3`다. 로컬 `dev`와 운영 사용자에 같다.
 - 운영 목록 검색 `블로그 주제 찾기` 결과는 1건이다. 상세에서 코드 블록 8개와 복사 버튼 8개가 보인다.
+
+## Stars 영문 전용 설명 한국어 병기 메모
+
+- 운영 `github_stars` 313건 중 한글이 없는 설명이 15건이다. 설명 자체가 비어 있는 21건은 이번 범위에서 제외한다.
+- 15건 중 `holaboss-ai/holaOS`는 매핑이 있는데 백필이 안 된 상태다. 설명 원문이 매핑 작성 시점과 달라져도 기존 한국어를 병기한다.
+- `freestylefly/awesome-gpt-image-2`는 영·중문 혼용이다. 한글이 없어서 이번 대상에 포함한다. 기존 `YouMind-OpenLab/awesome-gpt-image-2`와는 다른 저장소다.
+- 번역은 `src/data/star-descriptions-ko.json`에 넣고 `withKoreanTranslation`이 이후 동기화에서도 병기하게 한다.
+- 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
+- 백필 15건을 갱신했고, 한글이 없는 설명은 0건이다. 설명이 비어 있는 21건은 그대로 둔다.
