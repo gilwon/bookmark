@@ -25,7 +25,13 @@ export function withKoreanTranslation(
   description: string | null,
   previous: string | null
 ): string | null {
-  if (!description) return previous;
+  const translation = translations[repoFullName as keyof typeof translations];
+
+  // GitHub About가 비어 있으면 저장소 페이지에서 만든 한국어만 채운다.
+  if (!description) {
+    if (previous && hasKorean(previous)) return previous;
+    return translation ?? previous;
+  }
   if (hasKorean(description)) return description;
 
   const saved = splitStarDescription(previous);
@@ -33,6 +39,5 @@ export function withKoreanTranslation(
     return `${description}\n\n${saved.korean}`;
   }
 
-  const translation = translations[repoFullName as keyof typeof translations];
   return translation ? `${description}\n\n${translation}` : description;
 }

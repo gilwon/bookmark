@@ -27,22 +27,25 @@ const { data: rows, error } = await sb
 if (error) throw error;
 
 let updated = 0;
+let emptyFilled = 0;
 for (const row of rows) {
   const translation = translations[row.repo_full_name];
-  if (!translation || !row.description) continue;
-  if (/[가-힣]/.test(row.description)) continue;
-  const existingTranslation = row.description
-    .split(separator)
-    .slice(1)
-    .join(separator)
-    .trim();
-  if (existingTranslation && /[가-힣]/.test(existingTranslation)) continue;
-  const original = row.description.split(separator)[0].trim();
+  if (!translation) continue;
+  if (row.description && /[가-힣]/.test(row.description)) continue;
+  const next = row.description?.trim()
+    ? `${row.description.split(separator)[0].trim()}${separator}${translation}`
+    : translation;
+  if (row.description === next) continue;
   const { error: updateError } = await sb
     .from("github_stars")
-    .update({ description: `${original}${separator}${translation}` })
+    .update({ description: next })
     .eq("id", row.id);
   if (updateError) throw updateError;
   updated++;
+  if (!row.description?.trim()) emptyFilled++;
 }
-console.log({ updated, translations: Object.keys(translations).length });
+console.log({
+  updated,
+  emptyFilled,
+  translations: Object.keys(translations).length,
+});

@@ -794,3 +794,11 @@
 - 번역은 `src/data/star-descriptions-ko.json`에 넣고 `withKoreanTranslation`이 이후 동기화에서도 병기하게 한다.
 - 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
 - 백필 15건을 갱신했고, 한글이 없는 설명은 0건이다. 설명이 비어 있는 21건은 그대로 둔다.
+
+## Stars 빈 설명 GitHub 확인 후 한국어 추가 메모
+
+- GitHub About 설명이 전부 null이라 README, SKILL.md, CLAUDE.md, 저장소 페이지로 내용을 확인했다.
+- `vfxguyai/newvideogenerator`는 파일이 없는 빈 저장소다. 그 사실을 한국어로 적는다.
+- GitHub 원문이 없으면 영문을 지어내지 않고 한국어만 저장한다. 이후 동기화에서 GitHub 설명이 비어 있으면 이 한글을 유지한다.
+- 기존 `if (!description) return previous`는 매핑이 있어도 빈 칸을 그대로 두므로, 매핑이 있으면 한글로 채우도록 바꿨다.
+- 백필 21건을 채웠고, 설명이 비어 있거나 한글이 없는 항목은 0건이다.
