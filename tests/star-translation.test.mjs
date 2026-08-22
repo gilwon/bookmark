@@ -218,4 +218,54 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("GitHub 설명이 비어도 매핑 한국어를 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("andrewyng/openworker", null, null),
+      "데스크톱에서 돌아가는 오픈소스 AI 동료. 채팅이 아니라 문서, 슬랙 답장, 캘린더처럼 끝난 결과물을 만듭니다."
+    );
+    assert.equal(
+      withKoreanTranslation(
+        "andrewyng/openworker",
+        null,
+        "데스크톱에서 돌아가는 오픈소스 AI 동료. 채팅이 아니라 문서, 슬랙 답장, 캘린더처럼 끝난 결과물을 만듭니다."
+      ),
+      "데스크톱에서 돌아가는 오픈소스 AI 동료. 채팅이 아니라 문서, 슬랙 답장, 캘린더처럼 끝난 결과물을 만듭니다."
+    );
+    assert.equal(
+      withKoreanTranslation("unknown/repo", null, "이미 있는 한글"),
+      "이미 있는 한글"
+    );
+  });
+
+  it("설명이 비어 있던 Star 21개의 저장소 설명을 한글로 채운다", () => {
+    const repos = [
+      "CloudAI-X/threejs-skills",
+      "ExplainingDeveloper/ai-chat",
+      "Julian-adv/OpenMMO",
+      "LCNINE/almondyoung-server",
+      "LeeYudok/doksam-ui",
+      "Ranteck/graph-engineer",
+      "Subhan-code/Amicro--Micro-transitions-",
+      "TOKTOKHAN-DEV/agent-company",
+      "amaancoderx/npxskillui",
+      "andrewyng/openworker",
+      "beyondworks/argo",
+      "codefactory-co/kimoring-ai-skills",
+      "dandacompany/dante-coffee",
+      "dandacompany/dantelabs-agentic-school",
+      "dbsxortime/design-studio-plugins",
+      "eisenjimmy/autoTHREADS",
+      "falcons-eyes/agent-fabric-dispatch",
+      "serendipity1004/cc-feature-implementer",
+      "sophiamyang/finger-frame-effect-ai",
+      "vfxguyai/newvideogenerator",
+      "withmarbleapp/os-taxonomy",
+    ];
+    assert.equal(repos.length, 21);
+    for (const repo of repos) {
+      const result = withKoreanTranslation(repo, null, null);
+      assert.equal(hasKorean(result), true, repo);
+    }
+  });
 });
