@@ -191,4 +191,31 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("영문 전용으로 남아 있던 신규 Star 15개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["addyosmani/web-quality-skills", "Agent Skills for optimizing web quality based on Lighthouse and Core Web Vitals."],
+      ["aidankinzett/claude-git-pr-skill", "Professional GitHub PR review skill for Claude Code with pending reviews, code suggestions, and user approval workflow"],
+      ["builderz-labs/mission-control", "Self-hosted control plane for AI agents: dispatch tasks, review runs, track spend, and operate OpenClaw, Claude Code, Codex, and other runtimes."],
+      ["chuspeeism/dashi-ppt-skill", "An AI-agent skill that generates browser-editable presentations from multiple visual themes, exportable to HTML, PDF, and PPTX."],
+      ["freestylefly/awesome-gpt-image-2", "Prompt as Code | GPT-Image2 工业级提示词引擎与模板库，470+ 个案例逆向工程，20+ 套工业级模板，并提炼出Skills，持续更新中"],
+      ["hashicorp/agent-skills", "A collection of Agent skills and Claude Code plugins for HashiCorp products."],
+      ["holaboss-ai/holaOS", "Open-source agentic workspace enterprises can make their own. Connect the systems you already run — 100+ integrations, MCP, chat tools, apps"],
+      ["iamlukethedev/Hermes3D", "Hermes3D is an open source 3D engine built on Hermes Agents for creating games, simulations, and high-performance 3D applications."],
+      ["levnikolaevich/claude-code-skills", "Standalone engineering skills for Claude Code and Codex: review, audit, optimization, testing, product discovery, architecture, and safe publishing."],
+      ["MengTo/kage", "An interactive five-chapter night walk through a Kyoto mountain temple, rendered live in Three.js."],
+      ["MengTo/threeui", "Open-source ThreeUI Community catalog with live interactive components and complete Community source."],
+      ["miketromba/css.glass", "The Glassmorphism CSS Generator (css.glass)"],
+      ["NanoNets/Graft", "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase."],
+      ["OthmanAdi/planning-with-files", "Persistent file-based planning for AI coding agents and long-running tasks. Crash-proof markdown plans, session recovery after /clear and compaction, per-turn re-injection against context rot, deterministic completion gate. Manus-style. Install from npm, the Claude Code plugin marketplace, or npx skills. Codex, Cursor, OpenCode, 60+ agents."],
+      ["public-apis/public-apis", "A collective list of free APIs"],
+    ];
+    assert.equal(cases.length, 15);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
