@@ -278,5 +278,15 @@
   "serendipity1004/cc-feature-implementer": "기능을 단계별 계획으로 쪼개고 품질 게이트와 TDD로 1~4시간 단위로 전달하는 Claude Code 스킬.",
   "sophiamyang/finger-frame-effect-ai": "두 손으로 만든 손가락 프레임 영상을 올리면, 프레임 안을 AI가 다시 그린 세계로 합성하는 비디오 앱.",
   "vfxguyai/newvideogenerator": "파일이 없는 빈 GitHub 저장소입니다.",
-  "withmarbleapp/os-taxonomy": "초등 과정에서 배우는 내용을 마이크로 토픽과 선수학습 그래프로 풀어 놓은 오픈 커리큘럼 분류 체계. Marble이 만들었습니다."
+  "withmarbleapp/os-taxonomy": "초등 과정에서 배우는 내용을 마이크로 토픽과 선수학습 그래프로 풀어 놓은 오픈 커리큘럼 분류 체계. Marble이 만들었습니다.",
+  "MacPaw/cleanmymac-cli": "터미널에서 Xcode, Docker, Homebrew, 개발 캐시를 지우고 프로젝트·AI 산출물을 정리하며 용량을 분석해 디스크를 되찾습니다.",
+  "Tencent/AI-Infra-Guard": "AI 생태계를 지키는 풀스택 레드팀 플랫폼. Agent, Skills, MCP, AI 인프라 스캔과 LLM 탈옥 평가를 제공합니다.",
+  "akitaonrails/ai-memory": "코딩 CLI 에이전트의 장기 기억과 서로 다른 벤더 에이전트 사이 인수인계를 돕는 솔루션.",
+  "anomalyco/opencode": "오픈소스 코딩 에이전트.",
+  "calesthio/OpenMontage": "오픈소스 에이전틱 영상 제작 시스템. 프로덕션 파이프라인 12개, 도구 100개 이상, 에이전트 스킬·제작 지식 파일 700개 이상으로 AI 코딩 어시스턴트를 영상 스튜디오로 바꿉니다.",
+  "chaitanyagiri/munder-difflin": "로컬 멀티에이전트 하니스.",
+  "Leonxlnx/unlazy": "AI 에이전트의 게으름을 막는 스킬. Depth Tree로 작업을 N층으로 나누고 각 잎에 전체 시간 예산을 주어 깊이에 따라 노력이 곱해지게 합니다. 2025-2026년 모델 게으름·얕은 사고·조기 완료 연구에 바탕합니다.",
+  "milind-soni/OpenMausBot": "봇이 쓸 수 있는 가상머신을 갖춘 Grok Bot의 오픈소스 대안.",
+  "openai/codex": "터미널에서 돌아가는 가벼운 코딩 에이전트.",
+  "volcengine/OpenViking": "AI 에이전트를 위한 스스로 진화하는 컨텍스트 데이터베이스. 에이전트 메모리, Knowledge RAG, Skills를 하나로 묶습니다."
 }

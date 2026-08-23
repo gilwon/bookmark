@@ -268,4 +268,26 @@ describe("Star 설명 번역", () => {
       assert.equal(hasKorean(result), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 10개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["anomalyco/opencode", "The open source coding agent."],
+      ["openai/codex", "Lightweight coding agent that runs in your terminal"],
+      ["Tencent/AI-Infra-Guard", "A full-stack AI Red Teaming platform securing AI ecosystems via Agent Scan, Skills Scan, MCP scan, AI Infra scan and LLM jailbreak evaluation."],
+      ["calesthio/OpenMontage", "World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assistant into a full video production studio."],
+      ["Leonxlnx/unlazy", "Anti-laziness skill for AI agents. Core: the Depth Tree method, which splits a task N layers deep and gives every leaf the full time budget of the whole task, so effort multiplies with depth. Grounded in 2025-2026 research on model laziness, underthinking and premature completion."],
+      ["chaitanyagiri/munder-difflin", "local multi-agent harness"],
+      ["akitaonrails/ai-memory", "Solution for long term memory for agent coding CLIs and to facilitate handoff between different agent vendors"],
+      ["volcengine/OpenViking", "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills."],
+      ["MacPaw/cleanmymac-cli", "Clean Xcode, Docker, Homebrew, and developer caches, remove project and AI artifacts, analyze storage, and reclaim disk space from the Terminal."],
+      ["milind-soni/OpenMausBot", "Open Source Alternative to Grok Bot with a virtual machine that bots can use"],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
