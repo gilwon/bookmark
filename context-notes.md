@@ -825,6 +825,20 @@
 - 저장 id는 `ced8beed-615b-429a-8f2e-8a98309acac4`다. 로컬 `dev`와 운영 사용자에 같다.
 - 히어로는 본문 위젯 밖 featured 이미지라 본문 앞에 붙였다. data URL 이미지 5장, 코드 블록 1개다. 뉴스레터와 merlin은 없다.
 
+## 네이버 코닥 필름 프롬프트 Pages 이관 메모
+
+- 사용자 URL은 모바일 `PostView`에 Instagram `proxyReferer`와 `fbclid`가 붙어 있다. 저장 원문은 `https://blog.naver.com/ai_newceo/224387395142`다.
+- 제목은 `“이거 누가 찍어줬어?” 소리 듣는 코닥 필름 감성 📸`다.
+- 본문은 Smart Editor 4 `.se-main-container`다. 프로필, 스티커 GIF, 블로그 아이콘은 뺀다.
+- 모바일 `src`는 `mblogthumb` `type=w80_blur`다. 쓰지 않는다. `data-lazy-src`는 `type=w800`이고, PC는 `postfiles` `type=w773`이다. 원본은 호스트를 `blogfiles.pstatic.net`으로 바꾸고 쿼리를 제거한 PNG다. 1장은 약 2.7MB다.
+- 영문 코닥 프롬프트는 한 문단이다. 윤문하지 않고 코드 펜스 하나에 둔다.
+- 인스타 주소는 `https://www.instagram.com/ai_newpd/`만 남긴다.
+- 사용자는 Pages만 요청했다. Prompts 테이블에는 넣지 않는다.
+- 같은 제목이고 본문이 같으면 스킵한다. 본문이 다르면 같은 제목 행을 갱신한다. 제목이 달라도 원문 logNo가 본문에 있으면 스킵한다.
+- 저장 id는 `c9d48f4a-414b-4635-a504-3c27e806a34e`다. 로컬 `dev`와 운영 사용자에 같다.
+- data URL PNG 7장, 코드 블록 1개다. 프롬프트 길이는 1,627자다. `w80_blur`와 `fbclid`는 없다. Prompts 행은 만들지 않았다.
+- 운영에 28MB 본문을 한 번에 INSERT하면 statement timeout이 나서, 짧은 stub을 넣은 뒤 같은 행을 UPDATE했다.
+
 ## Stars 신규 영문 전용 설명 한국어 병기 메모
 
 - 운영 Star는 323건이다. 한글이 없는 설명은 2026-08-23에 들어온 10건이다. 빈 설명은 0건이다.
