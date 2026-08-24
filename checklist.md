@@ -633,3 +633,12 @@
 - [x] 이미지는 만료 URL이 아닌 data URL로 저장
 - [x] Pages에만 저장. Prompts는 추가하지 않음
 - [x] 로컬·Supabase 저장 후 재실행 신규 0건과 대상 테스트 확인
+
+<!-- REBORN 프롬프트 정리기 Pages 이관 체크리스트 -->
+# REBORN 프롬프트 정리기 Pages 이관
+
+- [x] 원문 제목·BEFORE/AFTER·설치 명령을 확인
+- [x] 저장 원문에서 UTM을 뺀다
+- [x] Pages에만 저장. Prompts는 추가하지 않음
+- [x] 로컬 SQLite와 Supabase에 저장
+- [x] `--check`와 대상 테스트로 금지 문자열을 확인
