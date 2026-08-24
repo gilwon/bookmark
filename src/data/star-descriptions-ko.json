@@ -288,5 +288,17 @@
   "Leonxlnx/unlazy": "AI 에이전트의 게으름을 막는 스킬. Depth Tree로 작업을 N층으로 나누고 각 잎에 전체 시간 예산을 주어 깊이에 따라 노력이 곱해지게 합니다. 2025-2026년 모델 게으름·얕은 사고·조기 완료 연구에 바탕합니다.",
   "milind-soni/OpenMausBot": "봇이 쓸 수 있는 가상머신을 갖춘 Grok Bot의 오픈소스 대안.",
   "openai/codex": "터미널에서 돌아가는 가벼운 코딩 에이전트.",
-  "volcengine/OpenViking": "AI 에이전트를 위한 스스로 진화하는 컨텍스트 데이터베이스. 에이전트 메모리, Knowledge RAG, Skills를 하나로 묶습니다."
+  "volcengine/OpenViking": "AI 에이전트를 위한 스스로 진화하는 컨텍스트 데이터베이스. 에이전트 메모리, Knowledge RAG, Skills를 하나로 묶습니다.",
+  "AaronRoeF/claude-code-patterns": "개인 에이전트를 위한 현장에서 검증된 Claude Code 패턴과 안티패턴. 지식 베이스, 메모리 통합, 훅, 서브에이전트로 쌓이는 AI 워크플로입니다. 매월 갱신됩니다.",
+  "AgriciDaniel/claude-seo": "Claude Code용 범용 SEO 스킬. 기술 SEO, E-E-A-T, 스키마, GEO/AEO, 백링크, 로컬 SEO, 지도 인텔리전스, 시맨틱 클러스터링, 이커머스 SEO, 국제 SEO, Google API, PDF/Excel 리포트를 다루는 하위 스킬 25개와 서브에이전트 18개를 제공합니다.",
+  "agentplugins/agent-plugins-spec": "Agent Plugins Specification v1.0.0. 에이전트 확장을 배포 가능한 플러그인으로 묶는 최소 표준입니다.",
+  "agentskills/agentskills": "Agent Skills 명세와 문서입니다.",
+  "b-nnett/grok-bot-0.18-reconstructed": "macOS용 Grok Bot 0.18.0을 비공식적으로 소스 중심으로 재구성하고 확장한 프로젝트입니다.",
+  "fivetaku/tikeytaka": "Claude Code용 중앙 API 키 금고. 암호화된 클라우드 동기화 금고로, 가입 없이 프로젝트에 키를 자동으로 연결합니다.",
+  "liustack/modlens": "DeepSeek Harness용 첫 비전 플러그인이자, 텍스트 전용 코딩 에이전트를 위한 비전 브리지입니다. 이미지를 붙여 넣으면 OCR, 레이아웃, 의미 구조가 담긴 JSON 증거를 얻습니다.",
+  "marceloprates/prettymaps": "OpenStreetMap 데이터로 예쁜 지도를 그립니다. osmnx, matplotlib, shapely로 만들었습니다.",
+  "rampstackco/claude-skills": "웹사이트 전 주기를 다루는 스택 비의존 Claude Skills입니다. 브랜드, 디자인, 콘텐츠, SEO, 개발, 운영, 그로스, 리서치를 포함해 만들고 배포하고 점검하고 최적화합니다.",
+  "revfactory/skills": "Robin이 만들어 쓰는 Claude Code 스킬 모음. Spring Boot 초기화, HWP, 이미지 생성, 에이전트 리서치, 워크로그, 크롤링 등을 포함합니다.",
+  "videosdk-community/ai-telephony-demo": "인바운드·아웃바운드 전화를 처리하는 AI 텔레포니 에이전트를 만드는 데모입니다.",
+  "ZestfulPulse/ios-app-store-submit": "iOS App Store 제출을 자동화하는 Claude Code 스킬입니다."
 }
