@@ -840,6 +840,17 @@
 - 이미지는 5분 만료 서명 URL을 저장하지 않고 `tmp/notion-kst-20260824/images`의 PNG를 data URL로 고정한다.
 - 로컬 id는 대시보드 `198ecb82-3e56-4aee-a5e0-87932a7f3699`(이미지 6), 플러그인 `61d6489c-ea3d-4c07-9d22-4a16a84c0657`(이미지 3)이다. 운영 id는 `7b016ad6-548b-4d8b-babb-33a36f0f3fe4`, `baa600de-a3cc-4c91-bf51-f419c0437111`이다. 재실행은 로컬·운영 모두 skip 2건이다.
 
+## REBORN 프롬프트 정리기 Pages 이관 메모
+
+- 사용자 URL은 `utm_source=ig&utm_medium=dm&utm_campaign=prompt`가 붙어 있다. 저장 원문은 `https://rebornlabs.kr/prompt`다.
+- 문서 제목은 `프롬프트 정리기 — 한 문장을 그대로 쓸 수 있는 프롬프트로`다. OG 제목은 `프롬프트 정리기 · REBORN LABS`다. 페이지 제목은 문서 제목을 쓴다.
+- 본문은 랜딩 HTML이다. 이미지는 없다. `funnel-utm.js`와 복사 버튼은 뺀다.
+- BEFORE/AFTER `<pre>`와 설치 명령 `reborn-prompt 설치해줘`, `!npx reborn-prompt`, `npx reborn-prompt`는 원문 그대로 코드 펜스에 둔다.
+- zip은 `https://rebornlabs.kr/reborn-prompt.zip`로 절대 경로를 쓴다. 클로드킷 링크는 UTM을 빼고 `https://rebornlabs.kr/claudekit`만 남긴다.
+- 사용자는 Pages만 요청했다. Prompts 테이블에는 넣지 않는다.
+- 같은 제목이고 본문이 같으면 스킵한다. 본문이 다르면 같은 제목 행을 갱신한다.
+- 저장 id는 `81453d05-3124-4ee0-9c51-8398d0471a3f`다. 로컬 `dev`와 운영 사용자에 같다. 재실행은 skip이다.
+
 ## 네이버 코닥 필름 프롬프트 Pages 이관 메모
 
 - 사용자 URL은 모바일 `PostView`에 Instagram `proxyReferer`와 `fbclid`가 붙어 있다. 저장 원문은 `https://blog.naver.com/ai_newceo/224387395142`다.
