@@ -290,4 +290,35 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 12개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["AaronRoeF/claude-code-patterns", "Field-tested Claude Code patterns & anti-patterns for personal agents — an AI workflow that compounds: knowledge base, memory consolidation, hooks, subagents. Enterprise agent trust: agentrust-io.com. Updated monthly."],
+      ["AgriciDaniel/claude-seo", "Universal SEO skill for Claude Code. 25 sub-skills + 18 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, backlinks, local SEO, maps intelligence, semantic clustering, e-commerce SEO, international SEO, Google APIs, and PDF/Excel reporting. Optional DataForSEO, Firecrawl, and Banana extensions."],
+      ["agentplugins/agent-plugins-spec", "Agent Plugins Specification v1.0.0 — A minimal standard for packaging agent extensions into distributable plugins"],
+      ["agentskills/agentskills", "Specification and documentation for Agent Skills"],
+      ["b-nnett/grok-bot-0.18-reconstructed", "Unofficial source-oriented reconstruction and extension of Grok Bot 0.18.0 for macOS"],
+      ["fivetaku/tikeytaka", "Central API key vault for Claude Code — encrypted cloud-synced vault, zero sign-up, auto-wire keys into projects"],
+      ["liustack/modlens", "The first vision plugin for DeepSeek Harness, and the vision bridge for every text-only coding agent. Paste an image, get structured JSON evidence (OCR, layout, semantics). | 全网最强 DeepSeek Harness 外挂视觉插件，为 DeepSeek、GLM 等纯文本模型外挂视觉能力，粘贴图片即得结构化 JSON 证据（OCR、版面、语义）。"],
+      ["marceloprates/prettymaps", "Draw pretty maps from OpenStreetMap data! Built with osmnx +matplotlib + shapely"],
+      ["rampstackco/claude-skills", "Stack-agnostic Claude Skills covering the full website lifecycle: brand, design, content, SEO, dev, ops, growth, and research. Build, ship, audit, optimize."],
+      ["videosdk-community/ai-telephony-demo", "Build an AI Telephony Agent for Inbound and Outbound Calls"],
+      ["ZestfulPulse/ios-app-store-submit", "Claude Code skill for automating iOS App Store submission."],
+      ["freestylefly/awesome-gpt-image-2", "Prompt as Code | GPT-Image2 工业级提示词引擎与模板库，530+ 个案例逆向工程，20+ 套工业级模板，并提炼出Skills，持续更新中"],
+    ];
+    assert.equal(cases.length, 12);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("GitHub About가 비어 있는 신규 Star는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("revfactory/skills", null, null),
+      "Robin이 만들어 쓰는 Claude Code 스킬 모음. Spring Boot 초기화, HWP, 이미지 생성, 에이전트 리서치, 워크로그, 크롤링 등을 포함합니다."
+    );
+  });
 });

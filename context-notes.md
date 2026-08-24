@@ -883,6 +883,15 @@
 - data URL PNG 7장, 코드 블록 1개다. 프롬프트 길이는 1,627자다. `w80_blur`와 `fbclid`는 없다. Prompts 행은 만들지 않았다.
 - 운영에 28MB 본문을 한 번에 INSERT하면 statement timeout이 나서, 짧은 stub을 넣은 뒤 같은 행을 UPDATE했다.
 
+## Stars 한글 없는 설명 한국어 추가 메모
+
+- 운영 Star는 336건이다. 한글이 없는 설명은 12건이고 빈 설명은 1건이다.
+- GitHub About가 있으면 영문을 유지하고 한국어를 병기한다.
+- `revfactory/skills`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다.
+- `freestylefly/awesome-gpt-image-2`는 매핑이 있었지만 본문이 중국어라 한글 검사가 통과하지 않아 백필이 필요했다.
+- 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
+- 백필 13건(영문 병기 12, 빈 칸 채움 1)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
 ## Stars 신규 영문 전용 설명 한국어 병기 메모
 
 - 운영 Star는 323건이다. 한글이 없는 설명은 2026-08-23에 들어온 10건이다. 빈 설명은 0건이다.
