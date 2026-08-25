@@ -588,6 +588,19 @@
 - 콜아웃 안의 지시문 전체가 복사용 프롬프트 1개다.
 - 로컬·운영에 Page 1건과 Prompt 1건을 저장했고 재실행은 스킵이다.
 
+## 짐코딩 Matt Pocock 스킬 설치 가이드 Pages 이관 메모
+
+- 사용자 URL은 `fbclid`가 붙어 있다. 저장 원문은 `https://www.gymcoding.co/articles/matt-pocock-ai-skills-install-guide`다.
+- 제목은 `Matt Pocock 스킬 설치와 활용법: 요즘 AI 잘 쓰는 사람은 프롬프트를 매번 쓰지 않습니다`다.
+- 본문은 `<article class="py-page-y min-w-0">`다. 로고 SVG, 인프런 강의 카드, 짐코딩 뉴스레터 폼은 뺀다.
+- 표지 OG PNG는 만료 쿼리가 있어 data URL로 고정한다.
+- 설치 명령과 `/grill-me` 등 실습 프롬프트는 코드 펜스에 원문 그대로 둔다.
+- 사용자는 Pages만 요청했다. Prompts 테이블에는 넣지 않는다.
+- 같은 제목의 새 행은 만들지 않는다. 로컬은 본문이 같으면 스킵하고 다르면 UPDATE한다. 운영은 제목이 있고 FAQ 답이 있으면 스킵한다. TipTap 자동저장이 JSON을 바꿔 전체 본문 비교가 매번 UPDATE가 되기 때문이다. FAQ가 빠진 기존 행만 UPDATE한다.
+- 정적 HTML의 FAQ `role=region`은 닫혀 있어 답이 비어 있다. 브라우저에서 질문별로 연 뒤 `scripts/import-gymcoding-matt-pocock-faq.json` 9개를 `fillFaqAnswers`로 넣는다.
+- 기존 `클로드 코드 스킬·도구 추천 10개`는 다른 gymcoding 글이라 중복이 아니다.
+- 저장 id는 `2012d60f-87b0-48a2-80f9-2238dcca2c0b`다. 로컬 `dev`와 운영 사용자에 같다. 표지 PNG 1장, 코드 블록 17개다. Prompts 행은 만들지 않았다.
+
 ## 짐코딩 클로드 스킬 10개 이관 메모
 
 - 원문은 `https://www.gymcoding.co/articles/claude-code-skills-top-10-install-prompts`다.
