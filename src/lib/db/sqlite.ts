@@ -48,7 +48,12 @@ function createSqlite(): SqliteDb {
     );
     CREATE TABLE IF NOT EXISTS custom_pages (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
-      content TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+      content TEXT NOT NULL DEFAULT '{}',
+      tags TEXT NOT NULL DEFAULT '[]',
+      source_url TEXT,
+      search_text TEXT NOT NULL DEFAULT '',
+      is_favorite INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
     CREATE TABLE IF NOT EXISTS oauth_tokens (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, provider TEXT NOT NULL,
@@ -141,6 +146,28 @@ function createSqlite(): SqliteDb {
   if (promptCols.length && !promptCols.some((c) => c.name === "is_favorite")) {
     sqlite.exec(
       `ALTER TABLE prompts ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0`
+    );
+  }
+  // 페이지 찾기 컬럼 (기존 DB 마이그레이션)
+  const pageCols = sqlite
+    .prepare("PRAGMA table_info(custom_pages)")
+    .all() as { name: string }[];
+  if (pageCols.length && !pageCols.some((c) => c.name === "tags")) {
+    sqlite.exec(
+      `ALTER TABLE custom_pages ADD COLUMN tags TEXT NOT NULL DEFAULT '[]'`
+    );
+  }
+  if (pageCols.length && !pageCols.some((c) => c.name === "source_url")) {
+    sqlite.exec(`ALTER TABLE custom_pages ADD COLUMN source_url TEXT`);
+  }
+  if (pageCols.length && !pageCols.some((c) => c.name === "search_text")) {
+    sqlite.exec(
+      `ALTER TABLE custom_pages ADD COLUMN search_text TEXT NOT NULL DEFAULT ''`
+    );
+  }
+  if (pageCols.length && !pageCols.some((c) => c.name === "is_favorite")) {
+    sqlite.exec(
+      `ALTER TABLE custom_pages ADD COLUMN is_favorite INTEGER NOT NULL DEFAULT 0`
     );
   }
   return drizzle(sqlite, { schema });

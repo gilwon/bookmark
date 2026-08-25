@@ -7,12 +7,24 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
+import { preparePageFindability } from "@/lib/page-findability";
 import { store } from "@/lib/store";
+import type { CustomPageRow } from "@/lib/store/types";
 import type { CustomPage } from "@/lib/types";
 
 export const runtime = "nodejs";
 
 type Ctx = { params: Promise<{ id: string }> };
+
+function parseTags(raw: string | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const v = JSON.parse(raw);
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 function toPage(row: NonNullable<Awaited<ReturnType<typeof store.getPage>>>): CustomPage {
   let content: unknown = {};
@@ -26,6 +38,9 @@ function toPage(row: NonNullable<Awaited<ReturnType<typeof store.getPage>>>): Cu
     userId: row.userId,
     title: row.title,
     content,
+    tags: parseTags(row.tags),
+    sourceUrl: row.sourceUrl ?? null,
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
@@ -65,7 +80,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
     );
   }
 
-  const patch: Record<string, unknown> = {
+  const patch: Partial<CustomPageRow> = {
     updatedAt: new Date().toISOString(),
   };
   if (typeof body.title === "string") {
@@ -89,6 +104,44 @@ export async function PATCH(req: Request, ctx: Ctx) {
       return NextResponse.json({ error: msg }, { status: 400 });
     }
     patch.content = serialized;
+  }
+  if (Array.isArray(body.tags)) {
+    patch.tags = JSON.stringify(
+      body.tags.filter((t: unknown) => typeof t === "string")
+    );
+  }
+  if (body.sourceUrl !== undefined) {
+    patch.sourceUrl =
+      typeof body.sourceUrl === "string" && body.sourceUrl.trim()
+        ? body.sourceUrl.trim()
+        : null;
+  }
+  if (typeof body.isFavorite === "boolean") {
+    patch.isFavorite = body.isFavorite ? 1 : 0;
+  }
+
+  if (patch.content !== undefined || patch.title !== undefined) {
+    let contentUnknown: unknown = body.content;
+    if (contentUnknown === undefined) {
+      try {
+        contentUnknown = JSON.parse(existing.content || "{}");
+      } catch {
+        contentUnknown = {};
+      }
+    }
+    const existingTags =
+      patch.tags !== undefined ? parseTags(patch.tags) : parseTags(existing.tags);
+    const existingSourceUrl =
+      patch.sourceUrl !== undefined ? patch.sourceUrl : existing.sourceUrl;
+    const found = preparePageFindability({
+      title: patch.title ?? existing.title,
+      content: contentUnknown,
+      existingTags,
+      existingSourceUrl,
+    });
+    patch.searchText = found.searchText;
+    if (patch.tags === undefined) patch.tags = JSON.stringify(found.tags);
+    if (patch.sourceUrl === undefined) patch.sourceUrl = found.sourceUrl;
   }
 
   const row = await store.updatePage(id, gate.user.userId, patch);

@@ -12,6 +12,7 @@ import {
   prompts,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
+import { preparePageFindability } from "@/lib/page-findability";
 import type {
   CategoryCount,
   DashboardCounts,
@@ -320,6 +321,43 @@ export async function countStarChanges(userId: string): Promise<number> {
 }
 
 // --- pages ---
+function parsePageContent(raw: string): unknown {
+  try {
+    return JSON.parse(raw || "{}");
+  } catch {
+    return raw;
+  }
+}
+
+function parsePageTags(raw: string | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const v = JSON.parse(raw);
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function findabilityColumns(input: {
+  title: string;
+  content: string;
+  tags?: string;
+  sourceUrl?: string | null;
+}): { tags: string; sourceUrl: string | null; searchText: string } {
+  const f = preparePageFindability({
+    title: input.title,
+    content: parsePageContent(input.content),
+    existingTags: parsePageTags(input.tags),
+    existingSourceUrl: input.sourceUrl ?? null,
+  });
+  return {
+    tags: JSON.stringify(f.tags),
+    sourceUrl: f.sourceUrl,
+    searchText: f.searchText,
+  };
+}
+
 /** 목록용 — 본문 제외(경량). 등록일 최신순. */
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
   const rows = await qall(
@@ -330,6 +368,9 @@ export async function listPages(userId: string): Promise<CustomPageRow[]> {
         title: customPages.title,
         createdAt: customPages.createdAt,
         updatedAt: customPages.updatedAt,
+        tags: customPages.tags,
+        sourceUrl: customPages.sourceUrl,
+        isFavorite: customPages.isFavorite,
       })
       .from(customPages)
       .where(eq(customPages.userId, userId))
@@ -338,6 +379,10 @@ export async function listPages(userId: string): Promise<CustomPageRow[]> {
   return rows.map((r) => ({
     ...r,
     content: "{}",
+    searchText: "",
+    tags: r.tags ?? "[]",
+    sourceUrl: r.sourceUrl ?? null,
+    isFavorite: r.isFavorite ?? 0,
   }));
 }
 
@@ -354,7 +399,16 @@ export async function getPage(
 }
 
 export async function insertPage(row: CustomPageRow): Promise<CustomPageRow> {
-  await qrun(db.insert(customPages).values(row));
+  const found = findabilityColumns(row);
+  await qrun(
+    db.insert(customPages).values({
+      ...row,
+      tags: found.tags,
+      sourceUrl: found.sourceUrl,
+      searchText: found.searchText,
+      isFavorite: row.isFavorite ? 1 : 0,
+    })
+  );
   return (await getPage(row.id, row.userId))!;
 }
 
@@ -364,6 +418,20 @@ export async function updatePage(
   patch: Partial<CustomPageRow>
 ): Promise<CustomPageRow | undefined> {
   const { id: _i, userId: _u, ...rest } = patch as CustomPageRow;
+  if (rest.title !== undefined || rest.content !== undefined) {
+    const existing = await getPage(id, userId);
+    if (!existing) return undefined;
+    const found = findabilityColumns({
+      title: rest.title ?? existing.title,
+      content: rest.content ?? existing.content,
+      tags: rest.tags ?? existing.tags,
+      sourceUrl:
+        rest.sourceUrl !== undefined ? rest.sourceUrl : existing.sourceUrl,
+    });
+    rest.tags = found.tags;
+    rest.sourceUrl = found.sourceUrl;
+    rest.searchText = found.searchText;
+  }
   await qrun(
     db
       .update(customPages)
@@ -763,7 +831,7 @@ export async function searchPages(
       if (opts.from && r.updatedAt < opts.from) return false;
       if (opts.to && r.updatedAt > opts.to + "T23:59:59") return false;
       if (!q) return true;
-      return `${r.title} ${r.content}`.toLowerCase().includes(q);
+      return `${r.title} ${r.searchText ?? ""}`.toLowerCase().includes(q);
     })
     .slice(0, lim);
 }

@@ -65,6 +65,10 @@ create table if not exists public.custom_pages (
   user_id text not null,
   title text not null,
   content text not null default '{}',
+  tags text not null default '[]',
+  source_url text,
+  search_text text not null default '',
+  is_favorite integer not null default 0,
   created_at text not null,
   updated_at text not null
 );
@@ -107,6 +111,12 @@ create table if not exists public.prompts (
 -- 기존 프로젝트: 즐겨찾기 컬럼
 alter table public.bookmarks add column if not exists is_favorite integer not null default 0;
 alter table public.prompts add column if not exists is_favorite integer not null default 0;
+
+-- 기존 프로젝트: 페이지 찾기 컬럼
+alter table public.custom_pages add column if not exists tags text not null default '[]';
+alter table public.custom_pages add column if not exists source_url text;
+alter table public.custom_pages add column if not exists search_text text not null default '';
+alter table public.custom_pages add column if not exists is_favorite integer not null default 0;
 
 create index if not exists idx_bookmarks_user on public.bookmarks (user_id);
 create index if not exists idx_categories_user on public.categories (user_id);

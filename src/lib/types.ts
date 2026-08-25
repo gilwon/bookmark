@@ -55,6 +55,9 @@ export type CustomPage = {
   userId: string;
   title: string;
   content: unknown;
+  tags: string[];
+  sourceUrl: string | null;
+  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
 };
