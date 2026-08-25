@@ -961,3 +961,19 @@
 - GitHub About가 있으므로 영문을 유지하고 한국어를 병기한다.
 - `Leonxlnx/unlazy`는 기존 `Leonxlnx/taste-skill`과 다른 저장소다.
 - 백필 10건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다.
+
+## Claude Code ELI5 Notion Pages 이관 메모
+
+- 사용자 URL은 `fbclid`가 붙어 있다. 저장 원문은 `https://rounded-fossa-8ea.notion.site/AI-Brief-Claude-Code-ELI5-3c75142006a68008a3bfd0641a6b00ec`다.
+- 페이지 ID는 `3c751420-06a6-8008-a3bf-d0641a6b00ec`이고 제목은 `[AI Brief] Claude Code ELI5 설치 가이드 및 실무 활용 프롬프트`다. 아이콘 `⚡`는 제목에 넣지 않는다.
+- 연결된 Notion MCP는 다른 워크스페이스 공개 사이트로 읽힌다. 블록은 공개 `loadPageChunk`로 받는다. space는 `fd451420-06a6-8128-a850-00038d44c4be`다.
+- 루트 하위는 31개다. 토글 1개의 자식 2개는 `limit: 100` 한 번에 비어 있어 별도 요청으로 이어 받는다.
+- 블록 합계는 부모를 포함해 41개다. 종류는 page 1, callout 3, sub_header 5, text 9, code 7, toggle 1, table 1, sub_sub_header 4, divider 1, table_row 4, bulleted_list 5다.
+- 이미지·파일·PDF·커버는 0개다. 그래도 렌더러는 이미지 블록을 data URL로, file/pdf를 다운로드 링크로 둔다. ZIP은 기존 `page-attachments` 화이트리스트 없이 저장하지 않는다.
+- 만료되는 Notion 서명 URL(`prod-files-secure`, `file.notion.so`, `X-Amz`, `expirationTimestamp`)은 본문에 남기지 않는다.
+- 사용자는 Pages만 요청했다. Prompts 테이블에는 넣지 않는다. 설치 명령과 `/eli5` 프롬프트는 페이지 코드 블록에 그대로 둔다.
+- 페이지 안 `sub_header`는 `##`, `sub_sub_header`는 `###`다. 페이지 제목만 `#`다.
+- 같은 제목이고 본문이 같으면 스킵한다. 본문이 다르면 같은 제목 행을 갱신한다.
+- 참고 링크 `https://app.notion.com/p/3c5d596ff5bd80cc8314f386247910a6`는 펼치지 않고 링크로 둔다.
+- 저장 id는 `164aee81-ee75-48d7-a85b-eb20c4770c7b`다. 로컬 `dev`와 운영 사용자에 같다. 재실행은 skip 1건이다.
+- 운영 목록 검색 `ELI5` 결과는 1건이다. 상세에서 코드 블록 7개, 표 1개, 콜아웃 3개가 보인다. 원문 이미지·첨부는 없다.
