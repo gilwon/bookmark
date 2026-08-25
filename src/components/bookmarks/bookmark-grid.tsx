@@ -1,9 +1,16 @@
-// 북마크 반응형 그리드 — 검색 + 카테고리 필터/그룹 + 선택 삭제
+// 북마크 반응형 그리드 — 검색 + 상위 그룹 칩/섹션 + 선택 삭제
 "use client";
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Bookmark } from "@/lib/types";
+import {
+  SITE_GROUP,
+  UNCATEGORIZED_GROUP,
+  bookmarkGroupKey,
+  bookmarkGroupLabel,
+  bookmarkInGroup,
+} from "@/lib/bookmark-groups";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import {
@@ -14,19 +21,26 @@ import { SelectionToolbar } from "@/components/ui/selection-toolbar";
 import { cn } from "@/lib/utils";
 import { BookmarkCard } from "./bookmark-card";
 
-/** 카테고리 없음 표시용 키 */
-const UNCATEGORIZED = "__uncategorized__";
 const ALL = "__all__";
 const FAVORITES = "__favorites__";
+const FAVORITES_LABEL = "⭐ 즐겨찾기";
 
-function categoryKey(b: Bookmark): string {
-  const c = b.category?.trim();
-  return c ? c : UNCATEGORIZED;
+/** 사이트·미분류는 가나다 뒤쪽 */
+function compareGroupKey(a: string, b: string): number {
+  const tail = (k: string) => {
+    if (k === SITE_GROUP) return 1;
+    if (k === UNCATEGORIZED_GROUP) return 2;
+    return 0;
+  };
+  const d = tail(a) - tail(b);
+  if (d !== 0) return d;
+  return a.localeCompare(b, "ko");
 }
 
-function categoryLabel(key: string): string {
-  if (key === FAVORITES) return "⭐ 즐겨찾기";
-  return key === UNCATEGORIZED ? "미분류" : key;
+/** 저장 카테고리 원문. 비면 미분류 */
+function storedCategoryLabel(b: Bookmark): string {
+  const c = b.category?.trim();
+  return c ? c : UNCATEGORIZED_GROUP;
 }
 
 /** 즐겨찾기 우선, 그다음 최신(createdAt desc) */
@@ -50,28 +64,29 @@ function matchesBookmarkQuery(b: Bookmark, needle: string): boolean {
   return hay.includes(needle);
 }
 
-/** 1/2/3 컬럼 그리드 + 검색 + 카테고리별 필터·섹션 보기 */
+/** 1/2/3 컬럼 그리드 + 검색 + 그룹 필터·섹션 보기 */
 export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [active, setActive] = useState<string>(ALL);
   const [deleting, setDeleting] = useState(false);
 
-  /** 카테고리별 개수 (이름 정렬, 미분류는 맨 뒤) */
-  const categoryStats = useMemo(() => {
+  const favoriteCount = useMemo(
+    () => bookmarks.filter((b) => b.isFavorite).length,
+    [bookmarks]
+  );
+
+  /** 그룹별 개수. 가나다, 사이트·미분류는 뒤 */
+  const groupStats = useMemo(() => {
     const map = new Map<string, number>();
     for (const b of bookmarks) {
-      const k = categoryKey(b);
+      const k = bookmarkGroupKey(b.category);
       map.set(k, (map.get(k) ?? 0) + 1);
     }
-    const keys = [...map.keys()].sort((a, b) => {
-      if (a === UNCATEGORIZED) return 1;
-      if (b === UNCATEGORIZED) return -1;
-      return a.localeCompare(b, "ko");
-    });
+    const keys = [...map.keys()].sort(compareGroupKey);
     return keys.map((key) => ({
       key,
-      label: categoryLabel(key),
+      label: bookmarkGroupLabel(key),
       count: map.get(key)!,
     }));
   }, [bookmarks]);
@@ -99,47 +114,72 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
     return items;
   }, [bookmarks]);
 
-  /** 검색 + 카테고리 필터, 즐겨찾기 우선 정렬 */
+  /** 검색 + 그룹 필터, 즐겨찾기 우선 정렬 */
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return bookmarks
       .filter((b) => {
-        if (active !== ALL && categoryKey(b) !== active) return false;
+        if (active === FAVORITES) {
+          if (!b.isFavorite) return false;
+        } else if (active !== ALL && !bookmarkInGroup(b.category, active)) {
+          return false;
+        }
         return matchesBookmarkQuery(b, needle);
       })
       .sort(compareBookmark);
   }, [bookmarks, active, q]);
 
-  /** 전체 보기: 즐겨찾기 섹션 상단 + 카테고리 섹션 */
+  /** 전체 보기에서는 즐겨찾기 섹션과 그룹 섹션을 쓴다. 그룹 안 원문 카테고리가 여러 개면 소제목 */
   const groups = useMemo(() => {
     if (active !== ALL) return null;
     const favs = filtered.filter((b) => b.isFavorite).sort(compareBookmark);
     const rest = filtered.filter((b) => !b.isFavorite);
     const map = new Map<string, Bookmark[]>();
     for (const b of rest) {
-      const k = categoryKey(b);
+      const k = bookmarkGroupKey(b.category);
       const list = map.get(k) ?? [];
       list.push(b);
       map.set(k, list);
     }
-    const keys = [...map.keys()].sort((a, b) => {
-      if (a === UNCATEGORIZED) return 1;
-      if (b === UNCATEGORIZED) return -1;
-      return a.localeCompare(b, "ko");
+    const keys = [...map.keys()].sort(compareGroupKey);
+    const catGroups = keys.map((key) => {
+      const items = (map.get(key) ?? []).sort(compareBookmark);
+      const byStored = new Map<string, Bookmark[]>();
+      for (const b of items) {
+        const orig = storedCategoryLabel(b);
+        const list = byStored.get(orig) ?? [];
+        list.push(b);
+        byStored.set(orig, list);
+      }
+      const origKeys = [...byStored.keys()].sort((a, b) => {
+        if (a === UNCATEGORIZED_GROUP) return 1;
+        if (b === UNCATEGORIZED_GROUP) return -1;
+        return a.localeCompare(b, "ko");
+      });
+      const subgroups =
+        origKeys.length > 1
+          ? origKeys.map((orig) => ({
+              key: orig,
+              label: orig,
+              items: (byStored.get(orig) ?? []).sort(compareBookmark),
+            }))
+          : null;
+      return {
+        key,
+        label: bookmarkGroupLabel(key),
+        items,
+        isFavoriteGroup: false,
+        subgroups,
+      };
     });
-    const catGroups = keys.map((key) => ({
-      key,
-      label: categoryLabel(key),
-      items: (map.get(key) ?? []).sort(compareBookmark),
-      isFavoriteGroup: false,
-    }));
     if (favs.length > 0) {
       return [
         {
           key: FAVORITES,
-          label: categoryLabel(FAVORITES),
+          label: FAVORITES_LABEL,
           items: favs,
           isFavoriteGroup: true,
+          subgroups: null,
         },
         ...catGroups,
       ];
@@ -215,9 +255,9 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
         </div>
       </div>
 
-      {/* 카테고리 칩 */}
+      {/* 그룹 칩 — 480px에서도 flex-wrap으로 줄바꿈 */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-muted-foreground">카테고리</p>
+        <p className="text-xs font-medium text-muted-foreground">그룹</p>
         <div className="flex flex-wrap gap-2">
           <CategoryChip
             label="전체"
@@ -228,14 +268,25 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
               selection.clear();
             }}
           />
-          {categoryStats.map((c) => (
+          {favoriteCount > 0 && (
             <CategoryChip
-              key={c.key}
-              label={c.label}
-              count={c.count}
-              active={active === c.key}
+              label={FAVORITES_LABEL}
+              count={favoriteCount}
+              active={active === FAVORITES}
               onClick={() => {
-                setActive(c.key);
+                setActive((prev) => (prev === FAVORITES ? ALL : FAVORITES));
+                selection.clear();
+              }}
+            />
+          )}
+          {groupStats.map((g) => (
+            <CategoryChip
+              key={g.key}
+              label={g.label}
+              count={g.count}
+              active={active === g.key}
+              onClick={() => {
+                setActive((prev) => (prev === g.key ? ALL : g.key));
                 selection.clear();
               }}
             />
@@ -257,7 +308,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
         <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {q.trim()
             ? "검색 조건에 맞는 북마크가 없습니다."
-            : "이 카테고리에 북마크가 없습니다."}
+            : "이 그룹에 북마크가 없습니다."}
         </div>
       ) : groups ? (
         <div className="space-y-8">
@@ -284,19 +335,44 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                   {g.items.length}
                 </span>
               </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {g.items.map((b) => (
-                  <BookmarkCard
-                    key={b.id}
-                    bookmark={b}
-                    selectable
-                    selected={selection.isSelected(b.id)}
-                    onToggleSelect={() => selection.toggle(b.id)}
-                    categorySuggestions={categorySuggestions}
-                    tagSuggestions={tagSuggestions}
-                  />
-                ))}
-              </div>
+              {g.subgroups ? (
+                <div className="space-y-4">
+                  {g.subgroups.map((sg) => (
+                    <div key={sg.key} className="space-y-2">
+                      <h3 className="text-xs font-medium text-muted-foreground">
+                        {sg.label}
+                      </h3>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {sg.items.map((b) => (
+                          <BookmarkCard
+                            key={b.id}
+                            bookmark={b}
+                            selectable
+                            selected={selection.isSelected(b.id)}
+                            onToggleSelect={() => selection.toggle(b.id)}
+                            categorySuggestions={categorySuggestions}
+                            tagSuggestions={tagSuggestions}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {g.items.map((b) => (
+                    <BookmarkCard
+                      key={b.id}
+                      bookmark={b}
+                      selectable
+                      selected={selection.isSelected(b.id)}
+                      onToggleSelect={() => selection.toggle(b.id)}
+                      categorySuggestions={categorySuggestions}
+                      tagSuggestions={tagSuggestions}
+                    />
+                  ))}
+                </div>
+              )}
             </section>
           ))}
         </div>
@@ -319,7 +395,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
   );
 }
 
-/** 카테고리 필터 칩 버튼 */
+/** 그룹 필터 칩 버튼. 기존 카테고리 칩 스타일을 재사용한다 */
 function CategoryChip({
   label,
   count,
