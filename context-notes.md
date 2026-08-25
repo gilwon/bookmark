@@ -905,6 +905,19 @@
 - 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
 - 백필 13건(영문 병기 12, 빈 칸 채움 1)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
 
+## 찾기 개선 1~8 메모
+
+- 페이지에 노션식 폴더를 두지 않는다. 태그 JSON과 칩 필터로 충분하다.
+- 본문 `content.ilike`는 data URL 때문에 느리고 타임아웃이 난다. 검색은 `title`과 `search_text`만 본다. `search_text`에는 `data:image`를 넣지 않는다.
+- 원문 URL은 본문 앞부분의 `원문` 링크에서 뽑는다. 별도 필드로 두어 중복 판정과 관련 항목에 쓴다.
+- 태그 추론은 출처 호스트와 제목 키워드만 쓴다. 사용자가 고친 태그는 백필이 덮어쓰지 않는다(`tags`가 `[]`일 때만 채움).
+- 최근 본은 DB 컬럼을 만들지 않는다. 상세를 열 때 localStorage `mymark:recent-pages`에 id를 쌓는다. 자동저장이 `updated_at`을 오염시키기 때문이다.
+- 북마크 카테고리 문자열은 바꾸지 않는다. `PC 북마크/` 접두와 호스트명처럼 보이는 값만 칩에서 그룹으로 접는다.
+- 관련 항목은 같은 `source_url` 호스트와 제목 토큰 교집합이다. 임베딩은 쓰지 않는다.
+- `⌘K`는 메뉴 필터를 유지하고, 두 글자 이상이면 `/api/search` 결과를 위에 붙인다.
+- 운영 `custom_pages` 컬럼은 `supabase/add_page_findability.sql`을 실행한 뒤 `node scripts/backfill-page-findability.mjs`로 채운다. PostgREST로는 ALTER를 못 한다.
+- 원문 URL 후보에서 supabase storage·이미지 확장자는 뺀다. 로컬 백필 461건 중 태그는 385건, 원문은 재추출 후 쓰레기 URL 19건을 고쳤다.
+
 ## 노션 요리 릴스·워프센스 이미지 프롬프트 20가지 Pages 이관 메모
 
 - 노션 원문은 `https://pineapple-pyroraptor-9c5.notion.site/30-AI-3bf72839155881f38eafd425391cdacf`다. 제목은 `캐릭터로 만드는 30초 AI 요리 릴스 범용 프롬프트`다.

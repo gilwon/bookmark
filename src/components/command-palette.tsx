@@ -22,7 +22,17 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from "react";
+import { mergePaletteItems } from "@/lib/command-palette-results";
+import type { QuickSearchItem, QuickSearchType } from "@/lib/quick-search";
 import { cn } from "@/lib/utils";
+
+const SEARCH_TYPE_ICON: Record<QuickSearchType, typeof Search> = {
+  page: FileText,
+  prompt: MessageSquareText,
+  bookmark: Bookmark,
+  star: GitFork,
+  "agent-doc": Bot,
+};
 
 /** 팔레트에 표시되는 개별 액션 */
 type CommandItem = {
@@ -33,7 +43,26 @@ type CommandItem = {
   icon: ReactNode;
   /** 실행 시 동작. async 가능 */
   run: () => void | Promise<void>;
+  disabled?: boolean;
+  subtitle?: string;
+  typeLabel?: string;
 };
+
+/** 비활성(로딩) 행을 건너뛰며 화살표 이동 */
+function nextEnabledIndex(
+  items: { disabled?: boolean }[],
+  from: number,
+  dir: 1 | -1
+): number {
+  const n = items.length;
+  if (n === 0) return 0;
+  let i = from;
+  for (let step = 0; step < n; step++) {
+    i = (i + dir + n) % n;
+    if (!items[i]?.disabled) return i;
+  }
+  return from;
+}
 
 /** ⌘/Ctrl+K 로 여는 전역 검색·액션 팔레트 */
 export function CommandPalette() {
@@ -42,15 +71,42 @@ export function CommandPalette() {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [creating, setCreating] = useState(false);
+  const [searchItems, setSearchItems] = useState<QuickSearchItem[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  /** 입력·검색 결과 초기화 */
+  const resetPalette = useCallback(() => {
+    setQuery("");
+    setActiveIndex(0);
+    setSearchItems([]);
+    setSearchLoading(false);
+    abortRef.current?.abort();
+  }, []);
 
   /** 팔레트 닫기 + 입력 초기화 */
   const close = useCallback(() => {
     setOpen(false);
-    setQuery("");
-    setActiveIndex(0);
-  }, []);
+    resetPalette();
+  }, [resetPalette]);
+
+  /** 검색 결과 열기 — 외부 링크는 새 탭 */
+  const openSearchItem = useCallback(
+    (item: QuickSearchItem) => {
+      close();
+      if (
+        (item.type === "bookmark" || item.type === "star") &&
+        item.external
+      ) {
+        window.open(item.href, "_blank", "noopener");
+        return;
+      }
+      router.push(item.href);
+    },
+    [close, router]
+  );
 
   /** 새 페이지 생성 후 편집 화면으로 이동 */
   const createPage = useCallback(async () => {
@@ -147,39 +203,121 @@ export function CommandPalette() {
     ];
   }, [close, createPage, creating, router]);
 
-  /** 검색어로 필터 + 통합 검색 액션 추가 */
+  /** 통합검색 액션 + API 결과 + 필터된 내비 */
   const items = useMemo((): CommandItem[] => {
     const q = query.trim();
-    const needle = q.toLowerCase();
+    const merged = mergePaletteItems({
+      navItems: baseItems,
+      searchItems,
+      q,
+      loading: searchLoading,
+    });
+    const navById = new Map(baseItems.map((item) => [item.id, item]));
 
-    const filtered = needle
-      ? baseItems.filter((item) => {
-          const hay = `${item.label} ${item.keywords ?? ""}`.toLowerCase();
-          return hay.includes(needle);
-        })
-      : baseItems;
+    return merged.map((row) => {
+      if (row.kind === "search-action") {
+        return {
+          id: row.id,
+          label: row.label,
+          icon: <Search className="h-4 w-4" />,
+          run: () => {
+            close();
+            router.push(`/search?q=${encodeURIComponent(q)}`);
+          },
+        };
+      }
+      if (row.kind === "search") {
+        const Icon = SEARCH_TYPE_ICON[row.item.type];
+        return {
+          id: row.id,
+          label: row.label,
+          subtitle: row.subtitle,
+          typeLabel: row.typeLabel,
+          icon: <Icon className="h-4 w-4" />,
+          run: () => openSearchItem(row.item),
+        };
+      }
+      if (row.kind === "loading") {
+        return {
+          id: row.id,
+          label: row.label,
+          icon: <Search className="h-4 w-4" />,
+          disabled: true,
+          run: () => {},
+        };
+      }
+      return (
+        navById.get(row.id) ?? {
+          id: row.id,
+          label: row.label,
+          icon: <Search className="h-4 w-4" />,
+          run: () => {},
+        }
+      );
+    });
+  }, [
+    baseItems,
+    close,
+    openSearchItem,
+    query,
+    router,
+    searchItems,
+    searchLoading,
+  ]);
 
-    if (!q) return filtered;
+  // 2글자 이상이면 디바운스 후 빠른 검색
+  useEffect(() => {
+    if (!open) {
+      setSearchItems([]);
+      setSearchLoading(false);
+      abortRef.current?.abort();
+      return;
+    }
 
-    const searchItem: CommandItem = {
-      id: "action-search",
-      label: `「${q}」통합 검색`,
-      icon: <Search className="h-4 w-4" />,
-      run: () => {
-        close();
-        router.push(`/search?q=${encodeURIComponent(q)}`);
-      },
+    const q = query.trim();
+    if (q.length < 2) {
+      setSearchItems([]);
+      setSearchLoading(false);
+      abortRef.current?.abort();
+      return;
+    }
+
+    setSearchLoading(true);
+    const timer = window.setTimeout(async () => {
+      abortRef.current?.abort();
+      const ac = new AbortController();
+      abortRef.current = ac;
+      try {
+        const res = await fetch(
+          `/api/search?q=${encodeURIComponent(q)}&limit=8`,
+          { signal: ac.signal }
+        );
+        if (!res.ok) throw new Error("search failed");
+        const data = (await res.json()) as { items: QuickSearchItem[] };
+        setSearchItems(data.items ?? []);
+      } catch (e) {
+        if ((e as Error).name === "AbortError") return;
+        setSearchItems([]);
+      } finally {
+        if (!ac.signal.aborted) setSearchLoading(false);
+      }
+    }, 220);
+
+    return () => {
+      window.clearTimeout(timer);
+      abortRef.current?.abort();
     };
-
-    // 검색 액션을 맨 위에 두어 Enter 한 번으로 통합 검색 가능
-    return [searchItem, ...filtered];
-  }, [baseItems, close, query, router]);
+  }, [open, query]);
 
   // 결과 목록이 바뀌면 선택 인덱스 보정
   useEffect(() => {
-    setActiveIndex((i) =>
-      items.length === 0 ? 0 : Math.min(i, items.length - 1)
-    );
+    setActiveIndex((i) => {
+      if (items.length === 0) return 0;
+      const clamped = Math.min(i, items.length - 1);
+      if (!items[clamped]?.disabled) return clamped;
+      const enabled = items.findIndex((item) => !item.disabled);
+      return enabled === -1 ? clamped : enabled;
+    });
   }, [items]);
 
   // 활성 항목이 보이도록 스크롤
@@ -209,8 +347,7 @@ export function CommandPalette() {
         e.preventDefault();
         setOpen((v) => {
           if (v) {
-            setQuery("");
-            setActiveIndex(0);
+            resetPalette();
             return false;
           }
           return true;
@@ -233,7 +370,7 @@ export function CommandPalette() {
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [createPage]);
+  }, [createPage, resetPalette]);
 
   /** 팔레트 내부 키보드 네비 */
   function handlePaletteKeyDown(e: ReactKeyboardEvent) {
@@ -245,19 +382,19 @@ export function CommandPalette() {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       if (items.length === 0) return;
-      setActiveIndex((i) => (i + 1) % items.length);
+      setActiveIndex((i) => nextEnabledIndex(items, i, 1));
       return;
     }
     if (e.key === "ArrowUp") {
       e.preventDefault();
       if (items.length === 0) return;
-      setActiveIndex((i) => (i - 1 + items.length) % items.length);
+      setActiveIndex((i) => nextEnabledIndex(items, i, -1));
       return;
     }
     if (e.key === "Enter") {
       e.preventDefault();
       const item = items[activeIndex];
-      if (item) void item.run();
+      if (item && !item.disabled) void item.run();
     }
   }
 
@@ -312,19 +449,43 @@ export function CommandPalette() {
                 key={item.id}
                 type="button"
                 role="option"
-                aria-selected={index === activeIndex}
+                aria-selected={index === activeIndex && !item.disabled}
+                aria-disabled={item.disabled || undefined}
+                disabled={item.disabled}
                 data-index={index}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
-                  index === activeIndex
-                    ? "bg-indigo-600/20 text-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  item.disabled
+                    ? "cursor-default text-muted-foreground"
+                    : index === activeIndex
+                      ? "bg-indigo-600/20 text-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
-                onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => void item.run()}
+                onMouseEnter={() => {
+                  if (!item.disabled) setActiveIndex(index);
+                }}
+                onClick={() => {
+                  if (!item.disabled) void item.run();
+                }}
               >
                 <span className="shrink-0 opacity-80">{item.icon}</span>
-                <span className="truncate">{item.label}</span>
+                {item.typeLabel ? (
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-[10px] text-muted-foreground">
+                        {item.typeLabel}
+                      </span>
+                      <span className="truncate">{item.label}</span>
+                    </span>
+                    {item.subtitle ? (
+                      <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
+                        {item.subtitle}
+                      </span>
+                    ) : null}
+                  </span>
+                ) : (
+                  <span className="truncate">{item.label}</span>
+                )}
               </button>
             ))
           )}
