@@ -1,6 +1,8 @@
 // 커스텀 페이지 에디터 (노션형 입력·수정·저장)
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PageMetaBar } from "@/components/pages/page-meta-bar";
+import { PageRelated } from "@/components/pages/page-related";
 import { TiptapEditor } from "@/components/pages/tiptap-editor";
 import { auth } from "@/lib/auth";
 import { store } from "@/lib/store";
@@ -23,6 +25,16 @@ export default async function PageEditorPage({ params }: Props) {
     content = JSON.parse(row.content || "{}");
   } catch {
     content = {};
+  }
+
+  let tags: string[] = [];
+  try {
+    const parsed = JSON.parse(row.tags || "[]") as unknown;
+    tags = Array.isArray(parsed)
+      ? parsed.filter((t): t is string => typeof t === "string")
+      : [];
+  } catch {
+    tags = [];
   }
 
   // 임베드 피커용 — 최근 항목만 (전체 직렬화 병목 완화)
@@ -90,6 +102,13 @@ export default async function PageEditorPage({ params }: Props) {
           입력하면 자동 저장 · ⌘/Ctrl+S
         </p>
       </div>
+      <PageMetaBar
+        key={`meta-${row.id}`}
+        pageId={row.id}
+        initialTags={tags}
+        initialSourceUrl={row.sourceUrl ?? null}
+        initialIsFavorite={Boolean(row.isFavorite)}
+      />
       <TiptapEditor
         pageId={row.id}
         initialTitle={row.title}
@@ -98,6 +117,7 @@ export default async function PageEditorPage({ params }: Props) {
         bookmarks={bookmarkList}
         stars={starList}
       />
+      <PageRelated key={`related-${row.id}`} pageId={row.id} />
     </div>
   );
 }
