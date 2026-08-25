@@ -50,6 +50,11 @@ export const customPages = pgTable("custom_pages", {
   userId: text("user_id").notNull(),
   title: text("title").notNull(),
   content: text("content").notNull().default("{}"),
+  tags: text("tags").notNull().default("[]"),
+  sourceUrl: text("source_url"),
+  searchText: text("search_text").notNull().default(""),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });

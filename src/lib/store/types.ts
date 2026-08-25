@@ -54,6 +54,11 @@ export type CustomPageRow = {
   userId: string;
   title: string;
   content: string;
+  tags: string;
+  sourceUrl: string | null;
+  searchText: string;
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
   createdAt: string;
   updatedAt: string;
 };

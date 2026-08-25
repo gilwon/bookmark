@@ -8,10 +8,21 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { auth } from "@/lib/auth";
+import { preparePageFindability } from "@/lib/page-findability";
 import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
 
 export const runtime = "nodejs";
+
+function parseTags(raw: string | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const v = JSON.parse(raw);
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 function toPage(row: Awaited<ReturnType<typeof store.listPages>>[0]): CustomPage {
   let content: unknown = {};
@@ -25,6 +36,9 @@ function toPage(row: Awaited<ReturnType<typeof store.listPages>>[0]): CustomPage
     userId: row.userId,
     title: row.title,
     content,
+    tags: parseTags(row.tags),
+    sourceUrl: row.sourceUrl ?? null,
+    isFavorite: Boolean(row.isFavorite),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
@@ -75,12 +89,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: limitMsg }, { status: 400 });
   }
 
+  const existingTags = Array.isArray(body.tags)
+    ? body.tags.filter((t: unknown) => typeof t === "string")
+    : [];
+  const existingSourceUrl =
+    typeof body.sourceUrl === "string" ? body.sourceUrl : null;
+  const found = preparePageFindability({
+    title,
+    content,
+    existingTags,
+    existingSourceUrl,
+  });
+
   const now = new Date().toISOString();
   const row = await store.insertPage({
     id: uuidv4(),
     userId: session.user.id,
     title,
     content: JSON.stringify(content),
+    tags: JSON.stringify(found.tags),
+    sourceUrl: found.sourceUrl,
+    searchText: found.searchText,
+    isFavorite: body.isFavorite === true ? 1 : 0,
     createdAt: now,
     updatedAt: now,
   });

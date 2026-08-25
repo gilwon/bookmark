@@ -18,11 +18,20 @@ export default async function PagesPage() {
     } catch {
       content = {};
     }
+    let tags: string[] = [];
+    try {
+      tags = JSON.parse(row.tags || "[]");
+    } catch {
+      tags = [];
+    }
     return {
       id: row.id,
       userId: row.userId,
       title: row.title,
       content,
+      tags: Array.isArray(tags) ? tags : [],
+      sourceUrl: row.sourceUrl ?? null,
+      isFavorite: Boolean(row.isFavorite),
       createdAt: row.createdAt,
       updatedAt: row.updatedAt,
     };

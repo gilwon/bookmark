@@ -82,6 +82,10 @@ export function mapPage(r: any): CustomPageRow {
     userId: r.user_id ?? r.userId,
     title: r.title,
     content: r.content ?? "{}",
+    tags: r.tags ?? "[]",
+    sourceUrl: r.source_url ?? r.sourceUrl ?? null,
+    searchText: r.search_text ?? r.searchText ?? "",
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
     createdAt: r.created_at ?? r.createdAt,
     updatedAt: r.updated_at ?? r.updatedAt,
   };
@@ -154,6 +158,10 @@ export function pageToDb(row: CustomPageRow) {
     user_id: row.userId,
     title: row.title,
     content: row.content,
+    tags: row.tags ?? "[]",
+    source_url: row.sourceUrl ?? null,
+    search_text: row.searchText ?? "",
+    is_favorite: toFavoriteFlag(row.isFavorite),
     created_at: row.createdAt,
     updated_at: row.updatedAt,
   };

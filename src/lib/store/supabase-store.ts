@@ -1,4 +1,5 @@
 // Supabase JS (service_role) 스토어 — PostgREST, 직접 DATABASE_URL 없음
+import { preparePageFindability } from "@/lib/page-findability";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -381,13 +382,59 @@ export async function deleteStar(id: string, userId: string): Promise<void> {
 }
 
 // --- pages ---
+function parsePageContent(raw: string): unknown {
+  try {
+    return JSON.parse(raw || "{}");
+  } catch {
+    return raw;
+  }
+}
+
+function parsePageTags(raw: string | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const v = JSON.parse(raw);
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+function findabilityColumns(input: {
+  title: string;
+  content: string;
+  tags?: string;
+  sourceUrl?: string | null;
+}): { tags: string; sourceUrl: string | null; searchText: string } {
+  const f = preparePageFindability({
+    title: input.title,
+    content: parsePageContent(input.content),
+    existingTags: parsePageTags(input.tags),
+    existingSourceUrl: input.sourceUrl ?? null,
+  });
+  return {
+    tags: JSON.stringify(f.tags),
+    sourceUrl: f.sourceUrl,
+    searchText: f.searchText,
+  };
+}
+
 /** 목록용 — 본문 제외(경량). 등록일 최신순. */
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
-  const { data, error } = await sb()
+  let { data, error } = await sb()
     .from("custom_pages")
-    .select("id, user_id, title, created_at, updated_at")
+    .select("id, user_id, title, created_at, updated_at, tags, source_url, is_favorite")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
+  if (error && /(tags|source_url|is_favorite|search_text)/i.test(error.message)) {
+    const fallback = await sb()
+      .from("custom_pages")
+      .select("id, user_id, title, created_at, updated_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    data = fallback.data as typeof data;
+    error = fallback.error;
+  }
   throwIfError(error, "listPages");
   return (data ?? []).map((r) => mapPage({ ...r, content: "{}" }));
 }
@@ -407,9 +454,17 @@ export async function getPage(
 }
 
 export async function insertPage(row: CustomPageRow): Promise<CustomPageRow> {
+  const found = findabilityColumns(row);
+  const filled: CustomPageRow = {
+    ...row,
+    tags: found.tags,
+    sourceUrl: found.sourceUrl,
+    searchText: found.searchText,
+    isFavorite: row.isFavorite ? 1 : 0,
+  };
   const { data, error } = await sb()
     .from("custom_pages")
-    .insert(pageToDb(row))
+    .insert(pageToDb(filled))
     .select("*")
     .single();
   throwIfError(error, "insertPage");
@@ -421,10 +476,33 @@ export async function updatePage(
   userId: string,
   patch: Partial<CustomPageRow>
 ): Promise<CustomPageRow | undefined> {
+  let next = patch;
+  if (patch.title !== undefined || patch.content !== undefined) {
+    const existing = await getPage(id, userId);
+    if (!existing) return undefined;
+    const found = findabilityColumns({
+      title: patch.title ?? existing.title,
+      content: patch.content ?? existing.content,
+      tags: patch.tags ?? existing.tags,
+      sourceUrl:
+        patch.sourceUrl !== undefined ? patch.sourceUrl : existing.sourceUrl,
+    });
+    next = {
+      ...patch,
+      tags: found.tags,
+      sourceUrl: found.sourceUrl,
+      searchText: found.searchText,
+    };
+  }
+
   const body: Record<string, unknown> = {};
-  if (patch.title !== undefined) body.title = patch.title;
-  if (patch.content !== undefined) body.content = patch.content;
-  if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
+  if (next.title !== undefined) body.title = next.title;
+  if (next.content !== undefined) body.content = next.content;
+  if (next.updatedAt !== undefined) body.updated_at = next.updatedAt;
+  if (next.tags !== undefined) body.tags = next.tags;
+  if (next.sourceUrl !== undefined) body.source_url = next.sourceUrl;
+  if (next.searchText !== undefined) body.search_text = next.searchText;
+  if (next.isFavorite !== undefined) body.is_favorite = next.isFavorite ? 1 : 0;
 
   const { data, error } = await sb()
     .from("custom_pages")
@@ -876,12 +954,15 @@ export async function searchStars(
   return rows.slice(0, lim);
 }
 
-/** 페이지 검색 (제목; 본문은 로드 후 필요 시 추가 필터) */
+/** 페이지 검색 (제목·search_text). 본문 JSON ilike 는 쓰지 않는다. */
 export async function searchPages(
   userId: string,
   opts: SearchOpts = {}
 ): Promise<CustomPageRow[]> {
   const lim = opts.limit ?? 50;
+  const q = opts.q?.trim();
+  const p = q ? likePat(q) : "";
+
   let query = sb()
     .from("custom_pages")
     .select("*")
@@ -890,16 +971,23 @@ export async function searchPages(
     .limit(lim);
 
   query = applyDateRange(query, "updated_at", opts.from, opts.to);
-
-  const q = opts.q?.trim();
   if (q) {
-    // 제목 1차 필터 — 본문 매칭은 호출측에서 content 검사 가능하도록 전체 필드 반환
-    const p = likePat(q);
-    // content 도 text 이므로 ilike 가능
-    query = query.or(`title.ilike.${p},content.ilike.${p}`);
+    query = query.or(`title.ilike.${p},search_text.ilike.${p}`);
   }
 
-  const { data, error } = await query;
+  let { data, error } = await query;
+  // 컬럼 미적용(구 스키마) 시 제목만 폴백
+  if (error && /search_text/i.test(error.message)) {
+    let fallback = sb()
+      .from("custom_pages")
+      .select("*")
+      .eq("user_id", userId)
+      .order("updated_at", { ascending: false })
+      .limit(lim);
+    fallback = applyDateRange(fallback, "updated_at", opts.from, opts.to);
+    if (q) fallback = fallback.or(`title.ilike.${p}`);
+    ({ data, error } = await fallback);
+  }
   throwIfError(error, "searchPages");
   return (data ?? []).map(mapPage);
 }
