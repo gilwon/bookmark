@@ -300,5 +300,14 @@
   "rampstackco/claude-skills": "웹사이트 전 주기를 다루는 스택 비의존 Claude Skills입니다. 브랜드, 디자인, 콘텐츠, SEO, 개발, 운영, 그로스, 리서치를 포함해 만들고 배포하고 점검하고 최적화합니다.",
   "revfactory/skills": "Robin이 만들어 쓰는 Claude Code 스킬 모음. Spring Boot 초기화, HWP, 이미지 생성, 에이전트 리서치, 워크로그, 크롤링 등을 포함합니다.",
   "videosdk-community/ai-telephony-demo": "인바운드·아웃바운드 전화를 처리하는 AI 텔레포니 에이전트를 만드는 데모입니다.",
-  "ZestfulPulse/ios-app-store-submit": "iOS App Store 제출을 자동화하는 Claude Code 스킬입니다."
+  "ZestfulPulse/ios-app-store-submit": "iOS App Store 제출을 자동화하는 Claude Code 스킬입니다.",
+  "AgriciDaniel/claude-obsidian": "Obsidian과 Claude Code를 위한 스스로 정리되는 AI 세컨드 브레인입니다. 자료를 넣으면 Claude가 읽고 연결해, 직접 소유하는 마크다운 지식 그래프로 정리합니다.",
+  "beyondeth/my-blog-app-selfhost": "Aigory는 MIT 라이선스의 셀프호스트 블로그, 커뮤니티, MCP 자동화 플랫폼입니다.",
+  "harry0703/MoneyPrinterTurbo": "주제나 키워드만 넣으면 AI 모델과 자동화 워크플로로 고화질 쇼츠 영상을 만듭니다.",
+  "pixlcore/xyops": "워크플로 자동화와 서버 모니터링을 한 시스템에서 다룹니다.",
+  "Spielewoy/autoprompt-skill": "에이전트 코딩 작업 실패를 45% 줄여 주는 코딩 에이전트용 Autoprompt 스킬입니다.",
+  "superset-sh/superset": "코딩 에이전트 100개 이상을 병렬로 조율하는 에이전트 IDE입니다. 사용 중인 구독으로 어떤 에이전트든 실행할 수 있습니다.",
+  "trailhq/Graft": "Claude Code, Cursor, Codex, Gemini 등 코딩 에이전트를 더 빠르고 싸게, 코드베이스 맥락에 맞게 돕습니다.",
+  "tsingyuai/growth-lab": "제품을 이해하고 필요한 데이터를 모아 시장을 조사한 뒤 캠페인을 실행하고, 결과로 다음 성장을 다듬는 종단 성장 도구입니다.",
+  "wilgon456/orca-agent-cleanup": "Windows에서 Orca가 설치한 에이전트 스킬, 훅, CLI 잔여물을 안전하게 점검하고 격리합니다."
 }

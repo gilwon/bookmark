@@ -315,6 +315,27 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 9개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["AgriciDaniel/claude-obsidian", "Self-organizing AI second brain for Obsidian + Claude Code. Drop any source and Claude reads, links, and files it into one connected knowledge graph of plain Markdown you own."],
+      ["beyondeth/my-blog-app-selfhost", "Aigory Self-host: an MIT-licensed blog, community, and MCP automation platform"],
+      ["harry0703/MoneyPrinterTurbo", "利用 AI 大模型和自动化工作流，根据主题或关键词一键生成高清短视频。Generate HD short videos from a topic or keyword with an automated AI workflow."],
+      ["pixlcore/xyops", "A complete workflow automation and server monitoring system."],
+      ["Spielewoy/autoprompt-skill", "Autoprompt is a coding-agent skill that cuts failures by 45% on agentic coding tasks."],
+      ["superset-sh/superset", "Superset is an agentic IDE to orchestrate 100+ coding agents in parallel. Run any agent with your own subscription."],
+      ["trailhq/Graft", "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase."],
+      ["tsingyuai/growth-lab", "An end-to-end growth tool that understands the product, fetch the data it needs, researches the market, executes campaigns, and reviews results to improve the next round of growth."],
+      ["wilgon456/orca-agent-cleanup", "Safely audit and quarantine Orca-installed agent skills, hooks, and CLI residue on Windows."],
+    ];
+    assert.equal(cases.length, 9);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("GitHub About가 비어 있는 신규 Star는 한국어만 채운다", () => {
     assert.equal(
       withKoreanTranslation("revfactory/skills", null, null),
