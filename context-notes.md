@@ -905,6 +905,12 @@
 - 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
 - 백필 13건(영문 병기 12, 빈 칸 채움 1)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
 
+## About 갱신으로 한글이 빠진 Star 2건 메모
+
+- GitHub 스타와 앱 Stars는 351건으로 같다. 한글이 없던 행은 2건이다.
+- `wilgon456/orca-agent-cleanup`과 `SteveTheKiller/KillerPDF`는 매핑이 있었는데 About가 바뀌며 영문만 남았다.
+- 번역을 새 About에 맞추고 다시 병기했다. 한글 없는 항목은 0건이다.
+
 ## 미동기화 Star 7건 한글 설명 메모
 
 - 운영 DB 345건은 이미 한글이 있다. GitHub 스타 351건 중 앱에 없는 7건이 한글 설명 대상이다.
