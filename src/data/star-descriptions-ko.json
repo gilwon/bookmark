@@ -309,5 +309,12 @@
   "superset-sh/superset": "코딩 에이전트 100개 이상을 병렬로 조율하는 에이전트 IDE입니다. 사용 중인 구독으로 어떤 에이전트든 실행할 수 있습니다.",
   "trailhq/Graft": "Claude Code, Cursor, Codex, Gemini 등 코딩 에이전트를 더 빠르고 싸게, 코드베이스 맥락에 맞게 돕습니다.",
   "tsingyuai/growth-lab": "제품을 이해하고 필요한 데이터를 모아 시장을 조사한 뒤 캠페인을 실행하고, 결과로 다음 성장을 다듬는 종단 성장 도구입니다.",
-  "wilgon456/orca-agent-cleanup": "Windows에서 Orca가 설치한 에이전트 스킬, 훅, CLI 잔여물을 안전하게 점검하고 격리합니다."
+  "wilgon456/orca-agent-cleanup": "Windows에서 Orca가 설치한 에이전트 스킬, 훅, CLI 잔여물을 안전하게 점검하고 격리합니다.",
+  "GENEXIS-AI/gpt-image-skill": "Codex나 Claude Code에서 ChatGPT 구독으로 GPT 이미지를 만듭니다. Images API는 쓰지 않습니다.",
+  "LilMGenius/paperthin": "낮은 수준의 에이전트 설계 패턴입니다. 오래된 엔지니어링 지혜를 에이전트가 스스로 꺼내 쓰는 반사로 바꿉니다.",
+  "RizRiyz/luvus": "AI 에이전트를 위한 미션 컨트롤입니다.",
+  "github/gh-aw": "GitHub Agentic Workflows입니다.",
+  "mcneel/RhinoAI": "Rhino용 AI 기능입니다.",
+  "microsoft/flint-chart": "AI 에이전트가 사람이 고칠 수 있는 간단한 차트 명세로, 표현력 있는 차트를 안정적으로 만들게 하는 시각화 언어입니다.",
+  "vercel-labs/agent-skills": "Vercel의 공식 에이전트 스킬 모음입니다."
 }
