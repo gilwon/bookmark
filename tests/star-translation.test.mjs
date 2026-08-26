@@ -315,6 +315,25 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 7개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["GENEXIS-AI/gpt-image-skill", "Generate GPT images from Codex or Claude Code using a ChatGPT subscription, without the Images API."],
+      ["LilMGenius/paperthin", "Low-level agentic design patterns. Turning old engineering wisdom into reflexes your agent reaches for on its own—on any agent."],
+      ["RizRiyz/luvus", "Mission control for your AI agents"],
+      ["github/gh-aw", "GitHub Agentic Workflows"],
+      ["mcneel/RhinoAI", "AI features for Rhino"],
+      ["microsoft/flint-chart", "Flint is a visualization language that lets AI agents reliably create expressive, good-looking charts from simple, human-editable chart specs."],
+      ["vercel-labs/agent-skills", "Vercel's official collection of agent skills"],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("한글이 없던 신규 Star 9개의 정적 번역을 병기한다", () => {
     const cases = [
       ["AgriciDaniel/claude-obsidian", "Self-organizing AI second brain for Obsidian + Claude Code. Drop any source and Claude reads, links, and files it into one connected knowledge graph of plain Markdown you own."],
