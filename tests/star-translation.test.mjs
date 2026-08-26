@@ -315,6 +315,20 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("About가 바뀌어 한글이 빠진 Star 2개의 정적 번역을 다시 병기한다", () => {
+    const cases = [
+      ["wilgon456/orca-agent-cleanup", "Safely audit and quarantine Orca-installed agent skills, hooks, and CLI residue on Windows, macOS, and Linux."],
+      ["SteveTheKiller/KillerPDF", "Free and open-source PDF editor for Windows. View, annotate, OCR, merge, split, crop, rotate, compare, edit text, draw, sign, fill forms, print, flatten, and open password-protected PDFs without a subscription."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("한글이 없던 신규 Star 7개의 정적 번역을 병기한다", () => {
     const cases = [
       ["GENEXIS-AI/gpt-image-skill", "Generate GPT images from Codex or Claude Code using a ChatGPT subscription, without the Images API."],
