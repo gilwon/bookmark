@@ -7,6 +7,7 @@ import {
   parseGithubRepoRef,
 } from "@/lib/github";
 import { getGithubAccessToken } from "@/lib/oauth-tokens";
+import { rowToGithubStar } from "@/lib/star-mapper";
 import { store } from "@/lib/store";
 import type { GithubStar } from "@/lib/types";
 
@@ -15,29 +16,7 @@ export const runtime = "nodejs";
 function toStar(
   row: Awaited<ReturnType<typeof store.listStars>>[0]
 ): GithubStar {
-  let topics: string[] = [];
-  try {
-    topics = JSON.parse(row.topics || "[]");
-  } catch {
-    topics = [];
-  }
-  return {
-    id: row.id,
-    userId: row.userId,
-    repoFullName: row.repoFullName,
-    description: row.description,
-    language: row.language,
-    stars: row.stars,
-    topics,
-    url: row.url,
-    lastSynced: row.lastSynced,
-    createdAt: row.createdAt,
-    changeKind: row.changeKind ?? null,
-    starsDelta: row.starsDelta ?? 0,
-    changedAt: row.changedAt ?? null,
-    source: row.source === "manual" ? "manual" : "sync",
-    isFavorite: Boolean(row.isFavorite),
-  };
+  return rowToGithubStar(row);
 }
 
 export async function GET() {
@@ -123,6 +102,9 @@ export async function POST(req: Request) {
         changedAt: now,
         source: "manual",
         isFavorite: 0,
+        detailJson: null,
+        readmeMd: null,
+        detailFetchedAt: null,
       });
     } catch (insertErr) {
       // unique 제약 등 레이스 시 중복으로 안내
