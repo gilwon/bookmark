@@ -1,0 +1,43 @@
+<svg width="900" height="230" viewBox="0 0 900 230" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="230" fill="#ffffff"/>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1L8 5L1 9" fill="none" stroke="#5f5e5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<g>
+<rect x="20" y="55" width="140" height="80" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="90" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0C447C">① 종목 스캔</text>
+<text x="90" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">프리마켓 갭</text>
+<text x="90" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">스캐너 A</text>
+</g>
+<line x1="160" y1="95" x2="196" y2="95" stroke="#5f5e5a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<g>
+<rect x="200" y="55" width="140" height="80" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="270" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0C447C">② 조건 필터링</text>
+<text x="270" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">전략 조건</text>
+<text x="270" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#185FA5">스캐너 B</text>
+</g>
+<line x1="340" y1="95" x2="376" y2="95" stroke="#5f5e5a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<g>
+<rect x="380" y="55" width="140" height="80" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+<text x="450" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#085041">③ 백테스팅</text>
+<text x="450" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">과거 데이터로</text>
+<text x="450" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#0F6E56">전략 검증</text>
+</g>
+<line x1="520" y1="95" x2="556" y2="95" stroke="#5f5e5a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<g>
+<rect x="560" y="55" width="140" height="80" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="630" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#633806">④ 자동화 설정</text>
+<text x="630" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">매일 정해진</text>
+<text x="630" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">시간에 실행</text>
+</g>
+<line x1="700" y1="95" x2="736" y2="95" stroke="#5f5e5a" stroke-width="1.5" marker-end="url(#arrow)"/>
+<g>
+<rect x="740" y="55" width="140" height="80" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="810" y="90" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#633806">⑤ 텔레그램</text>
+<text x="810" y="112" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">알림</text>
+<text x="810" y="126" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#854F0B">결과 수신</text>
+</g>
+<text x="450" y="180" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5f5e5a">전체 흐름: 종목 스캔 → 조건 필터링 → 과거 데이터 검증 → 자동 실행 → 폰으로 알림</text>
+</svg>
