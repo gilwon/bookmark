@@ -47,6 +47,12 @@ export type GithubStar = {
   source?: "sync" | "manual";
   /** 즐겨찾기 — 목록 상단 고정 */
   isFavorite: boolean;
+  /** 레포 상세 JSON 문자열 */
+  detailJson: string | null;
+  /** README 마크다운 */
+  readmeMd: string | null;
+  /** 상세를 가져온 시각 */
+  detailFetchedAt: string | null;
 };
 
 /** 커스텀 페이지 엔티티 */

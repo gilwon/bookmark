@@ -73,6 +73,9 @@ export function mapStar(r: any): GithubStarRow {
     changedAt: r.changed_at ?? r.changedAt ?? null,
     source: r.source === "manual" ? "manual" : "sync",
     isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
+    detailJson: r.detail_json ?? r.detailJson ?? null,
+    readmeMd: r.readme_md ?? r.readmeMd ?? null,
+    detailFetchedAt: r.detail_fetched_at ?? r.detailFetchedAt ?? null,
   };
 }
 
@@ -149,6 +152,11 @@ export function starToDb(row: GithubStarRow) {
     changed_at: row.changedAt ?? null,
     source: row.source === "manual" ? "manual" : "sync",
     is_favorite: toFavoriteFlag(row.isFavorite),
+    ...(row.detailJson != null ? { detail_json: row.detailJson } : {}),
+    ...(row.readmeMd != null ? { readme_md: row.readmeMd } : {}),
+    ...(row.detailFetchedAt != null
+      ? { detail_fetched_at: row.detailFetchedAt }
+      : {}),
   };
 }
 

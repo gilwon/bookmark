@@ -280,11 +280,9 @@ export default async function DashboardPage() {
                 </p>
               ) : (
                 recentStars.map((s) => (
-                  <a
+                  <Link
                     key={s.id}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/stars/${s.id}`}
                     className="flex items-start justify-between gap-2 px-4 py-3 transition-colors hover:bg-muted/40"
                   >
                     <div className="min-w-0">
@@ -320,7 +318,7 @@ export default async function DashboardPage() {
                           : ""}
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 ))
               )}
             </CardContent>

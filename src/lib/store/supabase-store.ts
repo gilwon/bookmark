@@ -41,6 +41,9 @@ function throwIfError(error: { message: string } | null, ctx: string) {
   if (error) throw new Error(`[supabase] ${ctx}: ${error.message}`);
 }
 
+/** github_stars 상세 컬럼 부재 경고는 프로세스당 한 번만 남긴다. */
+let starDetailColsMissingLogged = false;
+
 // --- bookmarks ---
 export async function listBookmarks(
   userId: string,
@@ -340,12 +343,37 @@ export async function updateStar(
   if (patch.changedAt !== undefined) body.changed_at = patch.changedAt;
   if (patch.source !== undefined) body.source = patch.source;
   if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
+  if (patch.detailJson !== undefined) body.detail_json = patch.detailJson;
+  if (patch.readmeMd !== undefined) body.readme_md = patch.readmeMd;
+  if (patch.detailFetchedAt !== undefined) {
+    body.detail_fetched_at = patch.detailFetchedAt;
+  }
 
   const { error } = await sb()
     .from("github_stars")
     .update(body)
     .eq("id", id)
     .eq("user_id", userId);
+  if (error && /detail_json|readme_md|detail_fetched_at/i.test(error.message)) {
+    if (!starDetailColsMissingLogged) {
+      starDetailColsMissingLogged = true;
+      console.warn(
+        "[supabase] github_stars detail 컬럼이 없어 저장을 건너뜁니다.",
+        error.message
+      );
+    }
+    delete body.detail_json;
+    delete body.readme_md;
+    delete body.detail_fetched_at;
+    if (Object.keys(body).length === 0) return;
+    const retry = await sb()
+      .from("github_stars")
+      .update(body)
+      .eq("id", id)
+      .eq("user_id", userId);
+    throwIfError(retry.error, "updateStar");
+    return;
+  }
   throwIfError(error, "updateStar");
 }
 

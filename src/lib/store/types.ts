@@ -47,6 +47,12 @@ export type GithubStarRow = {
   source: "sync" | "manual";
   /** 0 | 1 — 즐겨찾기 */
   isFavorite: number;
+  /** 레포 상세 JSON 문자열 */
+  detailJson: string | null;
+  /** README 마크다운 */
+  readmeMd: string | null;
+  /** 상세를 가져온 시각 */
+  detailFetchedAt: string | null;
 };
 
 export type CustomPageRow = {

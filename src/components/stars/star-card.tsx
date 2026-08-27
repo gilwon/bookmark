@@ -2,6 +2,7 @@
 "use client";
 
 import { ExternalLink, Pin, Star } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { GithubStar } from "@/lib/types";
@@ -49,7 +50,7 @@ export function StarCard({
   return (
     <Card
       className={cn(
-        "flex flex-col transition-colors hover:border-border",
+        "relative flex flex-col transition-colors hover:border-border",
         isNew && "border-emerald-500/50",
         isUpdated && !isNew && !star.isFavorite && "border-amber-500/40",
         star.isFavorite &&
@@ -57,11 +58,17 @@ export function StarCard({
         selected && "border-indigo-500 ring-1 ring-indigo-500/40",
       )}
     >
-      <CardHeader className="pb-2">
+      <Link
+        href={`/stars/${star.id}`}
+        prefetch={false}
+        className="absolute inset-0 z-0 rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={`${star.repoFullName} 상세`}
+      />
+      <CardHeader className="relative z-10 pb-2">
         <div className="flex items-start gap-2">
           {selectable && (
             <label
-              className="mt-0.5 flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-background shadow"
+              className="relative z-10 mt-0.5 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-background shadow"
               onClick={(e) => e.stopPropagation()}
             >
               <input
@@ -96,27 +103,33 @@ export function StarCard({
                 </Badge>
               )}
             </div>
-            <CardTitle className="text-sm">
-              <a
-                href={star.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-indigo-300"
-              >
-                <span className="break-all">{star.repoFullName}</span>
-                <ExternalLink className="h-3 w-3 shrink-0 opacity-50" />
-              </a>
+            <CardTitle className="pointer-events-none text-sm">
+              <span className="break-all">{star.repoFullName}</span>
             </CardTitle>
           </div>
+          <a
+            href={star.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="relative z-10 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-doc-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            title="GitHub에서 열기"
+            aria-label={`${star.repoFullName} GitHub에서 열기`}
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
           <Button
             type="button"
             variant="ghost"
             size="icon"
             className={cn(
-              "h-8 w-8 shrink-0",
+              "relative z-10 h-9 w-9 shrink-0",
               star.isFavorite ? "text-sky-600 opacity-100 dark:text-sky-400" : "text-muted-foreground"
             )}
-            onClick={() => void toggleFavorite()}
+            onClick={(e) => {
+              e.stopPropagation();
+              void toggleFavorite();
+            }}
             disabled={favoriting}
             title={star.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
             aria-label={star.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
@@ -128,7 +141,7 @@ export function StarCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col gap-3">
+      <CardContent className="pointer-events-none relative z-10 flex flex-1 flex-col gap-3">
         {star.description && (
           <p className="whitespace-pre-wrap break-words text-xs text-muted-foreground">
             {star.description}

@@ -12,7 +12,9 @@
 - 모달/드로어 대신 전용 페이지를 쓴다. 목록·검색·대시보드와 같은 패턴을 맞춘다.
 - 페이지 본문 임베드의 Star URL은 GitHub 그대로 둔다. 임베드는 외부 레포 미리보기다.
 - 운영 ALTER는 PostgREST로 못 한다. `supabase/add_star_detail.sql`을 두고, 컬럼이 없으면 저장만 건너뛴다.
+- 2026-08-28 확인. 운영 `github_stars`에는 아직 세 컬럼이 없다. 상세 화면은 GitHub에서 가져와 보여 주지만, SQL을 실행하기 전에는 재방문마다 다시 가져온다.
 - ⌘K·`/api/search`의 star `href`는 `/stars/{id}`이고 `external`은 false다. 북마크 URL은 계속 외부다.
+- 목록 카드는 전체를 상세 링크로 덮고, GitHub는 카드의 외부 아이콘과 상세의 「GitHub에서 열기」만 연다.
 
 ## 2026년 8월 Notion 이관 메모
 

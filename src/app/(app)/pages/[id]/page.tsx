@@ -5,6 +5,7 @@ import { PageMetaBar } from "@/components/pages/page-meta-bar";
 import { PageRelated } from "@/components/pages/page-related";
 import { TiptapEditor } from "@/components/pages/tiptap-editor";
 import { auth } from "@/lib/auth";
+import { rowToGithubStar } from "@/lib/star-mapper";
 import { store } from "@/lib/store";
 import type { Bookmark, GithubStar } from "@/lib/types";
 
@@ -66,27 +67,7 @@ export default async function PageEditorPage({ params }: Props) {
     };
   });
 
-  const starList: GithubStar[] = starRows.map((s) => {
-    let topics: string[] = [];
-    try {
-      topics = JSON.parse(s.topics || "[]");
-    } catch {
-      topics = [];
-    }
-    return {
-      id: s.id,
-      userId: s.userId,
-      repoFullName: s.repoFullName,
-      description: s.description,
-      language: s.language,
-      stars: s.stars,
-      topics,
-      url: s.url,
-      lastSynced: s.lastSynced,
-      createdAt: s.createdAt,
-      isFavorite: Boolean(s.isFavorite),
-    };
-  });
+  const starList: GithubStar[] = starRows.map(rowToGithubStar);
 
   return (
     // 앱 셸 max-w-6xl 전체 폭 사용 — 상단 네비와 본문 입력 모두 동일하게 넓게

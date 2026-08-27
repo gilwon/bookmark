@@ -225,6 +225,9 @@ export async function upsertStars(
         changedAt: kind ? now : null,
         source: "sync",
         isFavorite: 0,
+        detailJson: null,
+        readmeMd: null,
+        detailFetchedAt: null,
       });
     }
   }

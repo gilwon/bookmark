@@ -43,6 +43,12 @@ export const githubStars = sqliteTable("github_stars", {
   source: text("source").notNull().default("sync"),
   /** 1이면 즐겨찾기 (목록 상단) */
   isFavorite: integer("is_favorite").notNull().default(0),
+  /** 레포 상세 JSON 문자열 */
+  detailJson: text("detail_json"),
+  /** README 마크다운 */
+  readmeMd: text("readme_md"),
+  /** 상세를 가져온 시각 */
+  detailFetchedAt: text("detail_fetched_at"),
 });
 
 export const customPages = sqliteTable("custom_pages", {

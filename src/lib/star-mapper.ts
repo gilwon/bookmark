@@ -26,5 +26,8 @@ export function rowToGithubStar(row: GithubStarRow): GithubStar {
     changedAt: row.changedAt ?? null,
     source: row.source === "manual" ? "manual" : "sync",
     isFavorite: Boolean(row.isFavorite),
+    detailJson: row.detailJson ?? null,
+    readmeMd: row.readmeMd ?? null,
+    detailFetchedAt: row.detailFetchedAt ?? null,
   };
 }

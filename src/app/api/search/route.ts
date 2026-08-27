@@ -102,8 +102,7 @@ export async function GET(req: Request) {
       subtitle: clip(
         [r.language, r.description].filter(Boolean).join(" · ") || "GitHub Star"
       ),
-      href: r.url,
-      external: true,
+      href: `/stars/${r.id}`,
     });
   }
 
