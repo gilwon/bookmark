@@ -1,6 +1,19 @@
 <!-- Tistory 원문 이관에 필요한 조사 결과와 구현 제약 -->
 # 조사 메모
 
+## Star 상세 페이지 메모
+
+- Stars 목록 제목은 지금 `star.url`로 GitHub를 연다. 카드 본문 클릭도 같은 외부 링크다.
+- 상세는 Pages·Prompts처럼 `/stars/[id]`로 간다. 목록 Link는 `prefetch={false}`다. prefetch가 GitHub API를 미리 때리지 않게 한다.
+- GitHub 호출은 `POST /api/stars/[id]/detail`만 한다. 캐시가 있으면 GET 상세는 DB만 읽는다. 새로고침 버튼이 force fetch다.
+- 저장 컬럼은 `detail_json`(homepage, license, defaultBranch, forks, openIssues, pushedAt, watchers)·`readme_md`·`detail_fetched_at` 세 개다. 기존 description·stars 동기화는 README를 덮어쓰지 않는다.
+- README는 사용법 본문이다. 상대 이미지·링크는 `raw.githubusercontent.com`/`github.com`으로 고친다. 길이는 30만 자로 자른다. 화면은 `marked` + 기존 `sanitizeHtml`로 클라이언트에서만 HTML을 만든다. `sanitizeHtml`은 서버에서 빈 문자열이다.
+- README 404는 빈 문자열을 저장하고 `detail_fetched_at`을 남겨 매번 재요청하지 않는다.
+- 모달/드로어 대신 전용 페이지를 쓴다. 목록·검색·대시보드와 같은 패턴을 맞춘다.
+- 페이지 본문 임베드의 Star URL은 GitHub 그대로 둔다. 임베드는 외부 레포 미리보기다.
+- 운영 ALTER는 PostgREST로 못 한다. `supabase/add_star_detail.sql`을 두고, 컬럼이 없으면 저장만 건너뛴다.
+- ⌘K·`/api/search`의 star `href`는 `/stars/{id}`이고 `external`은 false다. 북마크 URL은 계속 외부다.
+
 ## 2026년 8월 Notion 이관 메모
 
 - 범위는 서울 시간 2026-08-01 00:00부터 2026-08-09 현재까지다.
@@ -1039,3 +1052,18 @@
 - 로컬 id는 종목 `2fbfac43-c2b5-41d9-a6c0-802261f6babc`, 연동 `a23bbb21-3e0b-4d82-a646-bc9f1a10b392`, 아파트 `9e605ad4-e134-4ded-a9e3-8d0c6c2e2dce`, IQ `81a3a072-f33f-462c-b927-ddec34ea7137`다.
 - 운영 id는 종목 `34925872-d952-449e-af97-b6f72df63f7f`, 연동 `7c307832-5c9f-43d9-bb4e-0cfd1c00c596`, 아파트 `13781e69-fe23-4920-bff5-8d4cf17b630c`, IQ `47606e04-ea3f-44a1-90e1-27b8a2e37da3`다.
 - 재실행은 로컬·운영 모두 신규 0·스킵 4다. 운영 Pages 목록 최상단에 4건이 보이고, 종목 이미지 900×230·900×320, 아파트 1290×642가 data URL로 표시된다.
+
+## 링크 4건 Pages 이관 메모
+
+- 사용자 URL의 `source=copy_link`, `fbclid`, `utm_*`, `mcp_token`은 저장하지 않는다.
+- 노션 `https://app.notion.com/p/100-3c969bdb90388174af89d583691739f1`는 MCP 404다. 공개 `loadPageChunk`로 읽는다. ID `3c969bdb-9038-8174-af89-d583691739f1`, 제목 `클로드 고수들만 아는 비밀 코드 100개`, space `ec769bdb-9038-81bf-8cfc-000345b0a624`. 루트 자식 170개, 첫 청크에 이미지·파일 0개. 기존 `클로드 명령어 100개 + 보너스 33개`와 제목이 달라 다른 문서다.
+- QJC는 `https://qjc.app/blog/chatgpt-scheduled-tasks-free`다. 본문 이미지는 로고·작성자 사진뿐이라 본문에 넣지 않는다. CEO PDF는 사이트 프로필이라 글 첨부가 아니다.
+- 짐코딩은 `https://www.gymcoding.co/articles/claude-code-eli5-guide`다. 기존 Notion ELI5 페이지와 URL·제목이 다르다. 본문 이미지는 로고뿐이고 OG 표지가 있다. FAQ·SKILL.md는 닫힌 아코디언이라 연 뒤 넣는다. 인프런·뉴스레터는 뺀다.
+- fieldby `https://fieldby.notion.site/5-3c5d730b39538128a0b3cd708a04e204`는 이미 Page `67b80797-3206-46b2-82cb-137c155bd930`로 있다. 이미지·첨부 0개. 스킵한다.
+- Prompts 테이블에는 넣지 않는다.
+- 만료되는 Notion/S3 서명 URL은 본문에 남기지 않는다.
+- 비밀 코드는 코드 50·이미지 0·첨부 0이다. 저장 id `c6d4032a-583f-4726-bb28-036464ca66bb`.
+- QJC는 본문 이미지 0, OG 표지 data URL 1장(1200×630), 첨부 0이다. 저장 id `2e3a61cc-cf46-4fe2-b240-bede96e279fd`.
+- 짐코딩은 OG 표지 1장(1200×630), 닫힌 FAQ 10개와 `eli` SKILL.md를 본문에 넣었다. 저장 id `605825e6-0b4e-4202-89d9-9a5d8be06388`.
+- fieldby는 기존 id `67b80797-3206-46b2-82cb-137c155bd930`를 수정하지 않고 스킵했다.
+- 로컬·운영 재실행은 신규 0·스킵 4다.
