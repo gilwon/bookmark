@@ -383,10 +383,30 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
+      ["MochiDiffusion/MochiDiffusion", "Run Stable Diffusion on Mac natively"],
+      ["kelviq/tare", "Ask Claude Code where your usage went. Token audit, limit diagnosis and usage forensics — built from the session logs already on your machine, nothing leaves it."],
+      ["CopilotKit/OpenTag", "OpenTag: The Channels SDK starter application, a self-hosted AI on-call triage bot for Slack and Microsoft Teams, built with AG-UI and LangGraph. Fork it and ship your own."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("GitHub About가 비어 있는 신규 Star는 한국어만 채운다", () => {
     assert.equal(
       withKoreanTranslation("revfactory/skills", null, null),
       "Robin이 만들어 쓰는 Claude Code 스킬 모음. Spring Boot 초기화, HWP, 이미지 생성, 에이전트 리서치, 워크로그, 크롤링 등을 포함합니다."
+    );
+    assert.equal(
+      withKoreanTranslation("madwind0526/MeetingNote", null, null),
+      "회의 기본 정보, 참석자, A/I List, Agenda를 관리하고 회의 오디오를 STT로 분석해 회의록 초안을 만드는 PC 앱입니다."
     );
   });
 });
