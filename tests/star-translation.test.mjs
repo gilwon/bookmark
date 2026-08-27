@@ -315,6 +315,20 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 2개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["johnfkoo951/cmds-system-files", "Knowledge architecture for a 10,000-note Obsidian vault — 5 system files + 7 shared rules + 8 slash commands, shared openly with humans and AI agents. Live: https://system.cmdspace.work"],
+      ["sammwyy/clay", "Compact coding-agent harness built for people who prefer to stay in the terminal"],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("About가 바뀌어 한글이 빠진 Star 2개의 정적 번역을 다시 병기한다", () => {
     const cases = [
       ["wilgon456/orca-agent-cleanup", "Safely audit and quarantine Orca-installed agent skills, hooks, and CLI residue on Windows, macOS, and Linux."],

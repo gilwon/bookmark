@@ -316,5 +316,7 @@
   "github/gh-aw": "GitHub Agentic Workflows입니다.",
   "mcneel/RhinoAI": "Rhino용 AI 기능입니다.",
   "microsoft/flint-chart": "AI 에이전트가 사람이 고칠 수 있는 간단한 차트 명세로, 표현력 있는 차트를 안정적으로 만들게 하는 시각화 언어입니다.",
-  "vercel-labs/agent-skills": "Vercel의 공식 에이전트 스킬 모음입니다."
+  "vercel-labs/agent-skills": "Vercel의 공식 에이전트 스킬 모음입니다.",
+  "johnfkoo951/cmds-system-files": "노트 1만 개 규모 Obsidian 보관함을 위한 지식 구조입니다. 시스템 파일 5개, 공유 규칙 7개, 슬래시 명령 8개를 사람과 AI 에이전트가 함께 쓰도록 공개합니다.",
+  "sammwyy/clay": "터미널에 머물고 싶은 사람을 위한 작은 코딩 에이전트 하니스입니다."
 }
