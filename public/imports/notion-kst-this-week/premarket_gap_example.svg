@@ -1,0 +1,15 @@
+<svg width="900" height="320" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="320" fill="#ffffff"/>
+<line x1="80" y1="260" x2="820" y2="260" stroke="#888780" stroke-width="1"/>
+<text x="450" y="295" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5f5e5a">시간 흐름 (전일 종가 → 오늘 프리마켓)</text>
+<rect x="150" y="180" width="90" height="80" fill="#B4B2A9"/>
+<text x="195" y="170" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#2C2C2A">전일 종가</text>
+<text x="195" y="150" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5f5e5a">$10.00</text>
+<line x1="240" y1="180" x2="600" y2="80" stroke="#D85A30" stroke-width="2" stroke-dasharray="6 5"/>
+<rect x="600" y="60" width="90" height="200" fill="#F0997B"/>
+<text x="645" y="50" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#712B13">오늘 프리마켓</text>
+<text x="645" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#993C1D">$10.75</text>
+<rect x="330" y="90" width="150" height="34" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+<text x="405" y="112" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#712B13">약 +7.5% 갭업</text>
+<text x="450" y="20" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#5f5e5a">※ 실제 데이터가 아닌 "갭"의 개념을 보여주는 예시입니다</text>
+</svg>
