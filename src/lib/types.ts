@@ -51,6 +51,8 @@ export type GithubStar = {
   detailJson: string | null;
   /** README 마크다운 */
   readmeMd: string | null;
+  /** README 한국어 번역 */
+  readmeMdKo: string | null;
   /** 상세를 가져온 시각 */
   detailFetchedAt: string | null;
 };

@@ -7,17 +7,75 @@ import {
   serializeStarDetailJson,
 } from "@/lib/star-detail";
 import { rowToGithubStar } from "@/lib/star-mapper";
+import { isMostlyKorean } from "@/lib/star-readme-ko";
+import { translateReadmeToKorean } from "@/lib/star-readme-translate";
 import { withKoreanTranslation } from "@/lib/star-translation";
 import { store } from "@/lib/store";
 import type { GithubStarRow } from "@/lib/store/types";
 
 export const runtime = "nodejs";
+export const maxDuration = 120;
 
 type Ctx = { params: Promise<{ id: string }> };
 
 function isMissingStarDetailColumn(err: unknown): boolean {
   const msg = err instanceof Error ? err.message : String(err);
-  return /detail_json|readme_md|detail_fetched_at/i.test(msg);
+  return /detail_json|readme_md_ko|readme_md|detail_fetched_at/i.test(msg);
+}
+
+function needsKoreanReadme(
+  readmeMd: string | null,
+  readmeMdKo: string | null
+): boolean {
+  if (!readmeMd?.trim()) return false;
+  if (isMostlyKorean(readmeMd)) return false;
+  if (readmeMdKo && isMostlyKorean(readmeMdKo)) return false;
+  return true;
+}
+
+async function applyKoreanReadme(
+  readmeMd: string | null,
+  existingKo: string | null,
+  force: boolean
+): Promise<string | null> {
+  if (!readmeMd?.trim()) return existingKo ?? null;
+  if (isMostlyKorean(readmeMd)) return null;
+  if (!force && existingKo && isMostlyKorean(existingKo)) return existingKo;
+  const ko = await translateReadmeToKorean(readmeMd);
+  return ko ?? existingKo ?? null;
+}
+
+async function saveStarPatch(
+  id: string,
+  userId: string,
+  row: GithubStarRow,
+  patch: Partial<GithubStarRow>,
+  cached: boolean
+) {
+  const merged: GithubStarRow = { ...row, ...patch };
+  try {
+    await store.updateStar(id, userId, patch);
+    const saved = await store.getStar(id, userId);
+    if (saved) {
+      return NextResponse.json({
+        star: rowToGithubStar({ ...saved, ...patch }),
+        cached,
+      });
+    }
+    return NextResponse.json({
+      star: rowToGithubStar(merged),
+      cached,
+    });
+  } catch (err) {
+    if (!isMissingStarDetailColumn(err)) {
+      const msg = err instanceof Error ? err.message : "저장에 실패했습니다.";
+      return NextResponse.json({ error: msg }, { status: 500 });
+    }
+    return NextResponse.json({
+      star: rowToGithubStar(merged),
+      cached,
+    });
+  }
 }
 
 export async function GET(_req: Request, ctx: Ctx) {
@@ -46,6 +104,14 @@ export async function POST(req: Request, ctx: Ctx) {
     url.searchParams.get("force") === "1" || body.force === true;
 
   if (row.detailFetchedAt && !force) {
+    if (needsKoreanReadme(row.readmeMd, row.readmeMdKo)) {
+      const readmeMdKo = await applyKoreanReadme(
+        row.readmeMd,
+        row.readmeMdKo,
+        false
+      );
+      return saveStarPatch(id, userId, row, { readmeMdKo }, true);
+    }
     return NextResponse.json({
       star: rowToGithubStar(row),
       cached: true,
@@ -63,9 +129,15 @@ export async function POST(req: Request, ctx: Ctx) {
   }
 
   const now = new Date().toISOString();
+  const readmeMdKo = await applyKoreanReadme(
+    fetched.readmeMd,
+    row.readmeMdKo,
+    force
+  );
   const patch: Partial<GithubStarRow> = {
     detailJson: serializeStarDetailJson(fetched.detail),
     readmeMd: fetched.readmeMd,
+    readmeMdKo,
     detailFetchedAt: now,
     language: fetched.language,
     stars: fetched.stars,
@@ -77,30 +149,5 @@ export async function POST(req: Request, ctx: Ctx) {
       row.description
     ),
   };
-  const merged: GithubStarRow = { ...row, ...patch };
-
-  try {
-    await store.updateStar(id, userId, patch);
-    const saved = await store.getStar(id, userId);
-    if (saved?.detailFetchedAt) {
-      return NextResponse.json({
-        star: rowToGithubStar(saved),
-        cached: false,
-      });
-    }
-    const overlay = saved ? { ...saved, ...patch } : merged;
-    return NextResponse.json({
-      star: rowToGithubStar(overlay),
-      cached: false,
-    });
-  } catch (err) {
-    if (!isMissingStarDetailColumn(err)) {
-      const msg = err instanceof Error ? err.message : "저장에 실패했습니다.";
-      return NextResponse.json({ error: msg }, { status: 500 });
-    }
-    return NextResponse.json({
-      star: rowToGithubStar(merged),
-      cached: false,
-    });
-  }
+  return saveStarPatch(id, userId, row, patch, false);
 }

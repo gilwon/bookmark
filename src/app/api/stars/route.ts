@@ -104,6 +104,7 @@ export async function POST(req: Request) {
         isFavorite: 0,
         detailJson: null,
         readmeMd: null,
+        readmeMdKo: null,
         detailFetchedAt: null,
       });
     } catch (insertErr) {

@@ -15,8 +15,19 @@ import { StarReadme } from "@/components/stars/star-readme";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { parseStarDetailJson } from "@/lib/star-detail";
+import { isMostlyKorean } from "@/lib/star-readme-ko";
 import type { GithubStar } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+function needsReadmeTranslation(star: GithubStar, canTranslate: boolean): boolean {
+  return Boolean(
+    canTranslate &&
+      star.detailFetchedAt &&
+      star.readmeMd &&
+      !isMostlyKorean(star.readmeMd) &&
+      !star.readmeMdKo
+  );
+}
 
 function formatPushedAt(value: string | null): string | null {
   if (!value) return null;
@@ -26,17 +37,33 @@ function formatPushedAt(value: string | null): string | null {
 }
 
 /** 등록된 Star를 상세 레이아웃으로 표시한다. */
-export function StarDetail({ star: initialStar }: { star: GithubStar }) {
+export function StarDetail({
+  star: initialStar,
+  canTranslate = false,
+}: {
+  star: GithubStar;
+  canTranslate?: boolean;
+}) {
   const router = useRouter();
   const [star, setStar] = useState(initialStar);
   const [loading, setLoading] = useState(!initialStar.detailFetchedAt);
+  const [translating, setTranslating] = useState(
+    needsReadmeTranslation(initialStar, canTranslate)
+  );
   const [refreshing, setRefreshing] = useState(false);
   const [favoriting, setFavoriting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showOriginal, setShowOriginal] = useState(false);
 
   const loadDetail = useCallback(
-    async (force: boolean, id = initialStar.id, signal?: AbortSignal) => {
+    async (
+      force: boolean,
+      id = initialStar.id,
+      signal?: AbortSignal,
+      translateOnly = false
+    ) => {
       if (force) setRefreshing(true);
+      else if (translateOnly) setTranslating(true);
       else setLoading(true);
       setError(null);
       try {
@@ -69,6 +96,7 @@ export function StarDetail({ star: initialStar }: { star: GithubStar }) {
         if (!signal?.aborted) {
           setLoading(false);
           setRefreshing(false);
+          setTranslating(false);
         }
       }
     },
@@ -78,14 +106,17 @@ export function StarDetail({ star: initialStar }: { star: GithubStar }) {
   useEffect(() => {
     setStar(initialStar);
     setError(null);
-    if (initialStar.detailFetchedAt) {
+    setShowOriginal(false);
+    const translateOnly = needsReadmeTranslation(initialStar, canTranslate);
+    if (initialStar.detailFetchedAt && !translateOnly) {
       setLoading(false);
+      setTranslating(false);
       return;
     }
     const ac = new AbortController();
-    void loadDetail(false, initialStar.id, ac.signal);
+    void loadDetail(false, initialStar.id, ac.signal, translateOnly);
     return () => ac.abort();
-  }, [initialStar.id, initialStar.detailFetchedAt, loadDetail]);
+  }, [initialStar.id, initialStar.detailFetchedAt, canTranslate, loadDetail]);
 
   async function toggleFavorite() {
     if (favoriting) return;
@@ -111,6 +142,11 @@ export function StarDetail({ star: initialStar }: { star: GithubStar }) {
       ? detail.homepage
       : null;
   const pushedAt = formatPushedAt(detail?.pushedAt ?? null);
+  const original = star.readmeMd;
+  const ko = star.readmeMdKo;
+  const originalIsKo = isMostlyKorean(original);
+  const showToggle = Boolean(ko && original && !originalIsKo);
+  const displayMd = showOriginal || !ko ? original : ko;
 
   return (
     <article className="w-full min-w-0 space-y-8">
@@ -270,7 +306,33 @@ export function StarDetail({ star: initialStar }: { star: GithubStar }) {
       )}
 
       <section className="space-y-3">
-        <h2 className="text-base font-semibold">README · 사용법</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base font-semibold">README · 사용법</h2>
+          {showToggle && (
+            <div className="flex flex-wrap gap-1">
+              <Button
+                type="button"
+                variant={showOriginal ? "ghost" : "outline"}
+                size="sm"
+                className="min-h-10"
+                aria-pressed={!showOriginal}
+                onClick={() => setShowOriginal(false)}
+              >
+                한국어
+              </Button>
+              <Button
+                type="button"
+                variant={showOriginal ? "outline" : "ghost"}
+                size="sm"
+                className="min-h-10"
+                aria-pressed={showOriginal}
+                onClick={() => setShowOriginal(true)}
+              >
+                원문
+              </Button>
+            </div>
+          )}
+        </div>
         <div className="rounded-xl border border-border bg-card px-4 py-4">
           {loading && !star.detailFetchedAt ? (
             <p className="text-sm text-muted-foreground">
@@ -299,7 +361,12 @@ export function StarDetail({ star: initialStar }: { star: GithubStar }) {
           ) : (
             <div className="space-y-3">
               {error && <p className="text-sm text-red-500">{error}</p>}
-              <StarReadme markdown={star.readmeMd} />
+              {translating && (
+                <p className="text-sm text-muted-foreground">
+                  README를 한국어로 옮기는 중…
+                </p>
+              )}
+              {displayMd ? <StarReadme markdown={displayMd} /> : null}
             </div>
           )}
         </div>

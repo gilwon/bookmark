@@ -10,6 +10,7 @@
 - 코드 펜스는 자리표시로 뺐다가 되돌린다. 입력은 2만 자로 자른다.
 - 이미 가져온 README도 `readme_md_ko`가 없고 한글이 아니면 POST가 GitHub를 다시 치지 않고 번역만 한다.
 - 운영 ALTER는 `supabase/add_star_readme_ko.sql`이다. 컬럼이 없으면 저장만 건너뛴다.
+- `XAI_API_KEY`가 없으면 클라이언트는 번역 POST를 보내지 않고 원문을 보여 준다.
 
 ## Star 상세 페이지 메모
 

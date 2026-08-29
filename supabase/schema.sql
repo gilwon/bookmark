@@ -48,6 +48,7 @@ create table if not exists public.github_stars (
   is_favorite integer not null default 0,
   detail_json text,
   readme_md text,
+  readme_md_ko text,
   detail_fetched_at text,
   unique (user_id, repo_full_name)
 );
@@ -64,6 +65,7 @@ alter table public.github_stars add column if not exists source text not null de
 alter table public.github_stars add column if not exists is_favorite integer not null default 0;
 alter table public.github_stars add column if not exists detail_json text;
 alter table public.github_stars add column if not exists readme_md text;
+alter table public.github_stars add column if not exists readme_md_ko text;
 alter table public.github_stars add column if not exists detail_fetched_at text;
 
 create table if not exists public.custom_pages (

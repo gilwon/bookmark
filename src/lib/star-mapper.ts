@@ -28,6 +28,7 @@ export function rowToGithubStar(row: GithubStarRow): GithubStar {
     isFavorite: Boolean(row.isFavorite),
     detailJson: row.detailJson ?? null,
     readmeMd: row.readmeMd ?? null,
+    readmeMdKo: row.readmeMdKo ?? null,
     detailFetchedAt: row.detailFetchedAt ?? null,
   };
 }

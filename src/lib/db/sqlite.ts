@@ -45,7 +45,7 @@ function createSqlite(): SqliteDb {
       last_synced TEXT NOT NULL, created_at TEXT NOT NULL,
       change_kind TEXT, stars_delta INTEGER NOT NULL DEFAULT 0, changed_at TEXT,
       source TEXT NOT NULL DEFAULT 'sync', is_favorite INTEGER NOT NULL DEFAULT 0,
-      detail_json TEXT, readme_md TEXT, detail_fetched_at TEXT
+      detail_json TEXT, readme_md TEXT, readme_md_ko TEXT, detail_fetched_at TEXT
     );
     CREATE TABLE IF NOT EXISTS custom_pages (
       id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL,
@@ -127,6 +127,12 @@ function createSqlite(): SqliteDb {
     !starColsAfter.some((c) => c.name === "detail_fetched_at")
   ) {
     sqlite.exec(`ALTER TABLE github_stars ADD COLUMN detail_fetched_at TEXT`);
+  }
+  const starColsKo = sqlite.prepare("PRAGMA table_info(github_stars)").all() as {
+    name: string;
+  }[];
+  if (starColsKo.length && !starColsKo.some((c) => c.name === "readme_md_ko")) {
+    sqlite.exec(`ALTER TABLE github_stars ADD COLUMN readme_md_ko TEXT`);
   }
   // 기존 DB: unique 인덱스 보강 (중복 있으면 스킵 로그)
   try {

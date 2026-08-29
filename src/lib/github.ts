@@ -227,6 +227,7 @@ export async function upsertStars(
         isFavorite: 0,
         detailJson: null,
         readmeMd: null,
+        readmeMdKo: null,
         detailFetchedAt: null,
       });
     }

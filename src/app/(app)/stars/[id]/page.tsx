@@ -16,5 +16,10 @@ export default async function StarDetailPage({ params }: Props) {
   const row = await store.getStar(id, userId);
   if (!row) notFound();
 
-  return <StarDetail star={rowToGithubStar(row)} />;
+  return (
+    <StarDetail
+      star={rowToGithubStar(row)}
+      canTranslate={Boolean(process.env.XAI_API_KEY)}
+    />
+  );
 }
