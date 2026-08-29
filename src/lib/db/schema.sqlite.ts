@@ -47,6 +47,8 @@ export const githubStars = sqliteTable("github_stars", {
   detailJson: text("detail_json"),
   /** README 마크다운 */
   readmeMd: text("readme_md"),
+  /** README 한국어 번역 */
+  readmeMdKo: text("readme_md_ko"),
   /** 상세를 가져온 시각 */
   detailFetchedAt: text("detail_fetched_at"),
 });

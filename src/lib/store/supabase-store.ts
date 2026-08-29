@@ -345,6 +345,7 @@ export async function updateStar(
   if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
   if (patch.detailJson !== undefined) body.detail_json = patch.detailJson;
   if (patch.readmeMd !== undefined) body.readme_md = patch.readmeMd;
+  if (patch.readmeMdKo !== undefined) body.readme_md_ko = patch.readmeMdKo;
   if (patch.detailFetchedAt !== undefined) {
     body.detail_fetched_at = patch.detailFetchedAt;
   }
@@ -354,7 +355,10 @@ export async function updateStar(
     .update(body)
     .eq("id", id)
     .eq("user_id", userId);
-  if (error && /detail_json|readme_md|detail_fetched_at/i.test(error.message)) {
+  if (
+    error &&
+    /detail_json|readme_md_ko|readme_md|detail_fetched_at/i.test(error.message)
+  ) {
     if (!starDetailColsMissingLogged) {
       starDetailColsMissingLogged = true;
       console.warn(
@@ -364,6 +368,7 @@ export async function updateStar(
     }
     delete body.detail_json;
     delete body.readme_md;
+    delete body.readme_md_ko;
     delete body.detail_fetched_at;
     if (Object.keys(body).length === 0) return;
     const retry = await sb()

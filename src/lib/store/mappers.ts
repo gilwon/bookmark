@@ -75,6 +75,7 @@ export function mapStar(r: any): GithubStarRow {
     isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
     detailJson: r.detail_json ?? r.detailJson ?? null,
     readmeMd: r.readme_md ?? r.readmeMd ?? null,
+    readmeMdKo: r.readme_md_ko ?? r.readmeMdKo ?? null,
     detailFetchedAt: r.detail_fetched_at ?? r.detailFetchedAt ?? null,
   };
 }
@@ -154,6 +155,7 @@ export function starToDb(row: GithubStarRow) {
     is_favorite: toFavoriteFlag(row.isFavorite),
     ...(row.detailJson != null ? { detail_json: row.detailJson } : {}),
     ...(row.readmeMd != null ? { readme_md: row.readmeMd } : {}),
+    ...(row.readmeMdKo != null ? { readme_md_ko: row.readmeMdKo } : {}),
     ...(row.detailFetchedAt != null
       ? { detail_fetched_at: row.detailFetchedAt }
       : {}),
