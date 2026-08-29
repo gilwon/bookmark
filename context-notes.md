@@ -1069,3 +1069,18 @@
 - 짐코딩은 OG 표지 1장(1200×630), 닫힌 FAQ 10개와 `eli` SKILL.md를 본문에 넣었다. 저장 id `605825e6-0b4e-4202-89d9-9a5d8be06388`.
 - fieldby는 기존 id `67b80797-3206-46b2-82cb-137c155bd930`를 수정하지 않고 스킵했다.
 - 로컬·운영 재실행은 신규 0·스킵 4다.
+
+## 링크 5건 Pages 이관 메모 (2026-08-29)
+
+- 사용자 URL의 `source=copy_link`, `fbclid`, `utm_*`, `mcp_token`은 저장하지 않는다.
+- Notion MCP fetch는 4건 모두 404다. 공개 `loadPageChunk`로 읽는다. Prompts 테이블에는 넣지 않는다.
+- QJC `https://qjc.app/blog/chatgpt-scheduled-tasks-free`는 이미 Page `2e3a61cc-cf46-4fe2-b240-bede96e279fd`로 있다. 제목 `챗GPT 예약 작업 무료 개방, 오늘 3개까지 걸 수 있습니다`. 중복이므로 수정하지 않고 스킵한다.
+- `3c9380e0-d415-80cf-841c-e748f1a55e9e` 제목은 `노트폴리오 | 길쭉해서 릴스나 쇼츠에 찰떡! 컨덴스드 폰트 7`. 루트 27, 이미지 1(`attachment:` PNG), 파일 0. space `69d52e5b-9cf9-4ae7-a36a-b72d4b0c38c2`.
+- `3cab2bef-b25b-80c6-b581-ee729fe43b03`는 페이지 제목 속성이 비어 있다. 본문은 오리나가 11월 네이버 수익화 특강과 홈피드 체류형 프롬프트다. 저장 제목은 첫 헤더 `🟨 홈피드 체류형 블로그 콘텐츠 생성 프롬프트 (최종 완성본)`로 둔다. 루트 85, 이미지 2(같은 PNG 첨부 ID를 두 블록이 씀), 파일 0. 헤더는 중첩이라 자식 청크를 더 읽어야 한다.
+- `3bf73c7b-15ad-8146-b8ea-ee0de5b0cbf0` 제목은 `클릭까지 다 남는다길래, 공식 문서 읽어봤어요`. Computer History 안내. 루트 72, 이미지 0, 파일 0, 할 일 12. 기존 디자인 켜기 페이지 `3c473c7b15ad81f09d8eede9c2048762`와 ID가 다르다.
+- `3c969bdb-9038-8113-82e5-d5edbf5d2cda` 제목은 `ChatGPT로 스티커 만들기: 생성 가이드 & 개선 프롬프트`. 루트 81, SVG 이미지 5, 코드 9, 표 1, 파일 0. 기존 비밀 코드 페이지 `3c969bdb90388174af89d583691739f1`·`사진 한 장으로 12종 스티커 만들기 프롬프트`와는 다른 문서다. SVG는 `image/svg+xml` data URL로 저장한다.
+- 만료되는 Notion/S3 서명 URL은 본문에 남기지 않는다. 이미지·첨부는 받은 직후 data URL로 고정한다. ZIP이 있으면 `page-attachment-storage` 화이트리스트가 필요하고, 이 묶음에는 ZIP이 없다.
+- 운영 `custom_pages.content` ilike는 statement timeout이 나서 중복은 제목만 본다. 로컬은 제목과 원문 hex를 본다.
+- eli5 `renderBlock`은 to_do를 일반 문단으로 둔다. Computer History 할 일 12개의 문구는 남고 TipTap taskItem은 아니다.
+- 로컬·운영 id는 같다. QJC `2e3a61cc-cf46-4fe2-b240-bede96e279fd`(스킵), 노트폴리오 `db066225-d15c-4cfc-b7b7-d54cdd614548`(이미지 1 PNG), 오리나가 `8383d344-19f3-4fe1-aa6f-304b4eab1e8d`(이미지 2 PNG), Computer History `13049399-adca-4622-ae35-168393e36577`(이미지 0), 스티커 `2a79f1ef-b832-4690-ba5a-3fcb835d110a`(이미지 5 SVG).
+- 재실행은 로컬·운영 모두 신규 0·스킵 5다.
