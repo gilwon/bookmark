@@ -33,13 +33,15 @@ export async function GET(req: Request) {
   const userId = gate.user.userId;
   const opts = { q, limit: perType };
 
-  const [bookmarks, pages, prompts, agentDocs, stars] = await Promise.all([
-    store.searchBookmarks(userId, opts),
-    store.searchPages(userId, opts),
-    store.searchPrompts(userId, opts),
-    store.searchAgentDocs(userId, opts),
-    store.searchStars(userId, opts),
-  ]);
+  const [bookmarks, pages, copies, prompts, agentDocs, stars] =
+    await Promise.all([
+      store.searchBookmarks(userId, opts),
+      store.searchPages(userId, opts),
+      store.searchThreadCopies(userId, opts),
+      store.searchPrompts(userId, opts),
+      store.searchAgentDocs(userId, opts),
+      store.searchStars(userId, opts),
+    ]);
 
   const items: QuickSearchItem[] = [];
 
@@ -50,6 +52,16 @@ export async function GET(req: Request) {
       title: r.title || "제목 없는 페이지",
       subtitle: "페이지",
       href: `/pages/${r.id}`,
+    });
+  }
+
+  for (const r of copies) {
+    items.push({
+      type: "copy",
+      id: r.id,
+      title: r.title || "제목 없는 카피",
+      subtitle: clip(r.body) || "카피",
+      href: `/copies/${r.id}`,
     });
   }
 
@@ -115,6 +127,7 @@ export async function GET(req: Request) {
   }
   const order: QuickSearchType[] = [
     "page",
+    "copy",
     "prompt",
     "agent-doc",
     "bookmark",

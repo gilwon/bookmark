@@ -47,4 +47,5 @@ export type {
   AgentDocRow,
   OauthTokenRow,
   PromptRow,
+  ThreadCopyRow,
 } from "./types";

@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Bookmark,
   MessageSquareText,
+  PenLine,
   Search,
   Sparkles,
 } from "lucide-react";
@@ -28,6 +29,7 @@ import { cn } from "@/lib/utils";
 
 const SEARCH_TYPE_ICON: Record<QuickSearchType, typeof Search> = {
   page: FileText,
+  copy: PenLine,
   prompt: MessageSquareText,
   bookmark: Bookmark,
   star: GitFork,
@@ -164,6 +166,13 @@ export function CommandPalette() {
         keywords: "pages",
         icon: <FileText className="h-4 w-4" />,
         run: go("/pages"),
+      },
+      {
+        id: "nav-copies",
+        label: "카피",
+        keywords: "copies copy 카피 스레드",
+        icon: <PenLine className="h-4 w-4" />,
+        run: go("/copies"),
       },
       {
         id: "nav-prompts",

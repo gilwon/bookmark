@@ -16,6 +16,7 @@ export type DashboardCounts = {
   bookmarks: number;
   stars: number;
   pages: number;
+  copies: number;
   agentDocs: number;
   categories: number;
 };

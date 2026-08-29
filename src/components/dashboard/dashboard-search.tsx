@@ -8,6 +8,7 @@ import {
   GitFork,
   Loader2,
   MessageSquareText,
+  PenLine,
   Search,
   ExternalLink,
 } from "lucide-react";
@@ -31,6 +32,11 @@ const TYPE_META: Record<
     label: "페이지",
     icon: FileText,
     className: "text-sky-600 dark:text-sky-400",
+  },
+  copy: {
+    label: "카피",
+    icon: PenLine,
+    className: "text-rose-600 dark:text-rose-400",
   },
   prompt: {
     label: "프롬프트",

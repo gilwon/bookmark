@@ -129,3 +129,17 @@ export type Prompt = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** SNS 스레드 카피 (짧은 본문 1건) */
+export type ThreadCopy = {
+  id: string;
+  userId: string;
+  title: string;
+  body: string;
+  sourceUrl: string | null;
+  tags: string[];
+  /** 즐겨찾기 — 목록 상단 고정 */
+  isFavorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

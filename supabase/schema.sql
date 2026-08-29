@@ -116,6 +116,18 @@ create table if not exists public.prompts (
   updated_at text not null
 );
 
+create table if not exists public.thread_copies (
+  id text primary key,
+  user_id text not null,
+  title text not null,
+  body text not null default '',
+  source_url text,
+  tags text not null default '[]',
+  is_favorite integer not null default 0,
+  created_at text not null,
+  updated_at text not null
+);
+
 -- 기존 프로젝트: 즐겨찾기 컬럼
 alter table public.bookmarks add column if not exists is_favorite integer not null default 0;
 alter table public.prompts add column if not exists is_favorite integer not null default 0;
@@ -135,6 +147,7 @@ create index if not exists idx_oauth_user on public.oauth_tokens (user_id);
 create index if not exists idx_agent_docs_user on public.agent_docs (user_id);
 create index if not exists idx_agent_docs_kind on public.agent_docs (user_id, kind);
 create index if not exists idx_prompts_user on public.prompts (user_id);
+create index if not exists idx_thread_copies_user on public.thread_copies (user_id);
 
 -- ---------------------------------------------------------------------------
 -- RLS
@@ -150,6 +163,7 @@ alter table public.custom_pages enable row level security;
 alter table public.oauth_tokens enable row level security;
 alter table public.agent_docs enable row level security;
 alter table public.prompts enable row level security;
+alter table public.thread_copies enable row level security;
 
 drop policy if exists "bookmarks_select_own" on public.bookmarks;
 drop policy if exists "bookmarks_insert_own" on public.bookmarks;
@@ -226,6 +240,18 @@ create policy "prompts_update_all" on public.prompts
 create policy "prompts_delete_all" on public.prompts
   for delete using (true);
 
+drop policy if exists "thread_copies_select_own" on public.thread_copies;
+drop policy if exists "thread_copies_insert_own" on public.thread_copies;
+drop policy if exists "thread_copies_update_own" on public.thread_copies;
+drop policy if exists "thread_copies_delete_own" on public.thread_copies;
+create policy "thread_copies_select_own" on public.thread_copies
+  for select using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "thread_copies_insert_own" on public.thread_copies
+  for insert with check (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "thread_copies_update_own" on public.thread_copies
+  for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "thread_copies_delete_own" on public.thread_copies
+  for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
 
 drop policy if exists "categories_select_own" on public.categories;
 drop policy if exists "categories_insert_own" on public.categories;

@@ -1,3 +1,16 @@
+<!-- 스레드 카피 보관 메뉴 -->
+# 카피 메뉴 (`/copies`)
+
+- [x] `thread_copies` 테이블 (SQLite + Supabase + Drizzle)
+- [x] store list/get/insert/update/delete/search (사용자 소유, 프롬프트처럼 공유하지 않음)
+- [x] `GET·POST /api/copies`, `GET·PATCH·DELETE /api/copies/[id]`
+- [x] 제목 비우면 본문 첫 줄, 줄바꿈 유지, 본문 상한
+- [x] 목록: 위 입력칸 + 본문 미리보기 카드 + 바로 복사 + 태그/즐겨찾기
+- [x] 상세: 읽기 칼럼 + 복사/수정/삭제/원문 링크 (노션 편집기 없음)
+- [x] 상단 메뉴 페이지 다음·프롬프트 앞, 라벨 카피
+- [x] 통합 검색·⌘K·홈 개수에 카피 연결
+- [x] 단위 테스트와 로그인 후 생성·목록·상세·카피 검색 확인 (운영 SQL은 아직)
+
 <!-- Tistory 원문을 Pages로 이관하는 작업 체크리스트 -->
 # UI 디자인 스타일 글 이관
 

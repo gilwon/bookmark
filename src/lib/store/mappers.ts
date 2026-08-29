@@ -7,6 +7,7 @@ import type {
   GithubStarRow,
   OauthTokenRow,
   PromptRow,
+  ThreadCopyRow,
 } from "./types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -229,6 +230,34 @@ export function promptToDb(row: PromptRow) {
     summary: row.summary,
     when_to_use: row.whenToUse,
     sections: row.sections,
+    is_favorite: toFavoriteFlag(row.isFavorite),
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
+  };
+}
+
+export function mapThreadCopy(r: any): ThreadCopyRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    title: r.title,
+    body: r.body ?? "",
+    sourceUrl: r.source_url ?? r.sourceUrl ?? null,
+    tags: typeof r.tags === "string" ? r.tags : JSON.stringify(r.tags ?? []),
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function threadCopyToDb(row: ThreadCopyRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    title: row.title,
+    body: row.body,
+    source_url: row.sourceUrl ?? null,
+    tags: row.tags ?? "[]",
     is_favorite: toFavoriteFlag(row.isFavorite),
     created_at: row.createdAt,
     updated_at: row.updatedAt,

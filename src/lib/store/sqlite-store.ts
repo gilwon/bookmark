@@ -10,6 +10,7 @@ import {
   githubStars,
   oauthTokens,
   prompts,
+  threadCopies,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import { preparePageFindability } from "@/lib/page-findability";
@@ -26,6 +27,7 @@ import type {
   GithubStarRow,
   OauthTokenRow,
   PromptRow,
+  ThreadCopyRow,
 } from "./types";
 
 // --- bookmarks ---
@@ -591,6 +593,121 @@ export async function deletePrompt(id: string, _userId: string): Promise<void> {
   await qrun(db.delete(prompts).where(eq(prompts.id, id)));
 }
 
+// --- thread copies (소유자 스코프 — userId 필터 필수) ---
+/** 즐겨찾기 우선 → 등록일 최신순 */
+export async function listThreadCopies(userId: string): Promise<ThreadCopyRow[]> {
+  return qall(
+    db
+      .select()
+      .from(threadCopies)
+      .where(eq(threadCopies.userId, userId))
+      .orderBy(desc(threadCopies.isFavorite), desc(threadCopies.createdAt))
+  );
+}
+
+export async function getThreadCopy(
+  id: string,
+  userId: string
+): Promise<ThreadCopyRow | undefined> {
+  return qget(
+    db
+      .select()
+      .from(threadCopies)
+      .where(and(eq(threadCopies.id, id), eq(threadCopies.userId, userId)))
+  );
+}
+
+export async function insertThreadCopy(
+  row: ThreadCopyRow
+): Promise<ThreadCopyRow> {
+  await qrun(db.insert(threadCopies).values(row));
+  return (await getThreadCopy(row.id, row.userId))!;
+}
+
+export async function updateThreadCopy(
+  id: string,
+  userId: string,
+  patch: Partial<ThreadCopyRow>
+): Promise<ThreadCopyRow | undefined> {
+  const { id: _i, userId: _u, ...rest } = patch as ThreadCopyRow;
+  await qrun(
+    db
+      .update(threadCopies)
+      .set(rest)
+      .where(and(eq(threadCopies.id, id), eq(threadCopies.userId, userId)))
+  );
+  return getThreadCopy(id, userId);
+}
+
+export async function deleteThreadCopy(
+  id: string,
+  userId: string
+): Promise<void> {
+  await qrun(
+    db
+      .delete(threadCopies)
+      .where(and(eq(threadCopies.id, id), eq(threadCopies.userId, userId)))
+  );
+}
+
+export async function searchThreadCopies(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<ThreadCopyRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 200);
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
+  const q = opts.q?.trim().toLowerCase();
+  const tag = opts.tag?.trim().toLowerCase();
+
+  const conditions = [eq(threadCopies.userId, userId)];
+  if (opts.from) {
+    conditions.push(sql`${threadCopies.createdAt} >= ${opts.from}`);
+  }
+  if (opts.to) {
+    conditions.push(
+      sql`${threadCopies.createdAt} <= ${opts.to + "T23:59:59.999Z"}`
+    );
+  }
+  if (q) {
+    const tokens = q.split(/\s+/).filter(Boolean);
+    for (const t of tokens) {
+      const safe = t.replace(/[%_]/g, "");
+      if (!safe) continue;
+      const p = `%${safe}%`;
+      conditions.push(
+        sql`(
+          lower(${threadCopies.title}) like ${p}
+          or lower(${threadCopies.body}) like ${p}
+          or lower(${threadCopies.tags}) like ${p}
+          or lower(coalesce(${threadCopies.sourceUrl}, '')) like ${p}
+        )`
+      );
+    }
+  }
+
+  const rows = await qall(
+    db
+      .select()
+      .from(threadCopies)
+      .where(and(...conditions))
+      .orderBy(desc(threadCopies.isFavorite), desc(threadCopies.createdAt))
+      .limit(fetchLim)
+  );
+
+  if (!tag) return rows.slice(0, lim);
+  return rows
+    .filter((r) => {
+      try {
+        return (JSON.parse(r.tags || "[]") as string[]).some(
+          (t) => t.toLowerCase() === tag
+        );
+      } catch {
+        return (r.tags || "").toLowerCase().includes(tag);
+      }
+    })
+    .slice(0, lim);
+}
+
 // --- dashboard / search ---
 export async function getDashboardCounts(
   userId: string
@@ -619,6 +736,12 @@ export async function getDashboardCounts(
       .from(agentDocs)
       .where(eq(agentDocs.userId, userId))
   );
+  const [c] = await qall(
+    db
+      .select({ c: count() })
+      .from(threadCopies)
+      .where(eq(threadCopies.userId, userId))
+  );
   const cats = await qall(
     db
       .select({ category: bookmarks.category })
@@ -632,6 +755,7 @@ export async function getDashboardCounts(
     bookmarks: Number(b?.c ?? 0),
     stars: Number(s?.c ?? 0),
     pages: Number(p?.c ?? 0),
+    copies: Number(c?.c ?? 0),
     agentDocs: Number(a?.c ?? 0),
     categories: catSet.size,
   };

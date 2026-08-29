@@ -11,6 +11,10 @@ import {
   type PageSearchResult,
 } from "@/components/search/page-result-card";
 import {
+  CopyResultCard,
+  type CopySearchResult,
+} from "@/components/search/copy-result-card";
+import {
   PromptResultCard,
   type PromptSearchResult,
 } from "@/components/search/prompt-result-card";
@@ -32,6 +36,22 @@ type SearchParams = Promise<{
   from?: string;
   to?: string;
 }>;
+
+function makeCopySnippet(text: string, q: string, max = 200): string {
+  const clean = text.replace(/\r\n/g, "\n").replace(/[ \t]+\n/g, "\n").trim();
+  if (!clean) return "";
+  if (!q) return clean.slice(0, max) + (clean.length > max ? "…" : "");
+  const lower = clean.toLowerCase();
+  const idx = lower.indexOf(q.toLowerCase());
+  if (idx < 0) return clean.slice(0, max) + (clean.length > max ? "…" : "");
+  const start = Math.max(0, idx - 40);
+  const end = Math.min(clean.length, idx + q.length + 80);
+  return (
+    (start > 0 ? "…" : "") +
+    clean.slice(start, end) +
+    (end < clean.length ? "…" : "")
+  );
+}
 
 function makeSnippet(text: string, q: string, max = 140): string {
   const clean = text.replace(/\s+/g, " ").trim();
@@ -77,6 +97,7 @@ export default async function SearchPage({
   let bookmarkResults: Bookmark[] = [];
   let starResults: GithubStar[] = [];
   let pageResults: PageSearchResult[] = [];
+  let copyResults: CopySearchResult[] = [];
   let agentDocResults: AgentDocSearchResult[] = [];
   let promptResults: PromptSearchResult[] = [];
 
@@ -153,6 +174,16 @@ export default async function SearchPage({
     });
   }
 
+  if ((type === "all" || type === "copy") && !category) {
+    const rows = await store.searchThreadCopies(userId, opts);
+    copyResults = rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      snippet: makeCopySnippet(row.body, q),
+      updatedAt: row.updatedAt,
+    }));
+  }
+
   if ((type === "all" || type === "prompt") && !tag && !category) {
     const rows = await store.searchPrompts(userId, opts);
     promptResults = rows.map((row) => {
@@ -179,6 +210,7 @@ export default async function SearchPage({
     bookmarkResults.length +
     starResults.length +
     pageResults.length +
+    copyResults.length +
     agentDocResults.length +
     promptResults.length;
 
@@ -187,7 +219,7 @@ export default async function SearchPage({
       <div>
         <h1 className="text-2xl font-bold tracking-tight">검색</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          북마크, Stars, 페이지, 프롬프트, 에이전트 문서를 통합 검색합니다.
+          북마크, Stars, 페이지, 카피, 프롬프트, 에이전트 문서를 통합 검색합니다.
         </p>
       </div>
 
@@ -246,6 +278,18 @@ export default async function SearchPage({
               <div className="grid gap-3 sm:grid-cols-2">
                 {pageResults.map((p) => (
                   <PageResultCard key={p.id} page={p} />
+                ))}
+              </div>
+            </section>
+          )}
+          {copyResults.length > 0 && (
+            <section className="space-y-3">
+              <h2 className="text-sm font-semibold">
+                카피 ({copyResults.length})
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {copyResults.map((c) => (
+                  <CopyResultCard key={c.id} copy={c} />
                 ))}
               </div>
             </section>
