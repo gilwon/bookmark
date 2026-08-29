@@ -323,5 +323,10 @@
   "anthropics/claude-cookbooks": "Claude를 재미있고 효과적으로 쓰는 방법을 보여주는 노트북·레시피 모음입니다.",
   "MochiDiffusion/MochiDiffusion": "Mac에서 Stable Diffusion을 네이티브로 실행합니다.",
   "kelviq/tare": "Claude Code 사용량이 어디로 갔는지 묻습니다. 이미 기기에 있는 세션 로그로 토큰 감사, 한도 진단, 사용량 포렌식을 하며 데이터는 밖으로 나가지 않습니다.",
-  "CopilotKit/OpenTag": "Channels SDK 스타터입니다. Slack과 Microsoft Teams용 셀프호스트 AI 온콜 트리아지 봇이며 AG-UI와 LangGraph로 만들었습니다. 포크해서 바로 쓸 수 있습니다."
+  "CopilotKit/OpenTag": "Channels SDK 스타터입니다. Slack과 Microsoft Teams용 셀프호스트 AI 온콜 트리아지 봇이며 AG-UI와 LangGraph로 만들었습니다. 포크해서 바로 쓸 수 있습니다.",
+  "1weiho/open-slide": "에이전트를 위한 슬라이드 프레임워크입니다.",
+  "Tencent/BrowserSkill": "작업 중인 로그인된 실제 브라우저를 AI 에이전트가 방해하지 않고 쓰게 합니다. 셸을 쓰는 어떤 에이전트든 쓸 수 있는 CLI와 확장입니다.",
+  "SenteLabsAI/OpenExecutive": "AI 가상 경영진입니다. FastAPI와 Next.js로 만든 전문 Claude 에이전트 8명이 하나의 경영진 페르소나를 뒷받침합니다.",
+  "vercel-labs/skills": "오픈 에이전트 스킬 도구입니다. npx skills로 실행합니다.",
+  "can1357/oh-my-pi": "IDE가 연결된 코딩 에이전트입니다."
 }

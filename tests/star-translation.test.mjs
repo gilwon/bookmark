@@ -383,6 +383,23 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 5개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["1weiho/open-slide", "A slide framework built for agents."],
+      ["Tencent/BrowserSkill", "Let AI agents use your real, logged-in browser without interrupting your work. CLI + extension for browser automation across any shell-capable AI agent."],
+      ["SenteLabsAI/OpenExecutive", "AI-powered virtual executive team — a single coherent executive persona backed by 8 specialist Claude agents (FastAPI + Next.js)."],
+      ["vercel-labs/skills", "The open agent skills tool - npx skills"],
+      ["can1357/oh-my-pi", "⌥ Coding agent with the IDE wired in"],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
