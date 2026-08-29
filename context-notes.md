@@ -1,6 +1,15 @@
 <!-- Tistory 원문 이관에 필요한 조사 결과와 구현 제약 -->
 # 조사 메모
 
+## 짐코딩 아티클 전체 Pages 이관 메모
+
+- 목록은 `https://www.gymcoding.co/articles`와 sitemap이 모두 41건이다.
+- 이미 있는 3건은 Matt Pocock, 스킬 10개, ELI5다. 제목 또는 `gymcoding.co/articles/...` URL이 같으면 스킵하고 수정하지 않는다.
+- 닫힌 FAQ 답은 정적 HTML이 비어 있고 `self.__next_f`에 `"title","children"` 문자열로 있다. 브라우저로 아코디언을 열지 않는다.
+- 본문은 `article.py-page-y`다. 인프런·뉴스레터 카드는 뺀다. 로고 SVG는 빼고 OG 표지만 data URL로 넣는다.
+- Prompts는 추가하지 않는다.
+- 실행 결과 목록 41, 스킵 3, 로컬·운영 신규 38이다. 운영 `source_url` gymcoding 아티클은 41건이다.
+
 ## Star README 한국어 표시 메모
 
 - README · 사용법은 GitHub 원문이 한글이 아니면 한국어로 보여 준다. 이미 한글이면 그대로 둔다.
