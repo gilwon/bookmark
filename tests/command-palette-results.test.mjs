@@ -168,6 +168,7 @@ describe("mergePaletteItems", () => {
     );
     assert.deepEqual(SEARCH_TYPE_LABEL, {
       page: "페이지",
+      copy: "카피",
       prompt: "프롬프트",
       bookmark: "북마크",
       star: "Star",

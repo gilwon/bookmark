@@ -3,6 +3,7 @@
 export type QuickSearchType =
   | "bookmark"
   | "page"
+  | "copy"
   | "prompt"
   | "agent-doc"
   | "star";

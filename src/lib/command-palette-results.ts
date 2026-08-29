@@ -4,6 +4,7 @@ import type { QuickSearchItem, QuickSearchType } from "@/lib/quick-search";
 /** 검색 결과 타입 뱃지 문구 */
 export const SEARCH_TYPE_LABEL: Record<QuickSearchType, string> = {
   page: "페이지",
+  copy: "카피",
   prompt: "프롬프트",
   bookmark: "북마크",
   star: "Star",

@@ -16,6 +16,12 @@ export const MAX_AGENT_DOC_FILE_BYTES = 400_000;
 export const MAX_AGENT_DOC_TOTAL_BYTES = 1_500_000;
 /** 북마크 태그 개수 */
 export const MAX_BOOKMARK_TAGS = 30;
+/** 카피 제목 최대 길이 */
+export const MAX_COPY_TITLE_LEN = 200;
+/** 카피 본문 최대 바이트 */
+export const MAX_COPY_BODY_BYTES = 20_000;
+/** 카피 태그 개수 */
+export const MAX_COPY_TAGS = MAX_BOOKMARK_TAGS;
 /** 카테고리 이름 */
 export const MAX_CATEGORY_NAME_LEN = 80;
 

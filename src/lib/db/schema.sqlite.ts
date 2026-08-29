@@ -102,3 +102,17 @@ export const prompts = sqliteTable("prompts", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+/** SNS 스레드 카피 (짧은 본문 1건 = 1행) */
+export const threadCopies = sqliteTable("thread_copies", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  title: text("title").notNull(),
+  body: text("body").notNull().default(""),
+  sourceUrl: text("source_url"),
+  tags: text("tags").notNull().default("[]"),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

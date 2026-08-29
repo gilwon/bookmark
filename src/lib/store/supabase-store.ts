@@ -5,6 +5,10 @@ import {
   preparePageFindability,
 } from "@/lib/page-findability";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
+import {
+  isMissingThreadCopiesTable,
+  THREAD_COPIES_TABLE_USER_MESSAGE,
+} from "@/lib/thread-copy";
 import { v4 as uuidv4 } from "uuid";
 import {
   agentDocToDb,
@@ -46,6 +50,16 @@ function sb() {
 
 function throwIfError(error: { message: string } | null, ctx: string) {
   if (error) throw new Error(`[supabase] ${ctx}: ${error.message}`);
+}
+
+function throwUnlessMissingCopies(
+  error: { message: string } | null,
+  ctx: string
+): boolean {
+  if (!error) return false;
+  if (isMissingThreadCopiesTable(error.message)) return true;
+  throwIfError(error, ctx);
+  return false;
 }
 
 /** github_stars 상세 컬럼 부재 경고는 프로세스당 한 번만 남긴다. */
@@ -791,7 +805,7 @@ export async function listThreadCopies(userId: string): Promise<ThreadCopyRow[]>
     .eq("user_id", userId)
     .order("is_favorite", { ascending: false })
     .order("created_at", { ascending: false });
-  throwIfError(error, "listThreadCopies");
+  if (throwUnlessMissingCopies(error, "listThreadCopies")) return [];
   return (data ?? []).map(mapThreadCopy);
 }
 
@@ -805,7 +819,7 @@ export async function getThreadCopy(
     .eq("id", id)
     .eq("user_id", userId)
     .maybeSingle();
-  throwIfError(error, "getThreadCopy");
+  if (throwUnlessMissingCopies(error, "getThreadCopy")) return undefined;
   return data ? mapThreadCopy(data) : undefined;
 }
 
@@ -817,6 +831,9 @@ export async function insertThreadCopy(
     .insert(threadCopyToDb(row))
     .select("*")
     .single();
+  if (error && isMissingThreadCopiesTable(error.message)) {
+    throw new Error(THREAD_COPIES_TABLE_USER_MESSAGE);
+  }
   throwIfError(error, "insertThreadCopy");
   return mapThreadCopy(data);
 }
@@ -841,6 +858,9 @@ export async function updateThreadCopy(
     .eq("user_id", userId)
     .select("*")
     .maybeSingle();
+  if (error && isMissingThreadCopiesTable(error.message)) {
+    throw new Error(THREAD_COPIES_TABLE_USER_MESSAGE);
+  }
   throwIfError(error, "updateThreadCopy");
   return data ? mapThreadCopy(data) : undefined;
 }
@@ -854,6 +874,9 @@ export async function deleteThreadCopy(
     .delete()
     .eq("id", id)
     .eq("user_id", userId);
+  if (error && isMissingThreadCopiesTable(error.message)) {
+    throw new Error(THREAD_COPIES_TABLE_USER_MESSAGE);
+  }
   throwIfError(error, "deleteThreadCopy");
 }
 
@@ -883,7 +906,7 @@ export async function searchThreadCopies(
   }
 
   const { data, error } = await query;
-  throwIfError(error, "searchThreadCopies");
+  if (throwUnlessMissingCopies(error, "searchThreadCopies")) return [];
   let rows = (data ?? []).map(mapThreadCopy);
 
   if (q) {
@@ -926,6 +949,13 @@ async function countTable(
     .from(table)
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId);
+  if (
+    table === "thread_copies" &&
+    error &&
+    isMissingThreadCopiesTable(error.message)
+  ) {
+    return 0;
+  }
   throwIfError(error, `count:${table}`);
   return count ?? 0;
 }

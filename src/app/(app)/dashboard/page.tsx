@@ -6,6 +6,7 @@ import {
   FileText,
   FolderOpen,
   GitFork,
+  PenLine,
   Plus,
   Search,
   Upload,
@@ -109,6 +110,13 @@ export default async function DashboardPage() {
       hint: "메모 페이지",
     },
     {
+      label: "카피",
+      value: counts.copies,
+      href: "/copies",
+      icon: PenLine,
+      hint: "SNS 짧은 글",
+    },
+    {
       label: "에이전트 문서",
       value: counts.agentDocs,
       href: "/agent-docs",
@@ -168,7 +176,7 @@ export default async function DashboardPage() {
         </Link>
       )}
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
         {stats.map(({ label, value, href, icon: Icon, hint }) => (
           <Link key={label} href={href} className="group">
             <Card

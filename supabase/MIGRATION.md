@@ -66,3 +66,9 @@ node scripts/setup-pdf-storage.mjs
 
 버킷은 비공개이며 파일당 최대 20MB, `application/pdf`만 허용합니다.
 브라우저의 서명 업로드에는 `NEXT_PUBLIC_SUPABASE_ANON_KEY`가 필수입니다.
+
+## 7. 카피 테이블
+
+상단 메뉴 카피(`/copies`)는 `thread_copies` 테이블이 필요합니다.
+기존 프로젝트는 SQL Editor에서 [`add_thread_copies.sql`](./add_thread_copies.sql) 을 한 번 실행하세요.
+테이블이 없으면 목록은 비어 보이고, 저장 시에만 안내 문구가 납니다.

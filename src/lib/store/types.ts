@@ -106,3 +106,17 @@ export type PromptRow = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** 스레드 카피 행 — tags 는 JSON 문자열 */
+export type ThreadCopyRow = {
+  id: string;
+  userId: string;
+  title: string;
+  body: string;
+  sourceUrl: string | null;
+  tags: string;
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
+  createdAt: string;
+  updatedAt: string;
+};
