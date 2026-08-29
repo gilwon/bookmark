@@ -1,5 +1,9 @@
 // Supabase JS (service_role) 스토어 — PostgREST, 직접 DATABASE_URL 없음
-import { preparePageFindability } from "@/lib/page-findability";
+import {
+  PAGE_FAVORITE_COLUMN_MISSING,
+  isMissingPageFindabilityColumn,
+  preparePageFindability,
+} from "@/lib/page-findability";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -12,10 +16,12 @@ import {
   mapPage,
   mapPrompt,
   mapStar,
+  mapThreadCopy,
   mapToken,
   pageToDb,
   promptToDb,
   starToDb,
+  threadCopyToDb,
   tokenToDb,
 } from "./mappers";
 import type {
@@ -31,6 +37,7 @@ import type {
   GithubStarRow,
   OauthTokenRow,
   PromptRow,
+  ThreadCopyRow,
 } from "./types";
 
 function sb() {
@@ -544,6 +551,13 @@ export async function updatePage(
     .eq("user_id", userId)
     .select("*")
     .maybeSingle();
+  if (
+    error &&
+    next.isFavorite !== undefined &&
+    isMissingPageFindabilityColumn(error.message)
+  ) {
+    throw new Error(PAGE_FAVORITE_COLUMN_MISSING);
+  }
   throwIfError(error, "updatePage");
   return data ? mapPage(data) : undefined;
 }
@@ -768,9 +782,144 @@ export async function deletePrompt(id: string, _userId: string): Promise<void> {
   throwIfError(error, "deletePrompt");
 }
 
+// --- thread copies (소유자 스코프 — userId 필터 필수) ---
+/** 즐겨찾기 우선 → 등록일 최신순 */
+export async function listThreadCopies(userId: string): Promise<ThreadCopyRow[]> {
+  const { data, error } = await sb()
+    .from("thread_copies")
+    .select("*")
+    .eq("user_id", userId)
+    .order("is_favorite", { ascending: false })
+    .order("created_at", { ascending: false });
+  throwIfError(error, "listThreadCopies");
+  return (data ?? []).map(mapThreadCopy);
+}
+
+export async function getThreadCopy(
+  id: string,
+  userId: string
+): Promise<ThreadCopyRow | undefined> {
+  const { data, error } = await sb()
+    .from("thread_copies")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", userId)
+    .maybeSingle();
+  throwIfError(error, "getThreadCopy");
+  return data ? mapThreadCopy(data) : undefined;
+}
+
+export async function insertThreadCopy(
+  row: ThreadCopyRow
+): Promise<ThreadCopyRow> {
+  const { data, error } = await sb()
+    .from("thread_copies")
+    .insert(threadCopyToDb(row))
+    .select("*")
+    .single();
+  throwIfError(error, "insertThreadCopy");
+  return mapThreadCopy(data);
+}
+
+export async function updateThreadCopy(
+  id: string,
+  userId: string,
+  patch: Partial<ThreadCopyRow>
+): Promise<ThreadCopyRow | undefined> {
+  const body: Record<string, unknown> = {};
+  if (patch.title !== undefined) body.title = patch.title;
+  if (patch.body !== undefined) body.body = patch.body;
+  if (patch.sourceUrl !== undefined) body.source_url = patch.sourceUrl;
+  if (patch.tags !== undefined) body.tags = patch.tags;
+  if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
+  if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
+
+  const { data, error } = await sb()
+    .from("thread_copies")
+    .update(body)
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select("*")
+    .maybeSingle();
+  throwIfError(error, "updateThreadCopy");
+  return data ? mapThreadCopy(data) : undefined;
+}
+
+export async function deleteThreadCopy(
+  id: string,
+  userId: string
+): Promise<void> {
+  const { error } = await sb()
+    .from("thread_copies")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  throwIfError(error, "deleteThreadCopy");
+}
+
+export async function searchThreadCopies(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<ThreadCopyRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 200);
+  const fetchLim = opts.tag?.trim() ? Math.min(lim * 20, 2000) : lim;
+  let query = sb()
+    .from("thread_copies")
+    .select("*")
+    .eq("user_id", userId)
+    .order("is_favorite", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(fetchLim);
+
+  query = applyDateRange(query, "created_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    const first = q.split(/\s+/).filter(Boolean)[0] ?? q;
+    const p = likePat(first);
+    query = query.or(
+      `title.ilike.${p},body.ilike.${p},tags.ilike.${p},source_url.ilike.${p}`
+    );
+  }
+
+  const { data, error } = await query;
+  throwIfError(error, "searchThreadCopies");
+  let rows = (data ?? []).map(mapThreadCopy);
+
+  if (q) {
+    const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+    rows = rows.filter((r) => {
+      const hay = [r.title, r.body, r.tags, r.sourceUrl ?? ""]
+        .join(" ")
+        .toLowerCase();
+      return tokens.every((t) => hay.includes(t));
+    });
+  }
+
+  if (opts.tag?.trim()) {
+    const t = opts.tag.trim().toLowerCase();
+    rows = rows.filter((r) => {
+      try {
+        return (JSON.parse(r.tags || "[]") as string[]).some(
+          (x) => x.toLowerCase() === t
+        );
+      } catch {
+        return (r.tags || "").toLowerCase().includes(t);
+      }
+    });
+  }
+
+  return rows.slice(0, lim);
+}
+
 // --- dashboard / search (가벼운 쿼리) ---
 async function countTable(
-  table: "bookmarks" | "github_stars" | "custom_pages" | "agent_docs",
+  table:
+    | "bookmarks"
+    | "github_stars"
+    | "custom_pages"
+    | "agent_docs"
+    | "thread_copies",
   userId: string
 ): Promise<number> {
   const { count, error } = await sb()
@@ -785,20 +934,22 @@ async function countTable(
 export async function getDashboardCounts(
   userId: string
 ): Promise<DashboardCounts> {
-  const [bookmarks, stars, pages, agentDocs, catRows] = await Promise.all([
-    countTable("bookmarks", userId),
-    countTable("github_stars", userId),
-    countTable("custom_pages", userId),
-    countTable("agent_docs", userId),
-    sb()
-      .from("bookmarks")
-      .select("category")
-      .eq("user_id", userId)
-      .then((r) => {
-        throwIfError(r.error, "count categories");
-        return r.data ?? [];
-      }),
-  ]);
+  const [bookmarks, stars, pages, copies, agentDocs, catRows] =
+    await Promise.all([
+      countTable("bookmarks", userId),
+      countTable("github_stars", userId),
+      countTable("custom_pages", userId),
+      countTable("thread_copies", userId),
+      countTable("agent_docs", userId),
+      sb()
+        .from("bookmarks")
+        .select("category")
+        .eq("user_id", userId)
+        .then((r) => {
+          throwIfError(r.error, "count categories");
+          return r.data ?? [];
+        }),
+    ]);
   const cats = new Set(
     (catRows as { category: string | null }[]).map(
       (r) => r.category?.trim() || "미분류"
@@ -808,6 +959,7 @@ export async function getDashboardCounts(
     bookmarks,
     stars,
     pages,
+    copies,
     agentDocs,
     categories: cats.size,
   };

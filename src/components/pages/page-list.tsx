@@ -289,6 +289,12 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       });
       if (!res.ok) {
         setFavMap((m) => ({ ...m, [p.id]: p.isFavorite }));
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        alert(
+          data.error?.trim() || "즐겨찾기 저장에 실패했습니다."
+        );
         return;
       }
       router.refresh();

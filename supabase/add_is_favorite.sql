@@ -2,3 +2,4 @@
 alter table public.bookmarks add column if not exists is_favorite integer not null default 0;
 alter table public.prompts add column if not exists is_favorite integer not null default 0;
 alter table public.github_stars add column if not exists is_favorite integer not null default 0;
+alter table public.custom_pages add column if not exists is_favorite integer not null default 0;

@@ -238,3 +238,16 @@ export function preparePageFindability(input: {
       : inferPageTags({ title: input.title, sourceUrl, searchText });
   return { searchText, sourceUrl, tags };
 }
+
+export const PAGE_FAVORITE_COLUMN_MISSING = "PAGE_FAVORITE_COLUMN_MISSING";
+export const PAGE_FAVORITE_COLUMN_USER_MESSAGE =
+  "즐겨찾기를 저장할 수 없습니다. 운영 DB에 is_favorite 컬럼이 없습니다. supabase/add_page_findability.sql 을 SQL Editor에서 실행하세요.";
+
+/** PostgREST가 찾기 컬럼 부재를 말할 때 true다. */
+export function isMissingPageFindabilityColumn(message: unknown): boolean {
+  const text = String(message ?? "");
+  if (!/(is_favorite|source_url|search_text|\btags\b)/i.test(text)) {
+    return false;
+  }
+  return /does not exist|schema cache|42703/i.test(text);
+}
