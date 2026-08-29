@@ -1,18 +1,10 @@
-// 프롬프트 라이브러리 목록 — 상위 그룹 필터·접이식 섹션·즐겨찾기
+// 프롬프트 라이브러리 목록 — 큰 검색창 + 카테고리 칩 + 카드 그리드 + 팝업 상세
 "use client";
 
-import {
-  ChevronDown,
-  Copy,
-  MessageSquareText,
-  Plus,
-  Star,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Copy, Plus, Star, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Prompt } from "@/lib/types";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
@@ -26,9 +18,9 @@ import {
   slicePage,
 } from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ListPagination } from "@/components/ui/list-pagination";
+import { PromptModal } from "@/components/prompts/prompt-modal";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
@@ -45,7 +37,6 @@ const SORT_OPTIONS: { value: ListSortKey; label: string }[] = [
 
 const ALL = "__all__";
 const UNCATEGORIZED = "미분류";
-const FAVORITES = "⭐ 즐겨찾기";
 const countFormatter = new Intl.NumberFormat("ko-KR");
 
 function formatCount(count: number): string {
@@ -110,6 +101,15 @@ function comparePrompt(a: Prompt, b: Prompt, sort: ListSortKey): number {
   return compareIsoDesc(a.createdAt, b.createdAt);
 }
 
+/** 세부 칩에서 그룹 접두어를 짧게 표시 */
+function shortCatLabel(full: string, group: string): string {
+  if (full.startsWith(group + " · ")) {
+    return full.slice(group.length + 3);
+  }
+  // 일잘러 1-2. 제목 → 1-2. 제목 유지(이미 짧음)
+  return full;
+}
+
 /** 프롬프트 목록 UI */
 export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const router = useRouter();
@@ -123,10 +123,8 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
-  /** 접이식 섹션 — 기본 모든 카테고리 펼침 */
-  const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set([FAVORITES, ...prompts.map(categoryLabel)])
-  );
+  /** 팝업으로 열려 있는 프롬프트 id */
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const categories = useMemo(() => {
     const map = new Map<string, number>();
@@ -163,15 +161,30 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     return categories.filter((c) => categoryGroup(c.label) === activeGroup);
   }, [categories, activeGroup]);
 
-  // 그룹 변경 시 세부 카테고리 초기화
-  useEffect(() => {
-    setActiveCat(ALL);
-  }, [activeGroup]);
-
-  // 검색·필터·정렬 변경 시 1페이지로
-  useEffect(() => {
+  /** 검색어 변경 — 1페이지로 리셋 */
+  function updateQuery(next: string) {
+    setQ(next);
     setPage(1);
-  }, [q, sort, activeGroup, activeCat]);
+  }
+
+  /** 정렬 변경 — 1페이지로 리셋 */
+  function updateSort(next: ListSortKey) {
+    setSort(next);
+    setPage(1);
+  }
+
+  /** 상위 그룹 변경 — 세부 카테고리·1페이지 리셋 */
+  function updateGroup(next: string) {
+    setActiveGroup(next);
+    setActiveCat(ALL);
+    setPage(1);
+  }
+
+  /** 세부 카테고리 변경 — 1페이지로 리셋 */
+  function updateCat(next: string) {
+    setActiveCat(next);
+    setPage(1);
+  }
 
   // 필터 후 정렬
   const filtered = useMemo(() => {
@@ -199,59 +212,18 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     [filtered, page]
   );
 
-  /**
-   * 섹션 그룹:
-   * - 세부 카테고리 미선택: 즐겨찾기 + 목차별 (접이식)
-   * - 세부 카테고리 선택: 단일 섹션
-   * 페이징된 pageItems 기준으로 그룹핑
-   */
-  const groups = useMemo(() => {
-    const singleSection = activeCat !== ALL;
-    if (singleSection) {
-      return [
-        {
-          label: activeCat,
-          items: pageItems,
-          isFavoriteGroup: false,
-        },
-      ];
-    }
-    const favs = pageItems.filter((p) => p.isFavorite);
-    const rest = pageItems.filter((p) => !p.isFavorite);
-    const map = new Map<string, Prompt[]>();
-    for (const p of rest) {
-      const c = categoryLabel(p);
-      const list = map.get(c);
-      if (list) list.push(p);
-      else map.set(c, [p]);
-    }
-    const catGroups = [...map.entries()]
-      .sort((a, b) => compareCategory(a[0], b[0]))
-      .map(([label, items]) => ({ label, items, isFavoriteGroup: false }));
-    if (favs.length > 0) {
-      return [
-        { label: FAVORITES, items: favs, isFavoriteGroup: true },
-        ...catGroups,
-      ];
-    }
-    return catGroups;
-  }, [pageItems, activeCat]);
-
-  const showSectionHeaders = activeCat === ALL && groups.length > 1;
   const hasActiveFilter = activeGroup !== ALL || activeCat !== ALL;
 
-  function toggleSection(label: string) {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(label)) next.delete(label);
-      else next.add(label);
-      return next;
-    });
-  }
+  /** 팝업에 표시할 프롬프트 — prompts가 갱신되면 즐겨찾기 등 변경사항도 함께 반영 */
+  const openPrompt = useMemo(
+    () => prompts.find((p) => p.id === openId) ?? null,
+    [prompts, openId]
+  );
 
   function clearFilters() {
     setActiveGroup(ALL);
     setActiveCat(ALL);
+    setPage(1);
   }
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
@@ -295,10 +267,9 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     }
   }
 
-  async function copyAll(p: Prompt) {
-    const text = p.sections
-      .map((s) => `## ${s.title}\n\n${s.body}`)
-      .join("\n\n---\n\n");
+  /** 첫 섹션 본문만 복사 (카드 미리보기 복사 버튼) */
+  async function copyFirstSection(p: Prompt) {
+    const text = p.sections[0]?.body ?? "";
     try {
       await navigator.clipboard.writeText(text);
       setCopiedId(p.id);
@@ -326,44 +297,53 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
 
   return (
     <div className="space-y-4">
+      {/* 상단 독립 검색창 */}
+      <div className="mx-auto w-full max-w-2xl">
+        <SearchSuggestInput
+          placeholder="프롬프트 검색…"
+          value={q}
+          onChange={updateQuery}
+          suggestions={suggestions}
+          inputClassName="h-11 text-sm"
+        />
+      </div>
+
       <div className="flex flex-wrap items-end justify-between gap-2">
-        <div className="min-w-[200px] max-w-md flex-1 space-y-1">
-          <label className="text-xs text-muted-foreground">
-            검색 (제목·목차·본문 · 공백 AND)
-          </label>
-          <SearchSuggestInput
-            placeholder="예: Muse 광고 · 버그 찾기"
-            value={q}
-            onChange={setQ}
-            suggestions={suggestions}
-          />
-        </div>
-        <div className="w-full space-y-1 sm:w-44">
-          <label
-            htmlFor="prompt-sort"
-            className="text-xs text-muted-foreground"
+        <p className="text-xs text-muted-foreground">
+          검색 결과 {formatCount(filtered.length)}개
+          {filtered.length > DEFAULT_PAGE_SIZE
+            ? ` · 이 페이지 ${formatCount(pageItems.length)}개`
+            : ""}
+          {hasActiveFilter ? " · 필터 적용 중" : ""}
+        </p>
+        <div className="flex items-end gap-2">
+          <div className="w-40 space-y-1">
+            <label
+              htmlFor="prompt-sort"
+              className="text-xs text-muted-foreground"
+            >
+              정렬 (즐겨찾기 우선)
+            </label>
+            <Select
+              id="prompt-sort"
+              value={sort}
+              onChange={(e) => updateSort(e.target.value as ListSortKey)}
+            >
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <Link
+            href="/prompts/new"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 text-sm font-medium text-white hover:bg-indigo-500"
           >
-            정렬 (즐겨찾기 우선)
-          </label>
-          <Select
-            id="prompt-sort"
-            value={sort}
-            onChange={(e) => setSort(e.target.value as ListSortKey)}
-          >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </Select>
+            <Plus className="h-4 w-4" />
+            새 프롬프트
+          </Link>
         </div>
-        <Link
-          href="/prompts/new"
-          className="mt-auto inline-flex h-9 items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 text-sm font-medium text-white hover:bg-indigo-500"
-        >
-          <Plus className="h-4 w-4" />
-          새 프롬프트
-        </Link>
       </div>
 
       {/* 상위 그룹만 한 줄 스크롤 — 세부 29개를 한꺼번에 펼치지 않음 */}
@@ -388,8 +368,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             <FilterChip
               label={`전체 (${formatCount(prompts.length)})`}
               active={activeGroup === ALL}
-              onClick={() => setActiveGroup(ALL)}
-              tone="indigo"
+              onClick={() => updateGroup(ALL)}
             />
             {groupsMeta.map((g) => (
               <FilterChip
@@ -397,9 +376,8 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                 label={`${g.label} (${formatCount(g.count)})`}
                 active={activeGroup === g.key}
                 onClick={() =>
-                  setActiveGroup((prev) => (prev === g.key ? ALL : g.key))
+                  updateGroup(activeGroup === g.key ? ALL : g.key)
                 }
-                tone="amber"
               />
             ))}
           </div>
@@ -414,8 +392,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                 <FilterChip
                   label={`그룹 전체 (${formatCount(subCategories.reduce((s, c) => s + c.count, 0))})`}
                   active={activeCat === ALL}
-                  onClick={() => setActiveCat(ALL)}
-                  tone="indigo"
+                  onClick={() => updateCat(ALL)}
                   compact
                 />
                 {subCategories.map((c) => (
@@ -424,11 +401,8 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
                     label={`${shortCatLabel(c.label, activeGroup)} (${formatCount(c.count)})`}
                     active={activeCat === c.label}
                     onClick={() =>
-                      setActiveCat((prev) =>
-                        prev === c.label ? ALL : c.label
-                      )
+                      updateCat(activeCat === c.label ? ALL : c.label)
                     }
-                    tone="amber"
                     compact
                     title={c.label}
                   />
@@ -449,39 +423,6 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         </p>
       ) : (
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-xs text-muted-foreground">
-              검색 결과 {formatCount(filtered.length)}개
-              {filtered.length > DEFAULT_PAGE_SIZE
-                ? ` · 이 페이지 ${formatCount(pageItems.length)}개`
-                : ""}
-              {hasActiveFilter ? " · 필터 적용 중" : ""}
-              {showSectionHeaders
-                ? " · 섹션을 눌러 펼치기"
-                : ""}
-            </p>
-            {showSectionHeaders && (
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="text-xs text-muted-foreground hover:text-foreground"
-                  onClick={() =>
-                    setExpanded(new Set(groups.map((g) => g.label)))
-                  }
-                >
-                  모두 펼치기
-                </button>
-                <button
-                  type="button"
-                  className="text-xs text-muted-foreground hover:text-foreground"
-                  onClick={() => setExpanded(new Set([FAVORITES]))}
-                >
-                  모두 접기
-                </button>
-              </div>
-            )}
-          </div>
-
           <SelectionToolbar
             total={pageItems.length}
             selectedCount={selection.selectedCount}
@@ -492,187 +433,26 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
             onDeleteSelected={() => void deleteSelected()}
           />
 
-          {groups.map((group) => {
-            const isOpen =
-              !showSectionHeaders ||
-              expanded.has(group.label) ||
-              // 섹션이 하나뿐이면 항상 펼침
-              groups.length === 1;
-            const showCatBadge =
-              group.isFavoriteGroup || !showSectionHeaders;
-
-            return (
-              <section
-                key={group.label}
-                className="overflow-hidden rounded-xl border border-border/80"
-              >
-                {showSectionHeaders ? (
-                  <button
-                    type="button"
-                    onClick={() => toggleSection(group.label)}
-                    className={cn(
-                      "flex w-full items-center gap-2 px-3 py-2.5 text-left transition-colors hover:bg-muted/50",
-                      group.isFavoriteGroup
-                        ? "bg-amber-500/5"
-                        : "bg-muted/20"
-                    )}
-                    aria-expanded={isOpen}
-                  >
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
-                        !isOpen && "-rotate-90"
-                      )}
-                    />
-                    <h2
-                      className={cn(
-                        "min-w-0 flex-1 truncate text-sm font-semibold tracking-tight",
-                        group.isFavoriteGroup
-                          ? "text-amber-800 dark:text-amber-200"
-                          : "text-foreground"
-                      )}
-                    >
-                      {group.label}
-                    </h2>
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      {formatCount(group.items.length)}
-                    </span>
-                  </button>
-                ) : null}
-
-                {isOpen && (
-                  <div
-                    className={cn(
-                      "grid gap-3 p-3 sm:grid-cols-2",
-                      showSectionHeaders && "border-t border-border/60"
-                    )}
-                  >
-                    {group.items.map((p) => {
-                      const selected = selection.isSelected(p.id);
-                      const cat = categoryLabel(p);
-                      return (
-                        <Card
-                          key={p.id}
-                          className={cn(
-                            "group transition-colors hover:border-border",
-                            selected &&
-                              "border-indigo-500 ring-1 ring-indigo-500/40",
-                            p.isFavorite && "border-amber-500/40"
-                          )}
-                        >
-                          <CardContent className="flex items-start gap-3 p-4">
-                            <input
-                              type="checkbox"
-                              className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
-                              checked={selected}
-                              onChange={() => selection.toggle(p.id)}
-                              aria-label={`${p.title} 선택`}
-                            />
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-300">
-                              <MessageSquareText className="h-5 w-5" />
-                            </div>
-                            <div className="min-w-0 flex-1 space-y-1.5">
-                              {showCatBadge && cat !== UNCATEGORIZED && (
-                                <Badge
-                                  variant="outline"
-                                  className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
-                                >
-                                  {cat}
-                                </Badge>
-                              )}
-                              <Link
-                                href={`/prompts/${p.id}`}
-                                className="block font-medium leading-snug hover:text-indigo-500"
-                              >
-                                {p.title}
-                              </Link>
-                              {p.whenToUse && (
-                                <p className="line-clamp-2 text-xs text-muted-foreground">
-                                  {p.whenToUse}
-                                </p>
-                              )}
-                              <p className="text-[11px] text-muted-foreground">
-                                섹션 {p.sections.length}
-                                {p.sections.length > 1 ? " (1·2차)" : ""}
-                                {" · "}
-                                등록 {formatListDate(p.createdAt)}
-                              </p>
-                            </div>
-                            <div className="flex shrink-0 flex-col gap-1">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className={cn(
-                                  p.isFavorite
-                                    ? "text-amber-500"
-                                    : "text-muted-foreground opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
-                                )}
-                                title={
-                                  p.isFavorite
-                                    ? "즐겨찾기 해제"
-                                    : "즐겨찾기"
-                                }
-                                aria-label={
-                                  p.isFavorite
-                                    ? "즐겨찾기 해제"
-                                    : "즐겨찾기"
-                                }
-                                aria-pressed={p.isFavorite}
-                                disabled={favoritingId === p.id}
-                                onClick={() => void toggleFavorite(p)}
-                              >
-                                <Star
-                                  className={cn(
-                                    "h-4 w-4",
-                                    p.isFavorite && "fill-current"
-                                  )}
-                                />
-                              </Button>
-                              <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100">
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  title="전체 복사"
-                                  aria-label="전체 복사"
-                                  onClick={() => void copyAll(p)}
-                                >
-                                  <Copy
-                                    className={cn(
-                                      "h-4 w-4",
-                                      copiedId === p.id && "text-emerald-500"
-                                    )}
-                                  />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="text-red-400"
-                                  aria-label="삭제"
-                                  onClick={async () => {
-                                    if (
-                                      !confirm("이 프롬프트를 삭제할까요?")
-                                    )
-                                      return;
-                                    const res = await fetch(
-                                      `/api/prompts/${p.id}`,
-                                      { method: "DELETE" }
-                                    );
-                                    if (res.ok) router.refresh();
-                                  }}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {pageItems.map((p) => (
+              <PromptCard
+                key={p.id}
+                prompt={p}
+                cat={categoryLabel(p)}
+                catShort={shortCatLabel(
+                  categoryLabel(p),
+                  categoryGroup(categoryLabel(p))
                 )}
-              </section>
-            );
-          })}
+                selected={selection.isSelected(p.id)}
+                onToggleSelect={() => selection.toggle(p.id)}
+                favoriting={favoritingId === p.id}
+                onToggleFavorite={() => void toggleFavorite(p)}
+                copied={copiedId === p.id}
+                onCopy={() => void copyFirstSection(p)}
+                onOpen={() => setOpenId(p.id)}
+              />
+            ))}
+          </div>
 
           <ListPagination
             page={page}
@@ -682,23 +462,30 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           />
         </div>
       )}
+
+      <PromptModal
+        prompt={openPrompt}
+        onClose={() => setOpenId(null)}
+        onDeleted={() => {
+          setOpenId(null);
+          router.refresh();
+        }}
+      />
     </div>
   );
 }
 
-/** 그룹/세부 필터 칩 (가로 스크롤용 shrink-0) */
+/** 그룹/세부 필터 칩 (가로 스크롤용 shrink-0, PromptLib 스타일 pill) */
 function FilterChip({
   label,
   active,
   onClick,
-  tone,
   compact,
   title,
 }: {
   label: string;
   active: boolean;
   onClick: () => void;
-  tone: "indigo" | "amber";
   compact?: boolean;
   title?: string;
 }) {
@@ -709,11 +496,10 @@ function FilterChip({
       onClick={onClick}
       className={cn(
         "shrink-0 rounded-full border font-medium transition-colors whitespace-nowrap",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
         compact ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs",
         active
-          ? tone === "indigo"
-            ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
-            : "border-amber-500/40 bg-amber-500/15 text-amber-800 dark:text-amber-200"
+          ? "border-indigo-500/50 bg-indigo-600 text-white"
           : "border-border text-muted-foreground hover:bg-muted"
       )}
     >
@@ -722,11 +508,133 @@ function FilterChip({
   );
 }
 
-/** 세부 칩에서 그룹 접두어를 짧게 표시 */
-function shortCatLabel(full: string, group: string): string {
-  if (full.startsWith(group + " · ")) {
-    return full.slice(group.length + 3);
-  }
-  // 일잘러 1-2. 제목 → 1-2. 제목 유지(이미 짧음)
-  return full;
+/** 카드 하나 — 전체 클릭 시 팝업, 체크박스·별·복사는 클릭 전파 차단 */
+function PromptCard({
+  prompt: p,
+  cat,
+  catShort,
+  selected,
+  onToggleSelect,
+  favoriting,
+  onToggleFavorite,
+  copied,
+  onCopy,
+  onOpen,
+}: {
+  prompt: Prompt;
+  cat: string;
+  catShort: string;
+  selected: boolean;
+  onToggleSelect: () => void;
+  favoriting: boolean;
+  onToggleFavorite: () => void;
+  copied: boolean;
+  onCopy: () => void;
+  onOpen: () => void;
+}) {
+  const preview = p.sections[0]?.body ?? "";
+
+  return (
+    <Card
+      role="button"
+      tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        // 체크박스·별·복사 버튼에서 온 키 이벤트는 각자 기본 동작에 맡긴다
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      className={cn(
+        "group relative cursor-pointer transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
+        selected && "border-indigo-500 ring-1 ring-indigo-500/40",
+        p.isFavorite && "border-amber-500/40"
+      )}
+    >
+      <CardContent className="flex flex-col gap-2 p-4">
+        <div className="flex items-start justify-between gap-2">
+          {cat !== UNCATEGORIZED ? (
+            <Badge
+              variant="outline"
+              className="border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200"
+            >
+              {catShort}
+            </Badge>
+          ) : (
+            <span />
+          )}
+          <div className="flex shrink-0 items-center gap-1">
+            <input
+              type="checkbox"
+              className="h-4 w-4 accent-indigo-600"
+              checked={selected}
+              onClick={(e) => e.stopPropagation()}
+              onChange={onToggleSelect}
+              aria-label={`${p.title} 선택`}
+            />
+            <button
+              type="button"
+              className={cn(
+                "inline-flex h-8 w-8 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
+                p.isFavorite
+                  ? "text-amber-500"
+                  : "text-muted-foreground hover:text-amber-500"
+              )}
+              title={p.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
+              aria-label={p.isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}
+              aria-pressed={p.isFavorite}
+              disabled={favoriting}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite();
+              }}
+            >
+              <Star
+                className={cn("h-4 w-4", p.isFavorite && "fill-current")}
+              />
+            </button>
+          </div>
+        </div>
+
+        <p className="text-base font-semibold leading-snug group-hover:text-indigo-500">
+          {p.title}
+        </p>
+
+        {p.summary && (
+          <p className="line-clamp-2 text-sm text-muted-foreground">
+            {p.summary}
+          </p>
+        )}
+
+        <div className="relative overflow-hidden rounded-lg border border-border bg-muted/40 p-3">
+          <p className="line-clamp-5 whitespace-pre-wrap font-mono text-xs text-foreground/80">
+            {preview || "(내용 없음)"}
+          </p>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent" />
+        </div>
+
+        <div className="flex items-center justify-between gap-2 pt-1">
+          <p className="text-[11px] text-muted-foreground">
+            섹션 {p.sections.length} · 등록 {formatListDate(p.createdAt)}
+          </p>
+          <button
+            type="button"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            title="첫 섹션 복사"
+            aria-label="첫 섹션 복사"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCopy();
+            }}
+          >
+            <Copy
+              className={cn("h-4 w-4", copied && "text-emerald-500")}
+            />
+          </button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
