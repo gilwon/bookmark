@@ -174,12 +174,13 @@ async function backfillProd() {
   if (probe.error) throw probe.error;
 
   const rows = [];
-  const pageSize = 1000;
+  const pageSize = 10;
   for (let from = 0; ; from += pageSize) {
     const { data, error } = await sb
       .from("custom_pages")
       .select("id, title, content, tags, source_url, search_text")
       .eq("user_id", PROD_USER)
+      .order("created_at", { ascending: false })
       .range(from, from + pageSize - 1);
     if (error && isMissingColumnError(error.message)) {
       throw new Error(`${MISSING_COL_MSG} (${error.message})`);
