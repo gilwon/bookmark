@@ -1177,3 +1177,10 @@
 - 프롬프트 테이블에 kind를 붙이는 안은 버린다. 목차 그룹과 섹션 JSON이 예외를 품게 되기 때문이다.
 - 1차에 검색 타입·⌘K·홈 개수는 연결한다. 홈 최근 목록, 내비 재배치, 일괄 붙여넣기는 하지 않는다.
 - 로컬은 SQLite에서 생성·목록·상세·type=copy 검색을 확인했다. 운영 Supabase에는 아직 `thread_copies`가 없다. SQL Editor에서 `supabase/add_thread_copies.sql`을 실행해야 저장이 된다. 테이블이 없으면 목록은 비고 저장만 안내한다.
+
+## PromptLib(prompts.oootool.com) 메모
+
+- 공개 데이터는 `/api/gpt-prompts?limit=100&offset=N`이며 총 271건, 카테고리 19종. `paid`·`member` 항목도 API에는 본문이 전부 들어 있다(잠금은 화면에서만).
+- 번들 안의 7건(`oy` 배열)은 시드 예시라 쓰지 않는다.
+- 제목·카테고리가 같은데 본문이 다른 쌍이 12개 있어 제목만으로 중복 판정하면 12건이 빠진다.
+- 팝업은 라이브러리 없이 네이티브 `<dialog>`를 쓴다. Esc·backdrop 클릭 닫기, body 스크롤 잠금.
