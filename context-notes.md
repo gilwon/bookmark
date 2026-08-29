@@ -1152,6 +1152,7 @@
 - 목록 별 버튼은 PATCH `{ isFavorite }`를 보내는데 컬럼이 없어 500이 나고, 낙관적 칠이 바로 되돌아간다. 반응이 없는 것처럼 보인다.
 - `add_is_favorite.sql`은 북마크·프롬프트·Star만 넣고 페이지는 빼 두었다. 페이지는 `add_page_findability.sql`이다. PostgREST로는 ALTER를 못 한다.
 - 컬럼이 생기면 별이 저장된다. 그 전에는 목록에서 실패 문구를 띄운다.
+- 2026-08-29 확인. 운영에 tags·source_url·search_text·is_favorite가 생겼다. `is_favorite` 쓰기 왕복을 확인했다. 찾기 백필은 로컬 21건·운영 491건이다.
 
 ## 카피 메뉴 기획 메모
 
