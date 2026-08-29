@@ -7,7 +7,12 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
-import { preparePageFindability } from "@/lib/page-findability";
+import {
+  PAGE_FAVORITE_COLUMN_MISSING,
+  PAGE_FAVORITE_COLUMN_USER_MESSAGE,
+  isMissingPageFindabilityColumn,
+  preparePageFindability,
+} from "@/lib/page-findability";
 import { store } from "@/lib/store";
 import type { CustomPageRow } from "@/lib/store/types";
 import type { CustomPage } from "@/lib/types";
@@ -144,9 +149,23 @@ export async function PATCH(req: Request, ctx: Ctx) {
     if (patch.sourceUrl === undefined) patch.sourceUrl = found.sourceUrl;
   }
 
-  const row = await store.updatePage(id, gate.user.userId, patch);
-  if (!row) return ownershipError();
-  return NextResponse.json(toPage(row));
+  try {
+    const row = await store.updatePage(id, gate.user.userId, patch);
+    if (!row) return ownershipError();
+    return NextResponse.json(toPage(row));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (
+      message === PAGE_FAVORITE_COLUMN_MISSING ||
+      isMissingPageFindabilityColumn(message)
+    ) {
+      return NextResponse.json(
+        { error: PAGE_FAVORITE_COLUMN_USER_MESSAGE },
+        { status: 503 }
+      );
+    }
+    throw error;
+  }
 }
 
 export async function DELETE(_req: Request, ctx: Ctx) {

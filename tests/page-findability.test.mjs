@@ -3,9 +3,11 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 import {
+  PAGE_FAVORITE_COLUMN_USER_MESSAGE,
   buildSearchText,
   extractSourceUrl,
   inferPageTags,
+  isMissingPageFindabilityColumn,
   preparePageFindability,
 } from "../src/lib/page-findability.ts";
 
@@ -144,6 +146,24 @@ describe("page-findability", () => {
     assert.deepEqual(result.tags, ["고정"]);
     assert.ok(result.sourceUrl?.includes("gymcoding.co"));
     assert.match(result.searchText, /짐코딩/);
+  });
+
+  it("is_favorite 컬럼 없음 오류를 가려낸다", () => {
+    assert.equal(
+      isMissingPageFindabilityColumn(
+        'column custom_pages.is_favorite does not exist'
+      ),
+      true
+    );
+    assert.equal(
+      isMissingPageFindabilityColumn("Could not find the 'is_favorite' column of 'custom_pages' in the schema cache"),
+      true
+    );
+    assert.equal(isMissingPageFindabilityColumn("updatePage timeout"), false);
+    assert.equal(
+      PAGE_FAVORITE_COLUMN_USER_MESSAGE.includes("is_favorite"),
+      true
+    );
   });
 
   it("스크립트 첫 줄이 한글 주석이다", () => {
