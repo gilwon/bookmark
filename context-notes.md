@@ -920,6 +920,15 @@
 - 운영 반영은 `scripts/add-korean-star-descriptions.mjs`로 한글이 없는 행만 갱신한다.
 - 백필 13건(영문 병기 12, 빈 칸 채움 1)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
 
+## 신규 Star 한글 설명 5건 메모
+
+- 운영 Star는 366건이다. GitHub 스타 366건과 같고 미동기화는 없다.
+- 한글이 없던 설명은 5건이고 빈 설명은 0건이다.
+- `1weiho/open-slide`, `Tencent/BrowserSkill`, `SenteLabsAI/OpenExecutive`, `vercel-labs/skills`, `can1357/oh-my-pi`다.
+- `vercel-labs/skills`는 기존 `vercel-labs/agent-skills`와 다른 저장소다.
+- GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- 백필 5건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
 ## 미동기화 Star 6건 한글 설명 메모
 
 - 운영 Star는 355건이고 GitHub 스타는 361건이다. 앱에 없는 6건이 한글 설명 대상이다.
