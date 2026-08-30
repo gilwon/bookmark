@@ -400,6 +400,23 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 최신 Star 5개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["sirmalloc/ccstatusline", "🚀 Beautiful highly customizable statusline for Claude Code CLI with powerline support, themes, and more."],
+      ["ezBuilder/chatgpt2codex", "macOS-first local MCP and Actions runtime that gives ChatGPT real coding hands over trusted projects"],
+      ["remorses/playwriter", "Chrome extension & CLI to let agents control your browser. Runs Playwright snippets in a stateful sandbox. Available as CLI or MCP"],
+      ["devbrother2024/skills", "Reusable Agent Skills for AI coding workflows"],
+      ["anthropics/claude-plugins-community", "Community plugin marketplace for Claude Cowork and Claude Code. Read-only mirror — submit plugins at clau.de/plugin-directory-submission."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
