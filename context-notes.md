@@ -1,3 +1,12 @@
+# 링크 4건 Pages 이관 메모
+
+- 원문. `https://rebornlabs.kr/rules` 이미지 2, `https://jarvisstudio-blog.web.app/blog/freebuff-claude-test/` 웹프 6, Notion `3c9bc8af735e8176970bf2d6070130eb` 이미지 0·첨부 0 루트 78, `https://uppinote.dev/blog/claude-code-session-cleanup/` 대표 이미지 1.
+- 추적 쿼리 `utm_*`·`fbclid`·`source=copy_link`는 저장하지 않는다.
+- Notion MCP는 404다. `loadPageChunk`로 공개 청크를 읽는다. 제목은 `네이버 블로그 자동 작성 툴 제작 프롬프트 (범용)`이다.
+- 업핀노트 본문 안 이미지는 없고 헤더 `post-feature-image`만 본문에 넣는다. 관련 글·작성자 썸네일은 뺀다.
+- 자비스 이미지는 합쳐 약 274KB, 업핀노트 대표는 약 802KB라 data URL로 둔다. ZIP은 없다.
+- 운영 중복은 제목 또는 `source_url`만 본다. 기존 행은 갱신하지 않는다.
+
 # ADU 클로드 업무 사례 3편 이관 메모
 
 - 원문. `https://adu-usecases-1.vercel.app/` 48개, `https://adu-usecases-2.vercel.app/` 64개, `https://adu-usecases-3.vercel.app/` 36개. 정적 HTML이다.
