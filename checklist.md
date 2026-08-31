@@ -1,3 +1,10 @@
+# ADU 클로드 업무 사례 3편 이관
+
+- [x] 1·2·3편 HTML에서 `.uc` 48·64·36개와 쓰는 법·막혔을 때를 확인한다
+- [x] `scripts/import-adu-usecases.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬 SQLite와 Supabase에 Page 3건·Prompt 148건을 중복 없이 저장한다
+- [x] 재실행 스킵과 테스트 통과를 확인한다
+
 <!-- 스레드 카피 보관 메뉴 -->
 # 카피 메뉴 (`/copies`)
 

@@ -1,3 +1,13 @@
+# ADU 클로드 업무 사례 3편 이관 메모
+
+- 원문. `https://adu-usecases-1.vercel.app/` 48개, `https://adu-usecases-2.vercel.app/` 64개, `https://adu-usecases-3.vercel.app/` 36개. 정적 HTML이다.
+- 카드는 `.uc`다. `span.tag`가 채팅·코워크·크롬, `h4` 제목, `p` 한줄, `.promptbox pre` 본문. 복사 버튼은 저장하지 않는다.
+- 필터 `.navbar`는 본문이 아니다. `막혔을 때` details는 Page에만 둔다.
+- Prompt 카테고리는 `ADU · {섹션}`이다. 예. `ADU · 업무 공통`. 중복은 제목+카테고리다. 기존 행은 갱신하지 않는다.
+- 운영 Pages 중복은 제목 또는 `source_url`만 본다. `content` ilike는 57014로 타임아웃한다.
+- 1편 본문에 2·3편 URL이 있어 `content LIKE %sourceUrl%`만 쓰면 오탐한다. 원문 인용 `ADU {짧은 이름}`과 URL이 같이 있을 때만 본문 중복으로 본다.
+- 이미지가 없다. 추적 쿼리는 넣지 않는다.
+
 <!-- Tistory 원문 이관에 필요한 조사 결과와 구현 제약 -->
 # 조사 메모
 
