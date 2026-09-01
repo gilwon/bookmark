@@ -417,6 +417,24 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 6개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["heyman333/agent-notion-template-docs", "Make your AI agent write documents like Notion — Claude Code skill that locks document structure & Notion visual style"],
+      ["omacom/omarchy", "Beautiful, Modern & Opinionated Linux"],
+      ["HKUDS/DeepTutor", "DeepTutor: Lifelong Personalized Tutoring. https://deeptutor.info/."],
+      ["thebuggeddev/football-stadium", "A 3D football stadium to visualize where you sit in the seat before you buy it"],
+      ["ln-dev7/logos-apps", "🎨 A free, open collection of 15,000+ clean SVG logos for apps, tools & tech brands."],
+      ["vorssaintapp/vorssaint-utils", "Free and open-source macOS menu bar toolkit."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
