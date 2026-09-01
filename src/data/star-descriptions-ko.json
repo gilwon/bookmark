@@ -333,5 +333,11 @@
   "ezBuilder/chatgpt2codex": "ChatGPT가 신뢰한 프로젝트에서 실제로 코딩하게 하는, macOS 우선 로컬 MCP·Actions 런타임입니다.",
   "remorses/playwriter": "에이전트가 브라우저를 제어하게 하는 Chrome 확장과 CLI입니다. 상태 있는 샌드박스에서 Playwright 스니펫을 실행하며 CLI나 MCP로 씁니다.",
   "devbrother2024/skills": "AI 코딩 워크플로용 재사용 에이전트 스킬입니다. 개발동생이 매일 쓰는 워크플로에서 검증했고 Claude Code, Codex, Cursor에서 동일하게 동작합니다.",
-  "anthropics/claude-plugins-community": "Claude Cowork와 Claude Code용 커뮤니티 플러그인 마켓플레이스입니다. 읽기 전용 미러이며 플러그인 제출은 clau.de/plugin-directory-submission에서 합니다."
+  "anthropics/claude-plugins-community": "Claude Cowork와 Claude Code용 커뮤니티 플러그인 마켓플레이스입니다. 읽기 전용 미러이며 플러그인 제출은 clau.de/plugin-directory-submission에서 합니다.",
+  "heyman333/agent-notion-template-docs": "AI 에이전트가 Notion처럼 문서를 쓰게 하는 Claude Code 스킬입니다. 문서 구조와 Notion 시각 스타일을 고정합니다.",
+  "omacom/omarchy": "DHH가 만든 예쁘고 현대적인 취향 있는 Linux 배포판입니다.",
+  "HKUDS/DeepTutor": "평생 맞춤 튜터링을 제공하는 DeepTutor입니다.",
+  "thebuggeddev/football-stadium": "좌석을 사기 전에 앉는 자리를 미리 보는 3D 축구 경기장입니다.",
+  "ln-dev7/logos-apps": "앱, 도구, 기술 브랜드용 깨끗한 SVG 로고 1만 5천 개 이상을 모은 무료 공개 컬렉션입니다.",
+  "vorssaintapp/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다."
 }
