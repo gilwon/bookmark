@@ -1,3 +1,10 @@
+# 한국시간 이번 주 Notion 신규 Pages 이관
+
+- [x] KST 이번 주 상위 신규 페이지 2건을 확인한다
+- [x] `scripts/import-notion-kst-20260831.mjs`와 테스트를 추가한다
+- [x] 미로 커버 이미지를 data URL로 넣고 첨부 0을 확인한다
+- [x] 로컬·Supabase 중복 스킵과 테스트 통과를 확인한다
+
 # ADU 키미 K3 가이드 Pages 이관
 
 - [x] 원문 HTML에서 이미지·첨부·프롬프트 상자를 확인한다
