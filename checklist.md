@@ -1,3 +1,10 @@
+# Slashpage 이미지 프롬프트 99개 이관
+
+- [x] Slashpage content API에서 표·코드·이미지 1장을 확인한다
+- [x] `scripts/import-slashpage-chatgpt-image-prompts-99.mjs`와 테스트를 추가한다
+- [x] 로컬·Supabase에 중복 없이 저장하고 이미지는 data URL이다
+- [x] 재실행 스킵과 테스트 통과를 확인한다
+
 # 링크 4건 Pages 이관
 
 - [x] 원문 4건의 본문 컨테이너와 이미지·첨부 수를 확인한다

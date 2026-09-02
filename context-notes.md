@@ -1,3 +1,12 @@
+# Slashpage 이미지 프롬프트 99개 이관 메모
+
+- 저장 URL은 `https://slashpage.com/biggie-ai/1q3vdn2pdpnk82xy49pr`이다. fbclid는 뺀다.
+- 본문은 `GET /api/page/{hash}/content`의 `snapshot.blockMap` + `blockTree`다. 메타만 있는 `/api/page/{hash}`는 본문이 아니다.
+- 블록 타입. image, heading, text, divider, code(+codeSource 자식), orderedList, list, table(+tableCell). 표 셀은 parentBlockId로 묶고 행 우선이다.
+- 본문 이미지는 `slide_01.png` 1장, 원본 117783바이트 PNG. `https://upload.cafenono.com/{imageKey}`로 받아 data URL로 둔다. 리사이즈 쿼리 `q/s/t/f`는 쓰지 않는다.
+- 작성자 아바타·도메인 파비콘·Made with Slashpage는 본문이 아니다.
+- 첨부는 없다. 운영 중복은 제목 또는 source_url만 본다.
+
 # 링크 4건 Pages 이관 메모
 
 - 원문. `https://rebornlabs.kr/rules` 이미지 2, `https://jarvisstudio-blog.web.app/blog/freebuff-claude-test/` 웹프 6, Notion `3c9bc8af735e8176970bf2d6070130eb` 이미지 0·첨부 0 루트 78, `https://uppinote.dev/blog/claude-code-session-cleanup/` 대표 이미지 1.
