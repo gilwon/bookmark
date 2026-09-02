@@ -1,3 +1,10 @@
+# ADU 키미 K3 가이드 Pages 이관
+
+- [x] 원문 HTML에서 이미지·첨부·프롬프트 상자를 확인한다
+- [x] `scripts/import-adu-kimi-guide.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 중복 없이 저장한다. 이미지는 표시, 첨부는 다운로드
+- [x] 재실행 스킵과 테스트 통과를 확인한다
+
 # Slashpage 이미지 프롬프트 99개 이관
 
 - [x] Slashpage content API에서 표·코드·이미지 1장을 확인한다
