@@ -1,3 +1,12 @@
+# 한국시간 이번 주 Notion 신규 Pages 이관 메모
+
+- 구간. KST 2026-08-31 00:00(월)부터. 오늘은 2026-09-03.
+- 상위 신규 2건. `[미로] 클로드 프롬프트 공유` (`67ab256827ac83e4b31b017c7d19d2c3`, 커버 JPEG 57604바이트), `성인 ADHD 선생님들을 위한 프롬프트 7개` (`eefb256827ac83fb8a158161c30c3dd6`, 이미지 0).
+- `Agent Reach`는 2026-08-30 19:39 KST라 지난주다.
+- 노시언 템플릿 마음 캘린더 하위 행 수십 개는 제외한다.
+- 비공개라 MCP fetch만 된다. `loadPageChunk`는 비어 있다. 커버는 서명 URL을 바로 받아 `tmp/notion-kst-20260831/miro-cover.jpg`에 두었다. 저장본은 data URL이다.
+- 인스타 링크는 `https://www.instagram.com/frommir0`만 남긴다. utm/igsh/pvs는 뺀다.
+
 # ADU 키미 K3 가이드 Pages 이관 메모
 
 - 저장 URL은 `https://adu-kimi-guide.vercel.app/`이다. fbclid는 뺀다.
