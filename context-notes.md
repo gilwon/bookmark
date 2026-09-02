@@ -1,3 +1,12 @@
+# ADU 키미 K3 가이드 Pages 이관 메모
+
+- 저장 URL은 `https://adu-kimi-guide.vercel.app/`이다. fbclid는 뺀다.
+- 정적 HTML이다. `.promptbox pre`가 복붙 프롬프트, `.copybtn`은 저장하지 않는다. `plabel`은 제목으로 남긴다.
+- 확인 시점 이미지 0, 파일 첨부 0, 외부 링크 3(`kimi.ai`, `platform.kimi.ai`, 오픈채팅). 이미지가 생기면 data URL, ZIP은 화이트리스트 없으면 throw.
+- `platform.kimi.ai`의 `track_id`는 본문이 보너스 링크로 설명하는 값이라 유지한다. utm/fbclid만 지운다.
+- 제목은 `키미 K3 제대로 쓰는 법`. Prompts 테이블은 쓰지 않는다.
+- 운영 중복은 제목 또는 source_url만 본다.
+
 # Slashpage 이미지 프롬프트 99개 이관 메모
 
 - 저장 URL은 `https://slashpage.com/biggie-ai/1q3vdn2pdpnk82xy49pr`이다. fbclid는 뺀다.
