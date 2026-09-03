@@ -339,5 +339,11 @@
   "HKUDS/DeepTutor": "평생 맞춤 튜터링을 제공하는 DeepTutor입니다.",
   "thebuggeddev/football-stadium": "좌석을 사기 전에 앉는 자리를 미리 보는 3D 축구 경기장입니다.",
   "ln-dev7/logos-apps": "앱, 도구, 기술 브랜드용 깨끗한 SVG 로고 1만 5천 개 이상을 모은 무료 공개 컬렉션입니다.",
-  "vorssaintapp/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다."
+  "vorssaintapp/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다.",
+  "h4ckf0r0day/obscura": "AI 에이전트와 웹 스크래핑을 위한 헤드리스 브라우저입니다.",
+  "Junhan2/oh-my-fable": "Claude Fable 5.1 프롬프팅 가이드를 Claude Code 스킬로 담았습니다. 한국어·영어·중국어를 지원하며 Opus 5와 Sonnet 5에서도 결과 품질이 올라갑니다.",
+  "ddalcu/mlx-serve": "Apple Silicon용 네이티브 LLM 추론 서버입니다. OpenAI·Anthropic API와 호환되고 Python은 쓰지 않습니다. 채팅, 에이전트 모드, 도구 호출이 있는 MLX Core macOS 앱을 포함합니다.",
+  "MobAI-App/simslim": "시뮬레이터에 필요 없는 백그라운드 데몬을 꺼서, 한 Mac에서 iOS 시뮬레이터를 더 많이 띄웁니다.",
+  "zenstory-ai/oh-story-claudecode": "장편·단편 웹소설의 랭킹 조사, 작품 분석, 집필, AI 티 제거, 표지까지 한 번에 다루는 소설 쓰기 스킬 팩입니다.",
+  "career-ops-hq/career-ops": "오픈소스 AI 구직 도구입니다. 채용 포털을 훑고 공고를 A-H 보고서와 1-5점 점수로 평가한 뒤 CV를 맞추고 지원을 추적합니다. Claude Code, Codex, OpenCode, Antigravity 같은 코딩 CLI에서 로컬로 돌아갑니다."
 }

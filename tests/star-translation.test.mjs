@@ -435,6 +435,24 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 최신 Star 6개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["h4ckf0r0day/obscura", "The headless browser for AI agents and web scraping"],
+      ["Junhan2/oh-my-fable", "Claude Fable 5.1 prompting guide as Claude Code skills (KO/EN/ZH). Output quality goes up on Opus 5 and Sonnet 5 too."],
+      ["ddalcu/mlx-serve", "Native LLM inference server for Apple Silicon. OpenAI + Anthropic API compatible. No Python. Includes MLX Core macOS app with chat, agent mode, and tool calling."],
+      ["MobAI-App/simslim", "Run more iOS simulators on one Mac by disabling background daemons a simulator doesn't need"],
+      ["zenstory-ai/oh-story-claudecode", "网文/小说写作 skill 包，覆盖长篇与短篇网络小说的扫榜、拆文、写作、去AI味、封面图全流程 | An all-in-one skill pack for long- and short-form web fiction."],
+      ["career-ops-hq/career-ops", "Open-source AI job search: scan job portals, evaluate listings into a structured A-H report with a global 1-5 score, tailor your CV, track applications — runs locally in your AI coding CLI (Claude Code, Codex, OpenCode, Antigravity…)"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
