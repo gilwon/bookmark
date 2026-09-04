@@ -208,7 +208,7 @@ export function StarDetail({
       </div>
 
       <header className="space-y-4 border-b border-border pb-6">
-        <h1 className="break-all text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="break-all text-xl font-semibold tracking-[-0.02em]">
           {star.repoFullName}
         </h1>
         <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-2 lg:grid-cols-3">

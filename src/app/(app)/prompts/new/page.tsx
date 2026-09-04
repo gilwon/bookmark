@@ -15,7 +15,7 @@ export default function NewPromptPage() {
           목록으로
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">새 프롬프트</h1>
+          <h1 className="text-lg font-medium tracking-[-0.02em]">새 프롬프트</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             제목·목차·사용 상황과 프롬프트 본문을 입력하세요.
           </p>

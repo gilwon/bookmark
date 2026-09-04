@@ -15,7 +15,7 @@ export default async function CopiesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">카피</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">카피</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           짧은 SNS 글을 모아 두고, 줄바꿈을 유지한 채로 다시 읽고 한 번에
           복사합니다.

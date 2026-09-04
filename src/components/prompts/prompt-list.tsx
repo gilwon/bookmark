@@ -414,7 +414,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       )}
 
       {prompts.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           등록된 프롬프트가 없습니다. 새 프롬프트를 만들어 보세요.
         </div>
       ) : filtered.length === 0 ? (
@@ -499,7 +499,7 @@ function FilterChip({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
         compact ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs",
         active
-          ? "border-indigo-500/50 bg-indigo-600 text-white"
+          ? "border-transparent bg-indigo-600/12 text-indigo-700 dark:bg-indigo-500/18 dark:text-indigo-300"
           : "border-border text-muted-foreground hover:bg-muted"
       )}
     >

@@ -14,13 +14,13 @@ export default function ClaudePromptsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Claude Prompts</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">Claude Prompts</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {CLAUDE_PROMPTS_CREDIT} · 카테고리별 300개. 카드에{" "}
           <strong className="font-medium text-foreground">한글 번역이 위</strong>
           , 영문 원문이 아래로 표시됩니다.
         </p>
-        <p className="mt-3 inline-flex max-w-xl items-start gap-2 rounded-full border border-amber-500/35 bg-amber-500/10 px-3.5 py-2 text-sm font-medium text-amber-900 dark:text-amber-100">
+        <p className="mt-3 inline-flex max-w-xl items-start gap-2 rounded-md border border-amber-500/30 bg-amber-500/8 px-3 py-2 text-xs text-amber-900 dark:text-amber-100">
           <span
             className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500"
             aria-hidden

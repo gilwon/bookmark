@@ -367,7 +367,7 @@ export function PdfViewer() {
                     href={`/api/pdfs/${pdf.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-doc-sm border border-[var(--glass-border)] px-3 text-xs font-semibold text-foreground transition-all hover:glass-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-8"
+                    className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border px-3 text-xs font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:h-8"
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
                     열기

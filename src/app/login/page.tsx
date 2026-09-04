@@ -48,9 +48,9 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
-      <Card className="w-full max-w-md glass-strong border-[var(--glass-border)]">
-        <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-2xl">MyMark</CardTitle>
+      <Card className="w-full max-w-sm border-border bg-card">
+        <CardHeader className="items-center gap-1 pb-2 text-center">
+          <CardTitle className="text-base">MyMark</CardTitle>
           <p className="text-sm text-muted-foreground">
             개인 북마크 · GitHub Stars · 페이지 허브
           </p>

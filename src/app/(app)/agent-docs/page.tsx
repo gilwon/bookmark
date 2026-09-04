@@ -15,7 +15,7 @@ export default async function AgentDocsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">에이전트 문서</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">에이전트 문서</h1>
         <p className="text-sm text-muted-foreground mt-1">
           SKILL.md, AGENTS.md, CLAUDE.md, .skill / .zip 을 저장합니다. 등록일
           정렬·검색·페이징으로 목록을 빠르게 찾을 수 있습니다.

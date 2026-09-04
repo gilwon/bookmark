@@ -108,7 +108,7 @@ export function ClaudePromptDetail({ item }: Props) {
               {claudePromptCategoryLabel(item.category)}
             </Badge>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-xl font-semibold tracking-[-0.02em]">
             {item.titleKo || item.title}
           </h1>
           <p className="text-sm text-muted-foreground">{item.title}</p>
@@ -133,7 +133,7 @@ export function ClaudePromptDetail({ item }: Props) {
       </div>
 
       <p
-        className="inline-flex w-full max-w-xl items-start gap-2 rounded-full border border-amber-500/35 bg-amber-500/10 px-3.5 py-2 text-sm font-medium text-amber-900 dark:text-amber-100"
+        className="inline-flex w-full max-w-xl items-start gap-2 rounded-md border border-amber-500/30 bg-amber-500/8 px-3 py-2 text-xs text-amber-900 dark:text-amber-100"
         title={CLAUDE_PROMPTS_USAGE}
       >
         <span

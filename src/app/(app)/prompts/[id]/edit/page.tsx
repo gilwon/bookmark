@@ -29,7 +29,7 @@ export default async function PromptEditPage({ params }: Props) {
           목록으로
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">프롬프트</h1>
+          <h1 className="text-lg font-medium tracking-[-0.02em]">프롬프트</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             블록을 추가하거나 / 를 입력해 노션처럼 작성합니다. 입력은 자동 저장됩니다.
           </p>

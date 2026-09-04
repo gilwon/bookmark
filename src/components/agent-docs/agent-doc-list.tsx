@@ -55,7 +55,6 @@ import {
 } from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -580,7 +579,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                 aria-selected={filter === "all"}
                 onClick={() => setFilter("all")}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                  "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
                   filter === "all"
                     ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 ring-1 ring-indigo-500/40 dark:text-indigo-300"
                     : "border-border bg-muted/40 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -609,7 +608,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                     }
                     onClick={() => selectKind(kind)}
                     className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                      "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
                       count === 0 && "cursor-not-allowed opacity-40",
                       active
                         ? cn(
@@ -642,7 +641,7 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       )}
 
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {docs.length === 0
             ? "등록된 문서가 없습니다. 템플릿 또는 파일을 추가한 뒤 저장하세요."
             : "필터 조건에 맞는 문서가 없습니다."}
@@ -658,36 +657,36 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
             onToggleAll={selection.toggleAll}
             onDeleteSelected={() => void deleteSelected()}
           />
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
             {pageItems.map((doc) => {
               const fileCount = doc.files?.length || 1;
               const selected = selection.isSelected(doc.id);
               const kindColor =
                 AGENT_DOC_KIND_COLOR[doc.kind] ?? AGENT_DOC_KIND_COLOR.other;
               return (
-                <Card
+                <div
                   key={doc.id}
                   className={cn(
-                    "group transition-colors hover:border-border",
-                    selected && "border-indigo-500 ring-1 ring-indigo-500/40"
+                    "group transition-colors hover:bg-muted/60",
+                    selected && "bg-indigo-600/8"
                   )}
                 >
-                  <CardContent className="flex items-start gap-3 p-4">
+                  <div className="flex items-start gap-2.5 px-3 py-2">
                     <input
                       type="checkbox"
-                      className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                      className="mt-1 h-3.5 w-3.5 shrink-0 accent-indigo-600"
                       checked={selected}
                       onChange={() => selection.toggle(doc.id)}
                       aria-label={`${doc.title} 선택`}
                     />
                     <div
                       className={cn(
-                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+                        "flex h-7 w-7 shrink-0 items-center justify-center rounded-md",
                         kindColor.icon
                       )}
                     >
                       {fileCount > 1 ? (
-                        <Layers className="h-5 w-5" />
+                        <Layers className="h-4 w-4" />
                       ) : doc.kind === "other" ? (
                         <FileCode2 className="h-5 w-5" />
                       ) : (
@@ -753,8 +752,8 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               );
             })}
           </div>

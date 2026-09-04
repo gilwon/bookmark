@@ -15,7 +15,7 @@ export default async function PromptsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">프롬프트</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">프롬프트</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           공유 프롬프트 라이브러리입니다. 등록일·수정일 정렬과 검색·페이징으로
           빠르게 찾을 수 있습니다.

@@ -129,7 +129,7 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-lg font-medium tracking-[-0.02em]">
             안녕하세요, {displayName}님
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -194,7 +194,7 @@ export default async function DashboardPage() {
                 <Icon className="h-4 w-4 text-muted-foreground group-hover:text-indigo-500" />
               </CardHeader>
               <CardContent className="p-4 pt-0">
-                <p className="text-2xl font-bold tabular-nums tracking-tight">
+                <p className="text-xl font-semibold tabular-nums tracking-[-0.02em]">
                   {value}
                 </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground">

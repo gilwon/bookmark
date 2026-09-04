@@ -14,7 +14,7 @@ export function DashboardRecentBookmarks({
 }) {
   if (bookmarks.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+      <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
         아직 북마크가 없습니다. URL을 추가하거나 HTML을 가져와 보세요.
       </div>
     );

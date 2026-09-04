@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 import { CopyComposer } from "@/components/copies/copy-composer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -178,7 +177,7 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
       <CopyComposer />
 
       {copies.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           첫 카피를 위에 붙여 넣으세요
         </div>
       ) : (
@@ -262,20 +261,18 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
             </p>
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((c) => {
                   const selected = selection.isSelected(c.id);
                   const tags = Array.isArray(c.tags) ? c.tags : [];
                   return (
-                    <Card
+                    <div
                       key={c.id}
                       role="link"
                       tabIndex={0}
                       className={cn(
-                        "group cursor-pointer transition-colors hover:border-border",
-                        selected &&
-                          "border-indigo-500 ring-1 ring-indigo-500/40",
-                        c.isFavorite && "border-amber-500/40"
+                        "group cursor-pointer transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:bg-muted/60",
+                        selected && "bg-indigo-600/8"
                       )}
                       onClick={() => router.push(`/copies/${c.id}`)}
                       onKeyDown={(e) => {
@@ -285,16 +282,16 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
                         }
                       }}
                     >
-                      <CardContent className="flex items-start gap-3 p-4">
+                      <div className="flex items-start gap-2.5 px-3 py-2">
                         <input
                           type="checkbox"
-                          className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-indigo-600"
                           checked={selected}
                           onChange={() => selection.toggle(c.id)}
                           onClick={(e) => e.stopPropagation()}
                           aria-label={`${c.title} 선택`}
                         />
-                        <div className="min-w-0 flex-1 space-y-2">
+                        <div className="min-w-0 flex-1 space-y-1">
                           <p className="text-sm font-medium leading-snug">
                             {c.title}
                           </p>
@@ -379,8 +376,8 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
                             />
                           </Button>
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -415,16 +412,16 @@ function FilterChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+        "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
         active
-          ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
+          ? "border-transparent bg-indigo-600/12 text-indigo-700 dark:bg-indigo-500/18 dark:text-indigo-300"
           : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
-          "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
+          "rounded px-1 text-[10px] tabular-nums",
           active ? "bg-indigo-600/20" : "bg-muted"
         )}
       >

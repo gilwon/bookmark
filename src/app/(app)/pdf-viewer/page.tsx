@@ -5,7 +5,7 @@ export default function PdfViewerPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">PDF 뷰어</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">PDF 뷰어</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           PDF 파일을 선택해 바로 확인하고 비공개 Storage에 저장할 수 있습니다.
         </p>
