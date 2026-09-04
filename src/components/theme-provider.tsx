@@ -1,7 +1,7 @@
 // 테마 프로바이더 — dark/light를 documentElement 클래스와 CSS 변수로 전환
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export type Theme = "dark" | "light";
 
@@ -38,6 +38,11 @@ function readTheme(): Theme {
 /** 앱 전역 테마 (기본 light). */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => readTheme());
+
+  // 하이드레이션이 <html>의 class를 초기화하므로 마운트 후 다시 씌운다.
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);

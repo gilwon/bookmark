@@ -262,7 +262,7 @@ export function StarsView({
   // 섹션별 카드 그리드 — 즐겨찾기/전체 두 곳에서 재사용
   function renderGrid(list: GithubStar[]) {
     return (
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {list.map((s) => (
           <StarCard
             key={s.id}

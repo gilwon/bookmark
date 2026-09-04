@@ -70,7 +70,7 @@ function openCommandPalette() {
 }
 
 /** 좌측 내비게이션 본문 — 데스크톱 레일과 모바일 드로어가 공유한다. */
-function NavBody({ onNavigate }: { onNavigate?: () => void }) {
+function NavBody({ onNavigate, onClose }: { onNavigate?: () => void; onClose?: () => void }) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
@@ -100,6 +100,16 @@ function NavBody({ onNavigate }: { onNavigate?: () => void }) {
             <Moon className="h-4 w-4" />
           )}
         </button>
+        {onClose && (
+          <button
+            type="button"
+            aria-label="메뉴 닫기"
+            onClick={onClose}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <div className="px-3 pb-2">
@@ -109,7 +119,7 @@ function NavBody({ onNavigate }: { onNavigate?: () => void }) {
             onNavigate?.();
             openCommandPalette();
           }}
-          className="flex h-7 w-full items-center gap-2 rounded-md border border-border bg-transparent px-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="flex h-9 w-full items-center gap-2 rounded-md border border-border bg-transparent px-2 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:h-7"
         >
           <Search className="h-3.5 w-3.5 shrink-0" />
           <span className="truncate">검색</span>
@@ -138,7 +148,7 @@ function NavBody({ onNavigate }: { onNavigate?: () => void }) {
                     onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex h-7 items-center gap-2 rounded-md px-2 text-[13px] transition-colors",
+                      "flex h-9 items-center gap-2 rounded-md px-2 text-[13px] transition-colors lg:h-7",
                       active
                         ? "bg-muted font-medium text-foreground"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -223,15 +233,10 @@ export function Sidebar() {
             onClick={() => setOpen(false)}
           />
           <aside className="relative flex h-full w-64 flex-col border-r border-border bg-sidebar">
-            <button
-              type="button"
-              aria-label="메뉴 닫기"
-              onClick={() => setOpen(false)}
-              className="absolute right-2 top-2.5 inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-            </button>
-            <NavBody onNavigate={() => setOpen(false)} />
+            <NavBody
+              onNavigate={() => setOpen(false)}
+              onClose={() => setOpen(false)}
+            />
           </aside>
         </div>
       )}

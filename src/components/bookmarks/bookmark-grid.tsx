@@ -342,7 +342,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                       <h3 className="text-xs font-medium text-muted-foreground">
                         {sg.label}
                       </h3>
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                         {sg.items.map((b) => (
                           <BookmarkCard
                             key={b.id}
@@ -359,7 +359,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {g.items.map((b) => (
                     <BookmarkCard
                       key={b.id}
@@ -377,7 +377,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((b) => (
             <BookmarkCard
               key={b.id}
