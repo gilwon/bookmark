@@ -107,7 +107,7 @@ export function CodeBlockView({
               className={cn(
                 // 버튼 아래쪽으로 펼침 (overflow-visible 로 블록 밖 잘림 방지)
                 "absolute left-0 top-[calc(100%+6px)] z-[80] w-56 overflow-hidden rounded-xl",
-                "border border-border bg-card shadow-2xl"
+                "border border-border bg-card shadow-[var(--shadow-popover)]"
               )}
               role="listbox"
               aria-label="코드 언어"

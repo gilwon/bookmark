@@ -350,7 +350,7 @@ export function SlashMenu({ editor, onRequestEmbed, onRanCommand }: Props) {
 
   return (
     <div
-      className="slash-menu absolute z-40 w-[min(100%,17rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
+      className="slash-menu absolute z-40 w-[min(100%,17rem)] overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-popover)]"
       style={{ top: menu.top, left: menu.left }}
       role="listbox"
       aria-label="슬래시 명령"

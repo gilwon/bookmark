@@ -206,7 +206,7 @@ export function DashboardSearch() {
           onKeyDown={onKeyDown}
           placeholder="페이지 · 프롬프트 · 에이전트 · 북마크 · Stars 검색…"
           className={cn(
-            "h-12 w-full rounded-xl border border-border bg-card pl-10 pr-24 text-sm text-foreground shadow-sm",
+            "h-12 w-full rounded-lg border border-border bg-card pl-10 pr-24 text-sm text-foreground shadow-sm",
             "placeholder:text-muted-foreground",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 focus-visible:border-indigo-500/50"
           )}
@@ -235,7 +235,7 @@ export function DashboardSearch() {
         <div
           id={listId}
           role="listbox"
-          className="absolute z-40 mt-2 w-full overflow-hidden rounded-xl border border-border bg-card shadow-xl"
+          className="absolute z-40 mt-2 w-full overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-popover)]"
         >
           {loading && items.length === 0 ? (
             <p className="px-4 py-6 text-center text-sm text-muted-foreground">

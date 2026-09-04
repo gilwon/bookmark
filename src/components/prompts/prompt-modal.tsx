@@ -77,7 +77,7 @@ export function PromptModal({ prompt, onClose, onDeleted }: Props) {
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose();
       }}
-      className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-2xl border border-border bg-background p-0 text-foreground shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+      className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-lg border border-border bg-background p-0 text-foreground shadow-[var(--shadow-popover)] backdrop:bg-black/45"
     >
       {prompt && (
         <div className="flex max-h-[90vh] flex-col">

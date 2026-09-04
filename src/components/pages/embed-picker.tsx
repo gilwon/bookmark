@@ -122,7 +122,7 @@ export function EmbedPicker({
             aria-label="피커 닫기"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] rounded-xl border border-border bg-card shadow-xl">
+          <div className="absolute left-0 top-full z-50 mt-2 w-[min(100vw-2rem,22rem)] rounded-lg border border-border bg-card shadow-[var(--shadow-popover)]">
             <div className="flex border-b border-border">
               <button
                 type="button"

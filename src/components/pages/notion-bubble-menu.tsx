@@ -162,7 +162,7 @@ export function NotionBubbleMenu({ editor, onDirty }: Props) {
     >
       <div
         className={cn(
-          "flex items-center gap-0.5 rounded-xl border border-border/80 bg-card px-1 py-1 shadow-xl",
+          "flex items-center gap-0.5 rounded-xl border border-border/80 bg-card px-1 py-1 shadow-[var(--shadow-popover)]",
           "text-foreground"
         )}
         onMouseDown={(e) => {
@@ -194,7 +194,7 @@ export function NotionBubbleMenu({ editor, onDirty }: Props) {
             <div
               className={cn(
                 "absolute left-0 top-[calc(100%+6px)] z-[60] w-56 overflow-hidden rounded-xl",
-                "border border-border bg-card py-1 shadow-2xl"
+                "border border-border bg-card py-1 shadow-[var(--shadow-popover)]"
               )}
               role="listbox"
               aria-label="블록 유형"
@@ -311,7 +311,7 @@ export function NotionBubbleMenu({ editor, onDirty }: Props) {
           </FmtBtn>
           {linkOpen && (
             <div
-              className="absolute right-0 top-[calc(100%+6px)] z-[60] flex w-72 items-center gap-1 rounded-xl border border-border bg-card p-2 shadow-2xl"
+              className="absolute right-0 top-[calc(100%+6px)] z-[60] flex w-72 items-center gap-1 rounded-lg border border-border bg-card p-2 shadow-[var(--shadow-popover)]"
               onMouseDown={(e) => e.stopPropagation()}
             >
               <input

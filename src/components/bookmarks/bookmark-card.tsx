@@ -304,7 +304,7 @@ export function BookmarkCard({
               autoComplete="off"
             />
             {showCatSuggest && filteredCategories.length > 0 && (
-              <ul className="absolute z-20 mt-1 max-h-36 w-full overflow-auto rounded-md border border-border bg-card py-1 shadow-md">
+              <ul className="absolute z-20 mt-1 max-h-36 w-full overflow-auto rounded-md border border-border bg-card py-1 shadow-[var(--shadow-popover)]">
                 {filteredCategories.map((c) => (
                   <li key={c}>
                     <button
@@ -369,7 +369,7 @@ export function BookmarkCard({
               autoComplete="off"
             />
             {showTagSuggest && filteredTags.length > 0 && (
-              <ul className="absolute z-20 mt-1 max-h-36 w-full overflow-auto rounded-md border border-border bg-card py-1 shadow-md">
+              <ul className="absolute z-20 mt-1 max-h-36 w-full overflow-auto rounded-md border border-border bg-card py-1 shadow-[var(--shadow-popover)]">
                 {filteredTags.map((t) => (
                   <li key={t}>
                     <button

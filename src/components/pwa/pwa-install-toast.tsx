@@ -145,7 +145,7 @@ export function PwaInstallToast() {
       aria-label="앱 설치 안내"
       className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-md"
     >
-      <div className="rounded-xl border border-border bg-card p-4 shadow-2xl">
+      <div className="rounded-lg border border-border bg-card p-4 shadow-[var(--shadow-popover)]">
         <div className="flex items-start gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
