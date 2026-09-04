@@ -495,9 +495,9 @@ function FilterChip({
       title={title}
       onClick={onClick}
       className={cn(
-        "shrink-0 rounded-full border font-medium transition-colors whitespace-nowrap",
+        "shrink-0 rounded-md border font-medium transition-colors whitespace-nowrap",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
-        compact ? "px-2.5 py-0.5 text-[11px]" : "px-3 py-1 text-xs",
+        compact ? "px-2 py-0.5 text-[11px]" : "h-7 px-2 text-xs",
         active
           ? "border-transparent bg-indigo-600/12 text-indigo-700 dark:bg-indigo-500/18 dark:text-indigo-300"
           : "border-border text-muted-foreground hover:bg-muted"
