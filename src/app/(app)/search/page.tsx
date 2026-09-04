@@ -93,112 +93,152 @@ export default async function SearchPage({
 
   const opts = { q, tag, category, from, to, limit: 80 };
 
-  let bookmarkResults: Bookmark[] = [];
-  let starResults: GithubStar[] = [];
-  let pageResults: PageSearchResult[] = [];
-  let copyResults: CopySearchResult[] = [];
-  let agentDocResults: AgentDocSearchResult[] = [];
-  let promptResults: PromptSearchResult[] = [];
-
-  if (type === "all" || type === "bookmark") {
-    const rows = await store.searchBookmarks(userId, opts);
-    bookmarkResults = rows.map((row) => {
-      let tags: string[] = [];
-      try {
-        tags = JSON.parse(row.tags || "[]");
-      } catch {
-        tags = [];
-      }
-      return {
-        id: row.id,
-        userId: row.userId,
-        url: row.url,
-        title: row.title,
-        description: row.description,
-        image: row.image,
-        favicon: row.favicon,
-        tags,
-        category: row.category,
-        isFavorite: Boolean(row.isFavorite),
-        createdAt: row.createdAt,
-      };
-    });
+  // 소스별 조회는 병렬로, 실패는 해당 소스만 비운다 (하나가 죽어도 나머지는 보여준다)
+  const failed: string[] = [];
+  async function collect<T>(
+    label: string,
+    enabled: boolean,
+    run: () => Promise<T[]>,
+  ): Promise<T[]> {
+    if (!enabled) return [];
+    try {
+      return await run();
+    } catch (err) {
+      console.error(`[search] ${label} 조회 실패`, err);
+      failed.push(label);
+      return [];
+    }
   }
 
-  if ((type === "all" || type === "star") && !category) {
-    const rows = await store.searchStars(userId, opts);
-    const { rowToGithubStar } = await import("@/lib/star-mapper");
-    starResults = rows.map(rowToGithubStar);
-  }
-
-  if ((type === "all" || type === "page") && !tag && !category) {
-    const rows = await store.searchPages(userId, opts);
-    pageResults = rows.map((row) => {
-      // 본문 JSON 대신 search_text(평문)로 스니펫 — 본문은 조회하지 않는다
-      const bodyText = row.searchText || "";
-      return {
-        id: row.id,
-        title: row.title,
-        snippet: makeSnippet(bodyText || row.title, q),
-        createdAt: row.createdAt,
-        updatedAt: row.updatedAt,
-      };
-    });
-  }
-
-  if ((type === "all" || type === "agent-doc") && !tag && !category) {
-    const rows = await store.searchAgentDocs(userId, opts);
-    agentDocResults = rows.map((row) => {
-      const files = parseBundle(row.bundle);
-      const body = [row.description ?? "", row.content, row.bundle].join("\n");
-      return {
-        id: row.id,
-        title: row.title,
-        filename:
-          files.length > 1
-            ? files.map((f) => f.filename).join(" + ")
-            : row.filename,
-        kind: AGENT_KINDS.has(row.kind as AgentDocKind)
-          ? (row.kind as AgentDocKind)
-          : "other",
-        fileCount: Math.max(files.length, 1),
-        snippet: makeSnippet(body, q),
-        updatedAt: row.updatedAt,
-      };
-    });
-  }
-
-  if ((type === "all" || type === "copy") && !category) {
-    const rows = await store.searchThreadCopies(userId, opts);
-    copyResults = rows.map((row) => ({
-      id: row.id,
-      title: row.title,
-      snippet: makeCopySnippet(row.body, q),
-      updatedAt: row.updatedAt,
-    }));
-  }
-
-  if ((type === "all" || type === "prompt") && !tag && !category) {
-    const rows = await store.searchPrompts(userId, opts);
-    promptResults = rows.map((row) => {
-      const sections = parsePromptSections(row.sections);
-      const body = [
-        row.summary ?? "",
-        row.whenToUse ?? "",
-        ...sections.map((s) => `${s.title}\n${s.body}`),
-      ].join("\n");
-      return {
-        id: row.id,
-        title: row.title,
-        category: row.category,
-        snippet: makeSnippet(body || row.title, q),
-        updatedAt: row.updatedAt,
-      };
-    });
-  }
+  const [
+    bookmarkResults,
+    starResults,
+    pageResults,
+    agentDocResults,
+    copyResults,
+    promptResults,
+  ] = await Promise.all([
+    collect<Bookmark>(
+      "북마크",
+      type === "all" || type === "bookmark",
+      async () => {
+        const rows = await store.searchBookmarks(userId, opts);
+        return rows.map((row) => {
+          let tags: string[] = [];
+          try {
+            tags = JSON.parse(row.tags || "[]");
+          } catch {
+            tags = [];
+          }
+          return {
+            id: row.id,
+            userId: row.userId,
+            url: row.url,
+            title: row.title,
+            description: row.description,
+            image: row.image,
+            favicon: row.favicon,
+            tags,
+            category: row.category,
+            isFavorite: Boolean(row.isFavorite),
+            createdAt: row.createdAt,
+          };
+        });
+      },
+    ),
+    collect<GithubStar>(
+      "Stars",
+      (type === "all" || type === "star") && !category,
+      async () => {
+        const rows = await store.searchStars(userId, opts);
+        const { rowToGithubStar } = await import("@/lib/star-mapper");
+        return rows.map(rowToGithubStar);
+      },
+    ),
+    collect<PageSearchResult>(
+      "페이지",
+      (type === "all" || type === "page") && !tag && !category,
+      async () => {
+        const rows = await store.searchPages(userId, opts);
+        return rows.map((row) => {
+          // 본문 JSON 대신 search_text(평문)로 스니펫 — 본문은 조회하지 않는다
+          const bodyText = row.searchText || "";
+          return {
+            id: row.id,
+            title: row.title,
+            snippet: makeSnippet(bodyText || row.title, q),
+            createdAt: row.createdAt,
+            updatedAt: row.updatedAt,
+          };
+        });
+      },
+    ),
+    collect<AgentDocSearchResult>(
+      "에이전트 문서",
+      (type === "all" || type === "agent-doc") && !tag && !category,
+      async () => {
+        const rows = await store.searchAgentDocs(userId, opts);
+        return rows.map((row) => {
+          const files = parseBundle(row.bundle);
+          const body = [row.description ?? "", row.content, row.bundle].join(
+            "\n",
+          );
+          return {
+            id: row.id,
+            title: row.title,
+            filename:
+              files.length > 1
+                ? files.map((f) => f.filename).join(" + ")
+                : row.filename,
+            kind: AGENT_KINDS.has(row.kind as AgentDocKind)
+              ? (row.kind as AgentDocKind)
+              : "other",
+            fileCount: Math.max(files.length, 1),
+            snippet: makeSnippet(body, q),
+            updatedAt: row.updatedAt,
+          };
+        });
+      },
+    ),
+    collect<CopySearchResult>(
+      "카피",
+      (type === "all" || type === "copy") && !category,
+      async () => {
+        const rows = await store.searchThreadCopies(userId, opts);
+        return rows.map((row) => ({
+          id: row.id,
+          title: row.title,
+          snippet: makeCopySnippet(row.body, q),
+          updatedAt: row.updatedAt,
+        }));
+      },
+    ),
+    collect<PromptSearchResult>(
+      "프롬프트",
+      (type === "all" || type === "prompt") && !tag && !category,
+      async () => {
+        const rows = await store.searchPrompts(userId, opts);
+        return rows.map((row) => {
+          const sections = parsePromptSections(row.sections);
+          const body = [
+            row.summary ?? "",
+            row.whenToUse ?? "",
+            ...sections.map((s) => `${s.title}\n${s.body}`),
+          ].join("\n");
+          return {
+            id: row.id,
+            title: row.title,
+            category: row.category,
+            snippet: makeSnippet(body || row.title, q),
+            updatedAt: row.updatedAt,
+          };
+        });
+      },
+    ),
+  ]);
 
   const hasQuery = Boolean(
-    q || tag || category || from || to || (type && type !== "all")
+    q || tag || category || from || to || (type && type !== "all"),
   );
   const total =
     bookmarkResults.length +
@@ -222,6 +262,12 @@ export default async function SearchPage({
       >
         <FilterBar />
       </Suspense>
+
+      {failed.length > 0 && (
+        <p role="alert" className="text-sm text-destructive">
+          {failed.join(", ")} 조회에 실패해 결과에서 빠졌습니다.
+        </p>
+      )}
 
       {hasQuery && (
         <p className="text-sm text-muted-foreground">
