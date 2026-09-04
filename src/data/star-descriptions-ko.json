@@ -345,5 +345,7 @@
   "ddalcu/mlx-serve": "Apple Silicon용 네이티브 LLM 추론 서버입니다. OpenAI·Anthropic API와 호환되고 Python은 쓰지 않습니다. 채팅, 에이전트 모드, 도구 호출이 있는 MLX Core macOS 앱을 포함합니다.",
   "MobAI-App/simslim": "시뮬레이터에 필요 없는 백그라운드 데몬을 꺼서, 한 Mac에서 iOS 시뮬레이터를 더 많이 띄웁니다.",
   "zenstory-ai/oh-story-claudecode": "장편·단편 웹소설의 랭킹 조사, 작품 분석, 집필, AI 티 제거, 표지까지 한 번에 다루는 소설 쓰기 스킬 팩입니다.",
-  "career-ops-hq/career-ops": "오픈소스 AI 구직 도구입니다. 채용 포털을 훑고 공고를 A-H 보고서와 1-5점 점수로 평가한 뒤 CV를 맞추고 지원을 추적합니다. Claude Code, Codex, OpenCode, Antigravity 같은 코딩 CLI에서 로컬로 돌아갑니다."
+  "career-ops-hq/career-ops": "오픈소스 AI 구직 도구입니다. 채용 포털을 훑고 공고를 A-H 보고서와 1-5점 점수로 평가한 뒤 CV를 맞추고 지원을 추적합니다. Claude Code, Codex, OpenCode, Antigravity 같은 코딩 CLI에서 로컬로 돌아갑니다.",
+  "pacifio/atlas": "에이전트를 위한 소스 컨트롤입니다. 여러 코딩 에이전트를 쓰고, 변경을 추적하고, 한곳에서 조회합니다.",
+  "citrolabs/ego-lite": "AI 에이전트가 브라우저 자동화를 돌리는 브라우저입니다. 로그인된 브라우저 상태를 Codex나 Claude Code 같은 에이전트와 공유하되 작업을 방해하지 않습니다. 비용과 설정이 없습니다."
 }
