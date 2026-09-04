@@ -9,7 +9,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       {/* 데스크톱에서는 고정 레일(w-60)만큼 본문을 밀어낸다 */}
       <main className="min-w-0 lg:pl-60">
-        <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <div className="w-full p-4">
           {children}
         </div>
       </main>
