@@ -1,71 +1,69 @@
-/* MyMark 전역 스타일 — Apple 토큰과 Pretendard 테마 */
+/* MyMark 전역 스타일 — Linear 계열 토큰과 Pretendard 테마 */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
 @import "tailwindcss";
 
 /* class 기반 dark: 유틸 (html.dark) */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Apple의 기본 캔버스. */
+/*
+ * Linear 라이트 테마. 흰 캔버스 + 아주 얇은 헤어라인,
+ * 장식 없는 평면 표면이 기본이다.
+ */
 :root,
 html.light {
-  --background: #f5f5f7;
-  --foreground: #1d1d1f;
+  --background: #ffffff;
+  --foreground: #0d0e10;
   --card: #ffffff;
-  --card-foreground: #1d1d1f;
-  --muted: #f0f0f2;
-  --muted-foreground: #6e6e73;
-  --border: #d2d2d7;
+  --card-foreground: #0d0e10;
+  --muted: #f4f5f8;
+  --muted-foreground: #6b6f76;
+  --border: #e6e6e6;
   --input: #ffffff;
-  --secondary: #ffffff;
-  --secondary-foreground: #1d1d1f;
-  --accent: #0066cc;
-  --sidebar: #ffffff;
-  --ring: #0071e3;
-  --placeholder: #86868b;
-  --code-bg: #f5f5f7;
-  --pre-bg: #f5f5f7;
-  --accent-rgb: 0, 113, 227;
-  /* 글래스모피즘 토큰 — 라이트 */
-  --glass-bg: rgba(255, 255, 255, 0.68);
-  --glass-bg-strong: rgba(255, 255, 255, 0.88);
-  --glass-bg-subtle: rgba(255, 255, 255, 0.45);
-  /* 밝은 배경에서는 흰 테두리가 사라지므로 라이트에서만 어두운 계열로 경계를 만든다 */
-  --glass-border: rgba(0, 0, 0, 0.09);
-  --glass-highlight: rgba(255, 255, 255, 0.85);
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
-  --glass-blur: 20px;
-  --glass-blur-sm: 12px;
-  --glass-saturate: 180%;
+  --secondary: #f9f9fa;
+  --secondary-foreground: #0d0e10;
+  --accent: #5e6ad2;
+  --accent-hover: #545ec8;
+  --sidebar: #f9f9fa;
+  --ring: #5e6ad2;
+  --placeholder: #8a8f98;
+  --code-bg: #f4f5f8;
+  --pre-bg: #f8f8f9;
+  --accent-rgb: 94, 106, 210;
+  /* 평면 표면 토큰 — 라이트 (유리 효과 없음) */
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
+  --surface-subtle: #f4f5f8;
+  --surface-border: #e6e6e6;
+  --shadow-low: 0 1px 2px rgba(13, 14, 16, 0.06);
+  --shadow-popover: 0 8px 24px rgba(13, 14, 16, 0.12), 0 1px 2px rgba(13, 14, 16, 0.08);
 }
 
 html.dark {
-  --background: #000000;
-  --foreground: #f5f5f7;
-  --card: #1d1d1f;
-  --card-foreground: #f5f5f7;
-  --muted: #2a2a2c;
-  --muted-foreground: #a1a1a6;
-  --border: #424245;
-  --input: #1d1d1f;
-  --secondary: #272729;
-  --secondary-foreground: #f5f5f7;
-  --accent: #2997ff;
-  --sidebar: #000000;
-  --ring: #2997ff;
-  --placeholder: #86868b;
-  --code-bg: #272729;
-  --pre-bg: #272729;
-  --accent-rgb: 41, 151, 255;
-  /* 글래스모피즘 토큰 — 다크 */
-  --glass-bg: rgba(29, 29, 31, 0.62);
-  --glass-bg-strong: rgba(29, 29, 31, 0.86);
-  --glass-bg-subtle: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.14);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  --glass-blur: 20px;
-  --glass-blur-sm: 12px;
-  --glass-saturate: 160%;
+  --background: #08090a;
+  --foreground: #f7f8f8;
+  --card: #0f1011;
+  --card-foreground: #f7f8f8;
+  --muted: #1c1d1f;
+  --muted-foreground: #8a8f98;
+  --border: #23252a;
+  --input: #0f1011;
+  --secondary: #16171a;
+  --secondary-foreground: #f7f8f8;
+  --accent: #7170ff;
+  --accent-hover: #8382ff;
+  --sidebar: #0b0c0d;
+  --ring: #7170ff;
+  --placeholder: #62666d;
+  --code-bg: #16171a;
+  --pre-bg: #131415;
+  --accent-rgb: 113, 112, 255;
+  /* 평면 표면 토큰 — 다크 */
+  --surface: #0f1011;
+  --surface-strong: #131415;
+  --surface-subtle: #16171a;
+  --surface-border: #23252a;
+  --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-popover: 0 12px 32px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
@@ -82,105 +80,110 @@ html.dark {
   --color-accent: var(--accent);
   --color-sidebar: var(--sidebar);
   --color-ring: var(--ring);
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --color-indigo-300: #2997ff;
-  --color-indigo-400: #0071e3;
-  --color-indigo-500: #0071e3;
-  --color-indigo-600: #0066cc;
-  --color-indigo-700: #005bb5;
-  /* ComponentDoc 기하 토큰 — 반경/그림자 */
-  --radius-doc-sm: 4px;
-  --radius-doc-md: 8px;
-  --radius-doc-lg: 12px;
-  --shadow-doc-xs: 0 1px 2px 0 rgba(0, 0, 0, .05);
-  --shadow-doc-sm: 0 2px 4px -1px rgba(0, 0, 0, .05);
-  --shadow-doc-primary: 0 2px 8px rgba(var(--accent-rgb), .2);
-  --shadow-doc-primary-hover: 0 4px 12px rgba(var(--accent-rgb), .3);
-}
-
-/* 글래스 유틸 — 표준 유리 표면 (카드, 툴바) */
-@utility glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
-}
-
-/* 글래스 유틸 — 가독성이 중요한 표면 (입력 필드, 에디터, 모달 본문) */
-@utility glass-strong {
-  background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
-}
-
-/* 글래스 유틸 — 아주 약한 표면 (배지, 칩), 그림자 없음 */
-@utility glass-subtle {
-  background: var(--glass-bg-subtle);
-  backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
-  border-color: var(--glass-border);
-  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  --font-sans: "Pretendard Variable", Pretendard, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Berkeley Mono", "SFMono-Regular", ui-monospace, Consolas, "Liberation Mono", monospace;
+  /* 기존 indigo-* 클래스가 그대로 Linear 보라 계열을 가리키게 재매핑한다 */
+  --color-indigo-200: #c3c6f5;
+  --color-indigo-300: #a5a8f0;
+  --color-indigo-400: #8382ff;
+  --color-indigo-500: #7170ff;
+  --color-indigo-600: #5e6ad2;
+  --color-indigo-700: #545ec8;
+  /* Linear 반경 — 4/6/8/12px. 유틸 전역에 적용된다 */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+  --radius-3xl: 16px;
+  --radius-doc-sm: 6px;
+  --radius-doc-md: 6px;
+  --radius-doc-lg: 8px;
+  /* UI 밀도 — 본문 13px, 메타 12px */
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.4;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.4;
+  --shadow-doc-xs: var(--shadow-low);
+  --shadow-doc-sm: var(--shadow-low);
+  --shadow-doc-primary: none;
+  --shadow-doc-primary-hover: none;
 }
 
 /*
- * 글래스 표면이 비칠 배경 그라데이션 블롭.
- * 별도 레이어(::before)로 깔면 body 배경에 가려지므로 body 배경에 직접 합성하고,
- * background-attachment: fixed 로 스크롤해도 블롭 위치가 고정되게 한다.
+ * 예전 글래스 유틸은 이름만 유지하고 Linear식 평면 표면으로 재정의한다.
+ * 사용처(13개 파일)를 건드리지 않고 전체 룩을 바꾸기 위해서다.
  */
+@utility glass {
+  background: var(--surface);
+  border-color: var(--surface-border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+@utility glass-strong {
+  background: var(--surface-strong);
+  border-color: var(--surface-border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+@utility glass-subtle {
+  background: var(--surface-subtle);
+  border-color: var(--surface-border);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* 예전 배경 블롭 자리. Linear는 장식 그라데이션을 쓰지 않는다 */
 .glass-canvas {
-  background-image:
-    radial-gradient(ellipse 60% 50% at 12% 8%, rgba(0, 102, 204, 0.16), transparent),
-    radial-gradient(ellipse 55% 45% at 92% 12%, rgba(122, 90, 248, 0.14), transparent),
-    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0, 113, 227, 0.12), transparent);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-image: none;
 }
 
-/* 배경 그라데이션 블롭 — 다크 */
-html.dark .glass-canvas {
-  background-image:
-    radial-gradient(ellipse 60% 50% at 12% 8%, rgba(41, 151, 255, 0.22), transparent),
-    radial-gradient(ellipse 55% 45% at 92% 12%, rgba(140, 100, 255, 0.18), transparent),
-    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(41, 151, 255, 0.14), transparent);
+/* 얇은 스크롤바 — 크롬이 콘텐츠를 가리지 않게 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--muted-foreground) 35%, transparent) transparent;
 }
 
-/* 폴백 — backdrop-filter 미지원 브라우저는 불투명 카드 배경으로 대체 */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass,
-  .glass-strong,
-  .glass-subtle {
-    background: var(--card);
-    backdrop-filter: none;
-  }
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-/* 폴백 — 투명 효과 축소 설정 시 블러 제거 + 배경 블롭 숨김 */
-@media (prefers-reduced-transparency: reduce) {
-  .glass,
-  .glass-strong,
-  .glass-subtle {
-    background: var(--card);
-    backdrop-filter: none;
-  }
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
 
-  .glass-canvas {
-    background-image: none;
-  }
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--muted-foreground) 55%, transparent);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* 포커스 링 — 키보드 사용자에게만 뚜렷하게 */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  letter-spacing: -0.01em;
+  font-family: "Pretendard Variable", Pretendard, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.875rem;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
   background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-/* Apple식 얇은 구분선과 절제된 표면. */
+/* 폼 요소는 본문 서체를 그대로 쓴다. */
 button,
 input,
 textarea,
