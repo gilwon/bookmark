@@ -262,7 +262,7 @@ export function StarsView({
   // 섹션별 카드 그리드 — 즐겨찾기/전체 두 곳에서 재사용
   function renderGrid(list: GithubStar[]) {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((s) => (
           <StarCard
             key={s.id}
@@ -280,7 +280,7 @@ export function StarsView({
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">GitHub Stars</h1>
+          <h1 className="text-lg font-medium tracking-[-0.02em]">GitHub Stars</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Star 동기화 또는 레포 직접 추가로로 관리합니다.
             {initialStars.length > 0 && ` · 총 ${initialStars.length}개`}
@@ -416,7 +416,7 @@ export function StarsView({
       )}
 
       {initialStars.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {hasGithub
             ? "동기화하거나 위에서 레포를 직접 추가해 보세요."
             : "GitHub 로그인 후 동기화하거나, 공개 레포를 직접 추가할 수 있습니다."}

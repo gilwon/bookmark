@@ -31,7 +31,7 @@ export default async function SkillDetailPage({
 
       <div className="space-y-2">
         <Badge variant="secondary">{heyjamesSkillTypeLabel(item.type)}</Badge>
-        <h1 className="text-2xl font-bold tracking-tight">{item.title}</h1>
+        <h1 className="text-xl font-semibold tracking-[-0.02em]">{item.title}</h1>
         <p className="text-sm text-muted-foreground">
           조회 {item.views.toLocaleString()}
         </p>

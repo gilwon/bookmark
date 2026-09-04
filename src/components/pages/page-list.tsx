@@ -27,7 +27,6 @@ import { PdfImportForm } from "@/components/pages/pdf-import-form";
 import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -318,7 +317,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       <PdfImportForm />
 
       {pages.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           아직 페이지가 없습니다. 새 페이지를 만들어 보세요.
         </div>
       ) : (
@@ -413,33 +412,31 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
             </p>
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((p) => {
                   const selected = selection.isSelected(p.id);
                   const tags = Array.isArray(p.tags) ? p.tags : [];
                   return (
-                    <Card
+                    <div
                       key={p.id}
                       className={cn(
-                        "group transition-colors hover:border-border",
-                        selected &&
-                          "border-indigo-500 ring-1 ring-indigo-500/40",
-                        p.isFavorite && "border-amber-500/40"
+                        "group transition-colors hover:bg-muted/60",
+                        selected && "bg-indigo-600/8"
                       )}
                     >
-                      <CardContent className="flex items-start gap-3 p-4">
+                      <div className="flex items-start gap-2.5 px-3 py-2">
                         <input
                           type="checkbox"
-                          className="mt-1 h-4 w-4 shrink-0 accent-indigo-600"
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-indigo-600"
                           checked={selected}
                           onChange={() => selection.toggle(p.id)}
                           aria-label={`${p.title} 선택`}
                         />
-                        <FileText className="mt-0.5 h-5 w-5 shrink-0 text-indigo-400" />
-                        <div className="min-w-0 flex-1 space-y-1">
+                        <FileText className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                        <div className="min-w-0 flex-1 space-y-0.5">
                           <Link
                             href={`/pages/${p.id}`}
-                            className="block truncate font-medium hover:text-indigo-300"
+                            className="block truncate text-sm font-medium text-foreground hover:text-indigo-600 dark:hover:text-indigo-300"
                           >
                             {p.title}
                           </Link>
@@ -469,13 +466,13 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
                             </a>
                           ) : null}
                         </div>
-                        <div className="flex shrink-0 flex-col gap-1">
+                        <div className="flex shrink-0 items-center gap-0.5">
                           <Button
                             type="button"
                             variant="ghost"
                             size="icon"
                             className={cn(
-                              "h-8 w-8",
+                              "h-7 w-7",
                               p.isFavorite
                                 ? "text-amber-500"
                                 : "text-muted-foreground opacity-70 group-hover:opacity-100 focus-visible:opacity-100"
@@ -500,15 +497,15 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 opacity-0 group-hover:opacity-100 text-red-400"
+                            className="h-7 w-7 text-red-500 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
                             onClick={() => void handleDelete(p.id)}
                             aria-label="삭제"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -543,17 +540,17 @@ function CategoryChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+        "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
         active
-          ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
-          : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
+          ? "border-transparent bg-indigo-600/12 text-indigo-700 dark:bg-indigo-500/18 dark:text-indigo-300"
+          : "border-border bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
-          "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
-          active ? "bg-indigo-600/20" : "bg-muted"
+          "rounded px-1 text-[10px] tabular-nums",
+          active ? "bg-indigo-600/15" : "bg-muted"
         )}
       >
         {count}

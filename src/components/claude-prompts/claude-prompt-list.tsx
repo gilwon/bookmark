@@ -122,7 +122,7 @@ export function ClaudePromptList({ items }: Props) {
                 setPage(1);
               }}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
                 active
                   ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-200"
                   : "border-border bg-card text-muted-foreground hover:border-indigo-500/30 hover:text-foreground"
@@ -136,7 +136,7 @@ export function ClaudePromptList({ items }: Props) {
       </div>
 
       {pageItems.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           일치하는 프롬프트가 없습니다.
         </div>
       ) : (

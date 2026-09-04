@@ -65,7 +65,7 @@ export default async function BookmarksPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">북마크</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">북마크</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           URL 추가·HTML 가져오기, 카테고리별로 모아 볼 수 있습니다.
         </p>

@@ -235,7 +235,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
 
   if (bookmarks.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+      <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
         아직 북마크가 없습니다. URL을 추가해 보세요.
       </div>
     );
@@ -305,7 +305,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
       />
 
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           {q.trim()
             ? "검색 조건에 맞는 북마크가 없습니다."
             : "이 그룹에 북마크가 없습니다."}
@@ -342,7 +342,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                       <h3 className="text-xs font-medium text-muted-foreground">
                         {sg.label}
                       </h3>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {sg.items.map((b) => (
                           <BookmarkCard
                             key={b.id}
@@ -359,7 +359,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {g.items.map((b) => (
                     <BookmarkCard
                       key={b.id}
@@ -377,7 +377,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((b) => (
             <BookmarkCard
               key={b.id}
@@ -412,16 +412,16 @@ function CategoryChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+        "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
         active
-          ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-300"
+          ? "border-transparent bg-indigo-600/12 text-indigo-700 dark:bg-indigo-500/18 dark:text-indigo-300"
           : "border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
       )}
     >
       <span>{label}</span>
       <span
         className={cn(
-          "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
+          "rounded px-1 text-[10px] tabular-nums",
           active ? "bg-indigo-600/20" : "bg-muted"
         )}
       >

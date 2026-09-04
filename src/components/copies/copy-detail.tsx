@@ -222,7 +222,7 @@ export function CopyDetail({ copy }: { copy: ThreadCopy }) {
       ) : (
         <>
           <header className="space-y-3 border-b border-border pb-5">
-            <h1 className="text-2xl font-bold tracking-tight">{copy.title}</h1>
+            <h1 className="text-xl font-semibold tracking-[-0.02em]">{copy.title}</h1>
             {copy.tags.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {copy.tags.map((tag) => (

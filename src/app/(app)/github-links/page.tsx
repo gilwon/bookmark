@@ -6,7 +6,7 @@ export default function GithubLinksPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">GitHub 링크</h1>
+        <h1 className="text-lg font-medium tracking-[-0.02em]">GitHub 링크</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Claude·Codex 실무에 쓰는 링크 120개를 정리했습니다. 출처는{" "}
           <a

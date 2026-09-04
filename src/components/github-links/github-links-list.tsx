@@ -85,7 +85,7 @@ export function GithubLinksList({ items }: { items: GithubLinkItem[] }) {
       </p>
 
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           일치하는 항목이 없습니다.
         </div>
       ) : (

@@ -112,7 +112,7 @@ export function PromptModal({ prompt, onClose, onDeleted }: Props) {
           {/* 본문 */}
           <div className="flex-1 space-y-6 overflow-y-auto p-6">
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold">{prompt.title}</h2>
+              <h2 className="text-xl font-semibold tracking-[-0.02em]">{prompt.title}</h2>
               {prompt.summary && (
                 <p className="text-sm text-muted-foreground">
                   {prompt.summary}

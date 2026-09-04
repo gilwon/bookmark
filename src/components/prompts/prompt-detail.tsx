@@ -82,7 +82,7 @@ export function PromptDetail({ prompt }: { prompt: Prompt }) {
       </div>
 
       <header className="space-y-4 border-b border-border pb-6">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="text-xl font-semibold tracking-[-0.02em]">
           {prompt.title}
         </h1>
 
