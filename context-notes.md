@@ -1,3 +1,11 @@
+# AI 비밀코드 100선 Pages 이관 메모
+
+- URL. `https://app.notion.com/p/AI-100-3b6bc8af735e80b8ba6dee8dd773d1fc` (`source=copy_link` 제거).
+- 제목. `AI 비밀코드 100선 (상황별 완벽 가이드)`. hex `3b6bc8af735e80b8ba6dee8dd773d1fc`.
+- MCP 404. 공개 `loadPageChunk`로 읽는다. 루트 34, numbered_list 10, 상황 2~10은 text 한 덩어리.
+- 이미지 블록·첨부 0. 커버는 Notion 기본 `artemis_ii_8.jpg`.
+- 기존 `Claude 슬래시 프롬프트 100선`과는 다른 페이지다.
+
 # 한국시간 이번 주 Notion 신규 Pages 이관 메모
 
 - 구간. KST 2026-08-31 00:00(월)부터. 오늘은 2026-09-03.
