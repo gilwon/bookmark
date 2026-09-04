@@ -101,10 +101,10 @@ export function GithubLinksList({ items }: { items: GithubLinkItem[] }) {
               <Card className="h-full transition-colors hover:border-indigo-500/40 active:border-indigo-500/60">
                 <CardContent className="flex h-full flex-col gap-3 p-4">
                   <div className="flex flex-wrap gap-1.5 text-[11px] text-muted-foreground">
-                    <span className="rounded-full border border-border px-2 py-0.5">
+                    <span className="rounded border border-border px-1.5 py-px">
                       {getSource(item.url)}
                     </span>
-                    <span className="rounded-full border border-border px-2 py-0.5">
+                    <span className="rounded border border-border px-1.5 py-px">
                       {item.category}
                     </span>
                   </div>
