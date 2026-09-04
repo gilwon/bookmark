@@ -1240,3 +1240,19 @@
 - 팝업은 라이브러리 없이 네이티브 `<dialog>`를 쓴다. Esc·backdrop 클릭 닫기, body 스크롤 잠금.
 - 목록은 Supabase 환경변수가 있으면 PostgREST 기본 한도 1000행까지만 온다(전체 3,300건 중 "전체 (1,000)"). 이번 개편 전부터 있던 한도라 손대지 않았다.
 - dev 콘솔의 theme-init `<script>` 경고와 hydration 오류는 `src/app/layout.tsx` 것이라 `/copies`에서도 똑같이 뜬다.
+
+# Linear 스타일 UI 리디자인 메모 (2026-09-04)
+
+- 레퍼런스는 Linear. 색은 브랜드 앵커 #5e6ad2(라이트)·#7170ff(다크)를 근사치로 잡았다. 공식 팔레트를 그대로 뽑아온 것은 아니다.
+- 토큰은 `src/app/globals.css` 한 곳이 정본이다. 라이트 배경 #ffffff / 다크 #08090a, 카드 #0f1011, 경계 #e6e6e6·#23252a, 뮤트 텍스트 #6b6f76·#8a8f98.
+- 기존 `indigo-*` 유틸 약 150곳을 그대로 두고 `@theme inline`에서 indigo 스케일을 Linear 보라로 재매핑했다. 새 색을 하드코딩하지 않는다.
+- Tailwind 반경 토큰을 4/6/8/12px로 덮어써 `rounded-xl` 50여 곳이 파일 수정 없이 8px가 된다. `rounded-full`은 아바타·점만 남긴다.
+- `glass` / `glass-strong` / `glass-subtle` 유틸은 이름만 유지하고 평면 표면으로 재정의했다. 새 코드에서는 쓰지 말고 `border-border bg-card`를 쓴다.
+- `--text-sm`을 13px로 낮춰 UI 밀도를 Linear에 맞췄다. 본문 기본은 14px.
+- 목록 행 규격. 컨테이너 `divide-y divide-border overflow-hidden rounded-lg border border-border bg-card`,
+  행 `group flex items-start gap-2.5 px-3 py-2 hover:bg-muted/60`, 제목 `text-sm font-medium truncate`,
+  메타 `text-xs text-muted-foreground`, 행 액션은 `opacity-0 group-hover:opacity-100 focus-visible:opacity-100`.
+- 페이지 제목은 `text-lg font-medium tracking-[-0.02em]`, 상세는 `text-xl font-semibold`. font-bold는 쓰지 않는다.
+- 사이드바는 `w-60` 고정 레일이고 본문은 `lg:pl-60`. 1024px 미만은 상단 바 + 드로어다. 모바일 행 높이는 36px(`h-9 lg:h-7`).
+- `body`의 `glass-canvas` 클래스와 `.glass-canvas` 규칙은 배경 블롭을 없애면서 무효가 됐다. 남겨 뒀다.
+- 테마 클래스가 하이드레이션 때 지워져 다크 모드가 풀리던 문제를 `theme-provider`의 마운트 useEffect로 다시 씌운다.
