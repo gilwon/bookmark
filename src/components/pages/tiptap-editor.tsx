@@ -511,7 +511,7 @@ export function TiptapEditor({
     // 상단 네비와 같이 앱 셸 전체 폭(max-w-6xl) 사용
     <div className="w-full min-w-0">
       {/* 노션처럼 상단은 최소 액션만 — 서식은 선택 버블 메뉴 */}
-      <div className="sticky top-0 z-20 -mx-1 mb-4 border-b border-border/80 bg-background/90 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+      <div className="sticky top-0 z-20 -mx-1 mb-4 border-b border-border/80 bg-background px-1 py-2">
         <div className="flex flex-wrap items-center gap-1">
           <ToolbarBtn
             label="실행 취소"
