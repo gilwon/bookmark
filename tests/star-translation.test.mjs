@@ -453,6 +453,20 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 최신 Star 2개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["pacifio/atlas", "Source control for agents. Use multiple coding agents, track their changes and query them in one place"],
+      ["citrolabs/ego-lite", "The fastest browser for AI agents to run browser automation, built for sharing your logged-in browser state with your AI agents, like Codex or Claude Code, without disturbing you. Zero cost, zero config."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
