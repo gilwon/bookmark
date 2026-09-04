@@ -23,7 +23,6 @@ import { parseBundle } from "@/lib/agent-doc-bundle";
 import { auth } from "@/lib/auth";
 import { parsePromptSections } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
-import { extractTiptapText } from "@/lib/tiptap-text";
 import type { AgentDocKind, Bookmark, GithubStar } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -135,13 +134,8 @@ export default async function SearchPage({
   if ((type === "all" || type === "page") && !tag && !category) {
     const rows = await store.searchPages(userId, opts);
     pageResults = rows.map((row) => {
-      let content: unknown = {};
-      try {
-        content = JSON.parse(row.content || "{}");
-      } catch {
-        content = {};
-      }
-      const bodyText = extractTiptapText(content);
+      // 본문 JSON 대신 search_text(평문)로 스니펫 — 본문은 조회하지 않는다
+      const bodyText = row.searchText || "";
       return {
         id: row.id,
         title: row.title,

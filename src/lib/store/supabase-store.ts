@@ -1169,7 +1169,7 @@ export async function searchStars(
   return rows.slice(0, lim);
 }
 
-/** 페이지 검색 (제목·search_text). 본문 JSON ilike 는 쓰지 않는다. */
+/** 페이지 검색 (제목·search_text). 본문 JSON 은 조회도 ilike 도 하지 않는다(statement timeout 방지). */
 export async function searchPages(
   userId: string,
   opts: SearchOpts = {}
@@ -1180,7 +1180,9 @@ export async function searchPages(
 
   let query = sb()
     .from("custom_pages")
-    .select("*")
+    .select(
+      "id, user_id, title, created_at, updated_at, tags, source_url, is_favorite, search_text"
+    )
     .eq("user_id", userId)
     .order("updated_at", { ascending: false })
     .limit(lim);
@@ -1195,16 +1197,18 @@ export async function searchPages(
   if (error && /search_text/i.test(error.message)) {
     let fallback = sb()
       .from("custom_pages")
-      .select("*")
+      .select("id, user_id, title, created_at, updated_at")
       .eq("user_id", userId)
       .order("updated_at", { ascending: false })
       .limit(lim);
     fallback = applyDateRange(fallback, "updated_at", opts.from, opts.to);
     if (q) fallback = fallback.or(`title.ilike.${p}`);
-    ({ data, error } = await fallback);
+    const fb = await fallback;
+    data = fb.data as typeof data;
+    error = fb.error;
   }
   throwIfError(error, "searchPages");
-  return (data ?? []).map(mapPage);
+  return (data ?? []).map((r) => mapPage({ ...r, content: "{}" }));
 }
 
 /** 에이전트 문서 검색 */
