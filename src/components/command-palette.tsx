@@ -419,11 +419,11 @@ export function CommandPalette() {
     >
       {/* 오버레이 클릭 시 닫기 */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-[1px]"
+        className="absolute inset-0 bg-black/40"
         onClick={close}
       />
 
-      <div className="relative z-10 w-full max-w-lg overflow-hidden rounded-xl border border-[var(--glass-border)] glass-strong shadow-2xl">
+      <div className="relative z-10 w-full max-w-xl overflow-hidden rounded-lg border border-border bg-card shadow-[var(--shadow-popover)]">
         <div className="flex items-center gap-2 border-b border-border px-3">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
@@ -434,7 +434,7 @@ export function CommandPalette() {
               setActiveIndex(0);
             }}
             placeholder="페이지 이동, 액션 검색…"
-            className="h-12 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+            className="h-11 w-full bg-transparent text-sm text-foreground outline-none placeholder:text-[var(--placeholder)]"
             autoComplete="off"
             spellCheck={false}
           />
@@ -445,7 +445,7 @@ export function CommandPalette() {
 
         <div
           ref={listRef}
-          className="max-h-72 overflow-y-auto p-1.5"
+          className="max-h-80 overflow-y-auto p-1.5"
           role="listbox"
         >
           {items.length === 0 ? (
@@ -463,11 +463,11 @@ export function CommandPalette() {
                 disabled={item.disabled}
                 data-index={index}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                  "flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left text-sm transition-colors",
                   item.disabled
                     ? "cursor-default text-muted-foreground"
                     : index === activeIndex
-                      ? "bg-indigo-600/20 text-foreground"
+                      ? "bg-muted text-foreground"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
                 onMouseEnter={() => {

@@ -1,27 +1,28 @@
-// shadcn 스타일 버튼 컴포넌트
+// Linear 스타일 버튼 컴포넌트
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-doc-sm text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md text-sm font-medium transition-colors duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-45",
   {
     variants: {
       variant: {
         default:
-          "bg-indigo-600 text-white shadow-doc-primary hover:bg-indigo-500 hover:-translate-y-px hover:shadow-doc-primary-hover",
+          "bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400",
         secondary:
-          "glass text-secondary-foreground hover:glass-strong border border-[var(--glass-border)]",
+          "border border-border bg-secondary text-secondary-foreground hover:bg-muted",
         outline:
-          "border border-[var(--glass-border)] bg-transparent hover:glass-subtle text-foreground",
-        ghost: "hover:glass-subtle text-foreground",
-        destructive: "bg-red-600 text-white hover:bg-red-500",
+          "border border-border bg-transparent text-foreground hover:bg-muted",
+        ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
+        destructive:
+          "border border-transparent bg-red-600 text-white hover:bg-red-500",
       },
       size: {
-        default: "h-9 px-5 py-2",
-        sm: "h-8 px-3 text-xs",
-        lg: "h-10 px-6",
-        icon: "h-9 w-9",
+        default: "h-8 px-3",
+        sm: "h-7 px-2.5 text-xs",
+        lg: "h-9 px-4",
+        icon: "h-8 w-8",
       },
     },
     defaultVariants: {

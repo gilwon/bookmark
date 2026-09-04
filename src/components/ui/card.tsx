@@ -2,12 +2,12 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/** 카드 컨테이너 */
+/** 카드 컨테이너 — 얇은 헤어라인 위의 평면 표면 */
 function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        "rounded-doc-lg glass border border-[var(--glass-border)] text-card-foreground transition-colors hover:border-accent",
+        "rounded-lg border border-border bg-card text-card-foreground transition-colors hover:border-[color-mix(in_srgb,var(--foreground)_18%,var(--border))]",
         className
       )}
       {...props}
@@ -21,7 +21,7 @@ function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("flex flex-col gap-1.5 p-4", className)} {...props} />
+    <div className={cn("flex flex-col gap-1 p-3.5", className)} {...props} />
   );
 }
 
@@ -33,7 +33,7 @@ function CardTitle({
   return (
     <h3
       className={cn(
-        "text-base font-semibold leading-none tracking-tight",
+        "text-sm font-medium leading-snug tracking-[-0.011em]",
         className
       )}
       {...props}
@@ -46,7 +46,7 @@ function CardContent({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-4 pt-0", className)} {...props} />;
+  return <div className={cn("p-3.5 pt-0", className)} {...props} />;
 }
 
 export { Card, CardHeader, CardTitle, CardContent };
