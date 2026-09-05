@@ -5,6 +5,8 @@ import { fetchStarredRepos, upsertStars } from "@/lib/github";
 import { getGithubAccessToken, deleteGithubToken } from "@/lib/oauth-tokens";
 
 export const runtime = "nodejs";
+/** Star 수가 많아도 배치 동기화가 끝나게 시간을 확보한다. */
+export const maxDuration = 120;
 
 /** POST /api/stars/sync */
 export async function POST() {

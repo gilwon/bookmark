@@ -1,5 +1,7 @@
 // SQLite(Drizzle) 스토어 구현
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
+import type { StarSyncBatch } from "@/lib/star-sync";
+import { emptyStarBlobs } from "./star-list";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db/sqlite";
 import {
@@ -211,14 +213,33 @@ export async function ensureCategoriesFromBookmarks(
 }
 
 // --- stars ---
+const starListColumns = {
+  id: githubStars.id,
+  userId: githubStars.userId,
+  repoFullName: githubStars.repoFullName,
+  description: githubStars.description,
+  language: githubStars.language,
+  stars: githubStars.stars,
+  topics: githubStars.topics,
+  url: githubStars.url,
+  lastSynced: githubStars.lastSynced,
+  createdAt: githubStars.createdAt,
+  changeKind: githubStars.changeKind,
+  starsDelta: githubStars.starsDelta,
+  changedAt: githubStars.changedAt,
+  source: githubStars.source,
+  isFavorite: githubStars.isFavorite,
+};
+
 export async function listStars(userId: string): Promise<GithubStarRow[]> {
-  return qall(
+  const rows = await qall(
     db
-      .select()
+      .select(starListColumns)
       .from(githubStars)
       .where(eq(githubStars.userId, userId))
       .orderBy(desc(githubStars.isFavorite), desc(githubStars.stars))
   );
+  return rows.map((r) => emptyStarBlobs(r) as GithubStarRow);
 }
 
 export async function listStarsBySynced(
@@ -227,14 +248,12 @@ export async function listStarsBySynced(
 ): Promise<GithubStarRow[]> {
   const lim = opts?.limit;
   const base = db
-    .select()
+    .select(starListColumns)
     .from(githubStars)
     .where(eq(githubStars.userId, userId))
     .orderBy(desc(githubStars.lastSynced));
-  if (lim && lim > 0) {
-    return qall(base.limit(lim));
-  }
-  return qall(base);
+  const rows = await qall(lim && lim > 0 ? base.limit(lim) : base);
+  return rows.map((r) => emptyStarBlobs(r) as GithubStarRow);
 }
 
 export async function getStar(
@@ -285,6 +304,35 @@ export async function deleteStar(id: string, userId: string): Promise<void> {
       .delete(githubStars)
       .where(and(eq(githubStars.id, id), eq(githubStars.userId, userId)))
   );
+}
+
+/** insert/update/delete를 한 트랜잭션으로 적용한다. */
+export async function applyStarSync(
+  userId: string,
+  batch: StarSyncBatch
+): Promise<void> {
+  db.transaction((tx) => {
+    for (const row of batch.inserts) {
+      tx.insert(githubStars).values(row).run();
+    }
+    for (const u of batch.updates) {
+      const { id: _i, userId: _u, ...rest } = u.patch as GithubStarRow;
+      tx.update(githubStars)
+        .set(rest)
+        .where(and(eq(githubStars.id, u.id), eq(githubStars.userId, userId)))
+        .run();
+    }
+    if (batch.deleteIds.length > 0) {
+      tx.delete(githubStars)
+        .where(
+          and(
+            eq(githubStars.userId, userId),
+            inArray(githubStars.id, batch.deleteIds)
+          )
+        )
+        .run();
+    }
+  });
 }
 
 /** 미확인 Star 변경 뱃지 모두 제거 */
