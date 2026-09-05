@@ -1,15 +1,24 @@
 // 프롬프트 라이브러리 목록
 import { PromptList } from "@/components/prompts/prompt-list";
 import { auth } from "@/lib/auth";
+import { parseListQuery } from "@/lib/list-query";
 import { rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
 
-export default async function PromptsPage() {
+export default async function PromptsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; q?: string }>;
+}) {
   const session = await auth();
   const userId = session!.user!.id;
-  const rows = await store.listPrompts(userId);
+  const query = parseListQuery(await searchParams);
+  const [rows, total] = await Promise.all([
+    store.listPrompts(userId, query),
+    store.countPrompts({ q: query.q }),
+  ]);
   const list = rows.map(rowToPrompt);
 
   return (
@@ -21,7 +30,7 @@ export default async function PromptsPage() {
           빠르게 찾을 수 있습니다.
         </p>
       </div>
-      <PromptList prompts={list} />
+      <PromptList prompts={list} total={total} page={query.page} q={query.q} />
     </div>
   );
 }

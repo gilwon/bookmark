@@ -12,6 +12,13 @@ export type SearchOpts = DateRangeOpts & {
   limit?: number;
 };
 
+/** 서버 페이징 목록 */
+export type ListPageOpts = {
+  q?: string;
+  limit?: number;
+  offset?: number;
+};
+
 export type DashboardCounts = {
   bookmarks: number;
   stars: number;

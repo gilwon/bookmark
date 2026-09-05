@@ -19,6 +19,7 @@ import { preparePageFindability } from "@/lib/page-findability";
 import type {
   CategoryCount,
   DashboardCounts,
+  ListPageOpts,
   SearchOpts,
 } from "./query-types";
 import type {
@@ -33,21 +34,79 @@ import type {
 } from "./types";
 
 // --- bookmarks ---
+function bookmarkSearchSql(q?: string) {
+  const needle = q?.trim().toLowerCase();
+  if (!needle) return null;
+  const p = `%${needle.replace(/[%_]/g, "")}%`;
+  return sql`(
+    lower(${bookmarks.title}) like ${p}
+    or lower(${bookmarks.url}) like ${p}
+    or lower(coalesce(${bookmarks.description}, '')) like ${p}
+    or lower(${bookmarks.tags}) like ${p}
+    or lower(coalesce(${bookmarks.category}, '')) like ${p}
+  )`;
+}
+
 export async function listBookmarks(
   userId: string,
-  opts?: { limit?: number }
+  opts?: ListPageOpts & { limit?: number }
 ): Promise<BookmarkRow[]> {
-  const lim = opts?.limit;
+  const conditions = [eq(bookmarks.userId, userId)];
+  const search = bookmarkSearchSql(opts?.q);
+  if (search) conditions.push(search);
   const base = db
     .select()
     .from(bookmarks)
-    .where(eq(bookmarks.userId, userId))
-    // 즐겨찾기 우선, 그다음 최신순
+    .where(and(...conditions))
     .orderBy(desc(bookmarks.isFavorite), desc(bookmarks.createdAt));
+  const lim = opts?.limit;
+  const off = opts?.offset ?? 0;
   if (lim && lim > 0) {
-    return qall(base.limit(lim));
+    return qall(base.limit(lim).offset(off));
   }
   return qall(base);
+}
+
+export async function countBookmarks(
+  userId: string,
+  opts?: { q?: string }
+): Promise<number> {
+  const conditions = [eq(bookmarks.userId, userId)];
+  const search = bookmarkSearchSql(opts?.q);
+  if (search) conditions.push(search);
+  const [row] = await qall(
+    db
+      .select({ c: count() })
+      .from(bookmarks)
+      .where(and(...conditions))
+  );
+  return Number(row?.c ?? 0);
+}
+
+export async function listBookmarkImportIndex(
+  userId: string
+): Promise<BookmarkRow[]> {
+  const rows = await qall(
+    db
+      .select({
+        id: bookmarks.id,
+        url: bookmarks.url,
+        title: bookmarks.title,
+        image: bookmarks.image,
+        description: bookmarks.description,
+        favicon: bookmarks.favicon,
+        category: bookmarks.category,
+        createdAt: bookmarks.createdAt,
+      })
+      .from(bookmarks)
+      .where(eq(bookmarks.userId, userId))
+  );
+  return rows.map((r) => ({
+    ...r,
+    userId,
+    tags: "[]",
+    isFavorite: 0,
+  }));
 }
 
 export async function getBookmark(
@@ -408,10 +467,26 @@ function findabilityColumns(input: {
   };
 }
 
+function pageSearchSql(q?: string) {
+  const needle = q?.trim().toLowerCase();
+  if (!needle) return null;
+  const p = `%${needle.replace(/[%_]/g, "")}%`;
+  return sql`(
+    lower(${customPages.title}) like ${p}
+    or lower(coalesce(${customPages.tags}, '')) like ${p}
+    or lower(coalesce(${customPages.sourceUrl}, '')) like ${p}
+  )`;
+}
+
 /** 목록용 — 본문 제외(경량). 등록일 최신순. */
-export async function listPages(userId: string): Promise<CustomPageRow[]> {
-  const rows = await qall(
-    db
+export async function listPages(
+  userId: string,
+  opts?: ListPageOpts
+): Promise<CustomPageRow[]> {
+  const conditions = [eq(customPages.userId, userId)];
+  const search = pageSearchSql(opts?.q);
+  if (search) conditions.push(search);
+  let query = db
       .select({
         id: customPages.id,
         userId: customPages.userId,
@@ -423,9 +498,12 @@ export async function listPages(userId: string): Promise<CustomPageRow[]> {
         isFavorite: customPages.isFavorite,
       })
       .from(customPages)
-      .where(eq(customPages.userId, userId))
-      .orderBy(desc(customPages.createdAt))
-  );
+      .where(and(...conditions))
+      .orderBy(desc(customPages.createdAt));
+  const lim = opts?.limit;
+  const off = opts?.offset ?? 0;
+  if (lim && lim > 0) query = query.limit(lim).offset(off) as typeof query;
+  const rows = await qall(query);
   return rows.map((r) => ({
     ...r,
     content: "{}",
@@ -605,14 +683,55 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 }
 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
-/** 즐겨찾기 우선 → 등록일 최신순 */
-export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
-  return qall(
-    db
-      .select()
-      .from(prompts)
-      .orderBy(desc(prompts.isFavorite), desc(prompts.createdAt))
+function promptSearchSql(q?: string) {
+  const needle = q?.trim().toLowerCase();
+  if (!needle) return null;
+  const p = `%${needle.replace(/[%_]/g, "")}%`;
+  return sql`(
+    lower(${prompts.title}) like ${p}
+    or lower(coalesce(${prompts.category}, '')) like ${p}
+    or lower(coalesce(${prompts.summary}, '')) like ${p}
+    or lower(coalesce(${prompts.whenToUse}, '')) like ${p}
+  )`;
+}
+
+/** 즐겨찾기 우선 → 등록일 최신순. 목록은 sections 본문을 빼다. */
+export async function listPrompts(
+  _userId?: string,
+  opts?: ListPageOpts
+): Promise<PromptRow[]> {
+  const search = promptSearchSql(opts?.q);
+  const base = db
+    .select({
+      id: prompts.id,
+      userId: prompts.userId,
+      title: prompts.title,
+      category: prompts.category,
+      summary: prompts.summary,
+      whenToUse: prompts.whenToUse,
+      isFavorite: prompts.isFavorite,
+      createdAt: prompts.createdAt,
+      updatedAt: prompts.updatedAt,
+    })
+    .from(prompts);
+  let query = (
+    search ? base.where(search) : base
+  ).orderBy(desc(prompts.isFavorite), desc(prompts.createdAt));
+  const lim = opts?.limit;
+  const off = opts?.offset ?? 0;
+  if (lim && lim > 0) query = query.limit(lim).offset(off) as typeof query;
+  const rows = await qall(query);
+  return rows.map((r) => ({ ...r, sections: "[]" }));
+}
+
+export async function countPrompts(opts?: { q?: string }): Promise<number> {
+  const search = promptSearchSql(opts?.q);
+  const [row] = await qall(
+    search
+      ? db.select({ c: count() }).from(prompts).where(search)
+      : db.select({ c: count() }).from(prompts)
   );
+  return Number(row?.c ?? 0);
 }
 
 export async function getPrompt(
@@ -642,15 +761,76 @@ export async function deletePrompt(id: string, _userId: string): Promise<void> {
 }
 
 // --- thread copies (소유자 스코프 — userId 필터 필수) ---
-/** 즐겨찾기 우선 → 등록일 최신순 */
-export async function listThreadCopies(userId: string): Promise<ThreadCopyRow[]> {
-  return qall(
+function copySearchSql(q?: string) {
+  const needle = q?.trim().toLowerCase();
+  if (!needle) return null;
+  const p = `%${needle.replace(/[%_]/g, "")}%`;
+  return sql`(
+    lower(${threadCopies.title}) like ${p}
+    or lower(coalesce(${threadCopies.tags}, '')) like ${p}
+    or lower(coalesce(${threadCopies.sourceUrl}, '')) like ${p}
+  )`;
+}
+
+/** 즐겨찾기 우선 → 등록일 최신순. 목록은 body를 빼다. */
+export async function listThreadCopies(
+  userId: string,
+  opts?: ListPageOpts
+): Promise<ThreadCopyRow[]> {
+  const conditions = [eq(threadCopies.userId, userId)];
+  const search = copySearchSql(opts?.q);
+  if (search) conditions.push(search);
+  let query = db
+    .select({
+      id: threadCopies.id,
+      userId: threadCopies.userId,
+      title: threadCopies.title,
+      sourceUrl: threadCopies.sourceUrl,
+      tags: threadCopies.tags,
+      isFavorite: threadCopies.isFavorite,
+      createdAt: threadCopies.createdAt,
+      updatedAt: threadCopies.updatedAt,
+    })
+    .from(threadCopies)
+    .where(and(...conditions))
+    .orderBy(desc(threadCopies.isFavorite), desc(threadCopies.createdAt));
+  const lim = opts?.limit;
+  const off = opts?.offset ?? 0;
+  if (lim && lim > 0) query = query.limit(lim).offset(off) as typeof query;
+  const rows = await qall(query);
+  return rows.map((r) => ({ ...r, body: "" }));
+}
+
+export async function countThreadCopies(
+  userId: string,
+  opts?: { q?: string }
+): Promise<number> {
+  const conditions = [eq(threadCopies.userId, userId)];
+  const search = copySearchSql(opts?.q);
+  if (search) conditions.push(search);
+  const [row] = await qall(
     db
-      .select()
+      .select({ c: count() })
       .from(threadCopies)
-      .where(eq(threadCopies.userId, userId))
-      .orderBy(desc(threadCopies.isFavorite), desc(threadCopies.createdAt))
+      .where(and(...conditions))
   );
+  return Number(row?.c ?? 0);
+}
+
+export async function countPages(
+  userId: string,
+  opts?: { q?: string }
+): Promise<number> {
+  const conditions = [eq(customPages.userId, userId)];
+  const search = pageSearchSql(opts?.q);
+  if (search) conditions.push(search);
+  const [row] = await qall(
+    db
+      .select({ c: count() })
+      .from(customPages)
+      .where(and(...conditions))
+  );
+  return Number(row?.c ?? 0);
 }
 
 export async function getThreadCopy(
@@ -961,14 +1141,16 @@ export async function searchStars(
     );
   }
 
-  const rows = await qall(
-    db
-      .select()
-      .from(githubStars)
-      .where(and(...conditions))
-      .orderBy(desc(githubStars.stars))
-      .limit(fetchLim)
-  );
+  const rows = (
+    await qall(
+      db
+        .select(starListColumns)
+        .from(githubStars)
+        .where(and(...conditions))
+        .orderBy(desc(githubStars.stars))
+        .limit(fetchLim)
+    )
+  ).map((r) => emptyStarBlobs(r) as GithubStarRow);
 
   if (!tag) return rows.slice(0, lim);
   return rows
