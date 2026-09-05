@@ -347,5 +347,10 @@
   "zenstory-ai/oh-story-claudecode": "장편·단편 웹소설의 랭킹 조사, 작품 분석, 집필, AI 티 제거, 표지까지 한 번에 다루는 소설 쓰기 스킬 팩입니다.",
   "career-ops-hq/career-ops": "오픈소스 AI 구직 도구입니다. 채용 포털을 훑고 공고를 A-H 보고서와 1-5점 점수로 평가한 뒤 CV를 맞추고 지원을 추적합니다. Claude Code, Codex, OpenCode, Antigravity 같은 코딩 CLI에서 로컬로 돌아갑니다.",
   "pacifio/atlas": "에이전트를 위한 소스 컨트롤입니다. 여러 코딩 에이전트를 쓰고, 변경을 추적하고, 한곳에서 조회합니다.",
-  "citrolabs/ego-lite": "AI 에이전트가 브라우저 자동화를 돌리는 브라우저입니다. 로그인된 브라우저 상태를 Codex나 Claude Code 같은 에이전트와 공유하되 작업을 방해하지 않습니다. 비용과 설정이 없습니다."
+  "citrolabs/ego-lite": "AI 에이전트가 브라우저 자동화를 돌리는 브라우저입니다. 로그인된 브라우저 상태를 Codex나 Claude Code 같은 에이전트와 공유하되 작업을 방해하지 않습니다. 비용과 설정이 없습니다.",
+  "albertrim/polish-doc": "분석 결과, 회의록, 초안을 하나의 HTML 문서로 만드는 Claude Code 스킬입니다. 개발자가 아닌 독자를 위해 짧고 그림이 많으며 AI 티를 한 번 더 걷어 냅니다.",
+  "humanlayer/skills": "HumanLayer의 Claude Code 스킬 모음입니다. CLAUDE.md 개선, React prop 타입 좁히기, 반복 에이전트 루프 등을 포함합니다.",
+  "DannyMac180/fable-advisor": "Claude Fable을 Opus, GPT, Grok의 오케스트레이터로 씁니다.",
+  "anthropics/commerce-agents": "Claude로 쇼핑·머천트 에이전트를 만드는 참조 청사진입니다. 리테일, 커머스, 통신, 엔터테인먼트 예제를 포함합니다.",
+  "vorssaint/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다."
 }
