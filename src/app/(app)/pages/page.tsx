@@ -1,15 +1,24 @@
 // 커스텀 페이지 목록
 import { PageList } from "@/components/pages/page-list";
 import { auth } from "@/lib/auth";
+import { parseListQuery } from "@/lib/list-query";
 import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
 
 export const runtime = "nodejs";
 
-export default async function PagesPage() {
+export default async function PagesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; q?: string }>;
+}) {
   const session = await auth();
   const userId = session!.user!.id;
-  const rows = await store.listPages(userId);
+  const query = parseListQuery(await searchParams);
+  const [rows, total] = await Promise.all([
+    store.listPages(userId, query),
+    store.countPages(userId, { q: query.q }),
+  ]);
 
   const list: CustomPage[] = rows.map((row) => {
     let content: unknown = {};
@@ -47,7 +56,7 @@ export default async function PagesPage() {
           수 있습니다.
         </p>
       </div>
-      <PageList pages={list} />
+      <PageList pages={list} total={total} page={query.page} q={query.q} />
     </div>
   );
 }

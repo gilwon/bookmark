@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   // fetchMeta: false 이면 메타 생략 (빠른 삽입만)
   const fetchMeta = body.fetchMeta !== false;
 
-  const existing = await store.listBookmarks(gate.user.userId);
+  const existing = await store.listBookmarkImportIndex(gate.user.userId);
   const existingByUrl = new Map(
     existing.map((b) => [b.url.toLowerCase(), b] as const)
   );

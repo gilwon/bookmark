@@ -4,19 +4,27 @@ import { BookmarkGrid } from "@/components/bookmarks/bookmark-grid";
 import { CategoryManager } from "@/components/bookmarks/category-manager";
 import { ImportBookmarksHtml } from "@/components/bookmarks/import-bookmarks-html";
 import { auth } from "@/lib/auth";
+import { parseListQuery } from "@/lib/list-query";
 import { store } from "@/lib/store";
 import type { Bookmark, Category } from "@/lib/types";
 
 export const runtime = "nodejs";
 
-export default async function BookmarksPage() {
+export default async function BookmarksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; q?: string }>;
+}) {
   const session = await auth();
   const userId = session!.user!.id;
   await store.ensureCategoriesFromBookmarks(userId);
+  const query = parseListQuery(await searchParams);
 
-  const [rows, catRows] = await Promise.all([
-    store.listBookmarks(userId),
+  const [rows, catRows, total, catCounts] = await Promise.all([
+    store.listBookmarks(userId, query),
     store.listCategories(userId),
+    store.countBookmarks(userId, { q: query.q }),
+    store.listCategoryCounts(userId, 10_000),
   ]);
 
   const list: Bookmark[] = rows.map((row) => {
@@ -41,13 +49,9 @@ export default async function BookmarksPage() {
     };
   });
 
-  const countMap = new Map<string, number>();
-  for (const b of list) {
-    const n = b.category?.trim();
-    if (!n) continue;
-    const k = n.toLowerCase();
-    countMap.set(k, (countMap.get(k) ?? 0) + 1);
-  }
+  const countMap = new Map(
+    catCounts.map((c) => [c.name.trim().toLowerCase(), c.count] as const)
+  );
 
   const categories: Category[] = catRows
     .map((r) => ({
@@ -73,7 +77,12 @@ export default async function BookmarksPage() {
       <AddBookmarkForm categories={categoryNames} />
       <CategoryManager categories={categories} />
       <ImportBookmarksHtml />
-      <BookmarkGrid bookmarks={list} />
+      <BookmarkGrid
+        bookmarks={list}
+        total={total}
+        page={query.page}
+        q={query.q}
+      />
     </div>
   );
 }
