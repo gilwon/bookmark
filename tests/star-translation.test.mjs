@@ -467,6 +467,21 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 3개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["DannyMac180/fable-advisor", "Claude Fable as an orchestrator for Opus, GPT and Grok"],
+      ["anthropics/commerce-agents", "Reference blueprint for building shopping and merchant agents with Claude. Examples in retail, commerce, telecom, and entertainment included."],
+      ["vorssaint/vorssaint-utils", "Free and open-source macOS menu bar toolkit."],
+    ];
+    assert.equal(cases.length, 3);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
@@ -491,6 +506,17 @@ describe("Star 설명 번역", () => {
     assert.equal(
       withKoreanTranslation("madwind0526/MeetingNote", null, null),
       "회의 기본 정보, 참석자, A/I List, Agenda를 관리하고 회의 오디오를 STT로 분석해 회의록 초안을 만드는 PC 앱입니다."
+    );
+  });
+
+  it("GitHub About가 비어 있는 최신 Star는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("albertrim/polish-doc", null, null),
+      "분석 결과, 회의록, 초안을 하나의 HTML 문서로 만드는 Claude Code 스킬입니다. 개발자가 아닌 독자를 위해 짧고 그림이 많으며 AI 티를 한 번 더 걷어 냅니다."
+    );
+    assert.equal(
+      withKoreanTranslation("humanlayer/skills", null, null),
+      "HumanLayer의 Claude Code 스킬 모음입니다. CLAUDE.md 개선, React prop 타입 좁히기, 반복 에이전트 루프 등을 포함합니다."
     );
   });
 });
