@@ -230,15 +230,15 @@ drop policy if exists "prompts_update_all" on public.prompts;
 drop policy if exists "prompts_delete_own" on public.prompts;
 drop policy if exists "prompts_delete_all" on public.prompts;
 
--- 프롬프트는 공유 라이브러리: 인증된 사용자는 전체 조회·수정 가능
+-- 프롬프트는 서버(service_role)만 접근. anon 키로 전체 조회·수정 불가.
 create policy "prompts_select_all" on public.prompts
-  for select using (true);
+  for select using (false);
 create policy "prompts_insert_own" on public.prompts
-  for insert with check (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+  for insert with check (false);
 create policy "prompts_update_all" on public.prompts
-  for update using (true);
+  for update using (false);
 create policy "prompts_delete_all" on public.prompts
-  for delete using (true);
+  for delete using (false);
 
 drop policy if exists "thread_copies_select_own" on public.thread_copies;
 drop policy if exists "thread_copies_insert_own" on public.thread_copies;
