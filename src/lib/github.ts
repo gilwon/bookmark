@@ -1,6 +1,7 @@
 // Octokit으로 GitHub Star 목록을 가져와 upsert / unstar 정리 + 변경 감지
 import { v4 as uuidv4 } from "uuid";
 import { store } from "@/lib/store";
+import { planStarSync } from "@/lib/star-sync";
 import { withKoreanTranslation } from "@/lib/star-translation";
 import { Octokit } from "octokit";
 
@@ -138,123 +139,31 @@ export async function fetchRepoByFullName(
   };
 }
 
-function topicsEqual(a: string, bTopics: string[]): boolean {
-  try {
-    const parsed = JSON.parse(a || "[]") as string[];
-    if (parsed.length !== bTopics.length) return false;
-    const sa = [...parsed].sort().join("\0");
-    const sb = [...bTopics].sort().join("\0");
-    return sa === sb;
-  } catch {
-    return false;
-  }
-}
-
 /** 사용자 Star 목록 upsert + unstar 로컬 삭제 + 변경 뱃지 */
 export async function upsertStars(
   userId: string,
   repos: StarRepo[]
 ): Promise<UpsertStarsResult> {
   const now = new Date().toISOString();
-  const seen = new Set(repos.map((r) => r.repoFullName));
-  const localBefore = await store.listStars(userId);
-  const isFirstSync = localBefore.length === 0;
-
-  const addedRepos: string[] = [];
-  const updatedRepos: { name: string; starsDelta: number }[] = [];
-  let starsChanged = 0;
-
-  for (const repo of repos) {
-    const existing = await store.getStarByRepo(userId, repo.repoFullName);
-    if (existing) {
-      const description = withKoreanTranslation(
-        repo.repoFullName,
-        repo.description,
-        existing.description
-      );
-      const starsDelta = repo.stars - (existing.stars ?? 0);
-      const metaChanged =
-        (existing.description ?? null) !== description ||
-        (existing.language ?? null) !== repo.language ||
-        existing.url !== repo.url ||
-        !topicsEqual(existing.topics, repo.topics);
-
-      const hasChange = starsDelta !== 0 || metaChanged;
-      if (starsDelta !== 0) starsChanged += 1;
-
-      if (hasChange) {
-        updatedRepos.push({ name: repo.repoFullName, starsDelta });
-        await store.updateStar(existing.id, userId, {
-          description,
-          language: repo.language,
-          stars: repo.stars,
-          topics: JSON.stringify(repo.topics),
-          url: repo.url,
-          lastSynced: now,
-          // 이미 new 이면 유지, 아니면 updated
-          changeKind: existing.changeKind === "new" ? "new" : "updated",
-          starsDelta,
-          changedAt: now,
-        });
-      } else {
-        await store.updateStar(existing.id, userId, {
-          lastSynced: now,
-        });
-      }
-    } else {
-      // 첫 전체 동기화는 전부 new 로 표시하면 과다 → 뱃지 없음
-      const kind = isFirstSync ? null : "new";
-      if (kind === "new") addedRepos.push(repo.repoFullName);
-      await store.insertStar({
-        id: uuidv4(),
-        userId,
-        repoFullName: repo.repoFullName,
-        description: withKoreanTranslation(
-          repo.repoFullName,
-          repo.description,
-          null
-        ),
-        language: repo.language,
-        stars: repo.stars,
-        topics: JSON.stringify(repo.topics),
-        url: repo.url,
-        lastSynced: now,
-        createdAt: now,
-        changeKind: kind,
-        starsDelta: 0,
-        changedAt: kind ? now : null,
-        source: "sync",
-        isFavorite: 0,
-        detailJson: null,
-        readmeMd: null,
-        readmeMdKo: null,
-        detailFetchedAt: null,
-      });
-    }
-  }
-
   const local = await store.listStars(userId);
-  let removed = 0;
-  const removedRepos: string[] = [];
-  for (const row of local) {
-    // 수동 추가 레포는 동기화 시 유지
-    if (row.source === "manual") continue;
-    if (!seen.has(row.repoFullName)) {
-      removedRepos.push(row.repoFullName);
-      await store.deleteStar(row.id, userId);
-      removed += 1;
-    }
-  }
-
+  const plan = planStarSync({
+    userId,
+    repos,
+    local,
+    now,
+    newId: uuidv4,
+    translate: withKoreanTranslation,
+  });
+  await store.applyStarSync(userId, plan.batch);
   return {
     count: repos.length,
-    removed,
+    removed: plan.removedRepos.length,
     lastSynced: now,
-    added: addedRepos.length,
-    updated: updatedRepos.length,
-    starsChanged,
-    addedRepos,
-    updatedRepos,
-    removedRepos,
+    added: plan.added,
+    updated: plan.updated,
+    starsChanged: plan.starsChanged,
+    addedRepos: plan.addedRepos,
+    updatedRepos: plan.updatedRepos,
+    removedRepos: plan.removedRepos,
   };
 }

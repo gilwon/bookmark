@@ -33,6 +33,9 @@ import type {
   DashboardCounts,
   SearchOpts,
 } from "./query-types";
+import type { StarSyncBatch } from "@/lib/star-sync";
+import { STAR_LIST_SELECT } from "./star-list";
+import { fetchAllPaged } from "./supabase-page";
 import type {
   AgentDocRow,
   BookmarkRow,
@@ -70,29 +73,31 @@ export async function listBookmarks(
   userId: string,
   opts?: { limit?: number }
 ): Promise<BookmarkRow[]> {
-  let query = sb()
-    .from("bookmarks")
-    .select("*")
-    .eq("user_id", userId)
-    // 즐겨찾기 우선, 그다음 최신순
-    .order("is_favorite", { ascending: false })
-    .order("created_at", { ascending: false });
-  if (opts?.limit && opts.limit > 0) {
-    query = query.limit(opts.limit);
-  }
-  let { data, error } = await query;
-  // 컬럼 미적용(구 스키마) 시 폴백
-  if (error && /is_favorite/i.test(error.message)) {
-    let fallback = sb()
+  const maxRows = opts?.limit && opts.limit > 0 ? opts.limit : undefined;
+  return fetchAllPaged(async (from, to) => {
+    let query = sb()
       .from("bookmarks")
       .select("*")
       .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-    if (opts?.limit && opts.limit > 0) fallback = fallback.limit(opts.limit);
-    ({ data, error } = await fallback);
-  }
-  throwIfError(error, "listBookmarks");
-  return (data ?? []).map(mapBookmark);
+      // 즐겨찾기 우선, 그다음 최신순
+      .order("is_favorite", { ascending: false })
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    let { data, error } = await query;
+    // 컬럼 미적용(구 스키마) 시 폴백
+    if (error && /is_favorite/i.test(error.message)) {
+      const fallback = await sb()
+        .from("bookmarks")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .range(from, to);
+      data = fallback.data;
+      error = fallback.error;
+    }
+    throwIfError(error, "listBookmarks");
+    return (data ?? []).map(mapBookmark);
+  }, maxRows);
 }
 
 export async function getBookmark(
@@ -278,38 +283,42 @@ export async function ensureCategoriesFromBookmarks(
 
 // --- stars ---
 export async function listStars(userId: string): Promise<GithubStarRow[]> {
-  let { data, error } = await sb()
-    .from("github_stars")
-    .select("*")
-    .eq("user_id", userId)
-    .order("is_favorite", { ascending: false })
-    .order("stars", { ascending: false });
-  if (error && /is_favorite/i.test(error.message)) {
-    ({ data, error } = await sb()
+  return fetchAllPaged(async (from, to) => {
+    let { data, error } = await sb()
       .from("github_stars")
-      .select("*")
+      .select(STAR_LIST_SELECT)
       .eq("user_id", userId)
-      .order("stars", { ascending: false }));
-  }
-  throwIfError(error, "listStars");
-  return (data ?? []).map(mapStar);
+      .order("is_favorite", { ascending: false })
+      .order("stars", { ascending: false })
+      .range(from, to);
+    if (error && /is_favorite/i.test(error.message)) {
+      ({ data, error } = await sb()
+        .from("github_stars")
+        .select(STAR_LIST_SELECT)
+        .eq("user_id", userId)
+        .order("stars", { ascending: false })
+        .range(from, to));
+    }
+    throwIfError(error, "listStars");
+    return (data ?? []).map(mapStar);
+  });
 }
 
 export async function listStarsBySynced(
   userId: string,
   opts?: { limit?: number }
 ): Promise<GithubStarRow[]> {
-  let query = sb()
-    .from("github_stars")
-    .select("*")
-    .eq("user_id", userId)
-    .order("last_synced", { ascending: false });
-  if (opts?.limit && opts.limit > 0) {
-    query = query.limit(opts.limit);
-  }
-  const { data, error } = await query;
-  throwIfError(error, "listStarsBySynced");
-  return (data ?? []).map(mapStar);
+  const maxRows = opts?.limit && opts.limit > 0 ? opts.limit : undefined;
+  return fetchAllPaged(async (from, to) => {
+    const { data, error } = await sb()
+      .from("github_stars")
+      .select(STAR_LIST_SELECT)
+      .eq("user_id", userId)
+      .order("last_synced", { ascending: false })
+      .range(from, to);
+    throwIfError(error, "listStarsBySynced");
+    return (data ?? []).map(mapStar);
+  }, maxRows);
 }
 
 export async function getStar(
@@ -426,6 +435,36 @@ export async function countStarChanges(userId: string): Promise<number> {
   return count ?? 0;
 }
 
+const STAR_SYNC_CHUNK = 100;
+const STAR_SYNC_UPDATE_PARALLEL = 20;
+
+/** insert/update/delete를 묶어서 보낸다. 실패 시 같은 계획으로 다시 돌릴 수 있다. */
+export async function applyStarSync(
+  userId: string,
+  batch: StarSyncBatch
+): Promise<void> {
+  for (let i = 0; i < batch.inserts.length; i += STAR_SYNC_CHUNK) {
+    const slice = batch.inserts.slice(i, i + STAR_SYNC_CHUNK);
+    const { error } = await sb()
+      .from("github_stars")
+      .upsert(slice.map(starToDb), { onConflict: "id" });
+    throwIfError(error, "applyStarSync.insert");
+  }
+  for (let i = 0; i < batch.updates.length; i += STAR_SYNC_UPDATE_PARALLEL) {
+    const slice = batch.updates.slice(i, i + STAR_SYNC_UPDATE_PARALLEL);
+    await Promise.all(slice.map((u) => updateStar(u.id, userId, u.patch)));
+  }
+  for (let i = 0; i < batch.deleteIds.length; i += STAR_SYNC_CHUNK) {
+    const ids = batch.deleteIds.slice(i, i + STAR_SYNC_CHUNK);
+    const { error } = await sb()
+      .from("github_stars")
+      .delete()
+      .eq("user_id", userId)
+      .in("id", ids);
+    throwIfError(error, "applyStarSync.delete");
+  }
+}
+
 export async function deleteStar(id: string, userId: string): Promise<void> {
   const { error } = await sb()
     .from("github_stars")
@@ -475,22 +514,26 @@ function findabilityColumns(input: {
 
 /** 목록용 — 본문 제외(경량). 등록일 최신순. */
 export async function listPages(userId: string): Promise<CustomPageRow[]> {
-  let { data, error } = await sb()
-    .from("custom_pages")
-    .select("id, user_id, title, created_at, updated_at, tags, source_url, is_favorite")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-  if (error && /(tags|source_url|is_favorite|search_text)/i.test(error.message)) {
-    const fallback = await sb()
+  return fetchAllPaged(async (from, to) => {
+    let { data, error } = await sb()
       .from("custom_pages")
-      .select("id, user_id, title, created_at, updated_at")
+      .select("id, user_id, title, created_at, updated_at, tags, source_url, is_favorite")
       .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-    data = fallback.data as typeof data;
-    error = fallback.error;
-  }
-  throwIfError(error, "listPages");
-  return (data ?? []).map((r) => mapPage({ ...r, content: "{}" }));
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    if (error && /(tags|source_url|is_favorite|search_text)/i.test(error.message)) {
+      const fallback = await sb()
+        .from("custom_pages")
+        .select("id, user_id, title, created_at, updated_at")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .range(from, to);
+      data = fallback.data as typeof data;
+      error = fallback.error;
+    }
+    throwIfError(error, "listPages");
+    return (data ?? []).map((r) => mapPage({ ...r, content: "{}" }));
+  });
 }
 
 export async function getPage(
@@ -720,28 +763,33 @@ export async function deleteAgentDoc(id: string, userId: string): Promise<void> 
 // --- prompts (공유 라이브러리 — 로그인 사용자 전원 조회/수정) ---
 /** 즐겨찾기 우선 → 등록일 최신순 */
 export async function listPrompts(_userId?: string): Promise<PromptRow[]> {
-  let { data, error } = await sb()
-    .from("prompts")
-    .select("*")
-    .order("is_favorite", { ascending: false })
-    .order("created_at", { ascending: false });
-  // 컬럼 미적용(구 스키마) 시 폴백
-  if (error && /is_favorite/i.test(error.message)) {
-    ({ data, error } = await sb()
-      .from("prompts")
-      .select("*")
-      .order("created_at", { ascending: false }));
-  }
-  // created_at 정렬 실패 시 updated_at
-  if (error && /created_at/i.test(error.message)) {
-    ({ data, error } = await sb()
+  return fetchAllPaged(async (from, to) => {
+    let { data, error } = await sb()
       .from("prompts")
       .select("*")
       .order("is_favorite", { ascending: false })
-      .order("updated_at", { ascending: false }));
-  }
-  throwIfError(error, "listPrompts");
-  return (data ?? []).map(mapPrompt);
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    // 컬럼 미적용(구 스키마) 시 폴백
+    if (error && /is_favorite/i.test(error.message)) {
+      ({ data, error } = await sb()
+        .from("prompts")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(from, to));
+    }
+    // created_at 정렬 실패 시 updated_at
+    if (error && /created_at/i.test(error.message)) {
+      ({ data, error } = await sb()
+        .from("prompts")
+        .select("*")
+        .order("is_favorite", { ascending: false })
+        .order("updated_at", { ascending: false })
+        .range(from, to));
+    }
+    throwIfError(error, "listPrompts");
+    return (data ?? []).map(mapPrompt);
+  });
 }
 
 export async function getPrompt(
@@ -799,14 +847,17 @@ export async function deletePrompt(id: string, _userId: string): Promise<void> {
 // --- thread copies (소유자 스코프 — userId 필터 필수) ---
 /** 즐겨찾기 우선 → 등록일 최신순 */
 export async function listThreadCopies(userId: string): Promise<ThreadCopyRow[]> {
-  const { data, error } = await sb()
-    .from("thread_copies")
-    .select("*")
-    .eq("user_id", userId)
-    .order("is_favorite", { ascending: false })
-    .order("created_at", { ascending: false });
-  if (throwUnlessMissingCopies(error, "listThreadCopies")) return [];
-  return (data ?? []).map(mapThreadCopy);
+  return fetchAllPaged(async (from, to) => {
+    const { data, error } = await sb()
+      .from("thread_copies")
+      .select("*")
+      .eq("user_id", userId)
+      .order("is_favorite", { ascending: false })
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    if (throwUnlessMissingCopies(error, "listThreadCopies")) return [];
+    return (data ?? []).map(mapThreadCopy);
+  });
 }
 
 export async function getThreadCopy(
