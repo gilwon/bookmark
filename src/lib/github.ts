@@ -27,11 +27,18 @@ export type UpsertStarsResult = {
   removedRepos: string[];
 };
 
+/** 한 동기화에서 가져올 starred 상한 (페이지 100 × 30). */
+export const MAX_STARRED_REPOS = 3000;
+const GITHUB_FETCH_TIMEOUT_MS = 15_000;
+
 /** GitHub access_token으로 starred 레포를 페이지네이션해 가져온다. */
 export async function fetchStarredRepos(
   accessToken: string
 ): Promise<StarRepo[]> {
-  const octokit = new Octokit({ auth: accessToken });
+  const octokit = new Octokit({
+    auth: accessToken,
+    request: { timeout: GITHUB_FETCH_TIMEOUT_MS },
+  });
   const repos: StarRepo[] = [];
 
   for await (const response of octokit.paginate.iterator(
@@ -66,7 +73,9 @@ export async function fetchStarredRepos(
         topics: repo.topics ?? [],
         url: repo.html_url,
       });
+      if (repos.length >= MAX_STARRED_REPOS) break;
     }
+    if (repos.length >= MAX_STARRED_REPOS) break;
   }
 
   return repos;
@@ -110,7 +119,11 @@ export async function fetchRepoByFullName(
 
   const res = await fetch(
     `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`,
-    { headers, cache: "no-store" }
+    {
+      headers,
+      cache: "no-store",
+      signal: AbortSignal.timeout(GITHUB_FETCH_TIMEOUT_MS),
+    }
   );
   if (res.status === 404) {
     throw new Error("레포를 찾을 수 없습니다. (비공개이거나 존재하지 않음)");
