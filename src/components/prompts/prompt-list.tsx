@@ -4,8 +4,9 @@
 import { Copy, Plus, Star, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Prompt } from "@/lib/types";
+import { useListNav } from "@/hooks/use-list-nav";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import {
@@ -111,11 +112,23 @@ function shortCatLabel(full: string, group: string): string {
 }
 
 /** 프롬프트 목록 UI */
-export function PromptList({ prompts }: { prompts: Prompt[] }) {
+export function PromptList({
+  prompts,
+  total,
+  page: serverPage = 1,
+  q: serverQ = "",
+}: {
+  prompts: Prompt[];
+  total?: number;
+  page?: number;
+  q?: string;
+}) {
   const router = useRouter();
-  const [q, setQ] = useState("");
+  const serverPaged = total != null;
+  const nav = useListNav(serverQ, serverPage);
+  const [localQ, setLocalQ] = useState("");
   const [sort, setSort] = useState<ListSortKey>("created_desc");
-  const [page, setPage] = useState(1);
+  const [localPage, setLocalPage] = useState(1);
   /** 상위 그룹 필터 (GPT공식 / 클로드 / 일잘러 · n …) */
   const [activeGroup, setActiveGroup] = useState(ALL);
   /** 세부 카테고리 필터 (그룹 내) */
@@ -125,6 +138,14 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
   /** 팝업으로 열려 있는 프롬프트 id */
   const [openId, setOpenId] = useState<string | null>(null);
+  /** 목록 blob은 sections가 비어 있어 상세 GET으로 채운다 */
+  const [hydrated, setHydrated] = useState<Record<string, Prompt>>({});
+  const hydratedRef = useRef(hydrated);
+  hydratedRef.current = hydrated;
+  const query = serverPaged ? nav.q : localQ;
+  const setQuery = serverPaged ? nav.setQ : setLocalQ;
+  const currentPage = serverPaged ? serverPage : localPage;
+  const onPage = serverPaged ? nav.goPage : setLocalPage;
 
   const categories = useMemo(() => {
     const map = new Map<string, number>();
@@ -161,32 +182,32 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
     return categories.filter((c) => categoryGroup(c.label) === activeGroup);
   }, [categories, activeGroup]);
 
-  /** 검색어 변경 — 1페이지로 리셋 */
+  /** 검색어 변경 — 클라이언트 페이징이면 1페이지로 리셋 */
   function updateQuery(next: string) {
-    setQ(next);
-    setPage(1);
+    setQuery(next);
+    if (!serverPaged) setLocalPage(1);
   }
 
-  /** 정렬 변경 — 1페이지로 리셋 */
+  /** 정렬 변경 — 클라이언트 페이징이면 1페이지로 리셋 */
   function updateSort(next: ListSortKey) {
     setSort(next);
-    setPage(1);
+    if (!serverPaged) setLocalPage(1);
   }
 
-  /** 상위 그룹 변경 — 세부 카테고리·1페이지 리셋 */
+  /** 상위 그룹 변경 — 세부 카테고리 리셋. 칩은 현재 페이지에만 적용 */
   function updateGroup(next: string) {
     setActiveGroup(next);
     setActiveCat(ALL);
-    setPage(1);
+    if (!serverPaged) setLocalPage(1);
   }
 
-  /** 세부 카테고리 변경 — 1페이지로 리셋 */
+  /** 세부 카테고리 변경 — 클라이언트 페이징이면 1페이지로 리셋 */
   function updateCat(next: string) {
     setActiveCat(next);
-    setPage(1);
+    if (!serverPaged) setLocalPage(1);
   }
 
-  // 필터 후 정렬
+  // 필터 후 정렬. 서버 페이징이면 텍스트 검색은 서버가 했다.
   const filtered = useMemo(() => {
     return prompts
       .filter((p) => {
@@ -194,6 +215,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         const group = categoryGroup(cat);
         if (activeGroup !== ALL && group !== activeGroup) return false;
         if (activeCat !== ALL && cat !== activeCat) return false;
+        if (serverPaged) return true;
         const hay = [
           p.title,
           p.category ?? "",
@@ -201,29 +223,58 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           p.whenToUse ?? "",
           ...p.sections.flatMap((s) => [s.title, s.body]),
         ].join(" ");
-        return matchesSearchTokens(hay, q);
+        return matchesSearchTokens(hay, query);
       })
       .sort((a, b) => comparePrompt(a, b, sort));
-  }, [prompts, q, activeGroup, activeCat, sort]);
+  }, [prompts, query, activeGroup, activeCat, sort, serverPaged]);
 
-  /** 현재 페이지에 표시할 항목 (필터 결과 슬라이스) */
+  /** 서버 페이징이면 슬라이스하지 않고 현재 페이지 행만 쓴다 */
   const pageItems = useMemo(
-    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
-    [filtered, page]
+    () =>
+      serverPaged
+        ? filtered
+        : slicePage(filtered, currentPage, DEFAULT_PAGE_SIZE),
+    [filtered, currentPage, serverPaged]
   );
 
   const hasActiveFilter = activeGroup !== ALL || activeCat !== ALL;
 
-  /** 팝업에 표시할 프롬프트 — prompts가 갱신되면 즐겨찾기 등 변경사항도 함께 반영 */
-  const openPrompt = useMemo(
-    () => prompts.find((p) => p.id === openId) ?? null,
-    [prompts, openId]
-  );
+  /** 팝업에 표시할 프롬프트 — 하이드레이션 본문 + 목록의 즐겨찾기 */
+  const openPrompt = useMemo(() => {
+    if (!openId) return null;
+    const listP = prompts.find((p) => p.id === openId) ?? null;
+    const full = hydrated[openId];
+    if (full && listP) return { ...full, isFavorite: listP.isFavorite };
+    return full ?? listP;
+  }, [prompts, openId, hydrated]);
+
+  useEffect(() => {
+    if (!openId) return;
+    const cached = hydratedRef.current[openId];
+    const listP = prompts.find((p) => p.id === openId);
+    if ((cached ?? listP)?.sections.length) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/prompts/${openId}`);
+        if (!res.ok) return;
+        const full = (await res.json()) as Prompt;
+        if (!cancelled) {
+          setHydrated((m) => ({ ...m, [full.id]: full }));
+        }
+      } catch {
+        /* 상세 로드 실패는 빈 섹션 그대로 둔다 */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [openId, prompts]);
 
   function clearFilters() {
     setActiveGroup(ALL);
     setActiveCat(ALL);
-    setPage(1);
+    if (!serverPaged) setLocalPage(1);
   }
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
@@ -269,7 +320,22 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
 
   /** 첫 섹션 본문만 복사 (카드 미리보기 복사 버튼) */
   async function copyFirstSection(p: Prompt) {
-    const text = p.sections[0]?.body ?? "";
+    let text = p.sections[0]?.body ?? "";
+    if (!text) {
+      text = hydratedRef.current[p.id]?.sections[0]?.body ?? "";
+    }
+    if (!text) {
+      try {
+        const res = await fetch(`/api/prompts/${p.id}`);
+        if (res.ok) {
+          const full = (await res.json()) as Prompt;
+          setHydrated((m) => ({ ...m, [full.id]: full }));
+          text = full.sections[0]?.body ?? "";
+        }
+      } catch {
+        /* 본문 로드 실패 시 빈 문자열 복사 */
+      }
+    }
     try {
       await navigator.clipboard.writeText(text);
       setCopiedId(p.id);
@@ -301,7 +367,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
       <div className="mx-auto w-full max-w-2xl">
         <SearchSuggestInput
           placeholder="프롬프트 검색…"
-          value={q}
+          value={query}
           onChange={updateQuery}
           suggestions={suggestions}
           inputClassName="h-11 text-sm"
@@ -310,10 +376,13 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
 
       <div className="flex flex-wrap items-end justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          검색 결과 {formatCount(filtered.length)}개
-          {filtered.length > DEFAULT_PAGE_SIZE
-            ? ` · 이 페이지 ${formatCount(pageItems.length)}개`
-            : ""}
+          {serverPaged
+            ? `전체 ${formatCount(total)}개`
+            : `검색 결과 ${formatCount(filtered.length)}개${
+                filtered.length > DEFAULT_PAGE_SIZE
+                  ? ` · 이 페이지 ${formatCount(pageItems.length)}개`
+                  : ""
+              }`}
           {hasActiveFilter ? " · 필터 적용 중" : ""}
         </p>
         <div className="flex items-end gap-2">
@@ -366,7 +435,7 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
           </div>
           <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:thin]">
             <FilterChip
-              label={`전체 (${formatCount(prompts.length)})`}
+              label={`전체 (${formatCount(serverPaged ? total : prompts.length)})`}
               active={activeGroup === ALL}
               onClick={() => updateGroup(ALL)}
             />
@@ -413,7 +482,8 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
         </div>
       )}
 
-      {prompts.length === 0 ? (
+      {(!serverPaged && prompts.length === 0) ||
+      (serverPaged && total === 0 && !serverQ) ? (
         <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
           등록된 프롬프트가 없습니다. 새 프롬프트를 만들어 보세요.
         </div>
@@ -453,15 +523,15 @@ export function PromptList({ prompts }: { prompts: Prompt[] }) {
               />
             ))}
           </div>
-
-          <ListPagination
-            page={page}
-            total={filtered.length}
-            pageSize={DEFAULT_PAGE_SIZE}
-            onChange={setPage}
-          />
         </div>
       )}
+
+      <ListPagination
+        page={currentPage}
+        total={serverPaged ? total : filtered.length}
+        pageSize={DEFAULT_PAGE_SIZE}
+        onChange={onPage}
+      />
 
       <PromptModal
         prompt={openPrompt}
@@ -608,16 +678,19 @@ function PromptCard({
           </p>
         )}
 
-        <div className="relative overflow-hidden rounded-lg border border-border bg-muted/40 p-3">
-          <p className="line-clamp-5 whitespace-pre-wrap font-mono text-xs text-foreground/80">
-            {preview || "(내용 없음)"}
-          </p>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent" />
-        </div>
+        {preview ? (
+          <div className="relative overflow-hidden rounded-lg border border-border bg-muted/40 p-3">
+            <p className="line-clamp-5 whitespace-pre-wrap font-mono text-xs text-foreground/80">
+              {preview}
+            </p>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-background to-transparent" />
+          </div>
+        ) : null}
 
         <div className="flex items-center justify-between gap-2 pt-1">
           <p className="text-[11px] text-muted-foreground">
-            섹션 {p.sections.length} · 등록 {formatListDate(p.createdAt)}
+            {p.sections.length > 0 ? `섹션 ${p.sections.length} · ` : null}
+            등록 {formatListDate(p.createdAt)}
           </p>
           <button
             type="button"
