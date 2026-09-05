@@ -42,6 +42,7 @@ export async function translateReadmeToKorean(
         ],
       }),
       cache: "no-store",
+      signal: AbortSignal.timeout(20_000),
     });
     if (!res.ok) {
       console.warn(
