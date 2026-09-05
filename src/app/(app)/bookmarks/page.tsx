@@ -4,6 +4,7 @@ import { BookmarkGrid } from "@/components/bookmarks/bookmark-grid";
 import { CategoryManager } from "@/components/bookmarks/category-manager";
 import { ImportBookmarksHtml } from "@/components/bookmarks/import-bookmarks-html";
 import { auth } from "@/lib/auth";
+import { cachedUserList } from "@/lib/list-cache";
 import { parseListQuery } from "@/lib/list-query";
 import { store } from "@/lib/store";
 import type { Bookmark, Category } from "@/lib/types";
@@ -21,10 +22,18 @@ export default async function BookmarksPage({
   const query = parseListQuery(await searchParams);
 
   const [rows, catRows, total, catCounts] = await Promise.all([
-    store.listBookmarks(userId, query),
-    store.listCategories(userId),
-    store.countBookmarks(userId, { q: query.q }),
-    store.listCategoryCounts(userId, 10_000),
+    cachedUserList(userId, "bookmarks", `rows:${query.q}:${query.page}`, () =>
+      store.listBookmarks(userId, query)
+    ),
+    cachedUserList(userId, "bookmarks", "cats", () =>
+      store.listCategories(userId)
+    ),
+    cachedUserList(userId, "bookmarks", `count:${query.q}`, () =>
+      store.countBookmarks(userId, { q: query.q })
+    ),
+    cachedUserList(userId, "bookmarks", "catCounts", () =>
+      store.listCategoryCounts(userId, 10_000)
+    ),
   ]);
 
   const list: Bookmark[] = rows.map((row) => {

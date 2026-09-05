@@ -7,6 +7,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import {
   PAGE_FAVORITE_COLUMN_MISSING,
   PAGE_FAVORITE_COLUMN_USER_MESSAGE,
@@ -152,6 +153,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
   try {
     const row = await store.updatePage(id, gate.user.userId, patch);
     if (!row) return ownershipError();
+    revalidateUserList(gate.user.userId, "pages");
     return NextResponse.json(toPage(row));
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -175,5 +177,6 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   const existing = await store.getPage(id, gate.user.userId);
   if (!existing) return ownershipError();
   await store.deletePage(id, gate.user.userId);
+  revalidateUserList(gate.user.userId, "pages");
   return NextResponse.json({ ok: true });
 }

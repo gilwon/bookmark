@@ -1,6 +1,7 @@
 // 커스텀 페이지 목록
 import { PageList } from "@/components/pages/page-list";
 import { auth } from "@/lib/auth";
+import { cachedUserList } from "@/lib/list-cache";
 import { parseListQuery } from "@/lib/list-query";
 import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
@@ -16,8 +17,12 @@ export default async function PagesPage({
   const userId = session!.user!.id;
   const query = parseListQuery(await searchParams);
   const [rows, total] = await Promise.all([
-    store.listPages(userId, query),
-    store.countPages(userId, { q: query.q }),
+    cachedUserList(userId, "pages", `rows:${query.q}:${query.page}`, () =>
+      store.listPages(userId, query)
+    ),
+    cachedUserList(userId, "pages", `count:${query.q}`, () =>
+      store.countPages(userId, { q: query.q })
+    ),
   ]);
 
   const list: CustomPage[] = rows.map((row) => {

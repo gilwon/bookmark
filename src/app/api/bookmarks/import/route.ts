@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { categoryFromUrl, extractMeta, mapPool } from "@/lib/meta";
 import { store } from "@/lib/store";
 
@@ -217,6 +218,10 @@ export async function POST(req: Request) {
     });
     imported += 1;
   });
+
+  if (imported > 0 || enriched > 0) {
+    revalidateUserList(gate.user.userId, "bookmarks");
+  }
 
   return NextResponse.json({
     ok: true,

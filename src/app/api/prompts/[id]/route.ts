@@ -7,6 +7,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { normalizeSections, rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
 import type { PromptSection } from "@/lib/types";
@@ -84,6 +85,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
 
   const row = await store.updatePrompt(id, gate.user.userId, patch);
   if (!row) return ownershipError();
+  revalidateUserList(gate.user.userId, "prompts");
   return NextResponse.json(rowToPrompt(row));
 }
 
@@ -94,5 +96,6 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   const existing = await store.getPrompt(id, gate.user.userId);
   if (!existing) return ownershipError();
   await store.deletePrompt(id, gate.user.userId);
+  revalidateUserList(gate.user.userId, "prompts");
   return NextResponse.json({ ok: true });
 }

@@ -8,6 +8,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { auth } from "@/lib/auth";
+import { revalidateUserList } from "@/lib/list-cache";
 import { preparePageFindability } from "@/lib/page-findability";
 import { store } from "@/lib/store";
 import type { CustomPage } from "@/lib/types";
@@ -115,5 +116,6 @@ export async function POST(req: Request) {
     updatedAt: now,
   });
 
+  revalidateUserList(session.user.id, "pages");
   return NextResponse.json(toPage(row), { status: 201 });
 }

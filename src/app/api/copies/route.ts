@@ -9,6 +9,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { store } from "@/lib/store";
 import {
   THREAD_COPIES_TABLE_USER_MESSAGE,
@@ -80,6 +81,7 @@ export async function POST(req: Request) {
       createdAt: now,
       updatedAt: now,
     });
+    revalidateUserList(gate.user.userId, "copies");
     return NextResponse.json(rowToThreadCopy(row), { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "";

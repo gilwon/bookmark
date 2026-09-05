@@ -8,6 +8,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { normalizeSections, rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
 import type { PromptSection } from "@/lib/types";
@@ -85,5 +86,6 @@ export async function POST(req: Request) {
     updatedAt: now,
   });
 
+  revalidateUserList(gate.user.userId, "prompts");
   return NextResponse.json(rowToPrompt(row), { status: 201 });
 }

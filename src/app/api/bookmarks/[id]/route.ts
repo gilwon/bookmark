@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { ownershipError, requireUser } from "@/lib/authz";
 import { bookmarkUrlKey, isSameBookmarkUrl } from "@/lib/bookmark-url";
+import { revalidateUserList } from "@/lib/list-cache";
 import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -80,6 +81,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
 
   const row = await store.updateBookmark(id, gate.user.userId, patch);
   if (!row) return ownershipError();
+  revalidateUserList(gate.user.userId, "bookmarks");
 
   let tags: string[] = [];
   try {
@@ -110,5 +112,6 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   const existing = await store.getBookmark(id, gate.user.userId);
   if (!existing) return ownershipError();
   await store.deleteBookmark(id, gate.user.userId);
+  revalidateUserList(gate.user.userId, "bookmarks");
   return NextResponse.json({ ok: true });
 }
