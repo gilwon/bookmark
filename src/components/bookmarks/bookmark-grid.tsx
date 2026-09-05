@@ -11,8 +11,11 @@ import {
   bookmarkGroupLabel,
   bookmarkInGroup,
 } from "@/lib/bookmark-groups";
+import { useListNav } from "@/hooks/use-list-nav";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
+import { DEFAULT_PAGE_SIZE } from "@/lib/list-utils";
+import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
   type SearchSuggestItem,
@@ -65,11 +68,25 @@ function matchesBookmarkQuery(b: Bookmark, needle: string): boolean {
 }
 
 /** 1/2/3 컬럼 그리드 + 검색 + 그룹 필터·섹션 보기 */
-export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
+export function BookmarkGrid({
+  bookmarks,
+  total,
+  page: serverPage = 1,
+  q: serverQ = "",
+}: {
+  bookmarks: Bookmark[];
+  total?: number;
+  page?: number;
+  q?: string;
+}) {
   const router = useRouter();
-  const [q, setQ] = useState("");
+  const serverPaged = total != null;
+  const nav = useListNav(serverQ, serverPage);
+  const [localQ, setLocalQ] = useState("");
   const [active, setActive] = useState<string>(ALL);
   const [deleting, setDeleting] = useState(false);
+  const query = serverPaged ? nav.q : localQ;
+  const setQuery = serverPaged ? nav.setQ : setLocalQ;
 
   const favoriteCount = useMemo(
     () => bookmarks.filter((b) => b.isFavorite).length,
@@ -114,9 +131,9 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
     return items;
   }, [bookmarks]);
 
-  /** 검색 + 그룹 필터, 즐겨찾기 우선 정렬 */
+  /** 검색 + 그룹 필터, 즐겨찾기 우선 정렬. 서버 페이징이면 텍스트는 서버가 걸렀다. */
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
+    const needle = query.trim().toLowerCase();
     return bookmarks
       .filter((b) => {
         if (active === FAVORITES) {
@@ -124,10 +141,11 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
         } else if (active !== ALL && !bookmarkInGroup(b.category, active)) {
           return false;
         }
+        if (serverPaged) return true;
         return matchesBookmarkQuery(b, needle);
       })
       .sort(compareBookmark);
-  }, [bookmarks, active, q]);
+  }, [bookmarks, active, query, serverPaged]);
 
   /** 전체 보기에서는 즐겨찾기 섹션과 그룹 섹션을 쓴다. 그룹 안 원문 카테고리가 여러 개면 소제목 */
   const groups = useMemo(() => {
@@ -233,7 +251,11 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
     }
   }
 
-  if (bookmarks.length === 0) {
+  const trueEmpty =
+    (!serverPaged && bookmarks.length === 0) ||
+    (serverPaged && total === 0 && !serverQ);
+
+  if (!serverPaged && bookmarks.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
         아직 북마크가 없습니다. URL을 추가해 보세요.
@@ -248,20 +270,26 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
           <label className="text-xs text-muted-foreground">검색</label>
           <SearchSuggestInput
             placeholder="제목, URL, 설명, 태그, 카테고리…"
-            value={q}
-            onChange={setQ}
+            value={query}
+            onChange={setQuery}
             suggestions={searchSuggestions}
           />
         </div>
       </div>
 
+      {trueEmpty ? (
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+          아직 북마크가 없습니다. URL을 추가해 보세요.
+        </div>
+      ) : (
+        <>
       {/* 그룹 칩 — 480px에서도 flex-wrap으로 줄바꿈 */}
       <div className="space-y-2">
         <p className="text-xs font-medium text-muted-foreground">그룹</p>
         <div className="flex flex-wrap gap-2">
           <CategoryChip
             label="전체"
-            count={bookmarks.length}
+            count={serverPaged ? total : bookmarks.length}
             active={active === ALL}
             onClick={() => {
               setActive(ALL);
@@ -306,7 +334,7 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
 
       {filtered.length === 0 ? (
         <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          {q.trim()
+          {query.trim() || (serverPaged && serverQ)
             ? "검색 조건에 맞는 북마크가 없습니다."
             : "이 그룹에 북마크가 없습니다."}
         </div>
@@ -390,6 +418,17 @@ export function BookmarkGrid({ bookmarks }: { bookmarks: Bookmark[] }) {
             />
           ))}
         </div>
+      )}
+        </>
+      )}
+
+      {serverPaged && (
+        <ListPagination
+          page={serverPage}
+          total={total}
+          pageSize={DEFAULT_PAGE_SIZE}
+          onChange={nav.goPage}
+        />
       )}
     </div>
   );

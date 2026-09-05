@@ -3,7 +3,7 @@
 
 import { Copy, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CopyComposer } from "@/components/copies/copy-composer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/search-suggest-input";
 import { Select } from "@/components/ui/select";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
+import { useListNav } from "@/hooks/use-list-nav";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import {
@@ -61,15 +62,35 @@ function compareCopy(a: ThreadCopy, b: ThreadCopy, sort: ListSortKey): number {
 }
 
 /** 카피 목록을 검색·정렬·페이징하고 본문을 바로 읽게 한다. */
-export function CopyList({ copies }: { copies: ThreadCopy[] }) {
+export function CopyList({
+  copies,
+  total,
+  page: serverPage = 1,
+  q: serverQ = "",
+}: {
+  copies: ThreadCopy[];
+  total?: number;
+  page?: number;
+  q?: string;
+}) {
   const router = useRouter();
-  const [q, setQ] = useState("");
+  const serverPaged = total != null;
+  const nav = useListNav(serverQ, serverPage);
+  const [localQ, setLocalQ] = useState("");
   const [sort, setSort] = useState<ListSortKey>("created_desc");
-  const [page, setPage] = useState(1);
+  const [localPage, setLocalPage] = useState(1);
   const [active, setActive] = useState(ALL);
   const [deleting, setDeleting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [favoritingId, setFavoritingId] = useState<string | null>(null);
+  /** 목록 blob은 body가 비어 있어 복사 시에만 GET 한다 */
+  const [bodyMap, setBodyMap] = useState<Record<string, string>>({});
+  const bodyMapRef = useRef(bodyMap);
+  bodyMapRef.current = bodyMap;
+  const query = serverPaged ? nav.q : localQ;
+  const setQuery = serverPaged ? nav.setQ : setLocalQ;
+  const currentPage = serverPaged ? serverPage : localPage;
+  const onPage = serverPaged ? nav.goPage : setLocalPage;
 
   const favoriteCount = useMemo(
     () => copies.filter((c) => c.isFavorite).length,
@@ -90,8 +111,8 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
   }, [copies]);
 
   useEffect(() => {
-    setPage(1);
-  }, [q, sort, active]);
+    if (!serverPaged) setLocalPage(1);
+  }, [query, sort, active, serverPaged]);
 
   const filtered = useMemo(() => {
     return copies
@@ -100,14 +121,18 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
         if (active !== ALL && active !== FAVORITES) {
           if (!(c.tags ?? []).includes(active)) return false;
         }
-        return matchesSearchTokens(copyHaystack(c), q);
+        if (serverPaged) return true;
+        return matchesSearchTokens(copyHaystack(c), query);
       })
       .sort((a, b) => compareCopy(a, b, sort));
-  }, [copies, q, sort, active]);
+  }, [copies, query, sort, active, serverPaged]);
 
   const pageItems = useMemo(
-    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
-    [filtered, page]
+    () =>
+      serverPaged
+        ? filtered
+        : slicePage(filtered, currentPage, DEFAULT_PAGE_SIZE),
+    [filtered, currentPage, serverPaged]
   );
 
   const suggestions = useMemo((): SearchSuggestItem[] => {
@@ -129,8 +154,21 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
   }
 
   async function copyBody(c: ThreadCopy) {
+    let text = c.body.trim() ? c.body : (bodyMapRef.current[c.id] ?? "");
+    if (!text.trim()) {
+      try {
+        const res = await fetch(`/api/copies/${c.id}`);
+        if (res.ok) {
+          const full = (await res.json()) as ThreadCopy;
+          text = full.body;
+          setBodyMap((m) => ({ ...m, [c.id]: full.body }));
+        }
+      } catch {
+        /* 본문 로드 실패 시 빈 문자열 복사 */
+      }
+    }
     try {
-      await navigator.clipboard.writeText(c.body);
+      await navigator.clipboard.writeText(text);
       setCopiedId(c.id);
       setTimeout(() => setCopiedId(null), 1500);
     } catch {
@@ -172,25 +210,26 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
     }
   }
 
+  const trueEmpty =
+    (!serverPaged && copies.length === 0) ||
+    (serverPaged && total === 0 && !serverQ);
+  const showSearch = serverPaged || copies.length > 0;
+
   return (
     <div className="space-y-4">
       <CopyComposer />
 
-      {copies.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          첫 카피를 위에 붙여 넣으세요
-        </div>
-      ) : (
+      {showSearch ? (
         <div className="space-y-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1 space-y-1">
               <label className="text-xs text-muted-foreground">
-                검색 (제목·본문·태그)
+                검색 (제목·태그)
               </label>
               <SearchSuggestInput
                 placeholder="예: 후킹 · 런칭"
-                value={q}
-                onChange={setQ}
+                value={query}
+                onChange={setQuery}
                 suggestions={suggestions}
               />
             </div>
@@ -215,10 +254,12 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
             </div>
           </div>
 
+          {!trueEmpty && (
+            <>
           <div className="flex flex-wrap gap-2">
             <FilterChip
               label="전체"
-              count={copies.length}
+              count={serverPaged ? total : copies.length}
               active={active === ALL}
               onClick={() => handleChip(ALL)}
             />
@@ -242,7 +283,9 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            전체 {copies.length}개 · 검색 결과 {filtered.length}개
+            {serverPaged
+              ? `전체 ${total}개`
+              : `전체 ${copies.length}개 · 검색 결과 ${filtered.length}개`}
           </p>
 
           <SelectionToolbar
@@ -260,7 +303,6 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
               조건에 맞는 카피가 없습니다.
             </p>
           ) : (
-            <>
               <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((c) => {
                   const selected = selection.isSelected(c.id);
@@ -295,9 +337,15 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
                           <p className="text-sm font-medium leading-snug">
                             {c.title}
                           </p>
-                          <p className="line-clamp-5 whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90">
-                            {c.body}
-                          </p>
+                          {c.body ? (
+                            <p className="line-clamp-5 whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90">
+                              {c.body}
+                            </p>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">
+                              본문은 상세에서 봅니다.
+                            </p>
+                          )}
                           <p className="text-[11px] text-muted-foreground">
                             등록 {formatListDate(c.createdAt)}
                             {c.updatedAt !== c.createdAt
@@ -381,16 +429,23 @@ export function CopyList({ copies }: { copies: ThreadCopy[] }) {
                   );
                 })}
               </div>
+          )}
               <ListPagination
-                page={page}
-                total={filtered.length}
+                page={currentPage}
+                total={serverPaged ? total : filtered.length}
                 pageSize={DEFAULT_PAGE_SIZE}
-                onChange={setPage}
+                onChange={onPage}
               />
             </>
           )}
         </div>
-      )}
+      ) : null}
+
+      {trueEmpty ? (
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+          첫 카피를 위에 붙여 넣으세요
+        </div>
+      ) : null}
     </div>
   );
 }

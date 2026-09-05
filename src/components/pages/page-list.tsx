@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { CustomPage } from "@/lib/types";
+import { useListNav } from "@/hooks/use-list-nav";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import {
@@ -76,14 +77,30 @@ function sourceHostLabel(url: string): string {
 }
 
 /** 페이지 목록을 렌더하고 검색/정렬/페이징/생성/삭제를 처리한다. */
-export function PageList({ pages }: { pages: CustomPage[] }) {
+export function PageList({
+  pages,
+  total,
+  page: serverPage = 1,
+  q: serverQ = "",
+}: {
+  pages: CustomPage[];
+  total?: number;
+  page?: number;
+  q?: string;
+}) {
   const router = useRouter();
-  const [q, setQ] = useState("");
+  const serverPaged = total != null;
+  const nav = useListNav(serverQ, serverPage);
+  const [localQ, setLocalQ] = useState("");
   const [sort, setSort] = useState<ListSortKey>("created_desc");
-  const [page, setPage] = useState(1);
+  const [localPage, setLocalPage] = useState(1);
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [active, setActive] = useState(ALL);
+  const query = serverPaged ? nav.q : localQ;
+  const setQuery = serverPaged ? nav.setQ : setLocalQ;
+  const currentPage = serverPaged ? serverPage : localPage;
+  const onPage = serverPaged ? nav.goPage : setLocalPage;
   const [bodySearch, setBodySearch] = useState<{ q: string; ids: string[] }>({
     q: "",
     ids: [],
@@ -133,14 +150,15 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
     return recentIds.filter((id) => ids.has(id)).length;
   }, [pagesView, recentIds]);
 
-  // 제목·태그 매칭이 없거나 q가 2글자 이상이면 본문 검색을 합친다
+  // 클라이언트 폴백에서만 본문 검색을 합친다. 서버 페이징은 제목·태그·URL만.
   useEffect(() => {
-    const query = q.trim();
+    if (serverPaged) return;
+    const needle = query.trim();
     const clientCount = pages.filter((p) =>
-      matchesSearchTokens(pageSearchHaystack(p), q)
+      matchesSearchTokens(pageSearchHaystack(p), query)
     ).length;
     const shouldFetch =
-      query.length > 0 && (clientCount === 0 || query.length >= 2);
+      needle.length > 0 && (clientCount === 0 || needle.length >= 2);
 
     if (!shouldFetch) return;
 
@@ -149,7 +167,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       void (async () => {
         try {
           const res = await fetch(
-            `/api/search?q=${encodeURIComponent(query)}&limit=40`,
+            `/api/search?q=${encodeURIComponent(needle)}&limit=40`,
             { signal: ac.signal }
           );
           if (!res.ok) throw new Error("search fail");
@@ -159,10 +177,10 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
           const ids = (data.items ?? [])
             .filter((i) => i.type === "page" && typeof i.id === "string")
             .map((i) => i.id as string);
-          setBodySearch({ q: query, ids });
+          setBodySearch({ q: needle, ids });
         } catch (e) {
           if (e instanceof DOMException && e.name === "AbortError") return;
-          setBodySearch({ q: query, ids: [] });
+          setBodySearch({ q: needle, ids: [] });
         }
       })();
     }, 220);
@@ -171,16 +189,32 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       window.clearTimeout(t);
       ac.abort();
     };
-  }, [q, pages]);
+  }, [query, pages, serverPaged]);
 
   const bodyPageIds =
-    bodySearch.q === q.trim() ? bodySearch.ids : EMPTY_IDS;
+    !serverPaged && bodySearch.q === query.trim() ? bodySearch.ids : EMPTY_IDS;
 
   const filtered = useMemo(() => {
     const byId = new Map(pagesView.map((p) => [p.id, p]));
+
+    if (serverPaged) {
+      if (active === RECENT) {
+        return recentIds
+          .map((id) => byId.get(id))
+          .filter((p): p is CustomPage => p != null);
+      }
+      let list = pagesView;
+      if (active === FAVORITES) {
+        list = list.filter((p) => p.isFavorite);
+      } else if (active !== ALL) {
+        list = list.filter((p) => (p.tags ?? []).includes(active));
+      }
+      return sortPages(list, sort);
+    }
+
     const matchedIds = new Set(
       pagesView
-        .filter((p) => matchesSearchTokens(pageSearchHaystack(p), q))
+        .filter((p) => matchesSearchTokens(pageSearchHaystack(p), query))
         .map((p) => p.id)
     );
     for (const id of bodyPageIds) {
@@ -200,11 +234,14 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       list = list.filter((p) => (p.tags ?? []).includes(active));
     }
     return sortPages(list, sort);
-  }, [pagesView, q, sort, active, bodyPageIds, recentIds]);
+  }, [pagesView, query, sort, active, bodyPageIds, recentIds, serverPaged]);
 
   const pageItems = useMemo(
-    () => slicePage(filtered, page, DEFAULT_PAGE_SIZE),
-    [filtered, page]
+    () =>
+      serverPaged
+        ? filtered
+        : slicePage(filtered, currentPage, DEFAULT_PAGE_SIZE),
+    [filtered, currentPage, serverPaged]
   );
 
   /** 검색 suggest — 페이지 제목 */
@@ -220,13 +257,13 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
 
   function handleChip(key: string) {
     setActive((prev) => (key === ALL ? ALL : prev === key ? ALL : key));
-    setPage(1);
+    if (!serverPaged) setLocalPage(1);
     selection.clear();
   }
 
   function handleQuery(value: string) {
-    setQ(value);
-    setPage(1);
+    setQuery(value);
+    if (!serverPaged) setLocalPage(1);
   }
 
   async function handleCreate() {
@@ -304,6 +341,11 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
     }
   }
 
+  const trueEmpty =
+    (!serverPaged && pages.length === 0) ||
+    (serverPaged && total === 0 && !serverQ);
+  const showSearch = serverPaged || pages.length > 0;
+
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
@@ -316,20 +358,16 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
       <UrlImportForm />
       <PdfImportForm />
 
-      {pages.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          아직 페이지가 없습니다. 새 페이지를 만들어 보세요.
-        </div>
-      ) : (
+      {showSearch ? (
         <div className="space-y-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1 space-y-1">
               <label className="text-xs text-muted-foreground">
-                제목·태그·본문 검색
+                제목·태그·URL 검색
               </label>
               <SearchSuggestInput
                 placeholder="예: Muse 총정리 · Claude 폴더"
-                value={q}
+                value={query}
                 onChange={handleQuery}
                 suggestions={searchSuggestions}
               />
@@ -346,7 +384,7 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
                 value={sort}
                 onChange={(e) => {
                   setSort(e.target.value as ListSortKey);
-                  setPage(1);
+                  if (!serverPaged) setLocalPage(1);
                 }}
               >
                 {SORT_OPTIONS.map((o) => (
@@ -358,10 +396,12 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
             </div>
           </div>
 
+          {!trueEmpty && (
+            <>
           <div className="flex flex-wrap gap-2">
             <CategoryChip
               label="전체"
-              count={pagesView.length}
+              count={serverPaged ? total : pagesView.length}
               active={active === ALL}
               onClick={() => handleChip(ALL)}
             />
@@ -393,7 +433,9 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            전체 {pages.length}개 · 검색 결과 {filtered.length}개
+            {serverPaged
+              ? `전체 ${total}개`
+              : `전체 ${pages.length}개 · 검색 결과 ${filtered.length}개`}
           </p>
 
           <SelectionToolbar
@@ -411,7 +453,6 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
               검색 조건에 맞는 페이지가 없습니다.
             </p>
           ) : (
-            <>
               <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((p) => {
                   const selected = selection.isSelected(p.id);
@@ -509,16 +550,23 @@ export function PageList({ pages }: { pages: CustomPage[] }) {
                   );
                 })}
               </div>
+          )}
               <ListPagination
-                page={page}
-                total={filtered.length}
+                page={currentPage}
+                total={serverPaged ? total : filtered.length}
                 pageSize={DEFAULT_PAGE_SIZE}
-                onChange={setPage}
+                onChange={onPage}
               />
             </>
           )}
         </div>
-      )}
+      ) : null}
+
+      {trueEmpty ? (
+        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+          아직 페이지가 없습니다. 새 페이지를 만들어 보세요.
+        </div>
+      ) : null}
     </div>
   );
 }
