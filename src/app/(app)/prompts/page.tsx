@@ -1,6 +1,7 @@
 // 프롬프트 라이브러리 목록
 import { PromptList } from "@/components/prompts/prompt-list";
 import { auth } from "@/lib/auth";
+import { cachedUserList } from "@/lib/list-cache";
 import { parseListQuery } from "@/lib/list-query";
 import { rowToPrompt } from "@/lib/prompt-mapper";
 import { store } from "@/lib/store";
@@ -16,8 +17,12 @@ export default async function PromptsPage({
   const userId = session!.user!.id;
   const query = parseListQuery(await searchParams);
   const [rows, total] = await Promise.all([
-    store.listPrompts(userId, query),
-    store.countPrompts({ q: query.q }),
+    cachedUserList(userId, "prompts", `rows:${query.q}:${query.page}`, () =>
+      store.listPrompts(userId, query)
+    ),
+    cachedUserList(userId, "prompts", `count:${query.q}`, () =>
+      store.countPrompts({ q: query.q })
+    ),
   ]);
   const list = rows.map(rowToPrompt);
 

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { auth } from "@/lib/auth";
 import { bookmarkUrlKey, isSameBookmarkUrl } from "@/lib/bookmark-url";
+import { revalidateUserList } from "@/lib/list-cache";
 import { categoryFromUrl, extractMeta } from "@/lib/meta";
 import { store } from "@/lib/store";
 import type { Bookmark } from "@/lib/types";
@@ -139,5 +140,6 @@ export async function POST(req: Request) {
     }
   }
 
+  revalidateUserList(session.user.id, "bookmarks");
   return NextResponse.json(toBookmark(row), { status: 201 });
 }

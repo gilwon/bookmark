@@ -8,6 +8,7 @@ import {
   utf8Bytes,
 } from "@/lib/api-limits";
 import { ownershipError, requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { store } from "@/lib/store";
 import type { ThreadCopyRow } from "@/lib/store/types";
 import {
@@ -95,6 +96,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
 
   const row = await store.updateThreadCopy(id, gate.user.userId, patch);
   if (!row) return ownershipError();
+  revalidateUserList(gate.user.userId, "copies");
   return NextResponse.json(rowToThreadCopy(row));
 }
 
@@ -105,5 +107,6 @@ export async function DELETE(_req: Request, ctx: Ctx) {
   const existing = await store.getThreadCopy(id, gate.user.userId);
   if (!existing) return ownershipError();
   await store.deleteThreadCopy(id, gate.user.userId);
+  revalidateUserList(gate.user.userId, "copies");
   return NextResponse.json({ ok: true });
 }

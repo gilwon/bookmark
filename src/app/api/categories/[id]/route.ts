@@ -1,6 +1,7 @@
 // 카테고리 수정 / 삭제
 import { NextResponse } from "next/server";
 import { ownershipError, requireUser } from "@/lib/authz";
+import { revalidateUserList } from "@/lib/list-cache";
 import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -50,6 +51,7 @@ export async function PATCH(req: Request, ctx: Ctx) {
     updatedAt: now,
   });
   if (!row) return ownershipError();
+  revalidateUserList(gate.user.userId, "bookmarks");
 
   const bookmarks = await store.listBookmarks(gate.user.userId);
   const count = bookmarks.filter(
@@ -80,5 +82,6 @@ export async function DELETE(_req: Request, ctx: Ctx) {
     null
   );
   await store.deleteCategory(id, gate.user.userId);
+  revalidateUserList(gate.user.userId, "bookmarks");
   return NextResponse.json({ ok: true });
 }

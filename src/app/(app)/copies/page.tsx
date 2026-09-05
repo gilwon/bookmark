@@ -1,6 +1,7 @@
 // 스레드 카피 목록
 import { CopyList } from "@/components/copies/copy-list";
 import { auth } from "@/lib/auth";
+import { cachedUserList } from "@/lib/list-cache";
 import { parseListQuery } from "@/lib/list-query";
 import { store } from "@/lib/store";
 import { rowToThreadCopy } from "@/lib/thread-copy";
@@ -16,8 +17,12 @@ export default async function CopiesPage({
   const userId = session!.user!.id;
   const query = parseListQuery(await searchParams);
   const [rows, total] = await Promise.all([
-    store.listThreadCopies(userId, query),
-    store.countThreadCopies(userId, { q: query.q }),
+    cachedUserList(userId, "copies", `rows:${query.q}:${query.page}`, () =>
+      store.listThreadCopies(userId, query)
+    ),
+    cachedUserList(userId, "copies", `count:${query.q}`, () =>
+      store.countThreadCopies(userId, { q: query.q })
+    ),
   ]);
   const list = rows.map(rowToThreadCopy);
 
