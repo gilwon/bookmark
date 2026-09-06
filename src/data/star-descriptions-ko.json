@@ -352,5 +352,11 @@
   "humanlayer/skills": "HumanLayer의 Claude Code 스킬 모음입니다. CLAUDE.md 개선, React prop 타입 좁히기, 반복 에이전트 루프 등을 포함합니다.",
   "DannyMac180/fable-advisor": "Claude Fable을 Opus, GPT, Grok의 오케스트레이터로 씁니다.",
   "anthropics/commerce-agents": "Claude로 쇼핑·머천트 에이전트를 만드는 참조 청사진입니다. 리테일, 커머스, 통신, 엔터테인먼트 예제를 포함합니다.",
-  "vorssaint/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다."
+  "vorssaint/vorssaint-utils": "무료 오픈소스 macOS 메뉴 바 도구 모음입니다.",
+  "openai/codex-security": "보안 취약점을 찾고 검증하고 고치는 OpenAI Codex Security CLI와 TypeScript SDK입니다.",
+  "PaddlePaddle/PaddleOCR": "PDF나 이미지 문서를 AI가 쓸 수 있는 구조화 데이터로 바꿉니다. 이미지·PDF와 LLM 사이를 잇는 가벼운 OCR 도구이며 100개 이상 언어를 지원합니다.",
+  "gridex/gridex": "Swift와 AppKit으로 만든 macOS·Windows·Linux 네이티브 데이터베이스 IDE입니다. PostgreSQL, MySQL, SQLite, Redis를 한 앱에서 키보드 중심으로 빠르게 다룹니다.",
+  "tobi/walgit": "객체 저장소 앞에 바이너리 하나 두는 Git 서버입니다. S3나 GCS 버킷을 원본으로 쓰고, 기계보다 큰 저장소도 스케일합니다.",
+  "anthropics/anthropic-cli": "Claude API용 CLI입니다.",
+  "cursor/plugins": "Cursor 플러그인 명세와 공식 플러그인입니다."
 }
