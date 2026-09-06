@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { SEARCH_TYPE_LABEL } from "../src/lib/command-palette-results.ts";
 import {
+  copyBodiesMatch,
   isMissingThreadCopiesTable,
+  normalizeCopyBody,
   normalizeSourceUrl,
   parseCopyTags,
   titleFromCopyBody,
@@ -80,5 +82,39 @@ describe("isMissingThreadCopiesTable", () => {
       true
     );
     assert.equal(isMissingThreadCopiesTable("bookmarks missing"), false);
+  });
+});
+
+describe("normalizeCopyBody", () => {
+  it("앞뒤 공백을 제거하고 CRLF를 LF로 바꾼다", () => {
+    assert.equal(normalizeCopyBody("  hello\r\nworld  "), "hello\nworld");
+  });
+
+  it("CR만 있는 줄바꿈도 LF로 바꾼다", () => {
+    assert.equal(normalizeCopyBody("hello\rworld"), "hello\nworld");
+  });
+
+  it("빈 값·공백만이면 빈 문자열이다", () => {
+    assert.equal(normalizeCopyBody(""), "");
+    assert.equal(normalizeCopyBody("   \n  "), "");
+    assert.equal(normalizeCopyBody("  \r\n  "), "");
+  });
+
+  it("내부 공백은 그대로 둔다", () => {
+    assert.equal(normalizeCopyBody("a  b"), "a  b");
+  });
+});
+
+describe("copyBodiesMatch", () => {
+  it("trim과 CRLF vs LF는 같은 본문이다", () => {
+    assert.equal(copyBodiesMatch("  a\r\nb  ", "a\nb"), true);
+  });
+
+  it("CR vs LF는 같은 본문이다", () => {
+    assert.equal(copyBodiesMatch("a\rb", "a\nb"), true);
+  });
+
+  it("내부 공백이 다르면 다른 본문이다", () => {
+    assert.equal(copyBodiesMatch("a b", "ab"), false);
   });
 });

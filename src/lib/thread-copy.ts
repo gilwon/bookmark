@@ -1,4 +1,4 @@
-// 스레드 카피 제목·태그·출처 URL 정규화
+// 스레드 카피 제목·태그·출처 URL·본문 정규화
 import { MAX_COPY_TITLE_LEN } from "@/lib/api-limits";
 import type { ThreadCopy } from "@/lib/types";
 import type { ThreadCopyRow } from "@/lib/store/types";
@@ -71,6 +71,19 @@ export function normalizeSourceUrl(raw: unknown): string | null {
   if (typeof raw !== "string") return null;
   const t = raw.trim();
   return t ? t : null;
+}
+
+/** CRLF·CR을 LF로 바꾼 뒤 앞뒤 공백을 제거한다. 내부 공백은 그대로 둔다. */
+export function normalizeCopyBody(body: string): string {
+  return String(body ?? "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim();
+}
+
+/** 정규화한 본문이 같으면 true다. */
+export function copyBodiesMatch(a: string, b: string): boolean {
+  return normalizeCopyBody(a) === normalizeCopyBody(b);
 }
 
 /** store 행을 앱 ThreadCopy 로 변환한다. */

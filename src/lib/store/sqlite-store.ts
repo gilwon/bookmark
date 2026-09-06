@@ -16,6 +16,7 @@ import {
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import { preparePageFindability } from "@/lib/page-findability";
+import { copyBodiesMatch, normalizeCopyBody } from "@/lib/thread-copy";
 import type {
   CategoryCount,
   DashboardCounts,
@@ -843,6 +844,36 @@ export async function getThreadCopy(
       .from(threadCopies)
       .where(and(eq(threadCopies.id, id), eq(threadCopies.userId, userId)))
   );
+}
+
+/** 같은 사용자에서 정규화 본문이 일치하는 카피를 찾는다. */
+export async function findThreadCopyByBody(
+  userId: string,
+  body: string
+): Promise<ThreadCopyRow | undefined> {
+  if (!normalizeCopyBody(body)) return undefined;
+  const rows = await qall(
+    db
+      .select({
+        id: threadCopies.id,
+        body: threadCopies.body,
+      })
+      .from(threadCopies)
+      .where(eq(threadCopies.userId, userId))
+  );
+  const hit = rows.find((r) => copyBodiesMatch(r.body, body));
+  if (!hit) return undefined;
+  return {
+    id: hit.id,
+    userId,
+    title: "",
+    body: hit.body,
+    sourceUrl: null,
+    tags: "[]",
+    isFavorite: 0,
+    createdAt: "",
+    updatedAt: "",
+  };
 }
 
 export async function insertThreadCopy(
