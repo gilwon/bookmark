@@ -1,3 +1,68 @@
+# 카피 태그 백필
+
+- 운영 `thread_copies` 24건이 전부 태그 비어 있었다. 본문을 보고 2~3개씩 달았다.
+- 종류. `프롬프트` `툴` `설정` `스레드` `후기`. 도구명. `클로드` `코덱스` `아스트라` `GPT` `그록` `페이블`.
+- 이미 태그가 있는 행은 덮어쓰지 않았다.
+
+# 카피 본문 중복
+
+- 중복 키는 본문이다. 제목·출처 URL은 키가 아니다. 제목은 비울 수 있고 출처는 선택이다.
+- 정규화는 CRLF·CR → LF 후 trim만. 내부 공백은 글의 일부라 건드리지 않는다.
+- body UNIQUE 인덱스는 쓰지 않는다. 상한 20KB가 Postgres btree 한도를 넘는다.
+- 비교는 JS `copyBodiesMatch`. Supabase 필터에 본문을 넣지 않는다. GET URL 길이 한도 때문이다.
+- PATCH도 막는다. 자기 자신은 제외한다. 등록만 막으면 수정으로 같은 글이 생긴다.
+- 409 본문은 `이미 등록된 카피입니다.` 북마크 409와 같은 말투다.
+
+# 카피 상세 본문 폭·링크
+
+- 상세 `article`은 `max-w-lg`를 쓰지 않는다. 앱 셸 본문 폭 100%다. 페이지 에디터와 같다.
+- 본문은 평문이다. HTML을 넣지 않는다. `https?://`와 `www.`와 `[라벨](http(s)://…)`만 링크로 나눈다.
+- 클릭은 `target=_blank` + `rel=noopener noreferrer`. `javascript:`는 텍스트로 둔다.
+- 검색 카드는 바깥이 `<Link>`라 본문 링크를 넣지 않는다. nested `<a>`를 피한다.
+- 목록 카드는 행 클릭이 상세로 가므로 본문 앵커는 `stopPropagation`이다.
+
+# 혼자 스타트업 GitHub 10선 Pages 이관 메모
+
+- 제목. `혼자 스타트업 만들 때 저장할 GitHub 10개`. 원문 URL은 없다.
+- 링크 10개는 `github.com/...` 절대 주소다. TipTap 링크에 `target=_blank`, `rel=noopener noreferrer`를 둔다.
+- 에디터 `Link` HTMLAttributes에도 같은 값을 둬서 본문 클릭이 새 창이다.
+- 트레드 이미지 자리표시 U+FFFC는 넣지 않는다.
+
+# 리더플AI 클로드 블로그 자동화 설계도 Pages 이관 메모
+
+- 저장 URL은 `https://leaderpl-blog-auto.netlify.app/`이다.
+- 제목은 본문 `h1`이다. `매일 쓰는 블로그 글, 명령 두 줄로 끝내는 구조`.
+- 본문 `img` 0, 첨부 0. OG `og-image.png` 44162바이트 PNG만 표지로 넣는다. `favicon.svg`는 뺀다.
+- `.term` 터미널과 `.say-b` 지시문은 코드 펜스, `.callout`은 `:::callout`이다.
+- Netlify HUD·`netlify.new` utm 주석은 본문이 아니다. Prompts 테이블은 쓰지 않는다.
+- 운영 중복은 제목 또는 source_url만 본다.
+
+# 투자 대가 6인 프롬프트 이관 메모
+
+- 카테고리. `투자 · 대가`. 기존 `투자 · 펀드매니저`와 나눈다.
+- 제목은 사용자 헤딩 그대로다. `워런 버핏 투자법` 등.
+- 본문은 원문 그대로다. ①③ 건너뜀, @/® 섞임, 리버모어 `매수 관망•매도`, 멍거 `보유할수`를 고치지 않는다.
+- 중복은 제목+카테고리다. 기존 행은 갱신하지 않는다.
+- Prompts만 저장한다.
+
+# Blogspot 클로드 5 골든 룰 + KST 이번 주 Notion 신규 Pages 이관 메모
+
+- 오늘 2026-09-05. 이번 주 시작은 KST 2026-08-31 00:00(월).
+- 블로그 저장 URL은 `https://jwchaainews.blogspot.com/2026/09/anthropic-5claude-5-7.html`이다. `?m=1`은 모바일 추적이라 뺀다.
+- 본문은 `div.post-body.entry-content`. 제목은 본문 안 `article h1`. 사이트 제목 `최신 AI 뉴스`가 아니다.
+- 본문 이미지 0. 페이지 전체 img 3장은 인기 게시물 썸네일이라 뺀다. 첨부 0. 표 1. 스타일 div 코드상자 2개(`E2E Framework`, `Global Voice Control`)를 펜스로 바꾼다. `pre`는 없다.
+- 댓글·공유·인기글은 본문이 아니다.
+- Notion 검색 `created_date_range.start_date=2026-08-31`. `sort:created`와 `created_by_user_ids`는 이 연결에서 쓸 수 없다. `loadPageChunk`는 비공개라 비어 있다.
+- 이미 있음. `[미로] 클로드 프롬프트 공유`, `성인 ADHD 선생님들을 위한 프롬프트 7개`, `AI 비밀코드 100선 (상황별 완벽 가이드)`.
+- 신규 상위 3건. `인터넷에 퍼진 내 개인정보 싹 지우는 법 (ChatGPT Work 완벽 가이드)` hex `afdb256827ac834aaa1101b008fa23a5` 이미지 3(GitHub PNG), `내 지원금 찾기 프롬프트(비개발자 가이드)` hex `b49b256827ac83b39d3e017c7f502113` 이미지 0, `Claude 안에 홀모지식 사고를 심는 법 — 10분 세팅 가이드` hex `e67b256827ac823f8c9281fdca374fc1` 이미지 4(서명 S3 → `tmp/notion-kst-20260905/hormozi/step{1-4}.png`).
+- 기존 `고객을 모으는 클로드 프롬프트 6가지 — 알렉스 홀모지식`과는 다른 페이지다.
+- GitHub 폴더에 `03`~`06` PNG가 더 있어도 원문 본문에는 `01`·`02`·`07`만 있다. 넣지 않는다.
+- 지원금 첫 콜아웃의 POKKI `video`/`attachment:` mp4는 광고다. 관련글 썸네일과 같이 뺀다. 본문 첨부 0.
+- 노시언 마음 캘린더 하위(특별히 000 날, 감정 평점 등)는 제외한다.
+- 운영 중복은 제목 또는 `source_url`만 본다. `content` ilike는 쓰지 않는다. 기존 행은 갱신하지 않는다.
+- Prompts 테이블은 쓰지 않는다. 복붙 문구는 페이지 코드 펜스다.
+- 본문 파일. `tmp/notion-kst-20260905/{privacy,subsidy,hormozi}.md`. 서명 URL이 있는 raw JSON은 커밋하지 않는다.
+
 # AI 비밀코드 100선 Pages 이관 메모
 
 - URL. `https://app.notion.com/p/AI-100-3b6bc8af735e80b8ba6dee8dd773d1fc` (`source=copy_link` 제거).
