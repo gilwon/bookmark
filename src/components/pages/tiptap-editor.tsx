@@ -258,6 +258,8 @@ export function TiptapEditor({
         openOnClick: true,
         HTMLAttributes: {
           class: "text-indigo-500 underline underline-offset-2",
+          target: "_blank",
+          rel: "noopener noreferrer",
         },
       }),
       CalloutBlock,

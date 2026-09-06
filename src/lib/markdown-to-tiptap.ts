@@ -71,10 +71,16 @@ function parseInline(text: string): TipTapNode[] {
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
     if (m[1] !== undefined && m[2] !== undefined) {
+      const href = m[2];
+      const attrs: Record<string, unknown> = { href };
+      if (/^https?:\/\//i.test(href)) {
+        attrs.target = "_blank";
+        attrs.rel = "noopener noreferrer";
+      }
       nodes.push({
         type: "text",
         text: m[1],
-        marks: [{ type: "link", attrs: { href: m[2] } }],
+        marks: [{ type: "link", attrs }],
       });
     } else if (m[3] !== undefined) {
       nodes.push({
