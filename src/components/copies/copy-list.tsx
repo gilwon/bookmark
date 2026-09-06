@@ -5,6 +5,7 @@ import { Copy, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CopyComposer } from "@/components/copies/copy-composer";
+import { LinkifiedText } from "@/components/copies/linkified-text";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ListPagination } from "@/components/ui/list-pagination";
@@ -338,9 +339,10 @@ export function CopyList({
                             {c.title}
                           </p>
                           {c.body ? (
-                            <p className="line-clamp-5 whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90">
-                              {c.body}
-                            </p>
+                            <LinkifiedText
+                              text={c.body}
+                              className="line-clamp-5 whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90"
+                            />
                           ) : (
                             <p className="text-sm text-muted-foreground">
                               본문은 상세에서 봅니다.
