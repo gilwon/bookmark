@@ -5,6 +5,7 @@ import { ArrowLeft, Copy, ExternalLink, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { LinkifiedText } from "@/components/copies/linkified-text";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -96,7 +97,7 @@ export function CopyDetail({ copy }: { copy: ThreadCopy }) {
   }
 
   return (
-    <article className="mx-auto w-full max-w-lg min-w-0 space-y-6">
+    <article className="w-full min-w-0 space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Link
           href="/copies"
@@ -244,9 +245,10 @@ export function CopyDetail({ copy }: { copy: ThreadCopy }) {
               </a>
             )}
           </header>
-          <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground">
-            {copy.body}
-          </p>
+          <LinkifiedText
+            text={copy.body}
+            className="whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground"
+          />
           <p className="text-xs text-muted-foreground">
             등록 {new Date(copy.createdAt).toLocaleString("ko-KR")}
             {copy.updatedAt !== copy.createdAt
