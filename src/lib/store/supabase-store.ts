@@ -6,7 +6,9 @@ import {
 } from "@/lib/page-findability";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
+  copyBodiesMatch,
   isMissingThreadCopiesTable,
+  normalizeCopyBody,
   THREAD_COPIES_TABLE_USER_MESSAGE,
 } from "@/lib/thread-copy";
 import { v4 as uuidv4 } from "uuid";
@@ -1062,6 +1064,36 @@ export async function getThreadCopy(
     .maybeSingle();
   if (throwUnlessMissingCopies(error, "getThreadCopy")) return undefined;
   return data ? mapThreadCopy(data) : undefined;
+}
+
+/** 같은 사용자에서 정규화 본문이 일치하는 카피를 찾는다. 본문은 URL 필터에 넣지 않는다. */
+export async function findThreadCopyByBody(
+  userId: string,
+  body: string
+): Promise<ThreadCopyRow | undefined> {
+  if (!normalizeCopyBody(body)) return undefined;
+  const rows = await fetchAllPaged(async (from, to) => {
+    const { data, error } = await sb()
+      .from("thread_copies")
+      .select("id, body")
+      .eq("user_id", userId)
+      .range(from, to);
+    if (throwUnlessMissingCopies(error, "findThreadCopyByBody")) return [];
+    return (data ?? []) as { id: string; body: string | null }[];
+  });
+  const hit = rows.find((r) => copyBodiesMatch(r.body ?? "", body));
+  if (!hit) return undefined;
+  return {
+    id: hit.id,
+    userId,
+    title: "",
+    body: hit.body ?? "",
+    sourceUrl: null,
+    tags: "[]",
+    isFavorite: 0,
+    createdAt: "",
+    updatedAt: "",
+  };
 }
 
 export async function insertThreadCopy(

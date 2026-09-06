@@ -68,6 +68,18 @@ export async function POST(req: Request) {
     );
   }
 
+  const dup = await store.findThreadCopyByBody(gate.user.userId, bodyText);
+  if (dup) {
+    return NextResponse.json(
+      {
+        error: "이미 등록된 카피입니다.",
+        duplicate: true,
+        id: dup.id,
+      },
+      { status: 409 }
+    );
+  }
+
   const now = new Date().toISOString();
   try {
     const row = await store.insertThreadCopy({

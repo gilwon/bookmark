@@ -12,6 +12,7 @@ import { revalidateUserList } from "@/lib/list-cache";
 import { store } from "@/lib/store";
 import type { ThreadCopyRow } from "@/lib/store/types";
 import {
+  copyBodiesMatch,
   normalizeSourceUrl,
   parseCopyTags,
   rowToThreadCopy,
@@ -57,6 +58,22 @@ export async function PATCH(req: Request, ctx: Ctx) {
     );
     if (limitMsg) {
       return NextResponse.json({ error: limitMsg }, { status: 400 });
+    }
+    if (!copyBodiesMatch(existing.body, body.body)) {
+      const dup = await store.findThreadCopyByBody(
+        gate.user.userId,
+        body.body
+      );
+      if (dup && dup.id !== id) {
+        return NextResponse.json(
+          {
+            error: "이미 등록된 카피입니다.",
+            duplicate: true,
+            id: dup.id,
+          },
+          { status: 409 }
+        );
+      }
     }
     patch.body = body.body;
   }
