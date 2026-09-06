@@ -482,6 +482,23 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 5개의 정적 번역을 다시 병기한다", () => {
+    const cases = [
+      ["openai/codex-security", "OpenAI's Codex Security CLI and TypeScript SDK for finding, validating, and fixing security vulnerabilities. npm: https://www.npmjs.com/package/@openai/codex-security"],
+      ["PaddlePaddle/PaddleOCR", "Turn any PDF or image document into structured data for your AI. A powerful, lightweight OCR toolkit that bridges the gap between images/PDFs and LLMs. Supports 100+ languages."],
+      ["gridex/gridex", "A native macOS / windows / Linux database IDE built with Swift and AppKit. Connect to PostgreSQL, MySQL, SQLite, and Redis from a single app with a fast, keyboard-driven interface."],
+      ["anthropics/anthropic-cli", "The CLI for the Claude API"],
+      ["cursor/plugins", "Cursor plugin specification and official plugins"],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
@@ -517,6 +534,13 @@ describe("Star 설명 번역", () => {
     assert.equal(
       withKoreanTranslation("humanlayer/skills", null, null),
       "HumanLayer의 Claude Code 스킬 모음입니다. CLAUDE.md 개선, React prop 타입 좁히기, 반복 에이전트 루프 등을 포함합니다."
+    );
+  });
+
+  it("GitHub About가 비어 있는 Star 1개는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("tobi/walgit", null, null),
+      "객체 저장소 앞에 바이너리 하나 두는 Git 서버입니다. S3나 GCS 버킷을 원본으로 쓰고, 기계보다 큰 저장소도 스케일합니다."
     );
   });
 });
