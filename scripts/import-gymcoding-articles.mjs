@@ -200,13 +200,119 @@ function collectAccordions(text, out, seen) {
   }
 }
 
+function sliceJsonValue(text, start) {
+  const source = String(text ?? "");
+  let index = start;
+  while (index < source.length && /\s/.test(source[index])) index += 1;
+  if (index >= source.length) return null;
+  const first = source[index];
+  if (first === '"') {
+    let escape = false;
+    for (let cursor = index + 1; cursor < source.length; cursor += 1) {
+      const ch = source[cursor];
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escape = true;
+        continue;
+      }
+      if (ch === '"') {
+        return { raw: source.slice(index, cursor + 1), end: cursor + 1 };
+      }
+    }
+    return null;
+  }
+  if (first !== "{" && first !== "[") return null;
+  let depth = 0;
+  let inString = false;
+  let escape = false;
+  for (let cursor = index; cursor < source.length; cursor += 1) {
+    const ch = source[cursor];
+    if (inString) {
+      if (escape) {
+        escape = false;
+        continue;
+      }
+      if (ch === "\\") {
+        escape = true;
+        continue;
+      }
+      if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === "{" || ch === "[") depth += 1;
+    else if (ch === "}" || ch === "]") {
+      depth -= 1;
+      if (depth === 0) {
+        return { raw: source.slice(index, cursor + 1), end: cursor + 1 };
+      }
+    }
+  }
+  return null;
+}
+
+function flattenReactNode(node) {
+  if (node == null || node === false) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) {
+    if (node[0] === "$") {
+      const type = node[1];
+      const props = node[3] && typeof node[3] === "object" ? node[3] : {};
+      const inner = flattenReactNode(props.children);
+      if (type === "code") return `\`${inner}\``;
+      return inner;
+    }
+    return node.map(flattenReactNode).join("");
+  }
+  if (typeof node === "object") return flattenReactNode(node.children);
+  return "";
+}
+
+function collectNestedAccordions(text, out, seen) {
+  const source = String(text ?? "");
+  const re = /"title"\s*:\s*"((?:\\.|[^"\\])*)"\s*,\s*"children"\s*:/g;
+  let match;
+  while ((match = re.exec(source))) {
+    const sliced = sliceJsonValue(source, match.index + match[0].length);
+    if (!sliced) {
+      re.lastIndex = match.index + match[0].length + 1;
+      continue;
+    }
+    re.lastIndex = Math.max(re.lastIndex, sliced.end);
+    const title = unescapeJsonString(match[1]).trim();
+    if (!title || title.length > 200 || !title.endsWith("?")) continue;
+    let parsed;
+    try {
+      parsed = JSON.parse(sliced.raw);
+    } catch {
+      continue;
+    }
+    if (typeof parsed === "string") continue;
+    const children = flattenReactNode(parsed).trim();
+    if (!children) continue;
+    if (/self\.__next_f|<\/script>/i.test(children)) continue;
+    if (seen.has(title)) continue;
+    seen.add(title);
+    out.push({ title, children });
+  }
+}
+
 /** RSC 페이로드에서 FAQ 질문·답 문자열 쌍을 뽑는다. */
 export function extractGymAccordions(html) {
   const seen = new Set();
   const out = [];
   const source = String(html ?? "");
   const reconstructed = reconstructNextFlight(source);
-  if (reconstructed) collectAccordions(reconstructed, out, seen);
+  if (reconstructed) {
+    collectAccordions(reconstructed, out, seen);
+    collectNestedAccordions(reconstructed, out, seen);
+  }
   collectAccordions(source, out, seen);
   collectAccordions(source.replace(/\\"/g, '"'), out, seen);
   return out;

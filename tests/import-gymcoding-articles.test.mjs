@@ -51,6 +51,40 @@ test("extractGymAccordions는 next_f의 이스케이프된 title/children을 푼
   assert.equal(faqs[0].children, "disable-model-invocation: true 입니다");
 });
 
+test("extractGymAccordions는 nested React children FAQ를 푼다", () => {
+  const nested = JSON.stringify({
+    title: "Claude Code 스킬이란 무엇인가요?",
+    children: [
+      "$",
+      "p",
+      null,
+      {
+        children: [
+          "Claude Code 스킬은 ",
+          ["$", "code", null, { children: "SKILL.md" }],
+          "와 관련 파일로 구성됩니다.",
+        ],
+      },
+    ],
+  });
+  const section = JSON.stringify({
+    title: "설치",
+    children: ["$", "p", null, { children: "섹션 본문입니다" }],
+  });
+  const snippet = `self.__next_f.push([1,${JSON.stringify(nested + section)}])`;
+  const faqs = extractGymAccordions(snippet);
+  assert.equal(
+    faqs.some((item) => item.title === "설치"),
+    false
+  );
+  const faq = faqs.find(
+    (item) => item.title === "Claude Code 스킬이란 무엇인가요?"
+  );
+  assert.equal(Boolean(faq), true);
+  assert.equal(faq.children.includes("`SKILL.md`"), true);
+  assert.equal(faq.children.includes("와 관련 파일로 구성됩니다."), true);
+});
+
 test("isSkipImage는 logo.svg를 skip한다", () => {
   assert.equal(isSkipImage("/logo.svg"), true);
   assert.equal(isSkipImage("https://www.gymcoding.co/logo.svg"), true);
