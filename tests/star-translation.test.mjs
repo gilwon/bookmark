@@ -512,6 +512,44 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("한글이 없던 신규 Star 26개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["google/agents-cli", "The CLI and skills that turn any coding assistant into an expert at creating, evaluating, and deploying AI agents on Google Cloud."],
+      ["donvito/codex-astra-luna-orchestrator", "Use Astra as orchestrator and Luna for subagents in Codex"],
+      ["XiaoDuoYa/codex-with-chatgpt", "ChatGPT thinks. Codex works. Use ChatGPT as the planning brain while keeping the Codex harness."],
+      ["Appllama/appllama-skills", "A builder, not just a researcher. Agent skills that turn top-grossing app patterns into native-quality mobile screens."],
+      ["fivetaku/pumasi", "Claude as PM + Codex CLI as parallel outsource developers — for large parallel coding tasks"],
+      ["fivetaku/kkirikkiri", "Natural language team builder for Claude Code Agent Teams — create purpose-driven AI teams with a single sentence"],
+      ["fivetaku/gptaku_plugins", "A Claude Code plugin marketplace for people who want to become AI Native"],
+      ["momenbasel/PureMac", "Free, open-source macOS cleaner. CleanMyMac alternative with zero telemetry. Native SwiftUI, scheduled auto-cleaning, Xcode/Homebrew/system cache cleanup. MIT licensed."],
+      ["DietrichGebert/ponytail", "Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote."],
+      ["designed-by-ai/skills", "Agent skills"],
+      ["fivetaku/gptaku-plugins-codex", "Codex-native GPTaku plugin marketplace"],
+      ["openai/plugins", "OpenAI Plugins"],
+      ["jo-inc/camofox-browser", "Stealth headless browser for AI agents — bypass Cloudflare, bot detection, and anti-scraping. Drop-in Puppeteer/Playwright replacement."],
+      ["nteract/semiotic", "React data visualization library for streaming, networks, and AI-assisted development"],
+      ["hsandhu/mobilecode", "mobilecode is a fork of opencode that builds and previews iOS and Android projects"],
+      ["Tencent/teamai-cli", "Make Every Team AI Native"],
+      ["browser-use/browser-use", "Agents that use the browser."],
+      ["jaywcjlove/awesome-mac", " This project is dedicated to collecting high-quality macOS software and organizing them systematically by different categories for easy search and use."],
+      ["vercel-labs/portless", "Replace port numbers with stable, named local URLs. For humans and agents."],
+      ["ibelick/ui-skills", "Skills for Design Engineers"],
+      ["pascalorg/editor", "Open-source 3D architectural editor with a local CLI, MCP tools, and practical workflows for humans and AI agents."],
+      ["zilliztech/claude-context", "Code search MCP for Claude Code. Make entire codebase the context for any coding agent."],
+      ["Novals83/5min-btc-polymarket", "OpenClaw skill for BTC 5-minute Polymarket momentum trading with configurable risk controls and optional hedge logic."],
+      ["BoardUI/boardui", "React design system for agentic interfaces. Every free BoardUI component as source, with a working AI chat app on your own model key as the homepage."],
+      ["opendataloader-project/opendataloader-pdf", "PDF Parser for AI-ready data. Automate PDF accessibility. Open-source."],
+      ["supertone-oss-archive/supertonic", "Lightning-Fast, On-Device, Multilingual TTS — running natively via ONNX."],
+    ];
+    assert.equal(cases.length, 26);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("미동기화 Star 4개의 정적 번역을 병기한다", () => {
     const cases = [
       ["anthropics/claude-cookbooks", "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude."],
@@ -554,6 +592,13 @@ describe("Star 설명 번역", () => {
     assert.equal(
       withKoreanTranslation("tobi/walgit", null, null),
       "객체 저장소 앞에 바이너리 하나 두는 Git 서버입니다. S3나 GCS 버킷을 원본으로 쓰고, 기계보다 큰 저장소도 스케일합니다."
+    );
+  });
+
+  it("GitHub About가 비어 있는 신규 Star 1개는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("spotify/portal-ai-plugins", null, null),
+      "Spotify Portal을 Claude Code, Codex, Cursor에 넣는 플러그인입니다. 카탈로그 검색, 서비스 브리핑, 진단, Portal 액션을 다룹니다."
     );
   });
 });
