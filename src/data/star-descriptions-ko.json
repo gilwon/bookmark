@@ -386,5 +386,9 @@
   "BoardUI/boardui": "에이전트 UI용 React 디자인 시스템입니다. 무료 BoardUI 컴포넌트를 소스로 제공하고, 홈페이지는 내 모델 키로 돌아가는 AI 채팅 앱입니다.",
   "spotify/portal-ai-plugins": "Spotify Portal을 Claude Code, Codex, Cursor에 넣는 플러그인입니다. 카탈로그 검색, 서비스 브리핑, 진단, Portal 액션을 다룹니다.",
   "opendataloader-project/opendataloader-pdf": "AI가 쓸 수 있는 데이터로 바꾸는 PDF 파서입니다. PDF 접근성 작업을 자동화하는 오픈소스입니다.",
-  "supertone-oss-archive/supertonic": "기기에서 바로 도는 빠른 다국어 TTS입니다. ONNX로 네이티브 실행합니다."
+  "supertone-oss-archive/supertonic": "기기에서 바로 도는 빠른 다국어 TTS입니다. ONNX로 네이티브 실행합니다.",
+  "NVIDIA/SkillSpector": "AI 에이전트 스킬용 보안 스캐너입니다. Claude Code, Codex, MCP 스킬을 설치하기 전에 취약점, 악성 패턴, 프롬프트 인젝션, 데이터 유출, 공급망 위험을 찾습니다.",
+  "vastsa/PI-Desktop": "로컬 우선 AI 코딩 에이전트 데스크톱입니다. Electron과 Rust 호스트 코어, pi Agent Harness, 사용자가 설치하는 플러그인으로 구성합니다.",
+  "redhat-et/ripwire": "AI 맥락용 ripgrep입니다. 코딩 에이전트를 위한 의존성 없는 C++23 CLI와 MCP 서버로, 저장소를 통째로 읽지 않고 어디를 고칠지와 영향 범위를 찾습니다.",
+  "google/artemis": "자연어 지시를 안정적인 Android 자동화로 바꿉니다. 워크플로를 끝까지 돌리고 로그를 남기며 Antigravity, Codex, Claude Code와 붙습니다."
 }
