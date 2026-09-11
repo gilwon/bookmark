@@ -390,5 +390,18 @@
   "NVIDIA/SkillSpector": "AI 에이전트 스킬용 보안 스캐너입니다. Claude Code, Codex, MCP 스킬을 설치하기 전에 취약점, 악성 패턴, 프롬프트 인젝션, 데이터 유출, 공급망 위험을 찾습니다.",
   "vastsa/PI-Desktop": "로컬 우선 AI 코딩 에이전트 데스크톱입니다. Electron과 Rust 호스트 코어, pi Agent Harness, 사용자가 설치하는 플러그인으로 구성합니다.",
   "redhat-et/ripwire": "AI 맥락용 ripgrep입니다. 코딩 에이전트를 위한 의존성 없는 C++23 CLI와 MCP 서버로, 저장소를 통째로 읽지 않고 어디를 고칠지와 영향 범위를 찾습니다.",
-  "google/artemis": "자연어 지시를 안정적인 Android 자동화로 바꿉니다. 워크플로를 끝까지 돌리고 로그를 남기며 Antigravity, Codex, Claude Code와 붙습니다."
+  "google/artemis": "자연어 지시를 안정적인 Android 자동화로 바꿉니다. 워크플로를 끝까지 돌리고 로그를 남기며 Antigravity, Codex, Claude Code와 붙습니다.",
+  "NVlabs/SoL-Pi": "Pi 에이전트 하네스 효율을 올리는 확장입니다. 자동 연구 루프로 찾은 네 가지 메커니즘으로 반복 호출과 큰 관측을 줄입니다.",
+  "penpot/penpot": "제품 팀을 위한 오픈소스 디자인 플랫폼입니다. 확장 가능한 협업과 셀프호스팅을 지원합니다.",
+  "KumarSashank/motiscope": "화면 녹화에서 웹 애니메이션을 재현합니다. 타이밍·이징·스태거·루프를 분석해 GSAP, CSS, Framer Motion, Lottie 코드로 만듭니다.",
+  "MongLong0214/commitlore": "Claude Code, Codex, Cursor 등 코딩 에이전트용 Git 네이티브 결정 기억입니다. 제약과 버린 대안을 남기고, 아직 유효한 결정만 보여 줍니다.",
+  "graykode/abtop": "AI 코딩 에이전트용 htop입니다. Claude Code와 Codex CLI 세션, 토큰, 컨텍스트 창, 속도 제한, 포트를 실시간으로 봅니다.",
+  "najmuzzaman-mohammad/gawkbot": "오픈소스 Grok 봇입니다. 잡일을 AI로 자동화하고 결과를 다루는 마이크로앱을 만들어, 통제되는 듯한 느낌을 줍니다.",
+  "Untrivial-ai/agent-orchestrator": "기획부터 머지까지 코딩 에이전트 팀을 돌리고 감독합니다. Claude Code, Codex 등 하네스 25개 이상을 데스크톱, 웹, 모바일, 클라우드에서 씁니다.",
+  "htmlstreamofficial/preline": "Tailwind CSS 기반 오픈소스 UI 컴포넌트 모음입니다.",
+  "saadeghi/daisyui": "가장 많이 쓰는 무료 오픈소스 Tailwind CSS 컴포넌트 라이브러리입니다.",
+  "themesberg/flowbite": "Tailwind CSS 기반 오픈소스 UI 컴포넌트 라이브러리이자 프론트엔드 프레임워크입니다.",
+  "markmead/hyperui": "마케팅 사이트, 웹앱, 이커머스에 쓰는 무료 Tailwind CSS v4 컴포넌트입니다. 코드를 복사해 붙여 넣습니다.",
+  "untitleduico/react": "Tailwind CSS와 React Aria로 만든 오픈소스 React 컴포넌트 모음입니다. 복사해 붙여 바로 씁니다.",
+  "radix-ui/themes": "빠른 개발, 쉬운 유지보수, 접근성에 맞춘 오픈소스 컴포넌트 라이브러리입니다. WorkOS가 유지합니다."
 }
