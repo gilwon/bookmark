@@ -617,4 +617,29 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 13개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["NVlabs/SoL-Pi", "SoL-Pi: Scaling Auto-Research Loops for Efficient Agent Harnesses"],
+      ["penpot/penpot", "Penpot: The open-source design platform for Product teams that need scalable collaboration."],
+      ["KumarSashank/motiscope", "Recreate any web animation from a screen recording. A motion-design plugin: analyzes motion (timing, easing, stagger, loops) and rebuilds it as GSAP / CSS / Framer Motion / Lottie code."],
+      ["MongLong0214/commitlore", "Git-native decision memory for Claude Code, Codex, Cursor and other coding agents. Preserve constraints and rejected alternatives; surface only the decisions still in force."],
+      ["graykode/abtop", "Like htop, but for AI coding agents. Monitor Claude    Code & Codex CLI sessions, tokens, context window,    rate limits, and ports in real-time."],
+      ["najmuzzaman-mohammad/gawkbot", "open source grok bot. gawk bots automate your menial work via AI models and build you microapps to manage the outcome, so that you have a false sense of control."],
+      ["Untrivial-ai/agent-orchestrator", "Run and supervise teams of coding agents from planning to merge. Any harness (Claude code, codex, +25 more). Desktop, web, mobile, and cloud agents."],
+      ["htmlstreamofficial/preline", "Preline UI is an open-source set of prebuilt UI components based on the utility-first Tailwind CSS framework."],
+      ["saadeghi/daisyui", "🌼 🌼 🌼 🌼 🌼  The most popular, free and open-source Tailwind CSS component library"],
+      ["themesberg/flowbite", "Open-source UI component library and front-end development framework based on Tailwind CSS"],
+      ["markmead/hyperui", "Free Tailwind CSS v4 components for your next project, designed to enhance your web development with the latest features and styles 🚀"],
+      ["untitleduico/react", "Untitled UI React is the world’s largest collection of open-source React components built with Tailwind CSS and React Aria. Just copy, paste, and build."],
+      ["radix-ui/themes", "Radix Themes is an open-source component library optimized for fast development, easy maintenance, and accessibility. Maintained by @workos."],
+    ];
+    assert.equal(cases.length, 13);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
