@@ -601,4 +601,20 @@ describe("Star 설명 번역", () => {
       "Spotify Portal을 Claude Code, Codex, Cursor에 넣는 플러그인입니다. 카탈로그 검색, 서비스 브리핑, 진단, Portal 액션을 다룹니다."
     );
   });
+
+  it("한글이 없던 신규 Star 4개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["NVIDIA/SkillSpector", "Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and supply-chain risks in Claude Code, Codex, and MCP skills before you install them."],
+      ["vastsa/PI-Desktop", "Local-first AI coding agent desktop: Electron + Rust host core + pi Agent Harness + user-installable plugins"],
+      ["redhat-et/ripwire", "The ripgrep of AI context: a zero-dependency C++23 CLI + MCP server for coding agents. Find what you want without reading the repo, then check you built what you meant — blast radius, tests-to-run, quality deltas. Signatures at 74.7% fewer bytes than bodies; every guess labelled, every loss published. Paddle out with a map."],
+      ["google/artemis", "ARTEMIS turns natural-language instructions into reliable Android automation. It automates end-to-end workflows, captures logs, and integrates seamlessly with AI coding assistants such as Antigravity, Codex, and Claude Code.  It also achieves 99%+ success rate on AndroidWorld Benchmark.  Created by Google's Pixel-Test-Engineering (PTE) Fusion team."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
