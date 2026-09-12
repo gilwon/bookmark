@@ -118,6 +118,48 @@ export const TARGETS = [
     tags: ["GPT", "프롬프트"],
     phrase: "수요 타이밍 해독기",
   },
+  {
+    id: "6bf20b16-892b-416e-ab39-07fcd28ac5f6",
+    title: "검색 상위 블로그 만드는 ChatGPT 질문 7개",
+    tags: ["블로그", "SEO", "GPT"],
+    phrase: "10년 차 블로그 마케팅 전문가",
+  },
+  {
+    id: "94b84130-2832-4246-93e0-4600c9db2c2e",
+    title: "코덱스 주간 한도를 맥 메뉴바에 띄우기",
+    tags: ["코덱스", "아스트라"],
+    phrase: "아스트라 엑스트라 하이",
+  },
+  {
+    id: "fd8d9dd4-119d-4700-bc64-b0e699d33a14",
+    title: "종목 분석 ChatGPT 프롬프트 7개",
+    tags: ["금융", "프롬프트"],
+    phrase: "시니어 주식 리서치 애널리스트",
+  },
+  {
+    id: "589845c8-103f-42a5-bd64-920430947ffc",
+    title: "클로드 워크플로 사령탑 설정",
+    tags: ["클로드", "설정"],
+    phrase: "서브 AI 군단",
+  },
+  {
+    id: "2af6a590-0f85-43c1-bef1-3972a913fa58",
+    title: "영어 학습 서비스 만드는 프롬프트 4개",
+    tags: ["프롬프트", "자동화"],
+    phrase: "GLM 5.3 Flash",
+  },
+  {
+    id: "6302b64b-cb3e-4f70-ac94-7930fb8a1cb9",
+    title: "여러 에이전트에 팀 표준을 맞추는 teamai-cli",
+    tags: ["툴", "에이전트"],
+    phrase: "Tencent/teamai-cli",
+  },
+  {
+    id: "2c9725c2-b4cd-49cc-8ee0-2ca57fbf080d",
+    title: "슬래시 명령어 20개",
+    tags: ["프롬프트", "설정"],
+    phrase: "/systemdesign",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");

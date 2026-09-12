@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 18건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 18);
+test("대상 25건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 25);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 18);
+  assert.equal(new Set(ids).size, 25);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -88,6 +88,45 @@ test("본문 첫 줄이 제목이던 신규 4건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 4);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("본문 첫 줄이 제목이던 신규 7건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "6bf20b16-892b-416e-ab39-07fcd28ac5f6": {
+      title: "검색 상위 블로그 만드는 ChatGPT 질문 7개",
+      tags: ["블로그", "SEO", "GPT"],
+    },
+    "94b84130-2832-4246-93e0-4600c9db2c2e": {
+      title: "코덱스 주간 한도를 맥 메뉴바에 띄우기",
+      tags: ["코덱스", "아스트라"],
+    },
+    "fd8d9dd4-119d-4700-bc64-b0e699d33a14": {
+      title: "종목 분석 ChatGPT 프롬프트 7개",
+      tags: ["금융", "프롬프트"],
+    },
+    "589845c8-103f-42a5-bd64-920430947ffc": {
+      title: "클로드 워크플로 사령탑 설정",
+      tags: ["클로드", "설정"],
+    },
+    "2af6a590-0f85-43c1-bef1-3972a913fa58": {
+      title: "영어 학습 서비스 만드는 프롬프트 4개",
+      tags: ["프롬프트", "자동화"],
+    },
+    "6302b64b-cb3e-4f70-ac94-7930fb8a1cb9": {
+      title: "여러 에이전트에 팀 표준을 맞추는 teamai-cli",
+      tags: ["툴", "에이전트"],
+    },
+    "2c9725c2-b4cd-49cc-8ee0-2ca57fbf080d": {
+      title: "슬래시 명령어 20개",
+      tags: ["프롬프트", "설정"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 7);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
