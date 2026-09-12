@@ -642,4 +642,40 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 17개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["deepset-ai/haystack", "Open-source AI orchestration framework for building context-engineered, production-ready LLM applications. Design modular pipelines and agent workflows with explicit control over retrieval, routing, memory, and generation. Built for scalable agents, RAG, multimodal applications, semantic search, and conversational systems."],
+      ["BerriAI/litellm", "The fastest, litest AI Gateway. Rust core with Python SDK. Call 100+ LLM APIs in OpenAI (or native) format with cost tracking, guardrails, load balancing, and logging [Bedrock, Azure, OpenAI, Anthropic, OpenAI, VertexAI, vLLM, Nvidia NIM]"],
+      ["567-labs/instructor", "structured outputs for llms "],
+      ["pydantic/pydantic-ai", "How Python does AI. Agents, realtime voice, image generation, embeddings. Every model, every interface, typed end to end."],
+      ["guardrails-ai/guardrails", "Adding guardrails to large language models."],
+      ["confident-ai/deepeval", "The LLM Evaluation Framework"],
+      ["vibrantlabsai/ragas", "Supercharge Your LLM Application Evaluations 🚀"],
+      ["Arize-ai/phoenix", "AI Observability & Evaluation"],
+      ["langfuse/langfuse", "🪢 Open source agent evals & observability: Trace, evaluate, and improve LLM applications with one open platform."],
+      ["open-telemetry/opentelemetry-collector", "OpenTelemetry Collector"],
+      ["jakeparkcolde/agent-worktree-orchestrator", "Control plane for AI coding agents using Git worktrees, Orca, Codex, and Claude."],
+      ["nashsu/llm_wiki", "LLM Wiki is a cross-platform desktop application that turns your documents into an organized, interlinked knowledge base — automatically. Instead of traditional RAG (retrieve-and-answer from scratch every time), the LLM incrementally builds and maintains a persistent wiki from your sources。"],
+      ["larashero3-dotcom/lieflat-charts", "Data visualization Skill for AI Agents, turning data into polished, interactive HTML charts. 面向 AI Agents 的数据可视化 Skill，将数据快速生成精致、可交互的 HTML 图表。"],
+      ["moorcheh-ai/memanto", "Memory that AI Agents Love!"],
+      ["OpenDCAI/GameFactory-3A", "A comprehensive open-source 3A game-generation skill and asset framework."],
+      ["Agents365-ai/drawio-skill", "Agent skill that turns natural language, code, Terraform/K8s, SQL, OpenAPI, AsyncAPI and Protobuf sources into editable, tested draw.io architecture diagrams: incremental sync, multi-view projection, drift diff, CI architecture tests, whiteboard derasterize, interactive HTML/PPTX/Mermaid exports."],
+      ["herdrdev/herdr", "the runtime your coding agents live on"],
+    ];
+    assert.equal(cases.length, 17);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("GitHub About가 비어 있는 vphone-cli는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("Lakr233/vphone-cli", null, null),
+      "Apple Virtualization.framework와 PCC 연구 VM으로 가상 아이폰을 띄우는 CLI입니다."
+    );
+  });
 });
