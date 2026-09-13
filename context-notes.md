@@ -1,3 +1,25 @@
+# 그록봇 템플릿 메뉴 메모
+
+- 참고 UI. `https://dasolin.net/tips/grokbot-templates`. 공개 710개. catalog.json은 150개라 쓰지 않는다. 공개 페이지는 Supabase `grokbot_templates`를 읽는다.
+- 스냅샷. `scripts/data/grokbot-templates.json`. 런타임에 다솔인을 호출하지 않는다.
+- 카테고리. `공식 마켓플레이스` 71, `어시스턴트` 99, `엔지니어링` 118, `리서치` 56, `세일즈·마케팅` 63, `금융·비용` 72, `크리에이티브` 84, `개인·생활` 147.
+- 중복 키는 사용자+템플릿 URL이다. 다솔인 UUID를 우리 id로 쓰지 않는다.
+- 기각. 북마크 재사용. 템플릿 URL만으로는 스킬·루틴·공식 마켓을 담지 못한다.
+- 기각. 서버 페이징. 카테고리 칩 숫자에 전체 710이 필요하다. 전체 JSON은 약 400KB다.
+- 즐겨찾기는 카피와 같다. `is_favorite` 0/1, 별 버튼, 칩, 정렬 우선.
+- 로컬 `.env.local`에 Supabase 키가 있으면 앱은 SQLite가 아니라 Supabase를 쓴다. 운영 테이블이 없으면 목록이 비고, 추가 시 SQL 안내가 난다.
+- 로컬 SQLite `dev` 사용자에 710건이 들어 있다. 브라우저 확인은 SQLite 백엔드로 했다. 운영은 `supabase/add_grok_bots.sql` 을 먼저 실행한 뒤 임포트를 다시 돌린다. 이미 있는 템플릿 URL은 건너뛰고 `is_favorite`는 덮지 않는다.
+
+# 영선·짐코딩 실전 가이드 2건 Pages 이관 메모
+
+- 저장 URL. `https://yeongseon.kr/archive/3b1d86104de280808016e91f0ba5cd4d.html`, `https://www.gymcoding.co/articles/claude-code-skills-5-practical-guide`.
+- 영선 제목 `직장인들을 위한 무료 오픈소스 TOP 3`는 노션 `1b3b256827ac8236a95101d21398974d`와 같다. 원문이 다르므로 제목만으로 스킵하지 않는다.
+- 짐코딩 제목 `클로드 코드 스킬 추천 5개: 설치 방법·실전 프롬프트·코드 예시`는 기존 `must-have-skills-5`(설치·검증)와 다르다.
+- 영선 본문 이미지 1장. `img/3b1d86104de28010bc49d45f471e9941.png` → data URL. Google Docs preview와 GitHub 3개는 https 링크로 둔다. 파일 첨부 0.
+- 영선 HTML의 `aside.promo`는 `ul` 안에서 깨져 비어 있다. D-DAY `aside.note`와 뒤따르는 단톡·관련글·CTA를 지운다. 앞쪽 `aside.note`(10배 더 빠르게)와 `ol.steps`는 본문이다.
+- 짐코딩 본문 `img` 0, 로고 SVG 생략. OG 표지 1장을 data URL로 넣는다. FAQ 6개는 닫혀 있고 RSC `children`이 문자열이 아니라 React 노드 배열이다. 기존 `extractGymAccordions` 문자열 정규식만으로는 답이 비다.
+- 운영 중복은 `source_url`만 본다. `content` ilike는 쓰지 않는다.
+
 # 카피 태그 백필
 
 - 운영 `thread_copies` 24건이 전부 태그 비어 있었다. 본문을 보고 2~3개씩 달았다.

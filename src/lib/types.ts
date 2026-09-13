@@ -143,3 +143,32 @@ export type ThreadCopy = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** 그록봇 스킬·루틴 한 줄 */
+export type GrokBotEntry = {
+  name: string;
+  descriptionKo?: string;
+  schedule?: string;
+};
+
+/** 그록봇 템플릿 라이브러리 엔티티 */
+export type GrokBot = {
+  id: string;
+  userId: string;
+  slug: string | null;
+  name: string;
+  nameEn: string;
+  creator: string;
+  category: string | null;
+  description: string;
+  howItWorks: string;
+  notes: string;
+  skills: GrokBotEntry[];
+  routines: GrokBotEntry[];
+  templateUrl: string;
+  sourceUrl: string | null;
+  officialMarketplace: boolean;
+  isFavorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

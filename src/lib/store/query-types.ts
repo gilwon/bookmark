@@ -24,6 +24,7 @@ export type DashboardCounts = {
   stars: number;
   pages: number;
   copies: number;
+  grokBots: number;
   agentDocs: number;
   categories: number;
 };

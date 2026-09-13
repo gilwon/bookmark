@@ -5,6 +5,7 @@ import type {
   CategoryRow,
   CustomPageRow,
   GithubStarRow,
+  GrokBotRow,
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
@@ -258,6 +259,65 @@ export function threadCopyToDb(row: ThreadCopyRow) {
     body: row.body,
     source_url: row.sourceUrl ?? null,
     tags: row.tags ?? "[]",
+    is_favorite: toFavoriteFlag(row.isFavorite),
+    created_at: row.createdAt,
+    updated_at: row.updatedAt,
+  };
+}
+
+/** JSON 배열이 오면 문자열로 맞춘다. */
+function jsonText(v: unknown, fallback = "[]"): string {
+  if (typeof v === "string") return v;
+  if (v == null) return fallback;
+  try {
+    return JSON.stringify(v);
+  } catch {
+    return fallback;
+  }
+}
+
+export function mapGrokBot(r: any): GrokBotRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    slug: r.slug ?? null,
+    name: r.name,
+    nameEn: r.name_en ?? r.nameEn ?? "",
+    creator: r.creator ?? "",
+    category: r.category ?? null,
+    description: r.description ?? "",
+    howItWorks: r.how_it_works ?? r.howItWorks ?? "",
+    notes: r.notes ?? "",
+    skills: jsonText(r.skills),
+    routines: jsonText(r.routines),
+    templateUrl: r.template_url ?? r.templateUrl,
+    sourceUrl: r.source_url ?? r.sourceUrl ?? null,
+    officialMarketplace: toFavoriteFlag(
+      r.official_marketplace ?? r.officialMarketplace
+    ),
+    isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
+    createdAt: r.created_at ?? r.createdAt,
+    updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function grokBotToDb(row: GrokBotRow) {
+  return {
+    id: row.id,
+    user_id: row.userId,
+    slug: row.slug ?? null,
+    name: row.name,
+    name_en: row.nameEn ?? "",
+    creator: row.creator ?? "",
+    category: row.category ?? null,
+    description: row.description ?? "",
+    how_it_works: row.howItWorks ?? "",
+    notes: row.notes ?? "",
+    skills: row.skills ?? "[]",
+    routines: row.routines ?? "[]",
+    template_url: row.templateUrl,
+    source_url: row.sourceUrl ?? null,
+    official_marketplace: toFavoriteFlag(row.officialMarketplace),
     is_favorite: toFavoriteFlag(row.isFavorite),
     created_at: row.createdAt,
     updated_at: row.updatedAt,

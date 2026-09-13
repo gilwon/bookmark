@@ -4,6 +4,7 @@
 import {
   Bookmark,
   Bot,
+  BotMessageSquare,
   FileText,
   GitFork,
   Loader2,
@@ -37,6 +38,11 @@ const TYPE_META: Record<
     label: "카피",
     icon: PenLine,
     className: "text-rose-600 dark:text-rose-400",
+  },
+  "grok-bot": {
+    label: "그록봇",
+    icon: BotMessageSquare,
+    className: "text-indigo-600 dark:text-indigo-400",
   },
   prompt: {
     label: "프롬프트",

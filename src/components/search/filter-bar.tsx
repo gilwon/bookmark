@@ -77,6 +77,7 @@ export function FilterBar() {
           <option value="star">GitHub Star</option>
           <option value="page">페이지</option>
           <option value="copy">카피</option>
+          <option value="grok-bot">그록봇</option>
           <option value="prompt">프롬프트</option>
           <option value="agent-doc">에이전트 문서</option>
         </select>

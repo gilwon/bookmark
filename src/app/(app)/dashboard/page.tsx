@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 import {
   Bookmark,
   Bot,
+  BotMessageSquare,
   FileText,
   FolderOpen,
   GitFork,
@@ -115,6 +116,13 @@ export default async function DashboardPage() {
       href: "/copies",
       icon: PenLine,
       hint: "SNS 짧은 글",
+    },
+    {
+      label: "그록봇",
+      value: counts.grokBots,
+      href: "/grok-bots",
+      icon: BotMessageSquare,
+      hint: "그록봇 템플릿",
     },
     {
       label: "에이전트 문서",

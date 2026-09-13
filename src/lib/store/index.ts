@@ -48,4 +48,5 @@ export type {
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
+  GrokBotRow,
 } from "./types";

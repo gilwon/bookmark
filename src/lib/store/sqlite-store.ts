@@ -10,12 +10,14 @@ import {
   categories,
   customPages,
   githubStars,
+  grokBots,
   oauthTokens,
   prompts,
   threadCopies,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import { preparePageFindability } from "@/lib/page-findability";
+import { normalizeTemplateUrl } from "@/lib/grok-bot";
 import { copyBodiesMatch, normalizeCopyBody } from "@/lib/thread-copy";
 import type {
   CategoryCount,
@@ -29,6 +31,7 @@ import type {
   CategoryRow,
   CustomPageRow,
   GithubStarRow,
+  GrokBotRow,
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
@@ -967,6 +970,174 @@ export async function searchThreadCopies(
     .slice(0, lim);
 }
 
+// --- grok bots (소유자 스코프 — userId 필터 필수) ---
+function grokBotSearchSql(q?: string) {
+  const needle = q?.trim().toLowerCase();
+  if (!needle) return null;
+  const p = `%${needle.replace(/[%_]/g, "")}%`;
+  return sql`(
+    lower(${grokBots.name}) like ${p}
+    or lower(${grokBots.nameEn}) like ${p}
+    or lower(${grokBots.creator}) like ${p}
+    or lower(coalesce(${grokBots.category}, '')) like ${p}
+    or lower(${grokBots.description}) like ${p}
+    or lower(${grokBots.howItWorks}) like ${p}
+    or lower(${grokBots.templateUrl}) like ${p}
+    or lower(coalesce(${grokBots.sourceUrl}, '')) like ${p}
+    or lower(coalesce(${grokBots.slug}, '')) like ${p}
+  )`;
+}
+
+/** 즐겨찾기 우선 → 등록일 최신순. 카드에 스킬·루틴이 필요해 전체 행을 준다. */
+export async function listGrokBots(
+  userId: string,
+  opts?: ListPageOpts
+): Promise<GrokBotRow[]> {
+  const conditions = [eq(grokBots.userId, userId)];
+  const search = grokBotSearchSql(opts?.q);
+  if (search) conditions.push(search);
+  let query = db
+    .select()
+    .from(grokBots)
+    .where(and(...conditions))
+    .orderBy(desc(grokBots.isFavorite), desc(grokBots.createdAt));
+  const lim = opts?.limit;
+  const off = opts?.offset ?? 0;
+  if (lim && lim > 0) query = query.limit(lim).offset(off) as typeof query;
+  return qall(query);
+}
+
+export async function countGrokBots(
+  userId: string,
+  opts?: { q?: string }
+): Promise<number> {
+  const conditions = [eq(grokBots.userId, userId)];
+  const search = grokBotSearchSql(opts?.q);
+  if (search) conditions.push(search);
+  const [row] = await qall(
+    db
+      .select({ c: count() })
+      .from(grokBots)
+      .where(and(...conditions))
+  );
+  return Number(row?.c ?? 0);
+}
+
+export async function getGrokBot(
+  id: string,
+  userId: string
+): Promise<GrokBotRow | undefined> {
+  return qget(
+    db
+      .select()
+      .from(grokBots)
+      .where(and(eq(grokBots.id, id), eq(grokBots.userId, userId)))
+  );
+}
+
+/** 같은 사용자에서 정규화 템플릿 URL이 일치하는 봇을 찾는다. */
+export async function findGrokBotByTemplateUrl(
+  userId: string,
+  templateUrl: string
+): Promise<GrokBotRow | undefined> {
+  const normalized = normalizeTemplateUrl(templateUrl);
+  if (!normalized) return undefined;
+  const rows = await qall(
+    db
+      .select({
+        id: grokBots.id,
+        templateUrl: grokBots.templateUrl,
+      })
+      .from(grokBots)
+      .where(eq(grokBots.userId, userId))
+  );
+  const hit = rows.find(
+    (r) => normalizeTemplateUrl(r.templateUrl) === normalized
+  );
+  if (!hit) return undefined;
+  return getGrokBot(hit.id, userId);
+}
+
+export async function insertGrokBot(row: GrokBotRow): Promise<GrokBotRow> {
+  await qrun(db.insert(grokBots).values(row));
+  return (await getGrokBot(row.id, row.userId))!;
+}
+
+export async function updateGrokBot(
+  id: string,
+  userId: string,
+  patch: Partial<GrokBotRow>
+): Promise<GrokBotRow | undefined> {
+  const { id: _i, userId: _u, ...rest } = patch as GrokBotRow;
+  await qrun(
+    db
+      .update(grokBots)
+      .set(rest)
+      .where(and(eq(grokBots.id, id), eq(grokBots.userId, userId)))
+  );
+  return getGrokBot(id, userId);
+}
+
+export async function deleteGrokBot(id: string, userId: string): Promise<void> {
+  await qrun(
+    db
+      .delete(grokBots)
+      .where(and(eq(grokBots.id, id), eq(grokBots.userId, userId)))
+  );
+}
+
+export async function searchGrokBots(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<GrokBotRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 200);
+  const q = opts.q?.trim().toLowerCase();
+  const cat = opts.category?.trim().toLowerCase();
+
+  const conditions = [eq(grokBots.userId, userId)];
+  if (cat) {
+    conditions.push(sql`lower(coalesce(${grokBots.category}, '')) = ${cat}`);
+  }
+  if (opts.from) {
+    conditions.push(sql`${grokBots.createdAt} >= ${opts.from}`);
+  }
+  if (opts.to) {
+    conditions.push(
+      sql`${grokBots.createdAt} <= ${opts.to + "T23:59:59.999Z"}`
+    );
+  }
+  if (q) {
+    const tokens = q.split(/\s+/).filter(Boolean);
+    for (const t of tokens) {
+      const safe = t.replace(/[%_]/g, "");
+      if (!safe) continue;
+      const p = `%${safe}%`;
+      conditions.push(
+        sql`(
+          lower(${grokBots.name}) like ${p}
+          or lower(${grokBots.nameEn}) like ${p}
+          or lower(${grokBots.creator}) like ${p}
+          or lower(coalesce(${grokBots.category}, '')) like ${p}
+          or lower(${grokBots.description}) like ${p}
+          or lower(${grokBots.howItWorks}) like ${p}
+          or lower(${grokBots.templateUrl}) like ${p}
+          or lower(coalesce(${grokBots.sourceUrl}, '')) like ${p}
+          or lower(coalesce(${grokBots.slug}, '')) like ${p}
+        )`
+      );
+    }
+  }
+
+  return qall(
+    db
+      .select()
+      .from(grokBots)
+      .where(and(...conditions))
+      .orderBy(desc(grokBots.isFavorite), desc(grokBots.createdAt))
+      .limit(lim)
+  );
+}
+
 // --- dashboard / search ---
 export async function getDashboardCounts(
   userId: string
@@ -1001,6 +1172,12 @@ export async function getDashboardCounts(
       .from(threadCopies)
       .where(eq(threadCopies.userId, userId))
   );
+  const [g] = await qall(
+    db
+      .select({ c: count() })
+      .from(grokBots)
+      .where(eq(grokBots.userId, userId))
+  );
   const cats = await qall(
     db
       .select({ category: bookmarks.category })
@@ -1015,6 +1192,7 @@ export async function getDashboardCounts(
     stars: Number(s?.c ?? 0),
     pages: Number(p?.c ?? 0),
     copies: Number(c?.c ?? 0),
+    grokBots: Number(g?.c ?? 0),
     agentDocs: Number(a?.c ?? 0),
     categories: catSet.size,
   };
