@@ -4,6 +4,7 @@ export type QuickSearchType =
   | "bookmark"
   | "page"
   | "copy"
+  | "grok-bot"
   | "prompt"
   | "agent-doc"
   | "star";

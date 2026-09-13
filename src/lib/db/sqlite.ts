@@ -81,6 +81,20 @@ function createSqlite(): SqliteDb {
       is_favorite INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL, updated_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS grok_bots (
+      id TEXT PRIMARY KEY, user_id TEXT NOT NULL, slug TEXT,
+      name TEXT NOT NULL, name_en TEXT NOT NULL DEFAULT '',
+      creator TEXT NOT NULL DEFAULT '', category TEXT,
+      description TEXT NOT NULL DEFAULT '',
+      how_it_works TEXT NOT NULL DEFAULT '',
+      notes TEXT NOT NULL DEFAULT '',
+      skills TEXT NOT NULL DEFAULT '[]',
+      routines TEXT NOT NULL DEFAULT '[]',
+      template_url TEXT NOT NULL, source_url TEXT,
+      official_marketplace INTEGER NOT NULL DEFAULT 0,
+      is_favorite INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL, updated_at TEXT NOT NULL
+    );
     CREATE INDEX IF NOT EXISTS idx_bookmarks_user ON bookmarks(user_id);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_bookmarks_user_url ON bookmarks(user_id, url);
     CREATE INDEX IF NOT EXISTS idx_categories_user ON categories(user_id);
@@ -91,6 +105,8 @@ function createSqlite(): SqliteDb {
     CREATE INDEX IF NOT EXISTS idx_agent_docs_user ON agent_docs(user_id);
     CREATE INDEX IF NOT EXISTS idx_prompts_user ON prompts(user_id);
     CREATE INDEX IF NOT EXISTS idx_thread_copies_user ON thread_copies(user_id);
+    CREATE INDEX IF NOT EXISTS idx_grok_bots_user ON grok_bots(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_grok_bots_user_template ON grok_bots(user_id, template_url);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_oauth_user_provider ON oauth_tokens(user_id, provider);
   `);
   const agentCols = sqlite.prepare("PRAGMA table_info(agent_docs)").all() as {
@@ -150,6 +166,13 @@ function createSqlite(): SqliteDb {
     );
   } catch (e) {
     console.warn("[db] bookmarks unique(url) 인덱스 생성 실패 (중복 가능)", e);
+  }
+  try {
+    sqlite.exec(
+      `CREATE UNIQUE INDEX IF NOT EXISTS idx_grok_bots_user_template ON grok_bots(user_id, template_url)`
+    );
+  } catch (e) {
+    console.warn("[db] grok_bots unique(template_url) 인덱스 생성 실패 (중복 가능)", e);
   }
   try {
     sqlite.exec(`DROP INDEX IF EXISTS idx_stars_repo`);

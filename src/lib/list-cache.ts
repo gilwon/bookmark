@@ -1,7 +1,12 @@
 // 사용자별 목록 조회 짧은 캐시. 쓰기가 있으면 태그로 깬다.
 import { revalidateTag, unstable_cache } from "next/cache";
 
-export type ListCacheKind = "bookmarks" | "prompts" | "copies" | "pages";
+export type ListCacheKind =
+  | "bookmarks"
+  | "prompts"
+  | "copies"
+  | "pages"
+  | "grok-bots";
 
 /** 사용자·종류별 캐시 태그. */
 export function userListTag(userId: string, kind: ListCacheKind): string {

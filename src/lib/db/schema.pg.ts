@@ -116,3 +116,27 @@ export const threadCopies = pgTable("thread_copies", {
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
+
+/** 그록봇 템플릿 (스킬·루틴 JSON) */
+export const grokBots = pgTable("grok_bots", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  slug: text("slug"),
+  name: text("name").notNull(),
+  nameEn: text("name_en").notNull().default(""),
+  creator: text("creator").notNull().default(""),
+  category: text("category"),
+  description: text("description").notNull().default(""),
+  howItWorks: text("how_it_works").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  skills: text("skills").notNull().default("[]"),
+  routines: text("routines").notNull().default("[]"),
+  templateUrl: text("template_url").notNull(),
+  sourceUrl: text("source_url"),
+  /** 1이면 공식 마켓플레이스 */
+  officialMarketplace: integer("official_marketplace").notNull().default(0),
+  /** 1이면 즐겨찾기 (목록 상단) */
+  isFavorite: integer("is_favorite").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

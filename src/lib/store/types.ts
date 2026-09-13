@@ -120,3 +120,27 @@ export type ThreadCopyRow = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** 그록봇 행 — skills·routines 는 JSON 문자열 */
+export type GrokBotRow = {
+  id: string;
+  userId: string;
+  slug: string | null;
+  name: string;
+  nameEn: string;
+  creator: string;
+  category: string | null;
+  description: string;
+  howItWorks: string;
+  notes: string;
+  skills: string;
+  routines: string;
+  templateUrl: string;
+  sourceUrl: string | null;
+  /** 0 | 1 — 공식 마켓플레이스 */
+  officialMarketplace: number;
+  /** 0 | 1 — 즐겨찾기 */
+  isFavorite: number;
+  createdAt: string;
+  updatedAt: string;
+};

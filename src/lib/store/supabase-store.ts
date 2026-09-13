@@ -6,6 +6,11 @@ import {
 } from "@/lib/page-findability";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
+  GROK_BOTS_TABLE_USER_MESSAGE,
+  isMissingGrokBotsTable,
+  normalizeTemplateUrl,
+} from "@/lib/grok-bot";
+import {
   copyBodiesMatch,
   isMissingThreadCopiesTable,
   normalizeCopyBody,
@@ -21,6 +26,8 @@ import {
   mapCategory,
   mapPage,
   mapPrompt,
+  grokBotToDb,
+  mapGrokBot,
   mapStar,
   mapThreadCopy,
   mapToken,
@@ -40,6 +47,7 @@ import type { StarSyncBatch } from "@/lib/star-sync";
 import {
   BOOKMARK_IMPORT_SELECT,
   COPY_LIST_SELECT,
+  GROK_BOT_LIST_SELECT,
   PROMPT_LIST_SELECT,
   STAR_LIST_SELECT,
 } from "./star-list";
@@ -50,6 +58,7 @@ import type {
   CategoryRow,
   CustomPageRow,
   GithubStarRow,
+  GrokBotRow,
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
@@ -69,6 +78,16 @@ function throwUnlessMissingCopies(
 ): boolean {
   if (!error) return false;
   if (isMissingThreadCopiesTable(error.message)) return true;
+  throwIfError(error, ctx);
+  return false;
+}
+
+function throwUnlessMissingGrokBots(
+  error: { message: string } | null,
+  ctx: string
+): boolean {
+  if (!error) return false;
+  if (isMissingGrokBotsTable(error.message)) return true;
   throwIfError(error, ctx);
   return false;
 }
@@ -1208,6 +1227,212 @@ export async function searchThreadCopies(
   return rows.slice(0, lim);
 }
 
+// --- grok bots (소유자 스코프 — userId 필터 필수) ---
+function applyGrokBotSearch(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  query: any,
+  q?: string
+) {
+  const needle = q?.trim();
+  if (!needle) return query;
+  const p = likePat(needle);
+  return query.or(
+    `name.ilike.${p},name_en.ilike.${p},creator.ilike.${p},category.ilike.${p},description.ilike.${p},how_it_works.ilike.${p},template_url.ilike.${p},source_url.ilike.${p},slug.ilike.${p}`
+  );
+}
+
+/** 즐겨찾기 우선 → 등록일 최신순. 카드에 스킬·루틴이 필요해 전체 행을 준다. */
+export async function listGrokBots(
+  userId: string,
+  opts?: ListPageOpts
+): Promise<GrokBotRow[]> {
+  const maxRows = opts?.limit && opts.limit > 0 ? opts.limit : undefined;
+  const offset = opts?.offset && opts.offset > 0 ? opts.offset : 0;
+  const run = async (from: number, to: number) => {
+    const { data, error } = await applyGrokBotSearch(
+      sb()
+        .from("grok_bots")
+        .select(GROK_BOT_LIST_SELECT)
+        .eq("user_id", userId)
+        .order("is_favorite", { ascending: false })
+        .order("created_at", { ascending: false }),
+      opts?.q
+    ).range(from, to);
+    if (throwUnlessMissingGrokBots(error, "listGrokBots")) return [];
+    return ((data ?? []) as Record<string, unknown>[]).map(mapGrokBot);
+  };
+  if (maxRows != null) return run(offset, offset + maxRows - 1);
+  return fetchAllPaged(run);
+}
+
+export async function countGrokBots(
+  userId: string,
+  opts?: { q?: string }
+): Promise<number> {
+  const { count, error } = await applyGrokBotSearch(
+    sb()
+      .from("grok_bots")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId),
+    opts?.q
+  );
+  if (throwUnlessMissingGrokBots(error, "countGrokBots")) return 0;
+  return count ?? 0;
+}
+
+export async function getGrokBot(
+  id: string,
+  userId: string
+): Promise<GrokBotRow | undefined> {
+  const { data, error } = await sb()
+    .from("grok_bots")
+    .select("*")
+    .eq("id", id)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (throwUnlessMissingGrokBots(error, "getGrokBot")) return undefined;
+  return data ? mapGrokBot(data) : undefined;
+}
+
+/** 같은 사용자에서 정규화 템플릿 URL이 일치하는 봇을 찾는다. */
+export async function findGrokBotByTemplateUrl(
+  userId: string,
+  templateUrl: string
+): Promise<GrokBotRow | undefined> {
+  const normalized = normalizeTemplateUrl(templateUrl);
+  if (!normalized) return undefined;
+  const rows = await fetchAllPaged(async (from, to) => {
+    const { data, error } = await sb()
+      .from("grok_bots")
+      .select("id, template_url")
+      .eq("user_id", userId)
+      .range(from, to);
+    if (throwUnlessMissingGrokBots(error, "findGrokBotByTemplateUrl")) {
+      return [];
+    }
+    return (data ?? []) as { id: string; template_url: string | null }[];
+  });
+  const hit = rows.find(
+    (r) => normalizeTemplateUrl(r.template_url ?? "") === normalized
+  );
+  if (!hit) return undefined;
+  return getGrokBot(hit.id, userId);
+}
+
+export async function insertGrokBot(row: GrokBotRow): Promise<GrokBotRow> {
+  const { data, error } = await sb()
+    .from("grok_bots")
+    .insert(grokBotToDb(row))
+    .select("*")
+    .single();
+  if (error && isMissingGrokBotsTable(error.message)) {
+    throw new Error(GROK_BOTS_TABLE_USER_MESSAGE);
+  }
+  throwIfError(error, "insertGrokBot");
+  return mapGrokBot(data);
+}
+
+export async function updateGrokBot(
+  id: string,
+  userId: string,
+  patch: Partial<GrokBotRow>
+): Promise<GrokBotRow | undefined> {
+  const body: Record<string, unknown> = {};
+  if (patch.slug !== undefined) body.slug = patch.slug;
+  if (patch.name !== undefined) body.name = patch.name;
+  if (patch.nameEn !== undefined) body.name_en = patch.nameEn;
+  if (patch.creator !== undefined) body.creator = patch.creator;
+  if (patch.category !== undefined) body.category = patch.category;
+  if (patch.description !== undefined) body.description = patch.description;
+  if (patch.howItWorks !== undefined) body.how_it_works = patch.howItWorks;
+  if (patch.notes !== undefined) body.notes = patch.notes;
+  if (patch.skills !== undefined) body.skills = patch.skills;
+  if (patch.routines !== undefined) body.routines = patch.routines;
+  if (patch.templateUrl !== undefined) body.template_url = patch.templateUrl;
+  if (patch.sourceUrl !== undefined) body.source_url = patch.sourceUrl;
+  if (patch.officialMarketplace !== undefined) {
+    body.official_marketplace = patch.officialMarketplace ? 1 : 0;
+  }
+  if (patch.isFavorite !== undefined) body.is_favorite = patch.isFavorite ? 1 : 0;
+  if (patch.updatedAt !== undefined) body.updated_at = patch.updatedAt;
+
+  const { data, error } = await sb()
+    .from("grok_bots")
+    .update(body)
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select("*")
+    .maybeSingle();
+  if (error && isMissingGrokBotsTable(error.message)) {
+    throw new Error(GROK_BOTS_TABLE_USER_MESSAGE);
+  }
+  throwIfError(error, "updateGrokBot");
+  return data ? mapGrokBot(data) : undefined;
+}
+
+export async function deleteGrokBot(id: string, userId: string): Promise<void> {
+  const { error } = await sb()
+    .from("grok_bots")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  if (error && isMissingGrokBotsTable(error.message)) {
+    throw new Error(GROK_BOTS_TABLE_USER_MESSAGE);
+  }
+  throwIfError(error, "deleteGrokBot");
+}
+
+export async function searchGrokBots(
+  userId: string,
+  opts: SearchOpts = {}
+): Promise<GrokBotRow[]> {
+  const lim = Math.min(Math.max(opts.limit ?? 50, 1), 200);
+  let query = sb()
+    .from("grok_bots")
+    .select("*")
+    .eq("user_id", userId)
+    .order("is_favorite", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(lim);
+
+  if (opts.category?.trim()) {
+    query = query.ilike("category", opts.category.trim());
+  }
+  query = applyDateRange(query, "created_at", opts.from, opts.to);
+
+  const q = opts.q?.trim();
+  if (q) {
+    const first = q.split(/\s+/).filter(Boolean)[0] ?? q;
+    query = applyGrokBotSearch(query, first);
+  }
+
+  const { data, error } = await query;
+  if (throwUnlessMissingGrokBots(error, "searchGrokBots")) return [];
+  let rows = (data ?? []).map(mapGrokBot);
+
+  if (q) {
+    const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+    rows = rows.filter((r) => {
+      const hay = [
+        r.name,
+        r.nameEn,
+        r.creator,
+        r.category ?? "",
+        r.description,
+        r.howItWorks,
+        r.templateUrl,
+        r.sourceUrl ?? "",
+        r.slug ?? "",
+      ]
+        .join(" ")
+        .toLowerCase();
+      return tokens.every((t) => hay.includes(t));
+    });
+  }
+
+  return rows.slice(0, lim);
+}
+
 // --- dashboard / search (가벼운 쿼리) ---
 async function countTable(
   table:
@@ -1215,7 +1440,8 @@ async function countTable(
     | "github_stars"
     | "custom_pages"
     | "agent_docs"
-    | "thread_copies",
+    | "thread_copies"
+    | "grok_bots",
   userId: string
 ): Promise<number> {
   const { count, error } = await sb()
@@ -1229,6 +1455,13 @@ async function countTable(
   ) {
     return 0;
   }
+  if (
+    table === "grok_bots" &&
+    error &&
+    isMissingGrokBotsTable(error.message)
+  ) {
+    return 0;
+  }
   throwIfError(error, `count:${table}`);
   return count ?? 0;
 }
@@ -1237,12 +1470,13 @@ async function countTable(
 export async function getDashboardCounts(
   userId: string
 ): Promise<DashboardCounts> {
-  const [bookmarks, stars, pages, copies, agentDocs, catRows] =
+  const [bookmarks, stars, pages, copies, grokBots, agentDocs, catRows] =
     await Promise.all([
       countTable("bookmarks", userId),
       countTable("github_stars", userId),
       countTable("custom_pages", userId),
       countTable("thread_copies", userId),
+      countTable("grok_bots", userId),
       countTable("agent_docs", userId),
       fetchAllPaged(async (from, to) => {
         const r = await sb()
@@ -1264,6 +1498,7 @@ export async function getDashboardCounts(
     stars,
     pages,
     copies,
+    grokBots,
     agentDocs,
     categories: cats.size,
   };

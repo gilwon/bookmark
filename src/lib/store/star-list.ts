@@ -9,6 +9,9 @@ export const PROMPT_LIST_SELECT =
 export const COPY_LIST_SELECT =
   "id, user_id, title, source_url, tags, is_favorite, created_at, updated_at";
 
+export const GROK_BOT_LIST_SELECT =
+  "id, user_id, slug, name, name_en, creator, category, description, how_it_works, notes, skills, routines, template_url, source_url, official_marketplace, is_favorite, created_at, updated_at";
+
 export const BOOKMARK_IMPORT_SELECT =
   "id, url, title, image, description, favicon, category, created_at";
 

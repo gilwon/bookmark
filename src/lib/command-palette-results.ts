@@ -5,6 +5,7 @@ import type { QuickSearchItem, QuickSearchType } from "@/lib/quick-search";
 export const SEARCH_TYPE_LABEL: Record<QuickSearchType, string> = {
   page: "페이지",
   copy: "카피",
+  "grok-bot": "그록봇",
   prompt: "프롬프트",
   bookmark: "북마크",
   star: "Star",

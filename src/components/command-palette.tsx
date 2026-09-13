@@ -3,6 +3,7 @@
 
 import {
   Bot,
+  BotMessageSquare,
   FilePlus,
   FileText,
   GitFork,
@@ -30,6 +31,7 @@ import { cn } from "@/lib/utils";
 const SEARCH_TYPE_ICON: Record<QuickSearchType, typeof Search> = {
   page: FileText,
   copy: PenLine,
+  "grok-bot": BotMessageSquare,
   prompt: MessageSquareText,
   bookmark: Bookmark,
   star: GitFork,
@@ -187,6 +189,13 @@ export function CommandPalette() {
         keywords: "claude prompts 클로드 프롬프트 300 우주보스",
         icon: <Sparkles className="h-4 w-4" />,
         run: go("/claude-prompts"),
+      },
+      {
+        id: "nav-grok-bots",
+        label: "그록봇",
+        keywords: "grok bots 그록봇 템플릿 x.ai",
+        icon: <BotMessageSquare className="h-4 w-4" />,
+        run: go("/grok-bots"),
       },
       {
         id: "nav-agent-docs",

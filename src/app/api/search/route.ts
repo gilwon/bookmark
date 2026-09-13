@@ -33,11 +33,12 @@ export async function GET(req: Request) {
   const userId = gate.user.userId;
   const opts = { q, limit: perType };
 
-  const [bookmarks, pages, copies, prompts, agentDocs, stars] =
+  const [bookmarks, pages, copies, grokBots, prompts, agentDocs, stars] =
     await Promise.all([
       store.searchBookmarks(userId, opts),
       store.searchPages(userId, opts),
       store.searchThreadCopies(userId, opts),
+      store.searchGrokBots(userId, opts),
       store.searchPrompts(userId, opts),
       store.searchAgentDocs(userId, opts),
       store.searchStars(userId, opts),
@@ -62,6 +63,19 @@ export async function GET(req: Request) {
       title: r.title || "제목 없는 카피",
       subtitle: clip(r.body) || "카피",
       href: `/copies/${r.id}`,
+    });
+  }
+
+  for (const r of grokBots) {
+    items.push({
+      type: "grok-bot",
+      id: r.id,
+      title: r.name || "이름 없는 그록봇",
+      subtitle: clip(
+        [r.category, r.creator, r.description].filter(Boolean).join(" · ") ||
+          "그록봇"
+      ),
+      href: `/grok-bots/${r.id}`,
     });
   }
 
@@ -128,6 +142,7 @@ export async function GET(req: Request) {
   const order: QuickSearchType[] = [
     "page",
     "copy",
+    "grok-bot",
     "prompt",
     "agent-doc",
     "bookmark",

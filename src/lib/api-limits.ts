@@ -24,6 +24,14 @@ export const MAX_COPY_BODY_BYTES = 20_000;
 export const MAX_COPY_TAGS = MAX_BOOKMARK_TAGS;
 /** 카테고리 이름 */
 export const MAX_CATEGORY_NAME_LEN = 80;
+/** 그록봇 이름·영문명·제작자·카테고리·슬러그 */
+export const MAX_GROK_BOT_NAME_LEN = 200;
+/** 그록봇 설명·작동 방식·메모 최대 바이트 */
+export const MAX_GROK_BOT_TEXT_BYTES = 8000;
+/** 그록봇 스킬 또는 루틴 개수 */
+export const MAX_GROK_BOT_ENTRIES = 40;
+/** 그록봇 템플릿·원본 URL */
+export const MAX_GROK_BOT_URL_LEN = 500;
 
 /** UTF-8 바이트 길이 */
 export function utf8Bytes(s: string): number {

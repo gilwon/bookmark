@@ -15,6 +15,10 @@ import {
   type CopySearchResult,
 } from "@/components/search/copy-result-card";
 import {
+  GrokBotResultCard,
+  type GrokBotSearchResult,
+} from "@/components/search/grok-bot-result-card";
+import {
   PromptResultCard,
   type PromptSearchResult,
 } from "@/components/search/prompt-result-card";
@@ -116,6 +120,7 @@ export default async function SearchPage({
     pageResults,
     agentDocResults,
     copyResults,
+    grokBotResults,
     promptResults,
   ] = await Promise.all([
     collect<Bookmark>(
@@ -213,6 +218,25 @@ export default async function SearchPage({
         }));
       },
     ),
+    collect<GrokBotSearchResult>(
+      "그록봇",
+      type === "all" || type === "grok-bot",
+      async () => {
+        const rows = await store.searchGrokBots(userId, opts);
+        return rows.map((row) => ({
+          id: row.id,
+          name: row.name,
+          category: row.category,
+          snippet: makeSnippet(
+            [row.creator, row.description, row.howItWorks]
+              .filter(Boolean)
+              .join(" · "),
+            q
+          ),
+          updatedAt: row.updatedAt,
+        }));
+      },
+    ),
     collect<PromptSearchResult>(
       "프롬프트",
       (type === "all" || type === "prompt") && !tag && !category,
@@ -245,6 +269,7 @@ export default async function SearchPage({
     starResults.length +
     pageResults.length +
     copyResults.length +
+    grokBotResults.length +
     agentDocResults.length +
     promptResults.length;
 
@@ -253,7 +278,7 @@ export default async function SearchPage({
       <div>
         <h1 className="text-lg font-medium tracking-[-0.02em]">검색</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          북마크, Stars, 페이지, 카피, 프롬프트, 에이전트 문서를 통합 검색합니다.
+          북마크, Stars, 페이지, 카피, 그록봇, 프롬프트, 에이전트 문서를 통합 검색합니다.
         </p>
       </div>
 
@@ -330,6 +355,18 @@ export default async function SearchPage({
               <div className="grid gap-3 sm:grid-cols-2">
                 {copyResults.map((c) => (
                   <CopyResultCard key={c.id} copy={c} />
+                ))}
+              </div>
+            </section>
+          )}
+          {grokBotResults.length > 0 && (
+            <section className="space-y-3">
+              <h2 className="text-sm font-semibold">
+                그록봇 ({grokBotResults.length})
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {grokBotResults.map((b) => (
+                  <GrokBotResultCard key={b.id} bot={b} />
                 ))}
               </div>
             </section>
