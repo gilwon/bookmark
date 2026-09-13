@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 25건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 25);
+test("대상 27건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 27);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 25);
+  assert.equal(new Set(ids).size, 27);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -127,6 +127,25 @@ test("본문 첫 줄이 제목이던 신규 7건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 7);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("본문 첫 줄이 제목이던 신규 2건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "a76f91d8-bff2-4fc3-8b1c-a3fed3e0e1f2": {
+      title: "클로드 디자인할 때 볼 레퍼런스 3곳",
+      tags: ["클로드", "디자인", "레퍼런스"],
+    },
+    "02991010-ffb5-4326-92e7-019b4346a874": {
+      title: "PRD부터 아스트라 구현까지 프롬프트 6개",
+      tags: ["아스트라", "프롬프트"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 2);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
