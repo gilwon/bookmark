@@ -160,6 +160,18 @@ export const TARGETS = [
     tags: ["프롬프트", "설정"],
     phrase: "/systemdesign",
   },
+  {
+    id: "a76f91d8-bff2-4fc3-8b1c-a3fed3e0e1f2",
+    title: "클로드 디자인할 때 볼 레퍼런스 3곳",
+    tags: ["클로드", "디자인", "레퍼런스"],
+    phrase: "navbar.gallery",
+  },
+  {
+    id: "02991010-ffb5-4326-92e7-019b4346a874",
+    title: "PRD부터 아스트라 구현까지 프롬프트 6개",
+    tags: ["아스트라", "프롬프트"],
+    phrase: "Low-fidelity Wireframe",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
