@@ -678,4 +678,25 @@ describe("Star 설명 번역", () => {
       "Apple Virtualization.framework와 PCC 연구 VM으로 가상 아이폰을 띄우는 CLI입니다."
     );
   });
+
+  it("한글이 없던 신규 Star 9개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["Nexvyn/runeicons", "Rune Icons is a set of 900+ icons, each drawn in five styles."],
+      ["getopenpost/openpost", "Create, adapt, schedule, and track social posts. Open-source, hosted or self-hosted."],
+      ["StacDev/stac", "Stac is a Server-Driven UI (SDUI) framework for Flutter, enabling you to create stunning, cross-platform applications dynamically with JSON. Build and update your app's UI in real-time with ease and flexibility!"],
+      ["MobAI-App/mobai-dev", "Everything a coding agent needs to build iOS apps from a Linux sandbox"],
+      ["Vincentwei1021/anything2explainer", "Topic in, narrated explainer video out. A Claude Code / Codex skill that turns any topic into a black-canvas motion-graphics explainer video with TTS voiceover, subtitles and a chapter progress bar. Chinese or English; every frame drawn in code with Remotion."],
+      ["yorukot/superfile", "Pretty fancy and modern terminal file manager"],
+      ["34306/vphone-aio", "1 script run the vphone"],
+      ["colbymchenry/codegraph", "Pre-indexed code knowledge graph, auto syncs on code changes, for Claude Code, Codex, Gemini, Cursor, OpenCode, AntiGravity, Kiro, CoPilot, and Hermes Agent — fewer tokens, fewer tool calls, 100% local"],
+      ["ItzCrazyKns/Vane", "Vane is an AI-powered answering engine."],
+    ];
+    assert.equal(cases.length, 9);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

@@ -421,5 +421,14 @@
   "moorcheh-ai/memanto": "다른 에이전트의 기억을 관리하는 메모리 에이전트입니다. 무엇을 남기고, 무엇이 충돌하고, 무엇이 만료되는지 다룹니다.",
   "OpenDCAI/GameFactory-3A": "오픈소스 3A 게임 생성 스킬과 에셋 프레임워크입니다.",
   "Agents365-ai/drawio-skill": "자연어, 코드, Terraform/K8s, SQL, OpenAPI 등을 편집 가능한 draw.io 아키텍처 다이어그램으로 바꿉니다.",
-  "herdrdev/herdr": "코딩 에이전트가 돌아가는 런타임입니다. 클라이언트를 닫아도 터미널을 백그라운드에서 유지합니다."
+  "herdrdev/herdr": "코딩 에이전트가 돌아가는 런타임입니다. 클라이언트를 닫아도 터미널을 백그라운드에서 유지합니다.",
+  "Nexvyn/runeicons": "900개 넘는 아이콘 세트입니다. 각 아이콘을 다섯 가지 스타일로 그렸습니다.",
+  "getopenpost/openpost": "소셜 게시물을 만들고 다듬고 예약하고 추적합니다. 오픈소스이며 호스팅이나 셀프호스팅으로 씁니다.",
+  "StacDev/stac": "Flutter용 서버 주도 UI 프레임워크입니다. JSON으로 크로스 플랫폼 앱 UI를 실시간으로 만들고 바꿉니다.",
+  "MobAI-App/mobai-dev": "리눅스 샌드박스에서 iOS 앱을 만드는 데 코딩 에이전트가 필요한 것을 모았습니다.",
+  "Vincentwei1021/anything2explainer": "주제를 넣으면 나레이션 설명 영상이 나옵니다. Claude Code·Codex 스킬로 검은 캔버스 모션 그래픽, TTS, 자막, 챕터 진행 바를 만듭니다.",
+  "yorukot/superfile": "세련된 모던 터미널 파일 관리자입니다.",
+  "34306/vphone-aio": "스크립트 하나로 가상 아이폰을 띄웁니다. 탈옥과 부트스트랩이 들어 있습니다.",
+  "colbymchenry/codegraph": "미리 인덱싱한 코드 지식 그래프입니다. 코드가 바뀌면 자동 동기화하고, Claude Code, Codex, Cursor 등에서 토큰과 툴 호출을 줄이며 전부 로컬에서 돕니다.",
+  "ItzCrazyKns/Vane": "로컬에서 도는 AI 답변 엔진입니다."
 }
