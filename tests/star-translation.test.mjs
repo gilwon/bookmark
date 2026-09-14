@@ -699,4 +699,22 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["vinzdg/codenotch", "A macOS app that pins usage limits from Claude Code, Cursor, Codex, and Antigravity to a screen edge."],
+      ["HolmesGPT/holmesgpt", "SRE Agent - CNCF Sandbox Project"],
+      ["fleetbase/fleetbase", "Modular logistics and supply chain operating system (LSOS)"],
+      ["Emanuele-web04/synara", "The best place to build with your AI sub"],
+      ["Jakubantalik/transitions.dev", "Collection of the most essential transitions for web apps, skill for agents and Refine tool for agents"],
+      ["Aider-AI/aider", "aider is AI pair programming in your terminal"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
