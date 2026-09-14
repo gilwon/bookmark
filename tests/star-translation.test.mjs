@@ -717,4 +717,17 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 1개에 한국어 설명을 병기한다", () => {
+    const description =
+      "A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings";
+    const result = withKoreanTranslation(
+      "cloudflare/security-audit-skill",
+      description,
+      null
+    );
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
+  });
 });

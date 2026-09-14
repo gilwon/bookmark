@@ -436,5 +436,6 @@
   "fleetbase/fleetbase": "모듈형 물류·공급망 운영 시스템입니다.",
   "Emanuele-web04/synara": "코딩 에이전트와 작업하는 로컬 우선 데스크톱입니다. 프로젝트, 세션, 실행 화면, 리뷰 도구를 한곳에 둡니다.",
   "Jakubantalik/transitions.dev": "웹앱에 쓰는 핵심 전환 모음입니다. 에이전트용 스킬과 Refine 도구도 있습니다.",
-  "Aider-AI/aider": "터미널에서 하는 AI 페어 프로그래밍입니다."
+  "Aider-AI/aider": "터미널에서 하는 AI 페어 프로그래밍입니다.",
+  "cloudflare/security-audit-skill": "코딩 에이전트용 다단계 보안 감사 스킬입니다. 독립 검증된 기계 가독 결과를 남깁니다."
 }
