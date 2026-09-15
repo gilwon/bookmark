@@ -730,4 +730,16 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("한글이 없던 신규 Star ObsidianUI에 한국어 설명을 병기한다", () => {
+    const description = "React & Tailwind CSS Components Library";
+    const result = withKoreanTranslation(
+      "Atharvsinh-codez/ObsidianUI",
+      description,
+      null
+    );
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
+  });
 });
