@@ -742,4 +742,31 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("한글이 없던 신규 Star 15개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["roboflow/supervision", "We write your reusable computer vision tools. 💜"],
+      ["nexu-io/html-anything", "✨ The agentic HTML editor — your local AI agent writes the HTML, you ship it. 🚀 75 Skills × 9 Surfaces (magazine · deck · poster · XHS / tweet · prototype · data report · Hyperframes) 🛡️ Sandboxed preview · 📤 1-click to WeChat / X / Zhihu / HTML / PNG 🔑 Zero API key — Claude Code / Cursor / Codex / Gemini / Copilot / OpenCode / Qwen / Aider."],
+      ["imputnet/cobalt", "best way to save what you love"],
+      ["hypit-ai/hypit", "Clone any viral video with AI agents. Not just a script, the whole workflow: swap the face, the words, the B-roll, ship 100 variants in one command, and get your 100M views."],
+      ["HKUDS/OpenSpace", "\"OpenSpace: The Skill Management Layer for AI Agents\" -- https://open-space.cloud/"],
+      ["AlexAI-MCP/Crab-Archi-Design", "Original-SVG-first architectural community design copilot framework with mandatory OpenCrab MCP workflow."],
+      ["nilbuild/page-mascot", "A mascot that watches the cursor and blinks when you poke it"],
+      ["ArchiveBox/ArchiveBox", "🗃 Open source self-hosted web archiving. Takes URLs/browser history/bookmarks/Pocket/Pinboard/etc., saves HTML, JS, PDFs, media, and more..."],
+      ["dgtlmoon/changedetection.io", "Best and simplest tool for website change detection, web page monitoring, and website change alerts. Perfect for tracking content changes, price drops, restock alerts, and website defacement monitoring—all for free or enjoy our SaaS plan!"],
+      ["reactive-resume/reactive-resume", "A one-of-a-kind resume builder that keeps your privacy in mind. Completely secure, customizable, portable, open-source and free forever. Try it out today!"],
+      ["searxng/searxng", "SearXNG is a free internet metasearch engine which aggregates results from various search services and databases. Users are neither tracked nor profiled."],
+      ["NationalSecurityAgency/ghidra", "Ghidra is a software reverse engineering (SRE) framework"],
+      ["samasante/liquid-glass", "Apple-style Liquid Glass for the web — a headless React lens that refracts the live DOM in Safari, Firefox and Chrome. Zero dependencies."],
+      ["shadcn-ui/lint", "An agent-first linter for Tailwind design systems. Write design system rules that agents can verify."],
+      ["thaw-app/Thaw", "The open source menu bar manager"],
+    ];
+    assert.equal(cases.length, 15);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

@@ -438,5 +438,20 @@
   "Jakubantalik/transitions.dev": "웹앱에 쓰는 핵심 전환 모음입니다. 에이전트용 스킬과 Refine 도구도 있습니다.",
   "Aider-AI/aider": "터미널에서 하는 AI 페어 프로그래밍입니다.",
   "cloudflare/security-audit-skill": "코딩 에이전트용 다단계 보안 감사 스킬입니다. 독립 검증된 기계 가독 결과를 남깁니다.",
-  "Atharvsinh-codez/ObsidianUI": "React와 Tailwind CSS 컴포넌트 라이브러리입니다. Motion으로 만든 컴포넌트, 블록, 랜딩 템플릿을 제공합니다."
+  "Atharvsinh-codez/ObsidianUI": "React와 Tailwind CSS 컴포넌트 라이브러리입니다. Motion으로 만든 컴포넌트, 블록, 랜딩 템플릿을 제공합니다.",
+  "roboflow/supervision": "재사용 가능한 컴퓨터 비전 도구를 만듭니다.",
+  "nexu-io/html-anything": "에이전틱 HTML 에디터입니다. 로컬 AI 에이전트가 HTML을 쓰고 바로 배포합니다. 75개 스킬과 매거진·덱·포스터·샤오홍슈/트윗·프로토타입·데이터 리포트·Hyperframes 등 9개 서피스를 지원합니다. 샌드박스 미리보기와 위챗/X/즈후/HTML/PNG 원클릭 내보내기가 있고, API 키 없이 Claude Code, Cursor, Codex 등과 함께 씁니다.",
+  "imputnet/cobalt": "좋아하는 콘텐츠를 저장하는 가장 좋은 방법입니다.",
+  "hypit-ai/hypit": "AI 에이전트로 바이럴 영상을 복제합니다. 스크립트만이 아니라 얼굴, 대사, B-roll까지 바꾸고 명령 한 번에 변주 100개를 만듭니다.",
+  "HKUDS/OpenSpace": "AI 에이전트를 위한 스킬 관리 레이어입니다.",
+  "AlexAI-MCP/Crab-Archi-Design": "원본 SVG를 우선하는 건축 커뮤니티 디자인 코파일럿 프레임워크입니다. OpenCrab MCP 워크플로를 필수 사용합니다.",
+  "nilbuild/page-mascot": "커서를 따라보고, 건드리면 눈을 깜빡이는 페이지 마스코트입니다.",
+  "ArchiveBox/ArchiveBox": "오픈소스 자체 호스팅 웹 아카이빙입니다. URL, 브라우저 기록, 북마크, Pocket, Pinboard 등을 받아 HTML, JS, PDF, 미디어 등을 저장합니다.",
+  "dgtlmoon/changedetection.io": "웹사이트 변경 감지와 페이지 모니터링, 변경 알림을 위한 도구입니다. 콘텐츠 변경, 가격 하락, 재입고, 사이트 훼손 추적을 무료 또는 SaaS로 씁니다.",
+  "reactive-resume/reactive-resume": "개인정보를 지키는 이력서 빌더입니다. 보안, 커스터마이즈, 이식성을 갖춘 오픈소스이며 영원히 무료입니다.",
+  "searxng/searxng": "여러 검색 서비스와 데이터베이스의 결과를 모아 주는 무료 인터넷 메타검색 엔진입니다. 사용자를 추적하거나 프로파일링하지 않습니다.",
+  "NationalSecurityAgency/ghidra": "소프트웨어 리버스 엔지니어링(SRE) 프레임워크입니다.",
+  "samasante/liquid-glass": "웹용 애플 스타일 리퀴드 글래스입니다. Safari, Firefox, Chrome에서 실제 DOM을 굴절시키는 헤드리스 React 렌즈이며 의존성은 없습니다.",
+  "shadcn-ui/lint": "Tailwind 디자인 시스템을 위한 에이전트 우선 린터입니다. 에이전트가 검증할 수 있는 디자인 시스템 규칙을 작성합니다.",
+  "thaw-app/Thaw": "오픈소스 메뉴 바 매니저입니다."
 }
