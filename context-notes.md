@@ -1,3 +1,15 @@
+# Notion DESIGN.md 리소스 8곳 Pages 이관 메모
+
+- 원문. `https://app.notion.com/p/AI-DESIGN-md-8-3db1061c8a6380c699a1c2feb2c2e9c8`. hex `3db1061c8a6380c699a1c2feb2c2e9c8`. space `bc51061c-8a63-811c-bf7d-000388d15787`.
+- 노션 제목은 앞에 🎨가 있다. 저장 제목은 `AI한테 "예쁘게 만들어줘" 그만하세요 — DESIGN.md 리소스 8곳`.
+- 블록. 전체 205, 루트 81, 이미지 8(전부 `attachment:…:image.png`), file/pdf 0, 표 7, 코드 1, 토글 1, to_do 4, GitHub `external_object_instance` 1.
+- 토글 `stitch design.md 설명` 자식 68은 loadPageChunk 후속 요청 없이 빠진다. 부모 청크를 더 받아야 한다.
+- 기각. 피그마스터 Design.md 페이지와 designmd bookmarks. 원문 hex가 다르다.
+- 기각. ZIP 화이트리스트. 파일 첨부 블록이 없다.
+- 운영 중복은 제목과 `source_url`만 본다. `content` ilike는 쓰지 않는다.
+- GitHub `external_object_instance`는 부모 `content`에 없어서 제목을 링크로 바꾼 뒤 부모에 붙였다.
+- 저장 본문 약 6.2MB. 이미지 8장이 data URL이라 API 한도 1.5MB를 넘는다. 보기는 되고 에디터 자동저장 PATCH는 400이다.
+
 # 그록봇 템플릿 메뉴 메모
 
 - 참고 UI. `https://dasolin.net/tips/grokbot-templates`. 공개 710개. catalog.json은 150개라 쓰지 않는다. 공개 페이지는 Supabase `grokbot_templates`를 읽는다.
