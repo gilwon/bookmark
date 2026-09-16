@@ -1355,3 +1355,11 @@
 - 사이드바는 `w-60` 고정 레일이고 본문은 `lg:pl-60`. 1024px 미만은 상단 바 + 드로어다. 모바일 행 높이는 36px(`h-9 lg:h-7`).
 - `body`의 `glass-canvas` 클래스와 `.glass-canvas` 규칙은 배경 블롭을 없애면서 무효가 됐다. 남겨 뒀다.
 - 테마 클래스가 하이드레이션 때 지워져 다크 모드가 풀리던 문제를 `theme-provider`의 마운트 useEffect로 다시 씌운다.
+
+## 신규 Star 한글 설명 15건 메모
+
+- 운영 `github_stars`는 500건이다. 한글이 없는 설명은 15건이고 빈 설명은 0건이다.
+- 대상은 `roboflow/supervision`, `nexu-io/html-anything`, `imputnet/cobalt`, `hypit-ai/hypit`, `HKUDS/OpenSpace`, `AlexAI-MCP/Crab-Archi-Design`, `nilbuild/page-mascot`, `ArchiveBox/ArchiveBox`, `dgtlmoon/changedetection.io`, `reactive-resume/reactive-resume`, `searxng/searxng`, `NationalSecurityAgency/ghidra`, `samasante/liquid-glass`, `shadcn-ui/lint`, `thaw-app/Thaw`다.
+- GitHub About가 있어 영문을 유지하고 한국어를 병기한다. 로컬 SQLite Star는 0건이라 운영만 백필한다.
+- 정적 번역표는 440개에서 455개로 늘었다.
+- 백필 15건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
