@@ -1,3 +1,12 @@
+# 혼자 프로덕트 오픈소스 8개 Pages 이관 메모
+
+- 제목. `혼자 프로덕트 만들 때 묶어 둘 오픈소스 8개`. 원문에 제목 행이 없어 본문 문장에서 골랐다.
+- 저장소 8개. Remotion, Recordly, Dify, gstack, shadcn/ui, Supabase, Marketing Skills, Postiz.
+- 기각. 기존 `혼자 스타트업 만들 때 저장할 GitHub 10개`. 목록과 본문이 다르다. Recordly·Remotion·Supabase·Postiz가 이쪽에만 있다.
+- 기각. `￼` 자리표시. 이미지 URL이 없어 본문이 아니다.
+- Supabase 주소는 원문 정정본 `https://github.com/supabase/supabase`를 쓴다.
+- Prompts는 쓰지 않는다.
+
 # Notion DESIGN.md 리소스 8곳 Pages 이관 메모
 
 - 원문. `https://app.notion.com/p/AI-DESIGN-md-8-3db1061c8a6380c699a1c2feb2c2e9c8`. hex `3db1061c8a6380c699a1c2feb2c2e9c8`. space `bc51061c-8a63-811c-bf7d-000388d15787`.
