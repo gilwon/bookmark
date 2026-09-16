@@ -769,4 +769,20 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 최신 Star 4개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["rowboatlabs/rowboat", "Open-source AI coworker, with memory"],
+      ["opencoredev/bg0", "Private, unlimited background removal that runs in your browser."],
+      ["multica-ai/multica", "Make humans and AI agents work as one team — open-source and self-hostable."],
+      ["SnailSploit/Claude-Red", "claude-red is a curated library of offensive security skills designed for the Claude skills system. Each skill is a structured SKILL.md file that primes Claude with expert-level methodology for a specific attack surface — from SQLi to shellcode, EDR evasion to exploit development."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

@@ -1372,3 +1372,11 @@
 - GitHub About가 있어 영문을 유지하고 한국어를 병기한다. 로컬 SQLite Star는 0건이라 운영만 백필한다.
 - 정적 번역표는 440개에서 455개로 늘었다.
 - 백필 15건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 신규 Star 한글 설명 4건 메모
+
+- 운영 `github_stars`는 504건이다. 한글이 없는 설명은 4건이고 빈 설명은 0건이다.
+- 대상은 `rowboatlabs/rowboat`, `opencoredev/bg0`, `multica-ai/multica`, `SnailSploit/Claude-Red`다.
+- GitHub About가 있어 영문을 유지하고 한국어를 병기한다. `multica-ai/multica`는 기존 `multica-ai/andrej-karpathy-skills`와 다른 저장소다.
+- 정적 번역표는 455개에서 459개로 늘었다.
+- 백필 4건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
