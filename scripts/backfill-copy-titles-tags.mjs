@@ -172,6 +172,42 @@ export const TARGETS = [
     tags: ["아스트라", "프롬프트"],
     phrase: "Low-fidelity Wireframe",
   },
+  {
+    id: "4fb88054-562c-40bd-83f5-70d71d449187",
+    title: "아스트라 콘티와 Gemini Omni로 영상 만들기",
+    tags: ["아스트라", "프롬프트"],
+    phrase: "영상천재 gemini",
+  },
+  {
+    id: "3dc11988-4a90-4861-89c7-26211a62f929",
+    title: "Appllama MCP로 칼로리 추적 앱 만들기",
+    tags: ["MCP", "디자인", "프롬프트"],
+    phrase: "Appllama",
+  },
+  {
+    id: "096ca6b0-a2f7-432b-8b9a-114bc208cf99",
+    title: "바이브코딩 앱 UI 참고 사이트 4곳",
+    tags: ["디자인", "레퍼런스"],
+    phrase: "Mobbin",
+  },
+  {
+    id: "7a563e6c-26fd-40f3-83b9-09ed5194a988",
+    title: "코딩 에이전트에 6단계를 심는 agent-skills",
+    tags: ["스킬", "에이전트"],
+    phrase: "addyosmani/agent-skills",
+  },
+  {
+    id: "068143ac-747d-4941-9fbe-93b2cb6c7649",
+    title: "면접 준비 회사 분석 프롬프트 6개",
+    tags: ["프롬프트", "학습"],
+    phrase: "DART 전자공시",
+  },
+  {
+    id: "37ce3e8f-5fcf-4d79-9d29-b84f14a0eb7a",
+    title: "웹사이트 배포 전 확인 체크리스트",
+    tags: ["SEO", "설정"],
+    phrase: "네이버 서치어드바이저",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
