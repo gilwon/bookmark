@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 27건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 27);
+test("대상 33건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 33);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 27);
+  assert.equal(new Set(ids).size, 33);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -146,6 +146,41 @@ test("본문 첫 줄이 제목이던 신규 2건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 2);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("본문 첫 줄이 제목이던 신규 6건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "4fb88054-562c-40bd-83f5-70d71d449187": {
+      title: "아스트라 콘티와 Gemini Omni로 영상 만들기",
+      tags: ["아스트라", "프롬프트"],
+    },
+    "3dc11988-4a90-4861-89c7-26211a62f929": {
+      title: "Appllama MCP로 칼로리 추적 앱 만들기",
+      tags: ["MCP", "디자인", "프롬프트"],
+    },
+    "096ca6b0-a2f7-432b-8b9a-114bc208cf99": {
+      title: "바이브코딩 앱 UI 참고 사이트 4곳",
+      tags: ["디자인", "레퍼런스"],
+    },
+    "7a563e6c-26fd-40f3-83b9-09ed5194a988": {
+      title: "코딩 에이전트에 6단계를 심는 agent-skills",
+      tags: ["스킬", "에이전트"],
+    },
+    "068143ac-747d-4941-9fbe-93b2cb6c7649": {
+      title: "면접 준비 회사 분석 프롬프트 6개",
+      tags: ["프롬프트", "학습"],
+    },
+    "37ce3e8f-5fcf-4d79-9d29-b84f14a0eb7a": {
+      title: "웹사이트 배포 전 확인 체크리스트",
+      tags: ["SEO", "설정"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 6);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
