@@ -1,3 +1,10 @@
+# 혼자 프로덕트 오픈소스 8개 Pages 이관
+
+- [x] 원문 8개 GitHub URL과 `￼` 자리표시를 확인한다
+- [x] `scripts/import-solo-product-oss-8.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 제목 중복 없이 저장한다
+- [x] 재실행 스킵과 대상 테스트 통과를 확인한다
+
 # Notion DESIGN.md 리소스 8곳 Pages 이관
 
 - [x] 원문 루트 81·이미지 8·첨부 0·표 7·토글 1(자식 68)·외부 링크 1을 확인한다
