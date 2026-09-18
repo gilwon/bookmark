@@ -454,8 +454,15 @@
   "samasante/liquid-glass": "웹용 애플 스타일 리퀴드 글래스입니다. Safari, Firefox, Chrome에서 실제 DOM을 굴절시키는 헤드리스 React 렌즈이며 의존성은 없습니다.",
   "shadcn-ui/lint": "Tailwind 디자인 시스템을 위한 에이전트 우선 린터입니다. 에이전트가 검증할 수 있는 디자인 시스템 규칙을 작성합니다.",
   "thaw-app/Thaw": "오픈소스 메뉴 바 매니저입니다.",
-  "rowboatlabs/rowboat": "기억이 있는 오픈소스 AI 동료입니다.",
+  "rowboatlabs/rowboat": "업무용 멀티플레이어 개인 비서입니다.",
   "opencoredev/bg0": "브라우저에서 돌아가는 비공개 무제한 배경 제거입니다.",
   "multica-ai/multica": "사람과 AI 에이전트가 한 팀으로 일하게 합니다. 오픈소스이며 자체 호스팅할 수 있습니다.",
-  "SnailSploit/Claude-Red": "Claude 스킬 시스템용 공격 보안 스킬 모음입니다. 각 스킬은 SKILL.md로 SQLi부터 셸코드, EDR 우회, 익스플로잇 개발까지 특정 공격면에 대한 전문가 방법론을 Claude에 넣습니다."
+  "SnailSploit/Claude-Red": "Claude 스킬 시스템용 공격 보안 스킬 모음입니다. 각 스킬은 SKILL.md로 SQLi부터 셸코드, EDR 우회, 익스플로잇 개발까지 특정 공격면에 대한 전문가 방법론을 Claude에 넣습니다.",
+  "zenbu-labs/terminal-browser": "터미널 안에서 돌아가는 브라우저입니다.",
+  "trycua/cua": "오픈소스 드라이버, 크로스 OS 플릿, 학습·평가·데이터 생성 벤치마크로 컴퓨터 사용 2.0을 확장합니다.",
+  "bobeff/open-source-games": "오픈소스 게임 목록입니다.",
+  "django/django": "마감에 쫓기는 완벽주의자를 위한 웹 프레임워크입니다.",
+  "anthropics/claude-code": "터미널에서 돌아가는 에이전틱 코딩 도구입니다. 코드베이스를 이해하고, 일상 작업을 실행하고, 복잡한 코드를 설명하고, git 워크플로를 자연어로 처리합니다.",
+  "browser-use/jev-ultrafast": "동적 인덱싱 액션 공간을 쓰는 브라우저 에이전트입니다. 목표 하나를 주면 TypeSafe의 Jev가 연산과 요소를 고르고, TYPE_TEXT일 때만 작은 LLM이 텍스트를 씁니다.",
+  "jgraph/drawio-mcp": "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다."
 }

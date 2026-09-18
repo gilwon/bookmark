@@ -785,4 +785,33 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 신규 Star 5개와 About가 바뀐 rowboat의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["zenbu-labs/terminal-browser", "A browser inside your terminal"],
+      ["trycua/cua", "Scale computer-use 2.0 with open-source drivers, cross-OS fleets, and benchmarks for training, evaluation, and data generation."],
+      ["bobeff/open-source-games", "A list of open source games."],
+      ["django/django", "The Web framework for perfectionists with deadlines."],
+      ["anthropics/claude-code", "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands."],
+      ["rowboatlabs/rowboat", "The multiplayer personal assistant for work"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("GitHub About가 비어 있는 Star 2개는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("browser-use/jev-ultrafast", null, null),
+      "동적 인덱싱 액션 공간을 쓰는 브라우저 에이전트입니다. 목표 하나를 주면 TypeSafe의 Jev가 연산과 요소를 고르고, TYPE_TEXT일 때만 작은 LLM이 텍스트를 씁니다."
+    );
+    assert.equal(
+      withKoreanTranslation("jgraph/drawio-mcp", null, null),
+      "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다."
+    );
+  });
 });
