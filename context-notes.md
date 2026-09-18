@@ -1381,3 +1381,12 @@
 - GitHub About가 있어 영문을 유지하고 한국어를 병기한다. `multica-ai/multica`는 기존 `multica-ai/andrej-karpathy-skills`와 다른 저장소다.
 - 정적 번역표는 455개에서 459개로 늘었다.
 - 백필 4건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 신규 Star 한글 설명 8건 메모
+
+- 운영 `github_stars`는 510건이다. 한글이 없는 설명은 6건이고 빈 설명은 2건이다.
+- 영문 병기 대상은 `zenbu-labs/terminal-browser`, `trycua/cua`, `bobeff/open-source-games`, `django/django`, `anthropics/claude-code`, `rowboatlabs/rowboat`다.
+- `rowboatlabs/rowboat`는 매핑이 있었는데 About가 `The multiplayer personal assistant for work`로 바뀌며 영문만 남았다. 번역을 새 About에 맞췄다.
+- `browser-use/jev-ultrafast`와 `jgraph/drawio-mcp`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다.
+- 정적 번역표는 459개에서 466개로 늘었다.
+- 백필 8건(영문 병기 6, 빈 칸 채움 2)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
