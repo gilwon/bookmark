@@ -1,3 +1,10 @@
+# 짐코딩 앤트로픽 엔지니어 워크플로 가이드 Pages 이관
+
+- [x] 원문 제목·유튜브·OG·첨부 0·FAQ 5를 확인한다
+- [x] `scripts/import-gymcoding-anthropic-engineer-workflow.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 fbclid 없이 저장한다. 이미지는 data URL
+- [x] 재실행 스킵과 대상 테스트 통과를 확인한다
+
 # 한국 시간 이번 주 Notion 신규 Pages 이관 (2026-09-14~)
 
 - [x] 이번 주 상위 신규 3건을 확인하고 기존 3건·캘린더 행은 스킵한다
