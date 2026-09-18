@@ -208,6 +208,12 @@ export const TARGETS = [
     tags: ["SEO", "설정"],
     phrase: "네이버 서치어드바이저",
   },
+  {
+    id: "eeb94cc1-5567-4c45-b937-ecf135514c28",
+    title: "그록봇으로 돈 버는 프롬프트 30개",
+    tags: ["그록", "프롬프트"],
+    phrase: "10 GROKBOT PROMPTS - @poteto",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
