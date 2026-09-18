@@ -1,3 +1,13 @@
+# 짐코딩 앤트로픽 엔지니어 워크플로 가이드 Pages 이관 메모
+
+- 저장 URL. `https://www.gymcoding.co/articles/anthropic-engineer-claude-workflow-guide`. fbclid는 뺀다.
+- 제목. `클로드 업무 활용법 5가지: 앤트로픽 엔지니어의 프롬프트·코드 실습`.
+- 본문 img는 로고 SVG뿐이라 생략. OG 표지 1장. 본문 유튜브 `qqrk7CtkuIw` 미리보기 1장. 파일 첨부 0.
+- 기각. 인프런 `inf.run` 카드와 강의 썸네일 mp4, 뉴스레터. 본문이 아니다.
+- 기각. 기존 `앤트로픽 엔지니어가 알려준 진짜 되는 AI 에이전트 설계법` (`real-effective-ai-agents-anthropic-claude-code`). URL이 다르다.
+- FAQ 5개는 본문 h3로 답이 있다. 닫혀 있으면 RSC `extractGymAccordions`로 채운다.
+- Prompts 테이블은 쓰지 않는다.
+
 # 한국 시간 이번 주 Notion 신규 Pages 이관 메모
 
 - 오늘 2026-09-18. 이번 주 시작은 KST 2026-09-14 00:00(월). 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
