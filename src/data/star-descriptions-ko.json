@@ -454,7 +454,7 @@
   "samasante/liquid-glass": "웹용 애플 스타일 리퀴드 글래스입니다. Safari, Firefox, Chrome에서 실제 DOM을 굴절시키는 헤드리스 React 렌즈이며 의존성은 없습니다.",
   "shadcn-ui/lint": "Tailwind 디자인 시스템을 위한 에이전트 우선 린터입니다. 에이전트가 검증할 수 있는 디자인 시스템 규칙을 작성합니다.",
   "thaw-app/Thaw": "오픈소스 메뉴 바 매니저입니다.",
-  "rowboatlabs/rowboat": "업무용 멀티플레이어 개인 비서입니다.",
+  "rowboatlabs/rowboat": "기억이 있고 협업하는 AI 동료입니다.",
   "opencoredev/bg0": "브라우저에서 돌아가는 비공개 무제한 배경 제거입니다.",
   "multica-ai/multica": "사람과 AI 에이전트가 한 팀으로 일하게 합니다. 오픈소스이며 자체 호스팅할 수 있습니다.",
   "SnailSploit/Claude-Red": "Claude 스킬 시스템용 공격 보안 스킬 모음입니다. 각 스킬은 SKILL.md로 SQLi부터 셸코드, EDR 우회, 익스플로잇 개발까지 특정 공격면에 대한 전문가 방법론을 Claude에 넣습니다.",
@@ -464,5 +464,11 @@
   "django/django": "마감에 쫓기는 완벽주의자를 위한 웹 프레임워크입니다.",
   "anthropics/claude-code": "터미널에서 돌아가는 에이전틱 코딩 도구입니다. 코드베이스를 이해하고, 일상 작업을 실행하고, 복잡한 코드를 설명하고, git 워크플로를 자연어로 처리합니다.",
   "browser-use/jev-ultrafast": "동적 인덱싱 액션 공간을 쓰는 브라우저 에이전트입니다. 목표 하나를 주면 TypeSafe의 Jev가 연산과 요소를 고르고, TYPE_TEXT일 때만 작은 LLM이 텍스트를 씁니다.",
-  "jgraph/drawio-mcp": "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다."
+  "jgraph/drawio-mcp": "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다.",
+  "typesafe-ai/skills": "TypeSafe System One API로 만들기 위한 에이전트 스킬입니다.",
+  "appeeky/aso-skills": "앱스토어 최적화(ASO)와 앱 마케팅을 위한 AI 에이전트 스킬입니다. 인디 개발자, 앱 마케터, 그로스 팀이 Cursor, Claude Code 등에서 키워드 조사, 메타데이터 최적화, 경쟁사 분석, 앱 성장을 돕게 합니다.",
+  "tamaratran/fast-jev-compaction": "압축 요약을 Jev 결정으로 바꾸는 Claude Code 플러그인입니다. 도구 호출과 결과를 한 번의 빠른 요청으로 점수 매기고, 낡은 것은 버리거나 줄이며, 남긴 것은 원문 그대로 둡니다.",
+  "yetone/cumora": "에이전트 팀이 모이는 곳입니다. AI 에이전트가 일등 동료인 크로스 플랫폼 팀 채팅이며, 클라우드나 직접 가져온 Claude Code·Codex 브레인을 씁니다.",
+  "cbrock84/headcount": "회사처럼 짜인 에이전트 조직입니다. 부서 15개 이상, 스킬 125개 이상을 각각 설치할 수 있고, 기준과 규제 기관을 인용해 답을 정합니다. Claude Code와 ChatGPT에서 돌아갑니다.",
+  "AhmadIbrahiim/Website-downloader": "웹사이트 전체 소스 코드와 에셋(JS, CSS, 이미지)을 Node.js로 내려받습니다."
 }

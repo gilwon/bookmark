@@ -1410,3 +1410,13 @@
 - `browser-use/jev-ultrafast`와 `jgraph/drawio-mcp`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다.
 - 정적 번역표는 459개에서 466개로 늘었다.
 - 백필 8건(영문 병기 6, 빈 칸 채움 2)을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 최신 Star 한글 설명 8건 메모
+
+- 운영 `github_stars`는 516건이다. 한글이 없는 설명은 8건이고 빈 설명은 0건이다.
+- 대상은 `browser-use/jev-ultrafast`, `typesafe-ai/skills`, `appeeky/aso-skills`, `tamaratran/fast-jev-compaction`, `yetone/cumora`, `cbrock84/headcount`, `AhmadIbrahiim/Website-downloader`, `rowboatlabs/rowboat`다.
+- GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `rowboatlabs/rowboat`는 About가 `AI coworker with memory and collaboration`로 바뀌며 영문만 남았다. 번역을 새 About에 맞췄다.
+- `browser-use/jev-ultrafast`는 About가 `i. am. speed.`로 채워져 한글이 빠졌다. 기존 README 기반 한국어를 병기한다.
+- 정적 번역표는 466개에서 472개로 늘었다.
+- 백필 8건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
