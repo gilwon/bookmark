@@ -41,6 +41,7 @@ test("7개 사이트는 디자인 카테고리와 https 주소다", () => {
   for (const item of ITEMS) {
     assert.equal(item.url.startsWith("https://"), true);
     assert.equal(item.tags.includes("디자인"), false);
+    assert.equal(item.tags.includes("ui"), true);
     assert.equal(item.description.length > 10, true);
   }
 });

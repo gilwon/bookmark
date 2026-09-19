@@ -85,49 +85,49 @@ export const ITEMS = [
     url: "https://www.untitledui.com/",
     description:
       "피그마 UI 키트와 React·Tailwind 컴포넌트를 한 세트로 제공하는 디자인 시스템이다.",
-    tags: ["Figma", "React", "Tailwind"],
+    tags: ["Figma", "React", "Tailwind", "ui"],
   },
   {
     title: "Flowbite",
     url: "https://flowbite.com/",
     description:
       "Tailwind CSS 기반 인터랙티브 UI 컴포넌트와 블록을 모은 오픈소스 라이브러리다.",
-    tags: ["Flowbite", "Tailwind", "컴포넌트"],
+    tags: ["Flowbite", "Tailwind", "컴포넌트", "ui"],
   },
   {
     title: "shadcn/ui",
     url: "https://ui.shadcn.com/",
     description:
       "복사해 쓰는 React 컴포넌트 모음이다. Tailwind와 Radix 위에 직접 커스터마이즈한다.",
-    tags: ["shadcn", "React", "Tailwind"],
+    tags: ["shadcn", "React", "Tailwind", "ui"],
   },
   {
     title: "HyperUI",
     url: "https://www.hyperui.dev/",
     description:
       "마케팅·앱·이커머스용 Tailwind 컴포넌트를 무료로 복사해 쓰는 오픈소스 모음이다.",
-    tags: ["HyperUI", "Tailwind", "무료"],
+    tags: ["HyperUI", "Tailwind", "무료", "ui"],
   },
   {
     title: "Preline UI",
     url: "https://preline.co/",
     description:
       "Tailwind 컴포넌트·블록·템플릿과 피그마 디자인 시스템을 함께 제공하는 UI 라이브러리다.",
-    tags: ["Preline", "Tailwind", "Figma"],
+    tags: ["Preline", "Tailwind", "Figma", "ui"],
   },
   {
     title: "daisyUI",
     url: "https://daisyui.com/",
     description:
       "Tailwind 플러그인으로 시맨틱 클래스와 테마를 더해 컴포넌트를 빠르게 만든다.",
-    tags: ["daisyUI", "Tailwind", "테마"],
+    tags: ["daisyUI", "Tailwind", "테마", "ui"],
   },
   {
     title: "Radix UI",
     url: "https://www.radix-ui.com/",
     description:
       "접근성을 갖춘 헤드리스 React 프리미티브와 테마 컴포넌트를 제공하는 오픈소스다.",
-    tags: ["Radix", "React", "접근성"],
+    tags: ["Radix", "React", "접근성", "ui"],
   },
 ];
 
