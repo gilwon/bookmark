@@ -814,4 +814,24 @@ describe("Star 설명 번역", () => {
       "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다."
     );
   });
+
+  it("한글이 없던 최신 Star 8개의 정적 번역을 병기한다", () => {
+    const cases = [
+      ["browser-use/jev-ultrafast", "i. am. speed."],
+      ["typesafe-ai/skills", "Agent skills for building with TypeSafe's System One API"],
+      ["appeeky/aso-skills", "AI agent skills for App Store Optimization (ASO) and app marketing. Built for indie developers, app marketers, and growth teams who want Cursor, Claude Code, or any Agent Skills-compatible AI assistant to help with keyword research, metadata optimization, competitor analysis, and app growth."],
+      ["tamaratran/fast-jev-compaction", "Claude Code plugin that replaces the compaction summary with Jev decisions: every tool call and result is scored in one fast request, stale ones are dropped or truncated, everything kept stays verbatim."],
+      ["yetone/cumora", "Where agent teams gather. Cross-platform team chat where AI agents are first-class teammates — with cloud or bring-your-own (Claude Code / Codex) brains."],
+      ["cbrock84/headcount", "An agent organization structured as a company — 15+ departments, 125+ skills, each independently installable, citing the standards and regulators that settle the question. Runs in Claude Code and ChatGPT."],
+      ["AhmadIbrahiim/Website-downloader", "💡  Download the complete source code of any website (including all assets). [ Javascripts, Stylesheets, Images ]  using Node.js  "],
+      ["rowboatlabs/rowboat", "AI coworker with memory and collaboration"],
+    ];
+    assert.equal(cases.length, 8);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
