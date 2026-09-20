@@ -220,6 +220,24 @@ export const TARGETS = [
     tags: ["그록", "설정"],
     phrase: "Grok Bot을 101%의 힘으로",
   },
+  {
+    id: "d6a587a3-064a-4437-8aef-44b55f6d55fe",
+    title: "코드를 제대로 뽑는 지시 3가지",
+    tags: ["프롬프트", "설정"],
+    phrase: "변수명 축약 금지",
+  },
+  {
+    id: "d4f1ccd0-64c4-4a07-930c-067a8f1e56f1",
+    title: "Jev와 그록봇을 7분에 붙이는 셋업",
+    tags: ["그록", "에이전트"],
+    phrase: "jev-usage-router",
+  },
+  {
+    id: "8f56a901-ce0b-423e-ba13-6ad7e4db369f",
+    title: "앱 배포 전 보안 체크리스트",
+    tags: ["보안", "설정"],
+    phrase: "SQL 및 NoSQL 인젝션",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
