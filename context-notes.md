@@ -1,3 +1,14 @@
+# 한국 시간 어제·오늘 Notion 신규 Pages 이관 메모
+
+- 오늘 2026-09-20. 구간은 KST 어제 00:00(2026-09-18T15:00:00Z)부터. 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
+- 신규 1건. `클로드로 10분 만에 직원 7명 만드는 법 — 클로드 활용 가이드 (풀버전)` (`817b256827ac82e787b5819c108679f6`, 루트 362, 이미지 0, 첨부 0, 표 23, 코드 21, 할 일 19, 토글 7).
+- 기각. 기존 `AI 직원 7명으로 콘텐츠 팀 만들기` (`981b256827ac8262931701ac22346c05`). 제목·원문이 다르다.
+- 기각. 노시언 마음 캘린더 하위와 제목 `‣` 컬렉션 행.
+- 검색 `created_time`은 숫자 밀리초다. `Date.parse`만 쓰면 NaN이라 0건이 된다.
+- 쿠키 `tmp/notion-kst-20260920/cookies.txt`. 커밋하지 않는다.
+- 파일명 링크 `http://SKILL.md` 등은 `stripTracking`이 `https://skill.md`로 바꾼다. 카카오 `https://open.kakao.com/o/gxbH0SHd`와 `https://claude.ai`는 유지한다.
+- 저장 경로 `/pages/1b7bab98-c6ee-47c4-b08f-09b2c35eae3d`. 운영 중복은 제목과 `source_url`만 본다.
+
 # 짐코딩 앤트로픽 엔지니어 워크플로 가이드 Pages 이관 메모
 
 - 저장 URL. `https://www.gymcoding.co/articles/anthropic-engineer-claude-workflow-guide`. fbclid는 뺀다.
