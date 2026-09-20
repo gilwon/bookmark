@@ -850,4 +850,19 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 최신 Star 3개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["unicodef1wn/grokbot-field-notes", "Rules, playbooks, bot roles and a failure log from the xAI Grok Bot team's 72-hour live build. Drop AGENTS.md into your repo and go."],
+      ["kerpopule/hermes-jev-skills", "Jev-powered model routing, memory, compaction, skill selection, computer and browser use for Hermes agents (also Claude Code and Codex)"],
+      ["starc007/ui-components", "Motion components for React.  Copy, paste, done."],
+    ];
+    assert.equal(cases.length, 3);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
