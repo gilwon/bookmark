@@ -214,6 +214,12 @@ export const TARGETS = [
     tags: ["그록", "프롬프트"],
     phrase: "10 GROKBOT PROMPTS - @poteto",
   },
+  {
+    id: "0c8bacb8-69b2-48dc-9c1e-67d3c9dd641e",
+    title: "그록봇을 제대로 쓰는 팁 20개",
+    tags: ["그록", "설정"],
+    phrase: "Grok Bot을 101%의 힘으로",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
