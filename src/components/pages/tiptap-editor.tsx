@@ -256,6 +256,8 @@ export function TiptapEditor({
       }),
       Link.configure({
         openOnClick: true,
+        // 페이지 첨부의 data:video·data:application 링크가 렌더에서 빠지지 않게 한다.
+        protocols: ["data"],
         HTMLAttributes: {
           class: "text-indigo-500 underline underline-offset-2",
           target: "_blank",

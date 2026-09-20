@@ -47,6 +47,7 @@ test("TiptapEditor의 Link 확장은 클릭 시 링크를 연다", async () => {
 
   visit(file);
   assert.equal(openOnClick, true);
+  assert.equal(source.includes('protocols: ["data"]'), true);
 
   const extension = Link.configure({ openOnClick });
   assert.equal(extension.options.openOnClick, openOnClick);
