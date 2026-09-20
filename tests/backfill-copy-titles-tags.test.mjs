@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 35건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 35);
+test("대상 38건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 38);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 35);
+  assert.equal(new Set(ids).size, 38);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -211,6 +211,29 @@ test("그록봇 팁 목록 1건의 제목과 태그를 정한다", () => {
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("본문 첫 줄이 제목이던 신규 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "d6a587a3-064a-4437-8aef-44b55f6d55fe": {
+      title: "코드를 제대로 뽑는 지시 3가지",
+      tags: ["프롬프트", "설정"],
+    },
+    "d4f1ccd0-64c4-4a07-930c-067a8f1e56f1": {
+      title: "Jev와 그록봇을 7분에 붙이는 셋업",
+      tags: ["그록", "에이전트"],
+    },
+    "8f56a901-ce0b-423e-ba13-6ad7e4db369f": {
+      title: "앱 배포 전 보안 체크리스트",
+      tags: ["보안", "설정"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
