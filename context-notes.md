@@ -1,3 +1,13 @@
+# 티스토리·Notion Jev Pages 이관 메모
+
+- 짐코딩 `https://www.gymcoding.co/articles/anthropic-engineer-claude-workflow-guide`는 이미 `/pages/caea2c69-9dd7-4e8a-90dd-0649f25dd91c`. 다시 넣지 않는다. fbclid는 저장 URL에 없다.
+- 티스토리. `https://seo2-heimish.tistory.com/20` (`/m/`·fbclid 제거). 제목 `글도 못 쓰는 AI가 왜 난리? Jev로 논문 1,018편 분류하고, 게임까지 돌린 사람들`. 경로 `/pages/7f4e7091-bd53-4ee6-b6dd-100c296cccd3`. 본문 이미지 5는 kakaocdn 서명 URL이라 data URL. 관련글·카테고리는 제외. 첨부 0.
+- Notion. `https://app.notion.com/p/Jev-15-3e1fd99f0e5f81df86b7feae226dca6e`. 제목 `Jev 활용 사례 15개 정리본`. 경로 `/pages/40a93f31-7812-4926-b7f8-25dba98d914d`. 이미지 3, 영상 첨부 7(mp4 data URL). space `b97fd99f-0e5f-81d6-b46e-0003ed3b57b7`. 부모 `프롬왓 | Prompt What`는 넣지 않는다.
+- Notion 본문 약 5.7MB. API 한도 1.5MB를 넘는다. 직접 insert는 되고 에디터 자동저장 PATCH는 400일 수 있다.
+- TipTap Link 기본 프로토콜에 `data`가 없어 mp4 첨부 href가 비었다. `protocols: ["data"]`를 넣었다.
+- 쿠키 `tmp/notion-jev-15/cookies.txt`. 커밋하지 않는다.
+- 운영 중복은 제목과 `source_url`만 본다.
+
 # 한국 시간 어제·오늘 Notion 신규 Pages 이관 메모
 
 - 오늘 2026-09-20. 구간은 KST 어제 00:00(2026-09-18T15:00:00Z)부터. 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
