@@ -834,4 +834,20 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 최신 Star 4개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["0x8905/naver-blog-automation", "Draft, review, and optionally save posts to your own Naver blog. Frozen core + taste packs so any agent can fit it to its user."],
+      ["syncthing/syncthing", "Open Source Continuous File Synchronization"],
+      ["superagents-lab/jev-search", "Search the web with TypeSafe's Jev: source selection, query understanding and relevance ranking. Built with Search1API."],
+      ["loopx-project/loopx", "Long-horizon agent control plane for durable, governed work across Codex, Claude Code, and other harnesses."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
