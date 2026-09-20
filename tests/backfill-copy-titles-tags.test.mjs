@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 34건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 34);
+test("대상 35건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 35);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 34);
+  assert.equal(new Set(ids).size, 35);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -192,6 +192,21 @@ test("본문 첫 줄이 제목이던 신규 1건의 제목과 태그를 정한�
     "eeb94cc1-5567-4c45-b937-ecf135514c28": {
       title: "그록봇으로 돈 버는 프롬프트 30개",
       tags: ["그록", "프롬프트"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("그록봇 팁 목록 1건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "0c8bacb8-69b2-48dc-9c1e-67d3c9dd641e": {
+      title: "그록봇을 제대로 쓰는 팁 20개",
+      tags: ["그록", "설정"],
     },
   };
   const found = TARGETS.filter((item) => item.id in expected);
