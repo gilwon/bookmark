@@ -474,5 +474,8 @@
   "0x8905/naver-blog-automation": "네이버 블로그에 글을 초안 쓰고, 검토하고, 선택적으로 저장합니다. 고정 코어와 취향 팩으로 어떤 에이전트든 사용자에 맞출 수 있습니다.",
   "syncthing/syncthing": "오픈소스 연속 파일 동기화입니다.",
   "superagents-lab/jev-search": "TypeSafe의 Jev로 웹을 검색합니다. 소스 선택, 질의 이해, 관련도 순위를 다루며 Search1API로 만들었습니다.",
-  "loopx-project/loopx": "Codex, Claude Code 등 하네스에서 오래 가는 작업을 다루는 장기 에이전트 제어면입니다."
+  "loopx-project/loopx": "Codex, Claude Code 등 하네스에서 오래 가는 작업을 다루는 장기 에이전트 제어면입니다.",
+  "unicodef1wn/grokbot-field-notes": "xAI Grok Bot 팀이 72시간 라이브 빌드에서 남긴 규칙, 플레이북, 봇 역할, 실패 기록입니다. AGENTS.md를 저장소에 넣고 바로 시작합니다.",
+  "kerpopule/hermes-jev-skills": "Hermes 에이전트용 Jev 기반 모델 라우팅, 메모리, 압축, 스킬 선택, 컴퓨터·브라우저 사용입니다. Claude Code와 Codex에도 씁니다.",
+  "starc007/ui-components": "React용 모션 컴포넌트입니다. 복사해서 붙여 넣으면 끝입니다."
 }
