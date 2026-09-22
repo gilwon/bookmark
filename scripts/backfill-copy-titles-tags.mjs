@@ -244,6 +244,18 @@ export const TARGETS = [
     tags: ["디자인", "툴"],
     phrase: "완벽한 레고 블록 방식",
   },
+  {
+    id: "9fd6c617-d172-4c53-b4fc-d5610a9aa76b",
+    title: "올해 본 네카라쿠배 합격 포트폴리오 특징 10가지",
+    tags: ["디자인", "학습"],
+    phrase: "가입 3단계에서 41% 이탈",
+  },
+  {
+    id: "35077dec-bdb4-4654-9213-93a6a90bc808",
+    title: "shadcn pdfcn이 PDF 생성을 바꾼 이유 5가지",
+    tags: ["디자인", "툴"],
+    phrase: "Takumi & Forme",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
