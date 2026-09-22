@@ -865,4 +865,30 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("앱에 없던 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["miqdadbadjuber/anti-slop", "Rules for an AI coding agent to filter out generic AI-generated UI designs, text, and code."],
+      ["qkal/Canny", "Stops AI coding agents from claiming work is done without evidence. Deterministic hooks decide, TypeSafe's Jev advises. Append-only ledger, zero runtime dependencies."],
+      ["lahfir/agent-desktop", "Agent Desktop gives any agent reliable computer use on the desktop. Built with Rust, it sees any app's real UI structure through OS accessibility trees and operates it — refs stay stable and actions stay safe to retry, instead of guessing from pixels."],
+      ["devagrawal09/jev-review", "A staged code-review workflow and local dashboard built with TypeSafe Jev."],
+      ["0xNatoshi/jev-codex-router", "Per-turn model & reasoning routing for Codex, driven by Jev (TypeSafe System One): picks the model, thinking depth and speed mode for every turn."],
+      ["vercel-labs/json-render", "The Generative UI framework"],
+      ["parsingk/Astera", "Desktop app for running and orchestrating many Claude Code and Codex sessions — account rolling on usage limits, git worktree isolation, and Slack remote control."],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("GitHub About가 비어 있는 Rewamp-UI는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("palakonweb/Rewamp-UI", null, null),
+      "복사해 붙여 넣는 React 컴포넌트 라이브러리입니다. Framer Motion으로 만든 인터랙션 컴포넌트를 코드베이스에 직접 넣으며, NPM 래퍼 없이 코드를 소유합니다."
+    );
+  });
 });

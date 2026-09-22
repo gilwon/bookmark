@@ -1457,3 +1457,14 @@
 - GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
 - 정적 번역표는 476개에서 479개로 늘었다.
 - 백필 3건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 미동기화 Star 한글 설명 8건 메모
+
+- 운영 `github_stars`는 522건이었고, 한글이 없거나 설명이 비어 있는 항목은 0건이었다.
+- GitHub 스타는 528건이다. 앱에 없던 8건이 한글 설명 대상이다.
+- `NomaDamas/katok`은 앱에만 있다. 삭제하지 않는다.
+- 영문 병기 대상은 `miqdadbadjuber/anti-slop`, `qkal/Canny`, `lahfir/agent-desktop`, `devagrawal09/jev-review`, `0xNatoshi/jev-codex-router`, `vercel-labs/json-render`, `parsingk/Astera`다.
+- `palakonweb/Rewamp-UI`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다.
+- `vercel-labs/json-render`는 기존 `vercel-labs/skills`, `vercel-labs/agent-skills`와 다른 저장소다.
+- 정적 번역표는 479개에서 487개로 늘었다.
+- 8건을 운영 `github_stars`에 넣은 뒤 백필 8건(영문 병기 7, 빈 칸 채움 1)을 갱신했다. 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다. 운영 Star는 530건이다.
