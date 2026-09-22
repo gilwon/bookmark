@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 39건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 39);
+test("대상 41건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 41);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 39);
+  assert.equal(new Set(ids).size, 41);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -257,5 +257,25 @@ test("본문 첫 줄이 제목이던 json-render 1건의 제목과 태그를 정
       item.title,
       "바이브 코더들이 json-render에 열광하는 4가지 이유:"
     );
+  }
+});
+
+test("포폴 특징과 pdfcn 2건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "9fd6c617-d172-4c53-b4fc-d5610a9aa76b": {
+      title: "올해 본 네카라쿠배 합격 포트폴리오 특징 10가지",
+      tags: ["디자인", "학습"],
+    },
+    "35077dec-bdb4-4654-9213-93a6a90bc808": {
+      title: "shadcn pdfcn이 PDF 생성을 바꾼 이유 5가지",
+      tags: ["디자인", "툴"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 2);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.equal(item.title.endsWith(":"), false);
   }
 });
