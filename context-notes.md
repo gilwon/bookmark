@@ -1481,3 +1481,13 @@
 - `vercel-labs/json-render`는 기존 `vercel-labs/skills`, `vercel-labs/agent-skills`와 다른 저장소다.
 - 정적 번역표는 479개에서 487개로 늘었다.
 - 8건을 운영 `github_stars`에 넣은 뒤 백필 8건(영문 병기 7, 빈 칸 채움 1)을 갱신했다. 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다. 운영 Star는 530건이다.
+
+## 최신 Star 한글 설명 7건 메모
+
+- 운영 `github_stars`는 534건이다. 한글이 없는 설명은 7건이고 빈 설명은 0건이다. GitHub 스타는 533건이고 앱에 없는 저장소는 없다.
+- 대상은 `CopilotKit/openmuse`, `browser-use/jev-ultrafast`, `StarTrail-org/LEANN`, `shadcn-labs/pdfcn`, `browserbase/stagehand`, `google/ax`, `open-slide/open-slide`다.
+- GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `browser-use/jev-ultrafast`는 About가 `Fastest and cheapest web agent`로 바뀌며 영문만 남았다. 번역을 새 About에 맞췄다.
+- `open-slide/open-slide`는 기존 `1weiho/open-slide`와 다른 저장소다. About 문장은 같다.
+- 정적 번역표는 487개에서 493개로 늘었다.
+- 백필 7건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

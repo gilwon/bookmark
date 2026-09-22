@@ -807,7 +807,7 @@ describe("Star 설명 번역", () => {
   it("GitHub About가 비어 있는 Star 2개는 한국어만 채운다", () => {
     assert.equal(
       withKoreanTranslation("browser-use/jev-ultrafast", null, null),
-      "동적 인덱싱 액션 공간을 쓰는 브라우저 에이전트입니다. 목표 하나를 주면 TypeSafe의 Jev가 연산과 요소를 고르고, TYPE_TEXT일 때만 작은 LLM이 텍스트를 씁니다."
+      "가장 빠르고 저렴한 웹 에이전트입니다."
     );
     assert.equal(
       withKoreanTranslation("jgraph/drawio-mcp", null, null),
@@ -890,5 +890,24 @@ describe("Star 설명 번역", () => {
       withKoreanTranslation("palakonweb/Rewamp-UI", null, null),
       "복사해 붙여 넣는 React 컴포넌트 라이브러리입니다. Framer Motion으로 만든 인터랙션 컴포넌트를 코드베이스에 직접 넣으며, NPM 래퍼 없이 코드를 소유합니다."
     );
+  });
+
+  it("한글이 없던 최신 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["CopilotKit/openmuse", "A personal agent with a browser, terminal, files, and work that keeps going built with CopilotKit and AG-UI."],
+      ["browser-use/jev-ultrafast", "Fastest and cheapest web agent"],
+      ["StarTrail-org/LEANN", "[MLsys2026 Best Paper]: https://arxiv.org/abs/2506.08276. RAG on Everything with LEANN. Enjoy 97% storage savings while running a fast, accurate, and 100% private RAG application on your personal device."],
+      ["shadcn-labs/pdfcn", "Beautiful pdf components, built on Takumi and Forme. 100% Free, Zero config, one command setup."],
+      ["browserbase/stagehand", "The SDK to extract data and interact with any site on the web. Get started with Claude Code, Codex, Eve, Mastra, and more."],
+      ["google/ax", "Google's open agentic orchestration runtime"],
+      ["open-slide/open-slide", "A slide framework built for agents."],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
   });
 });
