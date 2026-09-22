@@ -1,3 +1,17 @@
+# Slashpage 클로드 다크 프롬프트 10 Pages 이관 메모
+
+- 저장 URL. `https://slashpage.com/biggie-ai/d367nxm3wr133mj98pv1`. 사용자 URL의 fbclid는 뺀다.
+- 제목. `클로드 다크 프롬프트 10`. hash `d367nxm3wr133mj98pv1`.
+- 본문은 `GET /api/page/d367nxm3wr133mj98pv1/content`의 `snapshot.blockMap`과 `blockTree`다. 메타 API만으로 본문을 만들지 않는다.
+- 블록. image 2, heading 12, text 23, divider 2, code 10, codeSource 10, list 30. 표 0, 첨부 0.
+- 이미지. `header.png` PNG 2479100바이트, `divider.png` PNG 269바이트. 둘 다 본문 루트이고 data URL이다. `q` `s` `t` `f` 리사이즈 쿼리는 쓰지 않는다.
+- 대표 이미지는 본문 `header.png`와 같은 블록이라 따로 넣지 않는다.
+- 링크 2개. `https://product.kyobobook.co.kr/detail/S000221330983`, `https://forms.gle/gqpvf9dotkWDfL5s9`. `token.link`가 아니라 `extended.clickAction`이다.
+- 기존 Slashpage `1q3vdn2pdpnk82xy49pr`, `3p4kj92yjdq9ym57q1x8`와 제목·URL이 다르다. 중복이 아니다.
+- 본문이 약 3MB를 넘으면 에디터 자동저장 PATCH가 400일 수 있다. 직접 insert는 된다.
+- Prompts 테이블은 쓰지 않는다. 운영 중복은 제목 또는 `source_url`만 본다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/13f1800f-069f-43f3-ae08-896093f0f4cd`. 로컬 `dev`와 운영이 같은 id다.
+
 # 한국 시간 이번 주 Notion 신규 Pages 이관 메모
 
 - 오늘 2026-09-22. 이번 주 시작은 KST 2026-09-21 00:00(월, 2026-09-20T15:00:00Z). 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
