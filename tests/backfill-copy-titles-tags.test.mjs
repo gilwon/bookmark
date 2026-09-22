@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 38건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 38);
+test("대상 39건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 39);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 38);
+  assert.equal(new Set(ids).size, 39);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -237,5 +237,25 @@ test("본문 첫 줄이 제목이던 신규 3건의 제목과 태그를 정한�
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
+  }
+});
+
+test("본문 첫 줄이 제목이던 json-render 1건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "76b9e0da-c327-4a68-9e1f-bdb95766a073": {
+      title: "바이브 코더가 json-render에 열광하는 이유 4가지",
+      tags: ["디자인", "툴"],
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.equal(item.title.endsWith(":"), false);
+    assert.notEqual(
+      item.title,
+      "바이브 코더들이 json-render에 열광하는 4가지 이유:"
+    );
   }
 });
