@@ -1,3 +1,11 @@
+# Slashpage 클로드 다크 프롬프트 10 Pages 이관
+
+- [x] content API에서 이미지 2장·링크 2·코드 10·첨부 0을 확인한다
+- [x] `scripts/import-slashpage-claude-dark-prompts-10.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 fbclid 없이 저장한다. 이미지는 data URL, 첨부 0
+- [x] 재실행 스킵과 테스트 통과를 확인한다
+- [x] 브라우저에서 제목·이미지 2·코드 10·교보·단톡 링크가 보이는지 확인한다
+
 # 한국 시간 이번 주 Notion 신규 Pages 이관 (2026-09-21~)
 
 - [x] GILWON 상위 신규 1건만 대상으로 하고 캘린더·기존 두 글은 스킵한다
