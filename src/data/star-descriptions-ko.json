@@ -463,7 +463,7 @@
   "bobeff/open-source-games": "오픈소스 게임 목록입니다.",
   "django/django": "마감에 쫓기는 완벽주의자를 위한 웹 프레임워크입니다.",
   "anthropics/claude-code": "터미널에서 돌아가는 에이전틱 코딩 도구입니다. 코드베이스를 이해하고, 일상 작업을 실행하고, 복잡한 코드를 설명하고, git 워크플로를 자연어로 처리합니다.",
-  "browser-use/jev-ultrafast": "동적 인덱싱 액션 공간을 쓰는 브라우저 에이전트입니다. 목표 하나를 주면 TypeSafe의 Jev가 연산과 요소를 고르고, TYPE_TEXT일 때만 작은 LLM이 텍스트를 씁니다.",
+  "browser-use/jev-ultrafast": "가장 빠르고 저렴한 웹 에이전트입니다.",
   "jgraph/drawio-mcp": "draw.io 공식 MCP 서버입니다. LLM이 draw.io 에디터에서 다이어그램을 만들고 열 수 있게 합니다.",
   "typesafe-ai/skills": "TypeSafe System One API로 만들기 위한 에이전트 스킬입니다.",
   "appeeky/aso-skills": "앱스토어 최적화(ASO)와 앱 마케팅을 위한 AI 에이전트 스킬입니다. 인디 개발자, 앱 마케터, 그로스 팀이 Cursor, Claude Code 등에서 키워드 조사, 메타데이터 최적화, 경쟁사 분석, 앱 성장을 돕게 합니다.",
@@ -485,5 +485,11 @@
   "0xNatoshi/jev-codex-router": "Codex의 턴마다 모델과 추론 강도를 고릅니다. Jev(TypeSafe System One)가 모델, 사고 깊이, 속도 모드를 정합니다.",
   "vercel-labs/json-render": "생성형 UI 프레임워크입니다.",
   "parsingk/Astera": "Claude Code와 Codex 세션을 여러 개 실행하고 조율하는 데스크톱 앱입니다. 사용량 한도에 맞춘 계정 순환, git worktree 격리, Slack 원격 제어를 지원합니다.",
-  "palakonweb/Rewamp-UI": "복사해 붙여 넣는 React 컴포넌트 라이브러리입니다. Framer Motion으로 만든 인터랙션 컴포넌트를 코드베이스에 직접 넣으며, NPM 래퍼 없이 코드를 소유합니다."
+  "palakonweb/Rewamp-UI": "복사해 붙여 넣는 React 컴포넌트 라이브러리입니다. Framer Motion으로 만든 인터랙션 컴포넌트를 코드베이스에 직접 넣으며, NPM 래퍼 없이 코드를 소유합니다.",
+  "CopilotKit/openmuse": "브라우저, 터미널, 파일과 이어지는 작업을 갖춘 개인 에이전트입니다. CopilotKit과 AG-UI로 만들었습니다.",
+  "StarTrail-org/LEANN": "개인 기기에서 빠르고 정확하며 완전히 비공개로 RAG를 돌리고, 저장 공간을 97% 줄입니다. MLSys 2026 최우수 논문입니다.",
+  "shadcn-labs/pdfcn": "Takumi와 Forme로 만든 PDF 컴포넌트입니다. 무료이고 설정 없이 명령 한 번으로 설치합니다.",
+  "browserbase/stagehand": "어떤 웹사이트든 데이터를 추출하고 조작하는 SDK입니다. Claude Code, Codex, Eve, Mastra 등에서 시작합니다.",
+  "google/ax": "Google의 오픈 에이전트 오케스트레이션 런타임입니다.",
+  "open-slide/open-slide": "에이전트를 위한 슬라이드 프레임워크입니다."
 }
