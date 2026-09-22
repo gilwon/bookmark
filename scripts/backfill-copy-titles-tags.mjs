@@ -238,6 +238,12 @@ export const TARGETS = [
     tags: ["보안", "설정"],
     phrase: "SQL 및 NoSQL 인젝션",
   },
+  {
+    id: "76b9e0da-c327-4a68-9e1f-bdb95766a073",
+    title: "바이브 코더가 json-render에 열광하는 이유 4가지",
+    tags: ["디자인", "툴"],
+    phrase: "완벽한 레고 블록 방식",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
