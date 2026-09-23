@@ -9,6 +9,7 @@ import {
   GitBranch,
   GitFork,
   GitGraph as Github,
+  Laptop,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -60,6 +61,7 @@ const navSections = [
       { href: "/prompts", label: "프롬프트", icon: MessageSquareText },
       { href: "/claude-prompts", label: "Claude", icon: Sparkles },
       { href: "/agent-docs", label: "문서", icon: Bot },
+      { href: "/macbookguyver", label: "맥북가이버", icon: Laptop },
     ],
   },
 ] as const;
