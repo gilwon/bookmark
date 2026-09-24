@@ -256,6 +256,30 @@ export const TARGETS = [
     tags: ["디자인", "툴"],
     phrase: "Takumi & Forme",
   },
+  {
+    id: "a6e91369-0610-4ddc-9f0b-fc8136e5d6d9",
+    title: "점성술 개인 분석 프롬프트 7개",
+    tags: ["프롬프트", "학습"],
+    phrase: "숙련된 [베다 / 서양] 점성술",
+  },
+  {
+    id: "ab1da4be-169d-4d16-8f4a-b7d60abd0a63",
+    title: "Opus 5.5 지시 정리 프롬프트",
+    tags: ["클로드", "프롬프트"],
+    phrase: "가장 보람찬 5분",
+  },
+  {
+    id: "3b155af0-b3e5-4f1c-9b11-20cf4358f6d3",
+    title: "Claude Code 템플릿 라이브러리가 필수인 이유 4가지",
+    tags: ["클로드", "툴"],
+    phrase: "npx claude-code-templates",
+  },
+  {
+    id: "60fe3729-e84d-41a1-a091-4b4d68e21423",
+    title: "Opus 5.5 지침을 점검하고 반영하는 4단계",
+    tags: ["클로드", "설정"],
+    phrase: "왜 넣었는지 기억 안 나는 규칙",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
