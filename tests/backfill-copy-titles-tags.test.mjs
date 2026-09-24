@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 41건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 41);
+test("대상 45건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 45);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 41);
+  assert.equal(new Set(ids).size, 45);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -277,5 +277,37 @@ test("포폴 특징과 pdfcn 2건의 제목과 태그를 정한다", () => {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.equal(item.title.endsWith(":"), false);
+  }
+});
+
+test("점성술·Opus 지시·템플릿 4건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "a6e91369-0610-4ddc-9f0b-fc8136e5d6d9": {
+      title: "점성술 개인 분석 프롬프트 7개",
+      tags: ["프롬프트", "학습"],
+      raw: "1. 내 운세 분석 시작하기",
+    },
+    "ab1da4be-169d-4d16-8f4a-b7d60abd0a63": {
+      title: "Opus 5.5 지시 정리 프롬프트",
+      tags: ["클로드", "프롬프트"],
+      raw: "Claude Coders: 이 Opus 5.5 지시 정리 프롬프트를 *지금* 실행하세요.",
+    },
+    "3b155af0-b3e5-4f1c-9b11-20cf4358f6d3": {
+      title: "Claude Code 템플릿 라이브러리가 필수인 이유 4가지",
+      tags: ["클로드", "툴"],
+      raw: "Claude Code 템플릿 라이브러리(aitmpl.com)가 필수인 이유:",
+    },
+    "60fe3729-e84d-41a1-a091-4b4d68e21423": {
+      title: "Opus 5.5 지침을 점검하고 반영하는 4단계",
+      tags: ["클로드", "설정"],
+      raw: "① 전역부터 점검하세요.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 4);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
   }
 });
