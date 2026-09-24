@@ -1505,3 +1505,11 @@
 - `open-slide/open-slide`는 기존 `1weiho/open-slide`와 다른 저장소다. About 문장은 같다.
 - 정적 번역표는 487개에서 493개로 늘었다.
 - 백필 7건을 갱신했고, 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 최신 Star 한글 설명 6건과 빈 설명 1건 메모
+
+- 운영 `github_stars`는 542건이다. 한글이 없는 설명은 6건이고 빈 설명은 1건이다. GitHub 스타는 541건이고 앱에 없는 저장소는 없다.
+- 영문 병기 대상은 `multimodal-art-projection/YuE`, `rullerzhou-afk/clawd-on-desk`, `driceroland/Search`, `FxEmbed/FxEmbed`, `every-app/open-seo`, `davila7/claude-code-templates`다.
+- `anthropics/financial-services`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다. 기존 `anthropics/skills`, `anthropics/claude-for-legal`과 다른 저장소다.
+- 정적 번역표는 493개에서 500개로 늘었다.
+- 백필 7건(영문 병기 6, 빈 칸 채움 1)을 갱신했다. 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

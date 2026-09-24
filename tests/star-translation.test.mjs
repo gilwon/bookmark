@@ -910,4 +910,29 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("한글이 없던 최신 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["multimodal-art-projection/YuE", "YuE2: frontier music generation with symbolic planning, zero-shot covers, and agentic music editing."],
+      ["rullerzhou-afk/clawd-on-desk", "A pixel desktop pet that watches Claude Code, Codex, Cursor & other AI coding agents — so you don't have to."],
+      ["driceroland/Search", "A small, fast WebKit browser for macOS, by Office Commun."],
+      ["FxEmbed/FxEmbed", "Fix X/Twitter and Bluesky embeds! Use multiple images, videos, polls, translations and more on Discord, Telegram and others"],
+      ["every-app/open-seo", "Open source alternative to Semrush and Ahrefs"],
+      ["davila7/claude-code-templates", "CLI tool for configuring and monitoring Claude Code"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("GitHub About가 비어 있는 financial-services는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("anthropics/financial-services", null, null),
+      "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다."
+    );
+  });
 });

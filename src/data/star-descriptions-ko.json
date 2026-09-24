@@ -491,5 +491,12 @@
   "shadcn-labs/pdfcn": "Takumi와 Forme로 만든 PDF 컴포넌트입니다. 무료이고 설정 없이 명령 한 번으로 설치합니다.",
   "browserbase/stagehand": "어떤 웹사이트든 데이터를 추출하고 조작하는 SDK입니다. Claude Code, Codex, Eve, Mastra 등에서 시작합니다.",
   "google/ax": "Google의 오픈 에이전트 오케스트레이션 런타임입니다.",
-  "open-slide/open-slide": "에이전트를 위한 슬라이드 프레임워크입니다."
+  "open-slide/open-slide": "에이전트를 위한 슬라이드 프레임워크입니다.",
+  "multimodal-art-projection/YuE": "기호 계획, 제로샷 커버, 에이전트 음악 편집을 갖춘 프런티어 음악 생성 모델 YuE2입니다.",
+  "rullerzhou-afk/clawd-on-desk": "Claude Code, Codex, Cursor 등 AI 코딩 에이전트를 대신 지켜보는 픽셀 데스크톱 펫입니다.",
+  "driceroland/Search": "Office Commun이 만든, macOS용 작고 빠른 WebKit 브라우저입니다.",
+  "FxEmbed/FxEmbed": "X와 Bluesky 임베드를 고칩니다. Discord, Telegram 등에서 여러 이미지, 영상, 투표, 번역을 씁니다.",
+  "every-app/open-seo": "Semrush와 Ahrefs의 오픈소스 대안입니다.",
+  "davila7/claude-code-templates": "Claude Code를 설정하고 모니터링하는 CLI입니다.",
+  "anthropics/financial-services": "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다."
 }
