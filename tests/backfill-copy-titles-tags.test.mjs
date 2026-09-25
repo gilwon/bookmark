@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 45건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 45);
+test("대상 46건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 46);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 45);
+  assert.equal(new Set(ids).size, 46);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -310,4 +310,18 @@ test("점성술·Opus 지시·템플릿 4건의 제목과 태그를 정한다", 
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.notEqual(item.title, expected[item.id].raw);
   }
+});
+
+test("오늘 추가된 Opus 토큰 절약 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "9f13cc5b-b622-4a7c-a6b0-954ae53463b1"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "Opus 5.5 토큰 낭비를 줄이는 4단계");
+  assert.deepEqual(item.tags, ["클로드", "설정"]);
+  assert.equal(item.title.endsWith(":"), false);
+  assert.notEqual(
+    item.title,
+    "Opus 5.5가 토큰을 낭비하지 않도록 하려면 다음 4단계를 따르세요:"
+  );
 });
