@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 46건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 46);
+test("대상 47건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 47);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 46);
+  assert.equal(new Set(ids).size, 47);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -324,4 +324,15 @@ test("오늘 추가된 Opus 토큰 절약 1건의 제목과 태그를 정한다"
     item.title,
     "Opus 5.5가 토큰을 낭비하지 않도록 하려면 다음 4단계를 따르세요:"
   );
+});
+
+test("오늘 추가된 Fable 어드바이저 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "7ae9b357-e2c2-4370-ac11-a4f2292c7ee5"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "Fable을 Opus 5.5 어드바이저로 두는 설정");
+  assert.deepEqual(item.tags, ["클로드", "설정"]);
+  assert.equal(item.title.endsWith(":"), false);
+  assert.equal(/^\d+[./]/.test(item.title), false);
 });

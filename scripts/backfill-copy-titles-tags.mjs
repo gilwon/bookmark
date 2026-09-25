@@ -286,6 +286,12 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "스크롤백이 아닌 파일",
   },
+  {
+    id: "7ae9b357-e2c2-4370-ac11-a4f2292c7ee5",
+    title: "Fable을 Opus 5.5 어드바이저로 두는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "Fable은 대기열에 대기합니다",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
