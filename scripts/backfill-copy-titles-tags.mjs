@@ -280,6 +280,12 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "왜 넣었는지 기억 안 나는 규칙",
   },
+  {
+    id: "9f13cc5b-b622-4a7c-a6b0-954ae53463b1",
+    title: "Opus 5.5 토큰 낭비를 줄이는 4단계",
+    tags: ["클로드", "설정"],
+    phrase: "스크롤백이 아닌 파일",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
