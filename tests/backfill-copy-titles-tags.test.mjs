@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 47건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 47);
+test("대상 53건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 53);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 47);
+  assert.equal(new Set(ids).size, 53);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -335,4 +335,46 @@ test("오늘 추가된 Fable 어드바이저 1건의 제목과 태그를 정한�
   assert.deepEqual(item.tags, ["클로드", "설정"]);
   assert.equal(item.title.endsWith(":"), false);
   assert.equal(/^\d+[./]/.test(item.title), false);
+});
+
+test("오늘 추가된 카피 6건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "8aef3817-fe9f-4c1d-a542-78dd99c6b0d6": {
+      title: "블로그 광고 수익 구조를 만드는 질문 7개",
+      tags: ["블로그", "프롬프트"],
+      raw: "1/ 고단가 키워드부터 뽑기",
+    },
+    "c89c87f9-fd49-45c0-a657-f93b578e86b2": {
+      title: "Aside로 글을 시간마다 올리게 하는 셋업",
+      tags: ["자동화", "설정"],
+      raw: "1. Claude나 chatgpt나 gemini 구독",
+    },
+    "576fd63e-3f84-4d0b-843f-cf3a2bf06b4f": {
+      title: "클로드 코드 상태 표시줄 디자인 프롬프트 5종",
+      tags: ["클로드", "디자인"],
+      raw: "클로드코드 쓰시는 분들!! 제가 예전부터 많이 썼었던..",
+    },
+    "6eb902b1-5269-4ff2-a25b-8e59142aeac8": {
+      title: "속도 제한 뒤에도 클로드를 쓰는 low-priority",
+      tags: ["클로드", "설정"],
+      raw: "속도 제한에 도달한 후에도 Claude를 사용할 수 있습니다.",
+    },
+    "76372086-a6a2-43a7-a444-24fe6a0590a5": {
+      title: "바이브코딩에 쓰는 클로드 코드 명령어 정리",
+      tags: ["클로드", "설정"],
+      raw: "[클로드 Opus 5.5 출시기념]",
+    },
+    "8c10b2b4-c0e3-4b01-b63e-f916a03447e9": {
+      title: "Opus 5.5로 UI 모션을 코드로 만드는 프롬프트",
+      tags: ["클로드", "디자인"],
+      raw: "opus 5.5는 모션 디자인에서 정말 미쳤어",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 6);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
 });
