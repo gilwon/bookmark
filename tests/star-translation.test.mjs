@@ -935,4 +935,18 @@ describe("Star 설명 번역", () => {
       "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다."
     );
   });
+
+  it("오늘 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["devdotfast/whiteboard", "open-source canvas for thoughtful software design"],
+      ["Comfy-Org/workflow_templates", "ComfyUI template workflows"],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

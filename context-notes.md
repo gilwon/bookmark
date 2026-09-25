@@ -1513,3 +1513,12 @@
 - `anthropics/financial-services`는 GitHub About가 비어 있어 README를 보고 한국어만 넣는다. 기존 `anthropics/skills`, `anthropics/claude-for-legal`과 다른 저장소다.
 - 정적 번역표는 493개에서 500개로 늘었다.
 - 백필 7건(영문 병기 6, 빈 칸 채움 1)을 갱신했다. 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-09-25 추가 Star 한글 설명 2건 메모
+
+- 한국 시간 2026-09-25에 운영 `github_stars`에 들어온 항목은 10건이다. 한글이 없는 설명은 2건이고 빈 설명은 0건이다.
+- 대상은 `devdotfast/whiteboard`, `Comfy-Org/workflow_templates`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `Comfy-Org/workflow_templates`는 기존 `Comfy-Org/ComfyUI`와 다른 저장소다.
+- 같은 날 들어온 나머지 8건은 이미 한글이 있어 그대로 둔다.
+- 정적 번역표는 500개에서 502개로 늘었다.
+- 백필 2건을 갱신했다. 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

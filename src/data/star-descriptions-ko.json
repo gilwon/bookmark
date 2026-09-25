@@ -498,5 +498,7 @@
   "FxEmbed/FxEmbed": "X와 Bluesky 임베드를 고칩니다. Discord, Telegram 등에서 여러 이미지, 영상, 투표, 번역을 씁니다.",
   "every-app/open-seo": "Semrush와 Ahrefs의 오픈소스 대안입니다.",
   "davila7/claude-code-templates": "Claude Code를 설정하고 모니터링하는 CLI입니다.",
-  "anthropics/financial-services": "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다."
+  "anthropics/financial-services": "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다.",
+  "devdotfast/whiteboard": "사려 깊은 소프트웨어 설계를 위한 오픈소스 캔버스입니다.",
+  "Comfy-Org/workflow_templates": "ComfyUI 템플릿 워크플로 모음입니다."
 }
