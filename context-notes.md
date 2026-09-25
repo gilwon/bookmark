@@ -1,3 +1,16 @@
+# 낭만빌더 김스듴 클로드 SNS 스킬 17개 Pages 이관 메모
+
+- 저장 URL. `https://sdk-kim-builds.com/guides/claude-sns-agency-skills`. 사용자 URL의 utm·fbclid와 끝 슬래시는 뺀다.
+- 제목. `클로드 SNS 스킬 17개: 대행사처럼 말투부터 배우게 하기`. 사이트명 `낭만빌더 김스듴`.
+- 카테고리 `개발`, 날짜 `2026. 9. 25.`는 본문에 남긴다.
+- 표지. `https://sdk-kim-builds.com/og/default.png` PNG 3992바이트. 본문 이미지 0이라 `![표지](data:...)` 한 장만 넣는다. 첨부 0, 표 0.
+- 깃허브. `https://github.com/charlie947/social-media-skills`.
+- 원문 `주제 3<del>5개 → 글감 24</del>40개를 표로`는 `~~5개 → 글감 24~~`로 두고 TipTap strike 마크로 저장한다. 이어 붙이지 않는다.
+- 뺀 크롬. `a.guide-detail__back`, `aside.guide-detail__cta`(30일 챌린지), `section.guide-inquiry-block`(AX 도입), `aside.guide-subscribe`(새 가이드 알림), `nav.guide-next`, `header.home-header`, `footer.home-footer`.
+- 기존 `https://sdk-kim-builds.com/guides/agent-github-repos-7`와 제목·URL이 다르다. 중복이 아니다.
+- Prompts 테이블은 쓰지 않는다. 운영 중복은 제목 또는 `source_url`만 본다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/3074252c-c6b8-4352-9e7d-54008f8fe134`. 로컬 `dev`와 운영이 같은 id다.
+
 # Slashpage 클로드 다크 프롬프트 10 Pages 이관 메모
 
 - 저장 URL. `https://slashpage.com/biggie-ai/d367nxm3wr133mj98pv1`. 사용자 URL의 fbclid는 뺀다.
