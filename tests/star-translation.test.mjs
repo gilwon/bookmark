@@ -949,4 +949,18 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-26에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["JakeB-5/todo-flow", "Pick TODOs. Let replaceable agents carry them through parallel work, review and verified delivery."],
+      ["LibreOffice/core", "Read-only LibreOffice core repo - no pull request (use gerrit instead https://gerrit.libreoffice.org/) - don't download zip, use https://dev-www.libreoffice.org/bundles/  instead"],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

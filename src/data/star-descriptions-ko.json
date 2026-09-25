@@ -500,5 +500,7 @@
   "davila7/claude-code-templates": "Claude Code를 설정하고 모니터링하는 CLI입니다.",
   "anthropics/financial-services": "금융 서비스 업무용 Claude 참고 에이전트, 스킬, 데이터 커넥터입니다. 투자은행, 주식 리서치, 사모펀드, 자산관리 워크플로를 다룹니다.",
   "devdotfast/whiteboard": "사려 깊은 소프트웨어 설계를 위한 오픈소스 캔버스입니다.",
-  "Comfy-Org/workflow_templates": "ComfyUI 템플릿 워크플로 모음입니다."
+  "Comfy-Org/workflow_templates": "ComfyUI 템플릿 워크플로 모음입니다.",
+  "JakeB-5/todo-flow": "할 일을 고르면, 교체 가능한 에이전트가 병렬 작업과 리뷰, 검증된 전달까지 진행합니다.",
+  "LibreOffice/core": "읽기 전용 LibreOffice 코어 저장소입니다. 풀 리퀘스트는 받지 않으니 Gerrit을 쓰고, zip 대신 공식 번들을 받습니다."
 }
