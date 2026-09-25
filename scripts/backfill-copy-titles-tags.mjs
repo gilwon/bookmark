@@ -292,6 +292,42 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "Fable은 대기열에 대기합니다",
   },
+  {
+    id: "8aef3817-fe9f-4c1d-a542-78dd99c6b0d6",
+    title: "블로그 광고 수익 구조를 만드는 질문 7개",
+    tags: ["블로그", "프롬프트"],
+    phrase: "10년 차 애드센스 최적화",
+  },
+  {
+    id: "c89c87f9-fd49-45c0-a657-f93b578e86b2",
+    title: "Aside로 글을 시간마다 올리게 하는 셋업",
+    tags: ["자동화", "설정"],
+    phrase: "mcp로 aside",
+  },
+  {
+    id: "576fd63e-3f84-4d0b-843f-cf3a2bf06b4f",
+    title: "클로드 코드 상태 표시줄 디자인 프롬프트 5종",
+    tags: ["클로드", "디자인"],
+    phrase: "민트색 진행 막대",
+  },
+  {
+    id: "6eb902b1-5269-4ff2-a25b-8e59142aeac8",
+    title: "속도 제한 뒤에도 클로드를 쓰는 low-priority",
+    tags: ["클로드", "설정"],
+    phrase: "/low-priority",
+  },
+  {
+    id: "76372086-a6a2-43a7-a444-24fe6a0590a5",
+    title: "바이브코딩에 쓰는 클로드 코드 명령어 정리",
+    tags: ["클로드", "설정"],
+    phrase: "필수 클로드코드 핵심 명령어",
+  },
+  {
+    id: "8c10b2b4-c0e3-4b01-b63e-f916a03447e9",
+    title: "Opus 5.5로 UI 모션을 코드로 만드는 프롬프트",
+    tags: ["클로드", "디자인"],
+    phrase: "Dribbble 수준의 UI 모션",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
