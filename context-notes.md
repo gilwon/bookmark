@@ -1,3 +1,21 @@
+# 바이비 AI티 빼는 클로드 스킬 3종 Pages 이관 메모
+
+- 저장 URL. `https://www.withvaigent.com/blog/anti-ai-writing-skill`. 사용자 URL의 fbclid는 뺀다.
+- 제목. `글쓸 때 AI티 빼는 클로드 스킬 3종 세트`. 사이트 접미 `· 바이비`는 넣지 않는다.
+- 본문 이미지 0. og:image가 없어 표지를 만들지 않는다. 표 1개, 스킬 3행.
+- 첨부 3개. data URL이 아니고 비공개 `page-attachments` Storage다. contentType `application/zip`, upsert.
+  - `humanize-korean.zip` 18068바이트. sha256 `3144992b8c220629df7f46db56d4273df633c6c674a509a139f524fa3e053f36`.
+  - `anti-ai-writing.zip` 6599바이트. sha256 `f12cec2833a336c354ee08f3ff4c5f35bcaf64d5a4f41c28edce5cd9b88a0290`.
+  - `voice-dna-maker.zip` 3313바이트. sha256 `33a6e969b3a62732d8acbc874dd7f8c658d9db4d89ee170f4f0649a3468fd3cf`.
+- 본문 링크. `/api/page-attachments/withvaigent-anti-ai-writing/<파일명>`. 파일명은 `encodeURIComponent`이고 이 셋은 ASCII라 그대로다.
+- Storage 객체. 로컬 `ZGV2/withvaigent-anti-ai-writing/<파일명>`, 운영 `ZjcyZTlhNDQtNzlkOC00MDYxLWE3MDAtM2VjNTBiYjA0YTk3/withvaigent-anti-ai-writing/<파일명>`. 원문 파일명을 유지한다.
+- 외부 링크 4개. `https://human-ai-writing.vercel.app/`, `https://github.com/epoko77-ai/im-not-ai`, `https://github.com/artemnovitckii/content-skills`, `https://open.kakao.com/o/gie1t2Hi`.
+- 뺀 크롬. `ul.tag-list`, `section.related`, 헤더, 푸터, 다른 글 카드. `ui-ux-pro-max-skill`, `ai-티-안나게`, `natural-camera-angle-prompts`. 원문 ZIP 경로 `/images/3e6f2254-ee13-802e-9444-e7fd6a7f0458/` 는 저장하지 않는다.
+- 문서 안 `#파일-받기` 링크는 남긴다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/e9c2f45c-e930-471b-8d2a-ae9d458b3820`. 로컬 `dev`와 운영이 같은 id다.
+- 업로드 후 storage.info 크기. 로컬·운영 각 3개 파일이 18068, 6599, 3313바이트와 같다.
+
 # 낭만빌더 김스듴 클로드 SNS 스킬 17개 Pages 이관 메모
 
 - 저장 URL. `https://sdk-kim-builds.com/guides/claude-sns-agency-skills`. 사용자 URL의 utm·fbclid와 끝 슬래시는 뺀다.

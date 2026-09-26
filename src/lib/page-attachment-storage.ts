@@ -18,6 +18,13 @@ export const PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID = "3b23de874c4d81e9ad29c
 export const PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME = "이미지-자동화-스킬팩_방구석컴퍼니.zip";
 export const PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID = "3b53de874c4d81f89456cd3a3cbf4849";
 export const PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME = "세컨드브레인-스타터키트_방구석컴퍼니.zip";
+/** 바이비 글의 ZIP은 이 sourceId와 원문 파일명만 짝짓는다. */
+export const PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID = "withvaigent-anti-ai-writing";
+export const PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES = [
+  "humanize-korean.zip",
+  "anti-ai-writing.zip",
+  "voice-dna-maker.zip",
+] as const;
 
 type PageAttachmentImportRow = { title: unknown; content: unknown };
 
@@ -67,7 +74,7 @@ export function extractPageMediaReferences(content: unknown): { imageSources: st
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
-  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID || value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID || value === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID;
+  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID || value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID || value === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID || value === PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID;
 }
 
 /** 허용된 Pages ZIP 첨부 파일명인지 확인한다. */
@@ -77,7 +84,10 @@ export function isPageAttachmentFilename(value: unknown): value is string {
     value === PAGE_ATTACHMENT_MOODMODE_FILENAME ||
     value === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME ||
     value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME ||
-    value === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME
+    value === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME ||
+    PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES.includes(
+      value as (typeof PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES)[number]
+    )
   );
 }
 
@@ -94,7 +104,12 @@ export function createPageAttachmentObjectPath(
   const isClaudeSetupFile = sourceId === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID && filename === PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME;
   const isImageAutomationFile = sourceId === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID && filename === PAGE_ATTACHMENT_IMAGE_AUTOMATION_FILENAME;
   const isSecondBrainFile = sourceId === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID && filename === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME;
-  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile && !isImageAutomationFile && !isSecondBrainFile) {
+  const isVaigentAntiAiFile =
+    sourceId === PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID &&
+    PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES.includes(
+      filename as (typeof PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES)[number]
+    );
+  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile && !isImageAutomationFile && !isSecondBrainFile && !isVaigentAntiAiFile) {
     return null;
   }
   const objectFilename = isImageAutomationFile ? "image-automation-skillpack.zip" : isSecondBrainFile ? "second-brain-starter-kit.zip" : filename;
