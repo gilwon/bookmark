@@ -963,4 +963,23 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-27에 추가된 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["microsoft/data-formulator", "🪄 Data Formulator is an interactive AI-powered data analysis system makes it easy to connect, explore and visualize data."],
+      ["wong2/cf-mailroom", "Self-hosted email for humans and AI agents, on Cloudflare"],
+      ["AmanShakya0018/forgeui", "A library of React components for smooth, fast front-end development."],
+      ["panel-ui/PanelUI", "High-performance React Native components for Expo."],
+      ["Gimanh/taskview-community", "TaskView is a self-hosted project and task management platform focused on clarity, ownership, and control. TaskView is built for teams that want a transparent, self-hosted alternative to SaaS task managers."],
+      ["inline-chat/inline", "Inline is the chat app you always wanted. Fast, native, lightweight, open, secure and the delightful interface for working with agents, teammates and friends."],
+      ["dream-num/univer", "The Office Harness for AI Agents — Spreadsheets, Docs, Slides, Canvas, Relational Tables, and PDF in one runtime."],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

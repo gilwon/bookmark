@@ -502,5 +502,12 @@
   "devdotfast/whiteboard": "사려 깊은 소프트웨어 설계를 위한 오픈소스 캔버스입니다.",
   "Comfy-Org/workflow_templates": "ComfyUI 템플릿 워크플로 모음입니다.",
   "JakeB-5/todo-flow": "할 일을 고르면, 교체 가능한 에이전트가 병렬 작업과 리뷰, 검증된 전달까지 진행합니다.",
-  "LibreOffice/core": "읽기 전용 LibreOffice 코어 저장소입니다. 풀 리퀘스트는 받지 않으니 Gerrit을 쓰고, zip 대신 공식 번들을 받습니다."
+  "LibreOffice/core": "읽기 전용 LibreOffice 코어 저장소입니다. 풀 리퀘스트는 받지 않으니 Gerrit을 쓰고, zip 대신 공식 번들을 받습니다.",
+  "microsoft/data-formulator": "데이터를 연결하고 탐색하고 시각화하기 쉽게 만든 대화형 AI 데이터 분석 시스템입니다.",
+  "wong2/cf-mailroom": "사람과 AI 에이전트를 위한, Cloudflare 위의 자체 호스팅 이메일입니다.",
+  "AmanShakya0018/forgeui": "매끄럽고 빠른 프론트엔드 개발을 위한 React 컴포넌트 라이브러리입니다.",
+  "panel-ui/PanelUI": "Expo용 고성능 React Native 컴포넌트입니다.",
+  "Gimanh/taskview-community": "명확함과 소유권, 통제에 맞춘 자체 호스팅 프로젝트·작업 관리 플랫폼입니다. SaaS 작업 관리 도구를 투명하게 대체하려는 팀을 위한 것입니다.",
+  "inline-chat/inline": "빠르고 네이티브하며 가볍고 열려 있으며 안전한 채팅 앱입니다. 에이전트, 동료, 친구와 일하는 인터페이스입니다.",
+  "dream-num/univer": "AI 에이전트를 위한 오피스 하네스입니다. 스프레드시트, 문서, 슬라이드, 캔버스, 관계형 테이블, PDF를 한 런타임에서 다룹니다."
 }

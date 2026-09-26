@@ -1542,3 +1542,11 @@
 - 대상은 `JakeB-5/todo-flow`, `LibreOffice/core`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
 - 정적 번역표는 502개에서 504개로 늘었다.
 - 백필 2건을 갱신했다. 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-09-27 추가 Star 한글 설명 7건 메모
+
+- 한국 시간 2026-09-27에 운영 `github_stars`에 들어온 항목은 8건이다. 한글이 없는 설명은 7건이고 빈 설명은 0건이다.
+- 대상은 `microsoft/data-formulator`, `wong2/cf-mailroom`, `AmanShakya0018/forgeui`, `panel-ui/PanelUI`, `Gimanh/taskview-community`, `inline-chat/inline`, `dream-num/univer`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `codingnoye/gksdud`는 이미 한글 설명이라 그대로 둔다.
+- 정적 번역표는 504개에서 511개로 늘었다.
+- 백필 7건을 갱신했다. 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
