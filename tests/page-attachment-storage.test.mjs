@@ -11,6 +11,8 @@ import {
   PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID,
   PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME,
   PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID,
+  PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES,
+  PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   planExactPageAttachmentAction,
   planNotionWeekPageAction,
@@ -109,6 +111,38 @@ describe("Pages 첨부 Storage 공개 경계", () => {
         `Z2l0aHViLzEyMw/${attachmentSourceId}/${objectFilename}`
       );
     }
+  });
+
+  it("바이비 AI티 스킬 ZIP 세 개는 해당 sourceId와만 짝짓는다", () => {
+    const vaigentSourceId = PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID;
+    assert.equal(isPageAttachmentSourceId(vaigentSourceId), true);
+    for (const filename of PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES) {
+      assert.equal(isPageAttachmentFilename(filename), true);
+      assert.equal(
+        createPageAttachmentObjectPath("github/123", vaigentSourceId, filename),
+        `Z2l0aHViLzEyMw/${vaigentSourceId}/${filename}`
+      );
+      assert.equal(
+        createPageAttachmentObjectPath("github/123", sourceId, filename),
+        null
+      );
+      assert.equal(
+        createPageAttachmentObjectPath("github/123", claudeSetupSourceId, filename),
+        null
+      );
+    }
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", vaigentSourceId, "moodmode-insta-saver.zip"),
+      null
+    );
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", vaigentSourceId, PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME),
+      null
+    );
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", vaigentSourceId, "../humanize-korean.zip"),
+      null
+    );
   });
 
   it("신규 Notion 이관 ZIP의 잘못된 조합을 거절한다", () => {

@@ -1,3 +1,13 @@
+# 바이비 AI티 빼는 클로드 스킬 3종 Pages 이관
+
+- [x] 본문 이미지 0, 표 1, 첨부 3개(18068, 6599, 3313바이트)를 확인한다
+- [x] `scripts/import-vaigent-anti-ai-writing-skill.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] `withvaigent-anti-ai-writing` ZIP 3개만 Storage 허용 목록에 짝짓는다
+- [x] 관련 글, 태그, fbclid, 원문 ZIP 경로를 빼고 외부 링크 4개는 남긴다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 둘 다 insert, 재실행은 둘 다 skip
+- [x] 저장 경로 `/pages/e9c2f45c-e930-471b-8d2a-ae9d458b3820`. Storage 6개 객체 크기가 기대 바이트와 같다
+- [x] 브라우저에서 제목·표 1·외부 링크·zip 링크 3개가 보이고 관련 글은 없는지 확인한다
+
 # 낭만빌더 김스듴 클로드 SNS 스킬 17개 Pages 이관
 
 - [x] 본문 이미지 0, OG 표지 3992바이트, 첨부 0, 표 0을 확인한다
