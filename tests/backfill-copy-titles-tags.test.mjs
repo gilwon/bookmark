@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 53건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 53);
+test("대상 56건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 56);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 53);
+  assert.equal(new Set(ids).size, 56);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -376,5 +376,33 @@ test("오늘 추가된 카피 6건의 제목과 태그를 정한다", () => {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("오늘 추가된 검색·감사·출시 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "52dff1ba-6e9e-407a-bfde-86281e0c5279": {
+      title: "검색 비교에서 Typesense가 OpenSearch를 앞섰다",
+      tags: ["툴", "후기"],
+      raw: "바이브코딩하다 검색 기능을 넣으면, 생각보다 일이 커집니다.",
+    },
+    "7bfc97c1-3c1c-491e-8716-813803a5d75c": {
+      title: "낡은 지시를 씻는 prompt-audit",
+      tags: ["클로드", "프롬프트"],
+      raw: "・세션 내에서 /doctor prompt-audit(또는 /checkup prompt-audit)를 실행하기만 하면, CLAUDE.md나 skills, agents 내의 세대 지연된 프롬프트(과도한 검증 지시나 불필요한 스텝 바이 스텝 지정 등)를 통째로 감사",
+    },
+    "e73d3a38-144c-4842-a75e-5bc3ddd07526": {
+      title: "출시 전 바이브코딩 사이트를 고치는 말 20가지",
+      tags: ["클로드", "설정"],
+      raw: "Claude에게 당신의 vibecoded 웹사이트를 수정해달라고 말할 20가지 사항.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+    assert.equal(item.title.endsWith(":"), false);
   }
 });
