@@ -328,6 +328,24 @@ export const TARGETS = [
     tags: ["클로드", "디자인"],
     phrase: "Dribbble 수준의 UI 모션",
   },
+  {
+    id: "52dff1ba-6e9e-407a-bfde-86281e0c5279",
+    title: "검색 비교에서 Typesense가 OpenSearch를 앞섰다",
+    tags: ["툴", "후기"],
+    phrase: "Typesense도 메모리는 208MB",
+  },
+  {
+    id: "7bfc97c1-3c1c-491e-8716-813803a5d75c",
+    title: "낡은 지시를 씻는 prompt-audit",
+    tags: ["클로드", "프롬프트"],
+    phrase: "세대 지연된 프롬프트",
+  },
+  {
+    id: "e73d3a38-144c-4842-a75e-5bc3ddd07526",
+    title: "출시 전 바이브코딩 사이트를 고치는 말 20가지",
+    tags: ["클로드", "설정"],
+    phrase: "맞춤 404 페이지",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
