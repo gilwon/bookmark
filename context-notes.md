@@ -1,3 +1,19 @@
+# 클로드 learn 스킬 3분 가이드 Pages 이관 메모
+
+- 저장 URL. `https://app.notion.com/p/3e8bc8af735e81e2a399fc2d47d80b00`. 사용자 URL의 `source=copy_link`는 뺀다.
+- 제목. `클로드 '학습의 신' 모드 — learn 스킬 켜는 법 (3분)`. Notion 블록 제목 그대로다.
+- pageId `3e8bc8af-735e-81e2-a399-fc2d47d80b00`. 공간 `e08bc8af-735e-8168-8d34-000335fa9e9d`.
+- 루트 자식 33. 블록 38. 이미지 0. 첨부 0. 표 0. 코드 2. 콜아웃 4.
+- 본문 링크 2개. `http://claude.ai`는 `https://claude.ai`로 올렸다. `https://turnflow.link/@use-ai-likejimin`는 그대로다. `buildMarkdown`이 붙이는 원문 인용 링크가 하나 더 있다.
+- 자리 표시 3줄은 콜아웃 자식이라 남긴다. 스크린샷은 만들지 않았다.
+  - `이미지 넣을 자리 — step1_settings.png`
+  - `이미지 넣을 자리 — step2_find_learn.png`
+  - `이미지 넣을 자리 — step3_toggle_on.png`
+- 만료 URL은 없다. `prod-files-secure`, `X-Amz`, `file.notion.so`, `fbclid`, `source=copy_link`가 본문에 없다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`의 hex만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/7453f8be-3468-4ec9-914a-9f8aa7b0ef6a`. 로컬 `dev`와 운영이 같은 id다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 `2026-09-27T22:48:38.337Z`로 그대로다.
+
 # 게으른 빌더 다섯 부서 클로드 스킬 가이드 Pages 이관 메모
 
 - 저장 URL. `https://lazyowen.com/guides/84skills`. 사용자 URL의 fbclid는 뺀다.
