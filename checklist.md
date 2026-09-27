@@ -1,3 +1,13 @@
+# 한국 시간 이번 주 Notion 신규 Pages 이관 (2026-09-21~27)
+
+- [x] GILWON 상위 신규 2건만 대상으로 하고 이미 있는 285b 글과 캘린더 행은 스킵한다
+- [x] `scripts/import-notion-kst-20260927.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] AI 버크셔 ZIP 274316바이트는 `gilwon-ai-berkshire-20260926`과 NFC 파일명만 짝짓는다
+- [x] 로컬·Supabase에 중복 없이 저장한다. 이미지 7장은 data URL이고 ZIP은 Storage다
+- [x] 재실행은 로컬·운영 모두 skip이다. 285b 글은 insert되지 않는다
+- [x] 경로 `/pages/72d9fb42-1d9e-427f-bb03-55059c890064`, `/pages/3f64373a-1972-4963-babf-5a390cff01d6`
+- [x] 브라우저에서 버크셔 이미지 7·ZIP 링크와 일곱 회사 표 7·깃허브 링크가 보이는지 확인한다
+
 # 연기우 특별선물함 Pages 이관
 
 - [x] 하위 page 55개만 고르고 목록 자신과 안내 문구는 뺀다

@@ -25,6 +25,9 @@ export const PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES = [
   "anti-ai-writing.zip",
   "voice-dna-maker.zip",
 ] as const;
+/** AI 버크셔 글의 ZIP은 이 sourceId와 NFC 파일명만 짝짓는다. */
+export const PAGE_ATTACHMENT_AI_BERKSHIRE_SOURCE_ID = "gilwon-ai-berkshire-20260926";
+export const PAGE_ATTACHMENT_AI_BERKSHIRE_FILENAME = "AI버크셔_plugin.zip";
 
 type PageAttachmentImportRow = { title: unknown; content: unknown };
 
@@ -74,7 +77,7 @@ export function extractPageMediaReferences(content: unknown): { imageSources: st
 
 /** 이관한 Pages 첨부의 원문 sourceId인지 확인한다. */
 export function isPageAttachmentSourceId(value: unknown): value is string {
-  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID || value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID || value === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID || value === PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID;
+  return value === PAGE_ATTACHMENT_SOURCE_ID || value === PAGE_ATTACHMENT_MOODMODE_SOURCE_ID || value === PAGE_ATTACHMENT_CLAUDE_SETUP_SOURCE_ID || value === PAGE_ATTACHMENT_IMAGE_AUTOMATION_SOURCE_ID || value === PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID || value === PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID || value === PAGE_ATTACHMENT_AI_BERKSHIRE_SOURCE_ID;
 }
 
 /** 허용된 Pages ZIP 첨부 파일명인지 확인한다. */
@@ -87,7 +90,8 @@ export function isPageAttachmentFilename(value: unknown): value is string {
     value === PAGE_ATTACHMENT_SECOND_BRAIN_FILENAME ||
     PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES.includes(
       value as (typeof PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES)[number]
-    )
+    ) ||
+    value === PAGE_ATTACHMENT_AI_BERKSHIRE_FILENAME
   );
 }
 
@@ -109,10 +113,20 @@ export function createPageAttachmentObjectPath(
     PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES.includes(
       filename as (typeof PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES)[number]
     );
-  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile && !isImageAutomationFile && !isSecondBrainFile && !isVaigentAntiAiFile) {
+  const isBerkshireFile =
+    sourceId === PAGE_ATTACHMENT_AI_BERKSHIRE_SOURCE_ID &&
+    filename === PAGE_ATTACHMENT_AI_BERKSHIRE_FILENAME;
+  if (!isKimhyoFile && !isMoodmodeFile && !isClaudeSetupFile && !isImageAutomationFile && !isSecondBrainFile && !isVaigentAntiAiFile && !isBerkshireFile) {
     return null;
   }
-  const objectFilename = isImageAutomationFile ? "image-automation-skillpack.zip" : isSecondBrainFile ? "second-brain-starter-kit.zip" : filename;
+  // Storage 객체 키는 한글을 거절하므로 공개 파일명과 다른 ASCII 이름을 쓴다.
+  const objectFilename = isImageAutomationFile
+    ? "image-automation-skillpack.zip"
+    : isSecondBrainFile
+      ? "second-brain-starter-kit.zip"
+      : isBerkshireFile
+        ? "ai-berkshire-plugin.zip"
+        : filename;
   return `${pdfUserFolder(userId)}/${sourceId}/${objectFilename}`;
 }
 

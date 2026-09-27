@@ -1,3 +1,16 @@
+# 한국 시간 이번 주 Notion 신규 2건 Pages 이관 메모
+
+- 오늘 2026-09-27. 이번 주 시작은 KST 2026-09-21 00:00. 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
+- 최상위 신규 3건 중 캘린더 행은 제외했다. 이미 있는 `AI 직원 7명으로 콘텐츠 팀 만들기 — 폴더 구조 · 직원 7명 프롬프트 · 30분 설치` (`285b256827ac829cb58381e6c9409da2`, `/pages/be345603-9c8d-40fb-bffd-d2c2085848c1`)는 스킵했다. 이번 실행에서 insert하지 않았다.
+- `버핏 AI 4명한테 내 종목 물어보기 (AI 버크셔 설치 가이드)` (`417b256827ac83d09bb7013942b14bef`). 이미지 7장 PNG. 첨부 ZIP 1개 274316바이트. 표 0. 경로 `/pages/72d9fb42-1d9e-427f-bb03-55059c890064`.
+- `AI 회사 일곱 곳이 사내에서 쓰던 도구를 공짜로 풀었습니다` (`f7bb256827ac8381be0e81a4cb198bbe`). 이미지 0. 첨부 0. 표 7. 코드 9. 경로 `/pages/3f64373a-1972-4963-babf-5a390cff01d6`.
+- ZIP은 data URL이 아니다. 본문 링크는 `/api/page-attachments/gilwon-ai-berkshire-20260926/${encodeURIComponent("AI버크셔_plugin.zip")}`. Storage 키는 한글을 거절해서 객체 이름은 `ai-berkshire-plugin.zip`이다. contentType `application/zip`. dev와 운영 사용자 경로에 upsert했다.
+- 멘션 `3db98dec-8eed-8107-b5ea-c827fe906cce`는 2026-09-14 글이라 별도 Pages로 넣지 않고 링크만 남긴다.
+- 저장 URL은 `https://app.notion.com/p/{hex}`다. `source=copy_link`는 없다.
+- Prompts 테이블은 쓰지 않는다. 운영 중복은 제목 또는 `source_url`만 본다. 기존 행은 갱신하지 않는다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. 로컬 `dev`와 운영이 같은 id다.
+- 쿠키 `tmp/notion-kst-20260920/cookies.txt`. 커밋하지 않는다.
+
 # 연기우 특별선물함 Pages 이관 메모
 
 - 목록 `연기우 특별선물함`은 넣지 않는다. id `378fec6d-90d2-8070-a4cb-f33bf8733f02`. 하위 page 55개만 넣는다. 안내 text·callout `(⏳ 추가 업로드 진행중…)` 는 대상이 아니다.

@@ -13,6 +13,8 @@ import {
   PAGE_ATTACHMENT_SECOND_BRAIN_SOURCE_ID,
   PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES,
   PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID,
+  PAGE_ATTACHMENT_AI_BERKSHIRE_FILENAME,
+  PAGE_ATTACHMENT_AI_BERKSHIRE_SOURCE_ID,
   PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT,
   planExactPageAttachmentAction,
   planNotionWeekPageAction,
@@ -143,6 +145,40 @@ describe("Pages 첨부 Storage 공개 경계", () => {
       createPageAttachmentObjectPath("github/123", vaigentSourceId, "../humanize-korean.zip"),
       null
     );
+  });
+
+  it("AI 버크셔 ZIP은 해당 sourceId와 NFC 파일명만 짝짓는다", () => {
+    const berkshireSourceId = PAGE_ATTACHMENT_AI_BERKSHIRE_SOURCE_ID;
+    const berkshireFilename = PAGE_ATTACHMENT_AI_BERKSHIRE_FILENAME;
+    const nfdFilename = berkshireFilename.normalize("NFD");
+    assert.equal(berkshireSourceId, "gilwon-ai-berkshire-20260926");
+    assert.equal(berkshireFilename, "AI버크셔_plugin.zip");
+    assert.equal(berkshireFilename.normalize("NFC"), berkshireFilename);
+    assert.notEqual(nfdFilename, berkshireFilename);
+    assert.equal(isPageAttachmentSourceId(berkshireSourceId), true);
+    assert.equal(isPageAttachmentFilename(berkshireFilename), true);
+    assert.equal(isPageAttachmentFilename(nfdFilename), false);
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", berkshireSourceId, berkshireFilename),
+      `Z2l0aHViLzEyMw/${berkshireSourceId}/ai-berkshire-plugin.zip`
+    );
+    assert.equal(createPageAttachmentObjectPath("github/123", berkshireSourceId, nfdFilename), null);
+    assert.equal(createPageAttachmentObjectPath("github/123", sourceId, berkshireFilename), null);
+    assert.equal(createPageAttachmentObjectPath("github/123", claudeSetupSourceId, berkshireFilename), null);
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", PAGE_ATTACHMENT_VAIGENT_ANTI_AI_SOURCE_ID, berkshireFilename),
+      null
+    );
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", berkshireSourceId, PAGE_ATTACHMENT_CLAUDE_SETUP_FILENAME),
+      null
+    );
+    assert.equal(
+      createPageAttachmentObjectPath("github/123", berkshireSourceId, PAGE_ATTACHMENT_VAIGENT_ANTI_AI_FILENAMES[0]),
+      null
+    );
+    assert.equal(createPageAttachmentObjectPath("github/123", berkshireSourceId, "moodmode-insta-saver.zip"), null);
+    assert.ok(274316 < PAGE_ATTACHMENT_STORAGE_FILE_SIZE_LIMIT);
   });
 
   it("신규 Notion 이관 ZIP의 잘못된 조합을 거절한다", () => {
