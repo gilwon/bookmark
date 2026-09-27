@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 56건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 56);
+test("대상 57건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 57);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 56);
+  assert.equal(new Set(ids).size, 57);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -405,4 +405,18 @@ test("오늘 추가된 검색·감사·출시 3건의 제목과 태그를 정한
     assert.notEqual(item.title, expected[item.id].raw);
     assert.equal(item.title.endsWith(":"), false);
   }
+});
+
+test("오늘 추가된 Ollaya 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "a19ad09f-57b9-4dd2-a934-e8e6a50e9763"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "로컬 의사결정 모델 Ollaya가 가벼운 이유 5가지");
+  assert.deepEqual(item.tags, ["툴", "에이전트"]);
+  assert.equal(item.title.endsWith(":"), false);
+  assert.notEqual(
+    item.title,
+    "해커뉴스에서 난리 난 'Ollaya(ollaya.dev)'가 역대급인 이유:"
+  );
 });

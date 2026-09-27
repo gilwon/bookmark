@@ -346,6 +346,12 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "맞춤 404 페이지",
   },
+  {
+    id: "a19ad09f-57b9-4dd2-a934-e8e6a50e9763",
+    title: "로컬 의사결정 모델 Ollaya가 가벼운 이유 5가지",
+    tags: ["툴", "에이전트"],
+    phrase: "ollaya run laya",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
