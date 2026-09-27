@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 57건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 57);
+test("대상 61건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 61);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 57);
+  assert.equal(new Set(ids).size, 61);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -419,4 +419,37 @@ test("오늘 추가된 Ollaya 1건의 제목과 태그를 정한다", () => {
     item.title,
     "해커뉴스에서 난리 난 'Ollaya(ollaya.dev)'가 역대급인 이유:"
   );
+});
+
+test("어제·오늘 추가된 블로그·대시보드·Muse 4건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "737967b0-c4de-48cc-a5a9-7813a8f234fe": {
+      title: "애드센스 글을 검색용으로 잡는 프롬프트 5개",
+      tags: ["블로그", "프롬프트"],
+      raw: "AI에 붙여넣으면",
+    },
+    "75b8cd5a-4a98-4e0a-836f-6761a5a9eb7f": {
+      title: "긴 작업 전에 HTML 진행 대시보드를 붙이는 설정",
+      tags: ["클로드", "에이전트"],
+      raw: "Opus 5.5가 긴 작업을 독립적으로 실행할 때마다, 먼저 이렇게 빠른 𝗛𝗧𝗠𝗟 𝗱𝗮𝘀𝗵𝗯𝗼𝗮𝗿𝗱를 vibe-code 하도록 하세요.",
+    },
+    "84f52d99-1e8d-4c72-bf31-99c42add84e0": {
+      title: "노션 키워드를 네이버 초안으로 보내는 Muse 6단계",
+      tags: ["블로그", "자동화"],
+      raw: "노션에 적어둔 키워드를",
+    },
+    "73f7923b-49bb-464f-853b-65748dddb6c0": {
+      title: "Muse 전담 비서 프롬프트 12개",
+      tags: ["프롬프트", "에이전트"],
+      raw: "Muse에 이 프롬프트를 넣으면",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 4);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+    assert.equal(item.title.endsWith(":"), false);
+  }
 });
