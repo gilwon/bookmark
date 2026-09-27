@@ -352,6 +352,30 @@ export const TARGETS = [
     tags: ["툴", "에이전트"],
     phrase: "ollaya run laya",
   },
+  {
+    id: "737967b0-c4de-48cc-a5a9-7813a8f234fe",
+    title: "애드센스 글을 검색용으로 잡는 프롬프트 5개",
+    tags: ["블로그", "프롬프트"],
+    phrase: "검색 유입으로 애드센스 수익",
+  },
+  {
+    id: "75b8cd5a-4a98-4e0a-836f-6761a5a9eb7f",
+    title: "긴 작업 전에 HTML 진행 대시보드를 붙이는 설정",
+    tags: ["클로드", "에이전트"],
+    phrase: "dashboard-builder",
+  },
+  {
+    id: "84f52d99-1e8d-4c72-bf31-99c42add84e0",
+    title: "노션 키워드를 네이버 초안으로 보내는 Muse 6단계",
+    tags: ["블로그", "자동화"],
+    phrase: "초간단 Muse 블로그 자동화",
+  },
+  {
+    id: "73f7923b-49bb-464f-853b-65748dddb6c0",
+    title: "Muse 전담 비서 프롬프트 12개",
+    tags: ["프롬프트", "에이전트"],
+    phrase: "awesome-muse-connectors",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
