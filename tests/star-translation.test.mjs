@@ -982,4 +982,18 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-27에 이어서 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Anil-matcha/awesome-muse-connectors", "A source-backed catalog of Meta Muse integrations and community connector skills, with capability, authentication, and permission notes."],
+      ["ollaya-dev/ollaya", "Run open decision models locally: pull and serve Laya, decider, NLI and GLiClass behind a TypeSafe-compatible API. Ollama for decision models."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
