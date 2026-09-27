@@ -509,5 +509,7 @@
   "panel-ui/PanelUI": "Expo용 고성능 React Native 컴포넌트입니다.",
   "Gimanh/taskview-community": "명확함과 소유권, 통제에 맞춘 자체 호스팅 프로젝트·작업 관리 플랫폼입니다. SaaS 작업 관리 도구를 투명하게 대체하려는 팀을 위한 것입니다.",
   "inline-chat/inline": "빠르고 네이티브하며 가볍고 열려 있으며 안전한 채팅 앱입니다. 에이전트, 동료, 친구와 일하는 인터페이스입니다.",
-  "dream-num/univer": "AI 에이전트를 위한 오피스 하네스입니다. 스프레드시트, 문서, 슬라이드, 캔버스, 관계형 테이블, PDF를 한 런타임에서 다룹니다."
+  "dream-num/univer": "AI 에이전트를 위한 오피스 하네스입니다. 스프레드시트, 문서, 슬라이드, 캔버스, 관계형 테이블, PDF를 한 런타임에서 다룹니다.",
+  "Anil-matcha/awesome-muse-connectors": "출처를 붙인 Meta Muse 연동과 커뮤니티 커넥터 스킬 목록입니다. 기능, 인증, 권한 메모를 함께 둡니다.",
+  "ollaya-dev/ollaya": "오픈 결정 모델을 로컬에서 돌립니다. Laya, decider, NLI, GLiClass를 받아 TypeSafe 호환 API로 제공합니다. 결정 모델용 Ollama입니다."
 }
