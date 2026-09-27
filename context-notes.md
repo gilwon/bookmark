@@ -1689,3 +1689,12 @@
 - 앞서 넣은 8건은 이미 한글이 있어 그대로 둔다.
 - 정적 번역표는 511개에서 513개로 늘었다.
 - 백필 2건을 갱신했다. 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-09-28 추가 Star 한글 설명 7건 메모
+
+- 한국 시간 2026-09-28에 운영 `github_stars`에 들어온 항목은 8건이다. 한글이 없는 설명은 7건이고 빈 설명은 0건이다.
+- 대상은 `jaywcjlove/awesome-swift-macos-apps`, `oblien/openship`, `jithin-sabu/purge-app`, `satnaing/shadcn-admin`, `mobile-next/mobile-mcp`, `Runeicons/runeicons`, `voyager-crew/voyager`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `voyager-crew/voyager`는 중국어가 함께 있어도 한글이 없어 병기한다.
+- `Atharvsinh-codez/ObsidianUI`는 이미 한글 설명이라 그대로 둔다.
+- 정적 번역표는 513개에서 520개로 늘었다.
+- 백필 8건을 갱신했다. 오늘 대상 7건은 확인했다. 오늘 추가분과 운영 전체에서 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다. 운영 Star는 562건이다.
