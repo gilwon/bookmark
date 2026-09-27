@@ -511,5 +511,12 @@
   "inline-chat/inline": "빠르고 네이티브하며 가볍고 열려 있으며 안전한 채팅 앱입니다. 에이전트, 동료, 친구와 일하는 인터페이스입니다.",
   "dream-num/univer": "AI 에이전트를 위한 오피스 하네스입니다. 스프레드시트, 문서, 슬라이드, 캔버스, 관계형 테이블, PDF를 한 런타임에서 다룹니다.",
   "Anil-matcha/awesome-muse-connectors": "출처를 붙인 Meta Muse 연동과 커뮤니티 커넥터 스킬 목록입니다. 기능, 인증, 권한 메모를 함께 둡니다.",
-  "ollaya-dev/ollaya": "오픈 결정 모델을 로컬에서 돌립니다. Laya, decider, NLI, GLiClass를 받아 TypeSafe 호환 API로 제공합니다. 결정 모델용 Ollama입니다."
+  "ollaya-dev/ollaya": "오픈 결정 모델을 로컬에서 돌립니다. Laya, decider, NLI, GLiClass를 받아 TypeSafe 호환 API로 제공합니다. 결정 모델용 Ollama입니다.",
+  "jaywcjlove/awesome-swift-macos-apps": "Swift로 만든 오픈소스 macOS 앱을 모아 둔 목록입니다.",
+  "oblien/openship": "자체 호스팅 배포 플랫폼입니다.",
+  "jithin-sabu/purge-app": "맥 용량을 안전하게 비웁니다. 저절로 쌓인 캐시와 잡동사니를 지우고, 지운 것은 휴지통으로 보내 잃지 않습니다. 오픈소스입니다.",
+  "satnaing/shadcn-admin": "Shadcn과 Vite로 만든 관리자 대시보드 UI입니다.",
+  "mobile-next/mobile-mcp": "모바일 자동화와 스크래핑을 위한 Model Context Protocol 서버입니다. iOS, Android, 에뮬레이터, 시뮬레이터, 실제 기기를 다룹니다.",
+  "Runeicons/runeicons": "아이콘 900개 이상을 스타일 5종으로 그린 세트입니다.",
+  "voyager-crew/voyager": "Gemini, AI Studio, Claude, ChatGPT, DeepSeek용 확장 모음입니다. 아무 웹사이트에서나 쓰는 프롬프트 관리자와 DeepSeek Harness를 포함합니다."
 }

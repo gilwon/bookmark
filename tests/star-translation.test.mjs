@@ -996,4 +996,23 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-28에 추가된 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["jaywcjlove/awesome-swift-macos-apps", "A curated collection of open-source macOS applications built with Swift"],
+      ["oblien/openship", "Self-hosted deployment platform"],
+      ["jithin-sabu/purge-app", "Free up your Mac, safely. Clears the cache and junk it piles up on its own. Open source, and everything goes to the Trash, so nothing is ever lost."],
+      ["satnaing/shadcn-admin", "Admin Dashboard UI built with Shadcn and Vite."],
+      ["mobile-next/mobile-mcp", "Model Context Protocol Server for Mobile Automation and Scraping (iOS, Android, Emulators, Simulators and Real Devices)"],
+      ["Runeicons/runeicons", "Rune Icons is a set of 900+ icons, each drawn in five styles."],
+      ["voyager-crew/voyager", "Enhancement suite for Gemini, AI Studio, Claude, ChatGPT & DeepSeek — plus a prompt manager for any website, DeepSeek Harness included. / 面向 Gemini、AI Studio、Claude、ChatGPT 与 DeepSeek 的增强套件；其中的提示词管理器可用于任意网站，如 DeepSeek Harness。"],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
