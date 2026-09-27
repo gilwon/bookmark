@@ -1,3 +1,21 @@
+# 게으른 빌더 다섯 부서 클로드 스킬 가이드 Pages 이관 메모
+
+- 저장 URL. `https://lazyowen.com/guides/84skills`. 사용자 URL의 fbclid는 뺀다.
+- 제목. `무료 클로드 스킬로 다섯 부서 채우기`. 사이트 접미 `· 게으른 빌더`는 넣지 않는다.
+- 본문은 `article.article` 안 `div.prose` 두 개를 순서대로 붙인다. 사이 `section.guide-gate`는 넣지 않는다.
+- 이미지 4장. webp data URL.
+  - `g1-departments.webp` 95280바이트. alt `다섯 부서 한눈에 보기`.
+  - `g2-install.webp` 89268바이트. alt `설치 3단계 공통 흐름`.
+  - `g3-customize.webp` 88240바이트. alt `원본 편집 금지, 복사본 편집`.
+  - `g4-order.webp` 104540바이트. alt `오늘 실행 순서 5단계`.
+- 첨부 0. 표 5. 코드 15. ZIP 없음.
+- 뺀 문구. `30일 AI 챌린지`, `사전 등록 오픈`, `이메일 하나면`, `300만원`, `youtube.com/@lazyowenAI`, `fbclid`.
+- 인스타 `https://www.instagram.com/lazy_owen/`는 글 끝 안내라 남긴다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 유튜브 스킬 가이드, 에이전트 일곱 자리 가이드와 제목·URL이 다르다.
+- 저장 경로 `/pages/ca663416-5e2c-46c5-972e-18e98afa2665`. 로컬 `dev`와 운영이 같은 id다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 `2026-09-27T07:47:38.087Z`로 그대로다.
+
 # 한국 시간 이번 주 Notion 신규 2건 Pages 이관 메모
 
 - 오늘 2026-09-27. 이번 주 시작은 KST 2026-09-21 00:00. 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
