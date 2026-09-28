@@ -1,3 +1,19 @@
+# 낭만빌더 김스듴 AI 위임 루프 가이드 Pages 이관 메모
+
+- 저장 URL. `https://sdk-kim-builds.com/guides/ai-delegation-loop-playbook`. 끝 슬래시는 뺀다.
+- 제목. `AI 위임 루프: 에이전트 대신 매뉴얼으로 일 넘기기`. 사이트 접미 ` | 낭만빌더 김스듴`은 넣지 않는다.
+- 본문은 `article.guide-detail` 안 `div.guide-detail-body`다. 카테고리 `에이전트 워크플로`와 날짜 `2026. 9. 18.`은 헤더에 있어 남긴다.
+- 날짜 줄은 TipTap이 `2026.`을 순서 목록으로 잘라 `9. 18.`만 남긴다. 줄 앞에 폭 없는 문자를 두어 `2026. 9. 18.`이 저장 본문에 남게 했다.
+- 표지. `https://sdk-kim-builds.com/og/default.png` PNG 3992바이트. 본문 이미지 0이라 `![표지](data:...)` 한 장만 넣는다. 첨부 0. 표 0. 코드 5.
+- 본문 외부 https 링크 0. 저장본의 https 링크는 원문 인용 하나다.
+- 뺀 크롬. `a.guide-detail__back`, `aside.guide-mid-cta`, `section.guide-inquiry-block`, `nav.guide-next`, `header.home-header`, `footer.home-footer`, `details.guide-toc`.
+- 금지 문자열. `30일`, `이메일 알림`, `개인정보 수집`, `나만의 자비스`, `claude-code-jarvis`, `fbclid`, `utm_source`.
+- 기존 클로드 SNS 스킬 17개, GitHub 레포 7개와 제목·URL이 다르다. 중복이 아니다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 날짜가 잘린 첫 저장 `ea1e7767-03c1-45f3-bce3-8ad96c1883b5`는 로컬·운영에서 지우고 다시 넣었다. 스크립트는 기존 행을 갱신하지 않는다.
+- 저장 경로 `/pages/25fa6b3f-b246-4069-a85b-5250c4c36dec`. 로컬 `dev`와 운영이 같은 id다.
+- 고친 뒤 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 `2026-09-28T08:09:38.849Z`로 그대로다.
+
 # 클로드 learn 스킬 3분 가이드 Pages 이관 메모
 
 - 저장 URL. `https://app.notion.com/p/3e8bc8af735e81e2a399fc2d47d80b00`. 사용자 URL의 `source=copy_link`는 뺀다.
