@@ -1015,4 +1015,18 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-28에 이어서 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["chaseai-yt/claudex-loop", "Claude Code skill: four-phase plan hardening (recon, interrogate, Codex adversarial review, cross-model build & inspection) — two AI models harden your plan before a line of code exists, then swap jobs to build it. Whoever built it never grades it."],
+      ["rorkai/App-Store-Connect-CLI", "Fast, scriptable CLI for the App Store Connect API. Automate TestFlight, builds, submissions, signing, analytics, screenshots, subscriptions, and more"],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
