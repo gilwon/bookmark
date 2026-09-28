@@ -520,5 +520,14 @@
   "Runeicons/runeicons": "아이콘 900개 이상을 스타일 5종으로 그린 세트입니다.",
   "voyager-crew/voyager": "Gemini, AI Studio, Claude, ChatGPT, DeepSeek용 확장 모음입니다. 아무 웹사이트에서나 쓰는 프롬프트 관리자와 DeepSeek Harness를 포함합니다.",
   "chaseai-yt/claudex-loop": "계획을 네 단계로 단단히 하는 Claude Code 스킬입니다. 정찰, 질문, Codex의 적대적 리뷰, 교차 모델 구현과 검사입니다. 코드가 생기기 전에 두 AI 모델이 계획을 다듬고 역할을 바꿔 구현합니다. 만든 쪽이 채점하지 않습니다.",
-  "rorkai/App-Store-Connect-CLI": "App Store Connect API용으로 빠르고 스크립트로 돌릴 수 있는 CLI입니다. TestFlight, 빌드, 제출, 서명, 분석, 스크린샷, 구독을 자동화합니다."
+  "rorkai/App-Store-Connect-CLI": "App Store Connect API용으로 빠르고 스크립트로 돌릴 수 있는 CLI입니다. TestFlight, 빌드, 제출, 서명, 분석, 스크린샷, 구독을 자동화합니다.",
+  "Appllama/liquid-glass-chat-ui": "리퀴드 글라스 채팅 UI를 살펴봅니다. 움직이는 초상, 상호작용 이야기, 떠 있는 입력창이 있습니다.",
+  "radiumcoders/23rd.dev": "제품을 내보내는 사람을 위한 취향이 분명한 UI 컴포넌트입니다. 프레임워크를 가리지 않는, 감각 있는 웹 컴포넌트 오픈소스 라이브러리입니다. 복사하고 붙여 넣고 배포합니다.",
+  "microsoft/SkillOpt": "SkillOpt는 텍스트 공간을 최적화하는 도구입니다. 가중치가 고정된 LLM 에이전트용으로 재사용 가능한 자연어 스킬을 훈련합니다. 실행 궤적으로 고치고, 검증을 통과한 것만 갱신하며, best_skill.md로 배포합니다.",
+  "iurvish/uselayouts": "Framer Motion과 Tailwind CSS로 만든 무료 프리미엄 애니메이션 React 컴포넌트와 미세 상호작용입니다.",
+  "ix-infrastructure/Ix": "어떤 코드베이스든 바로 이해합니다. 사람과 AI를 위해 만든 코드베이스용 시스템 지능입니다.",
+  "shadcn-labs/shadercn": "보기 좋은 셰이더 컴포넌트입니다. vgpu와 TypeGPU 위에 만들었고, 전부 무료이며 설정 없이 명령 한 번으로 설치합니다.",
+  "changeroa/StyleGallery": "유용한 스타일 패턴을 설명합니다.",
+  "legions-developer/evilcharts": "EvilCharts는 shadcn과 Recharts로 만든 오픈소스 차트 UI 사이트입니다. 보기 좋게 설계하고 손으로 만들었습니다.",
+  "backnotprop/plannotator": "코딩 에이전트의 계획과 코드 diff를 눈으로 주석 달고 검토합니다. 팀과 나누고, 클릭 한 번으로 에이전트에 피드백을 보냅니다."
 }
