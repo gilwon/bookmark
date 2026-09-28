@@ -518,5 +518,7 @@
   "satnaing/shadcn-admin": "Shadcn과 Vite로 만든 관리자 대시보드 UI입니다.",
   "mobile-next/mobile-mcp": "모바일 자동화와 스크래핑을 위한 Model Context Protocol 서버입니다. iOS, Android, 에뮬레이터, 시뮬레이터, 실제 기기를 다룹니다.",
   "Runeicons/runeicons": "아이콘 900개 이상을 스타일 5종으로 그린 세트입니다.",
-  "voyager-crew/voyager": "Gemini, AI Studio, Claude, ChatGPT, DeepSeek용 확장 모음입니다. 아무 웹사이트에서나 쓰는 프롬프트 관리자와 DeepSeek Harness를 포함합니다."
+  "voyager-crew/voyager": "Gemini, AI Studio, Claude, ChatGPT, DeepSeek용 확장 모음입니다. 아무 웹사이트에서나 쓰는 프롬프트 관리자와 DeepSeek Harness를 포함합니다.",
+  "chaseai-yt/claudex-loop": "계획을 네 단계로 단단히 하는 Claude Code 스킬입니다. 정찰, 질문, Codex의 적대적 리뷰, 교차 모델 구현과 검사입니다. 코드가 생기기 전에 두 AI 모델이 계획을 다듬고 역할을 바꿔 구현합니다. 만든 쪽이 채점하지 않습니다.",
+  "rorkai/App-Store-Connect-CLI": "App Store Connect API용으로 빠르고 스크립트로 돌릴 수 있는 CLI입니다. TestFlight, 빌드, 제출, 서명, 분석, 스크린샷, 구독을 자동화합니다."
 }
