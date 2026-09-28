@@ -376,6 +376,12 @@ export const TARGETS = [
     tags: ["프롬프트", "에이전트"],
     phrase: "awesome-muse-connectors",
   },
+  {
+    id: "849a36c8-f5c5-4199-899a-cb4269b9e6b7",
+    title: "서버에 올려 쓰는 오픈소스 비서 OpenMuse",
+    tags: ["에이전트", "툴"],
+    phrase: "기업용 내부 AI 비서",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
