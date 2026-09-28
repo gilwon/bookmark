@@ -382,6 +382,12 @@ export const TARGETS = [
     tags: ["에이전트", "툴"],
     phrase: "기업용 내부 AI 비서",
   },
+  {
+    id: "d3cf2f44-fcc3-4704-a48e-01f1bb0d73b8",
+    title: "사주 사이트를 만들어 결제까지 붙이는 프롬프트 6개",
+    tags: ["프롬프트", "SEO", "세일즈"],
+    phrase: "원페이지 사주 웹사이트",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");

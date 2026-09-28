@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 62건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 62);
+test("대상 63건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 63);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 62);
+  assert.equal(new Set(ids).size, 63);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -465,4 +465,15 @@ test("오늘 추가된 OpenMuse 1건의 제목과 태그를 정한다", () => {
     item.title,
     "직접 서버에 설치해 사용하는 오픈소스 개인 AI 비서 OpenMuse가 공개됐습니다."
   );
+});
+
+test("오늘 추가된 사주 사이트 프롬프트 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "d3cf2f44-fcc3-4704-a48e-01f1bb0d73b8"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "사주 사이트를 만들어 결제까지 붙이는 프롬프트 6개");
+  assert.deepEqual(item.tags, ["프롬프트", "SEO", "세일즈"]);
+  assert.equal(/^\d+[./]/.test(item.title), false);
+  assert.notEqual(item.title, "1. 사주 만세력 엔진 빌드 및 원페이지 서비스 제작");
 });
