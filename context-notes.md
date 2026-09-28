@@ -1,3 +1,19 @@
+# 낭만빌더 김스듴 클로덱스 루프 가이드 Pages 이관 메모
+
+- 저장 URL. `https://sdk-kim-builds.com/guides/claudex-loop-cross-model-plan-review`. 끝 슬래시는 뺀다.
+- 제목. `클로덱스 루프: 짠 모델이 자기 계획을 검수하지 못하게 막기`. 사이트 접미 ` | 낭만빌더 김스듴`은 넣지 않는다.
+- 본문은 `article.guide-detail` 안 `div.guide-detail-body`다. 카테고리 `AI 코딩`과 날짜 `2026. 9. 25.`는 헤더에 있어 남긴다.
+- 날짜 줄은 TipTap이 `2026.`을 순서 목록으로 잘라 연도를 잃는다. 줄 앞에 폭 없는 문자를 두어 `2026. 9. 25.`가 저장 본문에 남게 했다.
+- 표지. `https://sdk-kim-builds.com/og/default.png` PNG 3992바이트. 본문 이미지 0이라 `![표지](data:...)` 한 장만 넣는다. 첨부 0. 표 2. 코드 5.
+- 본문 링크 2개. `https://github.com/chaseai-yt/claudex-loop`, `https://github.com/chaseai-yt/claudex-loop/blob/main/README.md`.
+- 뺀 크롬. `a.guide-detail__back`, `aside.guide-mid-cta`, `section.guide-inquiry-block`, `nav.guide-next`, `header.home-header`, `footer.home-footer`, `details.guide-toc`. 다음 글은 젭 브라우저 설치 가이드다.
+- 금지 문자열. `30일`, `이메일 알림`, `개인정보 수집`, `젭 브라우저`, `jev-browser`, `fbclid`, `utm_source`.
+- 남긴 문구. `무엇이 달라지나`, `네 단계`, `AI 코딩`, `2026. 9. 25.`.
+- AI 위임 루프 가이드와 제목·URL이 다르다. 중복이 아니다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/a4305705-ce63-403b-a804-445b16d43fd7`. 로컬 `dev`와 운영이 같은 id다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 `2026-09-28T08:20:06.736Z`로 그대로다.
+
 # 낭만빌더 김스듴 AI 위임 루프 가이드 Pages 이관 메모
 
 - 저장 URL. `https://sdk-kim-builds.com/guides/ai-delegation-loop-playbook`. 끝 슬래시는 뺀다.
