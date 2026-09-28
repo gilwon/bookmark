@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 61건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 61);
+test("대상 62건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 62);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 61);
+  assert.equal(new Set(ids).size, 62);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -452,4 +452,17 @@ test("어제·오늘 추가된 블로그·대시보드·Muse 4건의 제목과 �
     assert.notEqual(item.title, expected[item.id].raw);
     assert.equal(item.title.endsWith(":"), false);
   }
+});
+
+test("오늘 추가된 OpenMuse 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "849a36c8-f5c5-4199-899a-cb4269b9e6b7"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "서버에 올려 쓰는 오픈소스 비서 OpenMuse");
+  assert.deepEqual(item.tags, ["에이전트", "툴"]);
+  assert.notEqual(
+    item.title,
+    "직접 서버에 설치해 사용하는 오픈소스 개인 AI 비서 OpenMuse가 공개됐습니다."
+  );
 });
