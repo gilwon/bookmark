@@ -1029,4 +1029,25 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-29에 추가된 Star 9개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Appllama/liquid-glass-chat-ui", "Explore liquid-glass chat UIs with animated portraits, interactive stories, and floating composers."],
+      ["radiumcoders/23rd.dev", "Opinionated UI Components for shippers. An open source library of tasteful Web components. Framework agnostic. Copy, paste, ship."],
+      ["microsoft/SkillOpt", "SkillOpt is a text-space optimizer that trains reusable natural-language skills for frozen LLM agents through trajectory-driven edits, validation-gated updates, and deployable best_skill.md artifacts."],
+      ["iurvish/uselayouts", "Free premium animated React components and micro-interactions built with Framer Motion and Tailwind CSS"],
+      ["ix-infrastructure/Ix", "Understand any codebase instantly. System intelligence for codebases, built for humans and AI."],
+      ["shadcn-labs/shadercn", "Beautiful shader components, built on vgpu and TypeGPU. 100% Free, Zero config, one command setup."],
+      ["changeroa/StyleGallery", "describe useful style patterns"],
+      ["legions-developer/evilcharts", "EvilCharts is an open-source chart UI website built with shadcn and Recharts, beautifully designed and handcrafted."],
+      ["backnotprop/plannotator", "Annotate and review coding agent plans and code diffs visually, share with your team, send feedback to agents with one click."],
+    ];
+    assert.equal(cases.length, 9);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

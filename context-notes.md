@@ -1738,3 +1738,13 @@
 - 앞서 넣은 8건은 이미 한글이 있어 그대로 둔다.
 - 정적 번역표는 520개에서 522개로 늘었다.
 - 백필 2건을 갱신했다. 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-09-29 추가 Star 한글 설명 9건 메모
+
+- 한국 시간 2026-09-28부터 2026-09-29까지 운영 `github_stars`에 들어온 항목은 19건이다. 2026-09-28에 들어온 10건은 이미 한글이 있다.
+- 2026-09-29에 들어온 항목은 9건이다. 한글이 없는 설명은 9건이고 빈 설명은 0건이다.
+- 대상은 `Appllama/liquid-glass-chat-ui`, `radiumcoders/23rd.dev`, `microsoft/SkillOpt`, `iurvish/uselayouts`, `ix-infrastructure/Ix`, `shadcn-labs/shadercn`, `changeroa/StyleGallery`, `legions-developer/evilcharts`, `backnotprop/plannotator`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- `changeroa/StyleGallery`의 About는 `describe useful style patterns`라서 그 문장만 번역했다.
+- 이 9건은 GitHub에서 2026-09-28 저녁부터 2026-09-29 오전에 스타가 눌렸고, 앱에는 2026-09-29에 들어왔다.
+- 정적 번역표는 522개에서 531개로 늘었다.
+- 백필 9건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
