@@ -1,3 +1,19 @@
+# 낭만빌더 김스듴 먼더 디플린 AI 사무실 가이드 Pages 이관 메모
+
+- 저장 URL. `https://sdk-kim-builds.com/guides/munder-difflin-ai-employee-office`. 끝 슬래시와 utm, fbclid는 뺀다.
+- 제목. `나를 위해 쉬지 않고 일하는 AI 직원: Munder Difflin으로 AI 사무실 차리는 법`. 사이트 접미 ` | 낭만빌더 김스듴`은 넣지 않는다.
+- 본문은 `article.guide-detail`이다. 카테고리 `에이전트 워크플로`와 날짜 `2026. 9. 29.`는 헤더에 있어 남긴다.
+- 날짜 줄은 TipTap이 `2026.`을 순서 목록으로 잘라 연도를 잃는다. 줄 앞에 폭 없는 문자를 두어 `2026. 9. 29.`가 저장 본문에 남게 했다.
+- 표지. `https://sdk-kim-builds.com/og/default.png` PNG 3992바이트. 본문 이미지 0이라 `![표지](data:...)` 한 장만 넣는다. 첨부 0. 표 1. 코드 1.
+- 본문 링크 3개. `https://github.com/chaitanyagiri/munder-difflin`, `https://harnessmd.com/download`, `https://munderdiffl.in/hires/`.
+- 뺀 크롬. `a.guide-detail__back`, `details.guide-mail`, `aside.guide-mid-cta`, `section.guide-inquiry-block`, `nav.guide-next`, `header.home-header`, `footer.home-footer`, `details.guide-toc`. 다음 글은 AI 위임 루프다. 메일 받기 폼 `details.guide-mail`은 이 글의 article 안에 있다.
+- 금지 문자열. `30일`, `이메일 알림`, `개인정보 수집`, `AI 위임 루프`, `ai-delegation-loop`, `지금 다 못 읽겠다면`, `fbclid`, `utm_source`.
+- 남긴 문구. `어떻게 돌아가나`, `에이전트 워크플로`, `2026. 9. 29.`.
+- 클로덱스 루프, AI 위임 루프와 제목·URL이 다르다. 중복이 아니다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- 저장 경로 `/pages/037f459f-a426-431e-97fe-d8bd44c94d9a`. 로컬 `dev`와 운영이 같은 id다. 본문 16188바이트.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 `2026-09-29T08:36:35.919Z`로 그대로다.
+
 # 낭만빌더 김스듴 클로덱스 루프 가이드 Pages 이관 메모
 
 - 저장 URL. `https://sdk-kim-builds.com/guides/claudex-loop-cross-model-plan-review`. 끝 슬래시는 뺀다.
