@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 63건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 63);
+test("대상 64건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 64);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 63);
+  assert.equal(new Set(ids).size, 64);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -476,4 +476,18 @@ test("오늘 추가된 사주 사이트 프롬프트 1건의 제목과 태그를
   assert.deepEqual(item.tags, ["프롬프트", "SEO", "세일즈"]);
   assert.equal(/^\d+[./]/.test(item.title), false);
   assert.notEqual(item.title, "1. 사주 만세력 엔진 빌드 및 원페이지 서비스 제작");
+});
+
+test("오늘 추가된 Fable 5.1 어드바이저 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "a29207d4-9d94-493e-8c59-8174618a6391"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "Fable 5.1을 Opus 5.5 어드바이저로 두는 설정");
+  assert.deepEqual(item.tags, ["클로드", "설정"]);
+  assert.equal(item.title.endsWith(":"), false);
+  assert.notEqual(
+    item.title,
+    "Claude 코드 팁: Opus 5.5가 주 모델이 되면, Fable 5.1을 유휴 상태로 두지 마세요."
+  );
 });
