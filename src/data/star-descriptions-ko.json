@@ -529,5 +529,6 @@
   "shadcn-labs/shadercn": "보기 좋은 셰이더 컴포넌트입니다. vgpu와 TypeGPU 위에 만들었고, 전부 무료이며 설정 없이 명령 한 번으로 설치합니다.",
   "changeroa/StyleGallery": "유용한 스타일 패턴을 설명합니다.",
   "legions-developer/evilcharts": "EvilCharts는 shadcn과 Recharts로 만든 오픈소스 차트 UI 사이트입니다. 보기 좋게 설계하고 손으로 만들었습니다.",
-  "backnotprop/plannotator": "코딩 에이전트의 계획과 코드 diff를 눈으로 주석 달고 검토합니다. 팀과 나누고, 클릭 한 번으로 에이전트에 피드백을 보냅니다."
+  "backnotprop/plannotator": "코딩 에이전트의 계획과 코드 diff를 눈으로 주석 달고 검토합니다. 팀과 나누고, 클릭 한 번으로 에이전트에 피드백을 보냅니다.",
+  "Anil-matcha/open-dots": "OpenAI Dots의 오픈소스 대안입니다. AI 채팅, 도구, 승인, 커넥터, 컴퓨터 작업을 자체 호스팅으로 돌립니다."
 }
