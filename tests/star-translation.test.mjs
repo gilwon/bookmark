@@ -1063,4 +1063,18 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-09-30에 이어서 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["ghostty-org/ghostty", "👻 Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration."],
+      ["termux/termux-app", "Termux - a terminal emulator application for Android OS extendible by variety of packages."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
