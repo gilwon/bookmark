@@ -1053,7 +1053,7 @@ describe("Star 설명 번역", () => {
 
   it("2026-09-30에 추가된 Star 1개에 한국어 설명을 병기한다", () => {
     const cases = [
-      ["Anil-matcha/open-dots", "Open-source alternative to OpenAI Dots: self-hosted AI chat, tools, approvals, connectors, and computer tasks."],
+      ["Anil-matcha/open-dots", "Open-source, self-hosted AI agent workspace and alternative to OpenAI Dots, Meta Muse, Grok Bot, Instinct, Manus Cue, Claude Cowork, and ChatGPT agent. MIT-licensed; includes chat, connectors, approvals, and optional computer use. Early prototype."],
     ];
     assert.equal(cases.length, 1);
     for (const [repo, description] of cases) {
@@ -1068,6 +1068,20 @@ describe("Star 설명 번역", () => {
     const cases = [
       ["ghostty-org/ghostty", "👻 Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration."],
       ["termux/termux-app", "Termux - a terminal emulator application for Android OS extendible by variety of packages."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-01에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["intent-hq/intent", "Monorepo for the Intent platform — tracks intentd, cloudlands-fe, and ios as submodules; docs, CI, and release orchestration"],
+      ["cyjoon68/super-resume", "AI-powered resume builder"],
     ];
     assert.equal(cases.length, 2);
     for (const [repo, description] of cases) {
