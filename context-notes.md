@@ -1,3 +1,16 @@
+# 한국 시간 9월 27일 Notion 신규 2건 Pages 이관 메모
+
+- 이번 주 범위는 2026-09-28 00:00 KST부터다. 9월 28일·29일·30일 검색에는 최상위 페이지가 없고 마음 달력 행만 있다.
+- 9월 27일 17:31과 20:59 KST에 생긴 최상위 글 2건은 직전 주간 검색 뒤에 만들어져 Pages에 없었다. 그 둘을 넣었다.
+- 트레이더. `24시간 도는 AI 트레이더 만들기 — GPT-6 아스트라`. pageId `f65b2568-27ac-82bb-aa25-014f824bab76`. 이미지 0. 첨부 0. 표 5. 코드 11. 루트 107.
+- 트레이더 링크. 원문과 `https://wandering-mile-86e.notion.site/AI-50-6-88-3db98dec8eed8107b5eac827fe906cce`. 언급 페이지 `3db98dec`는 펼치지 않는다.
+- 머더디핀. `머더디핀 설치 가이드: 클로드로 AI 직원 사무실 차리기`. pageId `9beb2568-27ac-823f-b012-0170ad07c5b9`. PNG 5장. `munder_office.png`, `munder_download.png`, `munder_michael.png`, `munder_tasks.png`, `munder_settings.png`. 모두 2048폭 data URL. 첨부 0. 코드 3. 루트 66.
+- 머더디핀 링크. GitHub 저장소와 releases, `https://harnessmd.com/download`, `https://www.instagram.com/moodmode.ai`, `mailto:moodmode.kr@gmail.com`. `claude.ai/install.sh`와 `install.ps1`은 코드 블록 텍스트로 남아 있다.
+- 본문 약 5.3MB라 편집기 자동 저장 PATCH는 400이 날 수 있다. 직접 저장과 조회는 된다.
+- 저장 경로. 트레이더 `/pages/72205a5d-9041-4950-8d2c-bbe0e07cbe69`. 머더디핀 `/pages/8f5dea00-084d-4ae1-8781-58316fe4176e`. 로컬 `dev`와 운영이 같은 id다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다. `updated_at`은 트레이더 `2026-09-30T06:22:38.295Z`, 머더디핀 `2026-09-30T06:22:56.936Z`다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 낭만빌더 김스듴 먼더 디플린 AI 사무실 가이드 Pages 이관 메모
 
 - 저장 URL. `https://sdk-kim-builds.com/guides/munder-difflin-ai-employee-office`. 끝 슬래시와 utm, fbclid는 뺀다.
