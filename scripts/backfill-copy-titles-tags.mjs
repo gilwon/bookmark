@@ -388,6 +388,12 @@ export const TARGETS = [
     tags: ["프롬프트", "SEO", "세일즈"],
     phrase: "원페이지 사주 웹사이트",
   },
+  {
+    id: "a29207d4-9d94-493e-8c59-8174618a6391",
+    title: "Fable 5.1을 Opus 5.5 어드바이저로 두는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "Fable 5.1이 검토합니다",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
