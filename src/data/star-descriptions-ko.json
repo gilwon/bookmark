@@ -534,5 +534,7 @@
   "ghostty-org/ghostty": "빠르고 기능이 많은 크로스플랫폼 터미널 에뮬레이터입니다. 플랫폼 기본 UI와 GPU 가속을 씁니다.",
   "termux/termux-app": "안드로이드용 터미널 에뮬레이터 앱입니다. 다양한 패키지로 기능을 늘릴 수 있습니다.",
   "intent-hq/intent": "Intent 플랫폼용 모노레포입니다. intentd, cloudlands-fe, ios를 서브모듈로 추적하고, 문서와 CI, 릴리스 조율을 담습니다.",
-  "cyjoon68/super-resume": "AI로 이력서를 만드는 도구입니다."
+  "cyjoon68/super-resume": "AI로 이력서를 만드는 도구입니다.",
+  "weave-os/router": "에이전트 시스템용 모델 라우터입니다. 모든 프롬프트를 50ms 안에 알맞은 모델로 보냅니다. 엔드포인트만 바꾸면 비용을 40~70% 줄입니다.",
+  "devswha/herdr-web-ui": "herdr용 브라우저와 휴대폰 클라이언트입니다. 에이전트 창마다 채팅과 실시간 터미널이 있고, SSH로 원격 PC에 접속하며, 웹 푸시 알림을 보냅니다."
 }

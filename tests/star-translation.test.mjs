@@ -1091,4 +1091,18 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-02에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["weave-os/router", "Model router for agentic systems. Routes every prompt to the right model in <50ms. Cut costs 40-70% with just an endpoint change."],
+      ["devswha/herdr-web-ui", "Browser and phone client for herdr: chat and live terminal for every agent pane, remote PCs over SSH, web push alerts"],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
