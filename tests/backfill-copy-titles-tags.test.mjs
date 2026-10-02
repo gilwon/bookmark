@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 64건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 64);
+test("대상 67건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 67);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 64);
+  assert.equal(new Set(ids).size, 67);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -490,4 +490,31 @@ test("오늘 추가된 Fable 5.1 어드바이저 1건의 제목과 태그를 정
     item.title,
     "Claude 코드 팁: Opus 5.5가 주 모델이 되면, Fable 5.1을 유휴 상태로 두지 마세요."
   );
+});
+
+test("오늘 추가된 Mods·페이퍼컷·Fincept 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "6d7def0f-1cd7-4b82-8dad-ee49fe64cadb": {
+      title: "Claude Mods와 커밋 전 verify가 들어온 변경 4가지",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code가 드디어 플러그인으로 내부 동작까지 손대는 Claude Mods를 열었습니다.",
+    },
+    "5e8d1cb6-dadc-417f-952b-bf9f139e0b42": {
+      title: "디저트 카페 메뉴용 페이퍼컷 일러스트 프롬프트",
+      tags: ["디자인", "프롬프트"],
+      raw: "Layered paper-cut illustration of [디저트 카페 메뉴]",
+    },
+    "9cac5c52-ddce-4384-8537-43c248a5e160": {
+      title: "초보자가 Fincept Terminal을 설치하는 안내 프롬프트",
+      tags: ["프롬프트", "설정"],
+      raw: "아래는 프롬프트입니다.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.equal(item.title.includes(expected[item.id].raw), false);
+  }
 });
