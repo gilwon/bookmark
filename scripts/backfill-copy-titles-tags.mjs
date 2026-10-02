@@ -394,6 +394,24 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "Fable 5.1이 검토합니다",
   },
+  {
+    id: "6d7def0f-1cd7-4b82-8dad-ee49fe64cadb",
+    title: "Claude Mods와 커밋 전 verify가 들어온 변경 4가지",
+    tags: ["클로드", "설정"],
+    phrase: "cc-plugin-you-should-know",
+  },
+  {
+    id: "5e8d1cb6-dadc-417f-952b-bf9f139e0b42",
+    title: "디저트 카페 메뉴용 페이퍼컷 일러스트 프롬프트",
+    tags: ["디자인", "프롬프트"],
+    phrase: "matte cream background",
+  },
+  {
+    id: "9cac5c52-ddce-4384-8537-43c248a5e160",
+    title: "초보자가 Fincept Terminal을 설치하는 안내 프롬프트",
+    tags: ["프롬프트", "설정"],
+    phrase: "Continue as Guest",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
