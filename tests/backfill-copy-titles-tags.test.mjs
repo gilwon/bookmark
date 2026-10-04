@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 67건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 67);
+test("대상 74건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 74);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 67);
+  assert.equal(new Set(ids).size, 74);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -516,5 +516,53 @@ test("오늘 추가된 Mods·페이퍼컷·Fincept 3건의 제목과 태그를 �
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.equal(item.title.includes(expected[item.id].raw), false);
+  }
+});
+
+test("어제·오늘 추가된 지침·모델·수익 7건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "130c355c-cdf8-4b7f-96c4-5e9588b11e9c": {
+      title: "팀에서 AGENTS.md를 관리하는 규칙 5가지",
+      tags: ["에이전트", "설정"],
+      raw: "IT대기업에서 http://AGENTS.md 관리하는 규칙 5가지",
+    },
+    "2cd8de9f-acae-4277-b9d9-849bf585a34f": {
+      title: "Sonnet 5.5에게 잡일을 맡기고 Fable을 두는 설정",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code에 대한 Anthropic의 공식 팁: Sonnet 5.5가 할 수 있는 작업에 Opus 5.5를 낭비하지 마세요. Fable 5.1이 유휴 상태로 있는 동안",
+    },
+    "3fbd6361-45cf-4bfe-aa7e-3ba1a03bef3b": {
+      title: "놓친 정보를 짚는 You should Know 플러그인",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code에 새로운 플러그인을 추가합니다: You should Know.",
+    },
+    "ee12a5b6-02b5-44e3-a48c-35463bb47bbb": {
+      title: "모델 출력을 글보다 영상으로 받는 팁",
+      tags: ["프롬프트", "학습"],
+      raw: "우리는 언어 모델의 출력을 이해하려고 훨씬 더 많은 시간을 할애하게 될 것입니다. 몇 가지 생각, 팁 & 트릭:",
+    },
+    "14668855-5943-43b4-99e7-a08957ede788": {
+      title: "NotebookLM으로 문서를 읽고 토큰을 아끼는 연결",
+      tags: ["클로드", "MCP"],
+      raw: "🚨 이제 Claude Code는 단 한 토큰도 소비하지 않고 전체 문서를 읽을 수 있습니다.",
+    },
+    "00d65258-09e8-4a76-b952-0709ccc64011": {
+      title: "LLM 글을 통제 언어와 영상으로 받는 팁",
+      tags: ["프롬프트", "학습"],
+      raw: "바이브코딩 창시자가 추천하는 LLM 결과물 꿀팁",
+    },
+    "6b46b2b7-7b0e-4ead-8f46-14aa05f31fcf": {
+      title: "Aside로 뉴스 글을 쓰고 쇼핑을 붙이는 순서",
+      tags: ["블로그", "자동화"],
+      raw: "뭐라도 하는법",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 7);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+    assert.equal(item.title.endsWith(":"), false);
   }
 });
