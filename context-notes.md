@@ -1814,3 +1814,13 @@
 - `devswha/herdr-web-ui`는 `herdrdev/herdr`와 다른 저장소다.
 - 정적 번역표는 536개에서 538개로 늘었다.
 - 백필 2건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-04 추가 Star 한글 설명 14건 메모
+
+- 한국 시간 2026-10-03부터 2026-10-04까지 운영 `github_stars`에 들어온 항목은 22건이다.
+- 이미 한글이 있는 항목은 8건이다. `gnuboard/gnuboard5-nextjs`, `gnuboard/gnuboard5-app`, `chrisryugj`의 특허·건축·통계·공시·학교알리미, `Dominic-DK/harness-map`이다.
+- 한글이 없는 항목은 14건이다. 빈 설명은 2건이다.
+- About가 있는 12건은 원문을 유지하고 한국어를 병기한다. `carnot-tech/consulting-pptx-skill`은 일본어 About다.
+- `nid1104/zeroboard4-new`와 `0xdesign/design-plugin`은 About가 비어 README를 보고 한국어만 채웠다.
+- 정적 번역표는 538개에서 552개로 늘었다.
+- 백필 14건을 갱신했다. 빈 설명 채움은 2건이다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

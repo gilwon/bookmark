@@ -1105,4 +1105,39 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-04에 추가된 Star 12개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["HarnessMD/munder-difflin", "an open-source alternative to the dots, bots and muses of the world, run an office of claude code/codex like agents on your laptop, sandboxes or anywhere, uses your existing subscriptions"],
+      ["e2b-dev/E2B", "Open-source, secure environment with real-world tools for enterprise-grade agents."],
+      ["SWE-bench/SWE-bench", "SWE-bench: Can Language Models Resolve Real-world Github Issues?"],
+      ["tjboudreaux/cc-thinking-skills", "28 eval-informed mental models and critical-thinking skills for Claude Code, GitHub Copilot, Codex, Cursor, and other Agent Skills-compatible tools"],
+      ["danyuchn/asd-ste100-skill", "ASD-STE100 Simplified Technical English rules, repurposed as a Claude Code skill for rewriting ambiguous agent-facing English."],
+      ["daytonaio/daytona", "Daytona is a Secure and Elastic Infrastructure for Running AI-Generated Code"],
+      ["RooCodeInc/Roo-Code", "Roo Code gives you a whole dev team of AI agents in your code editor."],
+      ["cline/cline", "Autonomous coding agent as an SDK, IDE extension, or CLI assistant."],
+      ["SWE-agent/SWE-agent", "SWE-agent takes a GitHub issue and tries to automatically fix it, using your LM of choice. It can also be employed for offensive cybersecurity or competitive coding challenges. [NeurIPS 2024] "],
+      ["carnot-tech/consulting-pptx-skill", "AIにまじなPPTXを作らせるClaude Codeスキル — スライド規約＋62型スライド型カタログ（SlideSpec 36型＋自由記述27パーツ）＋生成パイプライン＋機械チェック"],
+      ["jarrodwatts/claude-image-view", "See the images you paste into Claude Code: thumbnails above the prompt instead of bare [Image #1] tags"],
+      ["cloudflare/cloudflare-os", "Agent workspace built on Cloudflare Workers for creating documents, building apps, and running agents with your company’s context and systems."],
+    ];
+    assert.equal(cases.length, 12);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-04에 About가 비어 있는 Star 2개는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("nid1104/zeroboard4-new", null, null),
+      "제로보드 4.1 pl9를 최신 PHP 환경에서 돌아가도록 고친 버전입니다."
+    );
+    assert.equal(
+      withKoreanTranslation("0xdesign/design-plugin", null, null),
+      "UI 디자인 결정을 빠르게 반복하며 고르는 Claude Code 플러그인입니다. 컴포넌트나 페이지의 서로 다른 안을 여러 개 만들고, 브라우저에서 나란히 비교한 뒤 고른 점을 반영해 다듬습니다."
+    );
+  });
 });

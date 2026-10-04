@@ -536,5 +536,19 @@
   "intent-hq/intent": "Intent 플랫폼용 모노레포입니다. intentd, cloudlands-fe, ios를 서브모듈로 추적하고, 문서와 CI, 릴리스 조율을 담습니다.",
   "cyjoon68/super-resume": "AI로 이력서를 만드는 도구입니다.",
   "weave-os/router": "에이전트 시스템용 모델 라우터입니다. 모든 프롬프트를 50ms 안에 알맞은 모델로 보냅니다. 엔드포인트만 바꾸면 비용을 40~70% 줄입니다.",
-  "devswha/herdr-web-ui": "herdr용 브라우저와 휴대폰 클라이언트입니다. 에이전트 창마다 채팅과 실시간 터미널이 있고, SSH로 원격 PC에 접속하며, 웹 푸시 알림을 보냅니다."
+  "devswha/herdr-web-ui": "herdr용 브라우저와 휴대폰 클라이언트입니다. 에이전트 창마다 채팅과 실시간 터미널이 있고, SSH로 원격 PC에 접속하며, 웹 푸시 알림을 보냅니다.",
+  "HarnessMD/munder-difflin": "세상의 dots, bots, muses를 대신하는 오픈소스입니다. Claude Code나 Codex 같은 에이전트 사무실을 노트북, 샌드박스, 어디서든 돌리고, 이미 있는 구독을 씁니다.",
+  "nid1104/zeroboard4-new": "제로보드 4.1 pl9를 최신 PHP 환경에서 돌아가도록 고친 버전입니다.",
+  "e2b-dev/E2B": "기업용 에이전트를 위한, 실제 도구가 있는 오픈소스 보안 환경입니다.",
+  "SWE-bench/SWE-bench": "언어 모델이 실제 GitHub 이슈를 해결할 수 있는지 보는 SWE-bench입니다.",
+  "tjboudreaux/cc-thinking-skills": "평가를 반영한 사고 모형 28개와 비판적 사고 스킬입니다. Claude Code, GitHub Copilot, Codex, Cursor와 Agent Skills를 지원하는 다른 도구에서 씁니다.",
+  "danyuchn/asd-ste100-skill": "ASD-STE100 간결 기술 영어 규칙을 Claude Code 스킬로 옮긴 것입니다. 에이전트에게 주는 모호한 영어를 다시 씁니다.",
+  "0xdesign/design-plugin": "UI 디자인 결정을 빠르게 반복하며 고르는 Claude Code 플러그인입니다. 컴포넌트나 페이지의 서로 다른 안을 여러 개 만들고, 브라우저에서 나란히 비교한 뒤 고른 점을 반영해 다듬습니다.",
+  "daytonaio/daytona": "Daytona는 AI가 만든 코드를 돌리는 안전하고 탄력적인 인프라입니다.",
+  "RooCodeInc/Roo-Code": "Roo Code는 코드 편집기 안에 AI 에이전트 개발 팀을 통째로 둡니다.",
+  "cline/cline": "SDK, IDE 확장, CLI 보조로 쓰는 자율 코딩 에이전트입니다.",
+  "SWE-agent/SWE-agent": "SWE-agent는 GitHub 이슈를 받아 선택한 언어 모델로 자동 수정을 시도합니다. 공격적 보안이나 경쟁 코딩에도 쓸 수 있습니다. NeurIPS 2024입니다.",
+  "carnot-tech/consulting-pptx-skill": "AI에게 제대로 된 PPTX를 만들게 하는 Claude Code 스킬입니다. 슬라이드 규약, 62종 슬라이드 유형 목록, 생성 파이프라인, 기계 검사를 담습니다. 목록은 SlideSpec 36종과 자유 서술 27개 부품입니다.",
+  "jarrodwatts/claude-image-view": "Claude Code에 붙여 넣은 이미지를 봅니다. 빈 [Image #1] 태그 대신 프롬프트 위에 썸네일을 둡니다.",
+  "cloudflare/cloudflare-os": "Cloudflare Workers 위에 올린 에이전트 작업 공간입니다. 회사의 맥락과 시스템으로 문서를 만들고, 앱을 짓고, 에이전트를 돌립니다."
 }
