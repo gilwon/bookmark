@@ -412,6 +412,48 @@ export const TARGETS = [
     tags: ["프롬프트", "설정"],
     phrase: "Continue as Guest",
   },
+  {
+    id: "130c355c-cdf8-4b7f-96c4-5e9588b11e9c",
+    title: "팀에서 AGENTS.md를 관리하는 규칙 5가지",
+    tags: ["에이전트", "설정"],
+    phrase: "README.md는 사람이 보는 문서",
+  },
+  {
+    id: "2cd8de9f-acae-4277-b9d9-849bf585a34f",
+    title: "Sonnet 5.5에게 잡일을 맡기고 Fable을 두는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "각 모델에: sonnet",
+  },
+  {
+    id: "3fbd6361-45cf-4bfe-aa7e-3ba1a03bef3b",
+    title: "놓친 정보를 짚는 You should Know 플러그인",
+    tags: ["클로드", "설정"],
+    phrase: "당신을 최신 상태로 유지",
+  },
+  {
+    id: "ee12a5b6-02b5-44e3-a48c-35463bb47bbb",
+    title: "모델 출력을 글보다 영상으로 받는 팁",
+    tags: ["프롬프트", "학습"],
+    phrase: "ASD-STE100의 80%",
+  },
+  {
+    id: "14668855-5943-43b4-99e7-a08957ede788",
+    title: "NotebookLM으로 문서를 읽고 토큰을 아끼는 연결",
+    tags: ["클로드", "MCP"],
+    phrase: "nlm login",
+  },
+  {
+    id: "00d65258-09e8-4a76-b952-0709ccc64011",
+    title: "LLM 글을 통제 언어와 영상으로 받는 팁",
+    tags: ["프롬프트", "학습"],
+    phrase: "3b1b 스타일로 영상",
+  },
+  {
+    id: "6b46b2b7-7b0e-4ead-8f46-14aa05f31fcf",
+    title: "Aside로 뉴스 글을 쓰고 쇼핑을 붙이는 순서",
+    tags: ["블로그", "자동화"],
+    phrase: "쇼핑커넥트",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
