@@ -1,10 +1,12 @@
 // 이 머신의 Claude·Codex·Grok·Gemini 스킬과 플러그인을 훑어 src/data/installed-tools.json 스냅샷을 만든다
 import { createReadStream } from "node:fs";
-import { lstat, readFile, readdir, readlink, stat, writeFile } from "node:fs/promises";
-import { homedir } from "node:os";
+import { existsSync, readFileSync } from "node:fs";
+import { lstat, mkdtemp, readFile, readdir, readlink, realpath, rm, stat, writeFile } from "node:fs/promises";
+import { homedir, tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
+import { zipSync } from "fflate";
 
 const OUT_PATH = fileURLToPath(new URL("../src/data/installed-tools.json", import.meta.url));
 // 한글 번역 파일. 스캔은 읽기만 하고 절대 쓰지 않는다
@@ -103,10 +105,12 @@ export async function listSkills(dir, defaultSource) {
     if (text == null) continue;
     let target = null;
     if ((await lstat(path)).isSymbolicLink()) target = await readlink(path);
+    // dir 은 ZIP 단계에서만 쓰고 스냅샷에 쓰기 전에 지운다
     skills.push({
       name,
       description: parseDescription(text),
       source: skillSource(target, defaultSource),
+      dir: path,
     });
   }
   return skills.sort(byName);
@@ -151,6 +155,134 @@ export function parseCodexPlugins(tomlText) {
     if (/^\s*enabled\s*=\s*true\s*$/m.test(block)) result.push(splitKey(m[1]));
   }
   return result;
+}
+
+/**
+ * GitHub 저장소 주소만 통과시킨다. 문자열 또는 { url } 객체(plugin.json repository)를 받는다.
+ * `https://github.com/` 로 시작하지 않거나 자격 증명(`user:pass@`)·쿼리가 든 값은 버리고, 끝 `/` 와 `.git` 을 뗀다.
+ */
+export function githubRepoUrl(raw) {
+  const value = typeof raw === "string" ? raw : typeof raw?.url === "string" ? raw.url : "";
+  const url = value.trim().replace(/\/+$/, "").replace(/\.git$/, "");
+  // 경로에는 영문·숫자·._- 와 / 만 허용해 @·?·# 같은 자격 증명·토큰 자리를 막는다
+  return /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+(\/[\w./-]*)?$/.test(url) ? url : undefined;
+}
+
+/** GitHub 주소에서 `owner/repo` 를 꺼낸다. */
+export function githubSlug(url) {
+  return url.replace("https://github.com/", "").split("/").slice(0, 2).join("/");
+}
+
+/** Codex config.toml 의 [marketplaces.<마켓>] 블록에서 source_type 과 source 를 뽑는다. */
+export function parseCodexMarketplaces(tomlText) {
+  const result = {};
+  const header = /^\[marketplaces\.([^\]]+)\]\s*$/gm;
+  let m;
+  while ((m = header.exec(tomlText))) {
+    const rest = tomlText.slice(header.lastIndex);
+    const next = rest.search(/^\[/m);
+    const block = next === -1 ? rest : rest.slice(0, next);
+    const field = (key) => {
+      const f = new RegExp(`^\\s*${key}\\s*=\\s*(.+)$`, "m").exec(block);
+      return f ? unquote(f[1]) : "";
+    };
+    result[unquote(m[1])] = { sourceType: field("source_type"), source: field("source") };
+  }
+  return result;
+}
+
+/**
+ * Claude 플러그인 출처. plugin.json 의 repository·homepage 가 GitHub 면 링크로 우선하고,
+ * 명령은 known_marketplaces 의 마켓 저장소(source=github) 기준 두 줄이다.
+ */
+export function claudePluginSource({ name, marketplace, manifest, market }) {
+  const marketUrl =
+    market?.source?.source === "github" && typeof market.source.repo === "string"
+      ? githubRepoUrl(`https://github.com/${market.source.repo}`)
+      : undefined;
+  const repoUrl = githubRepoUrl(manifest?.repository) ?? githubRepoUrl(manifest?.homepage) ?? marketUrl;
+  const out = {};
+  if (repoUrl) out.repoUrl = repoUrl;
+  if (marketUrl) {
+    out.installCommands = [
+      `/plugin marketplace add ${githubSlug(marketUrl)}`,
+      `/plugin install ${name}@${marketplace}`,
+    ];
+  }
+  return out;
+}
+
+/** Codex 플러그인 출처. source_type = "git" 이고 GitHub 주소인 마켓만 쓴다(로컬 경로 마켓은 없음). */
+export function codexPluginSource({ name, marketplace }, markets) {
+  const m = markets[marketplace];
+  const repoUrl = m?.sourceType === "git" ? githubRepoUrl(m.source) : undefined;
+  if (!repoUrl) return {};
+  return {
+    repoUrl,
+    installCommands: [
+      `codex plugin marketplace add ${githubSlug(repoUrl)}`,
+      `codex plugin add ${name}@${marketplace}`,
+    ],
+  };
+}
+
+/** Grok 플러그인 출처. registry.json kind.url 이 링크, 명령은 ~/.grok/docs 09-plugins.md 와 `grok plugin install --help` 에서 확인한 형식이다. */
+export function grokPluginSource(kind) {
+  const repoUrl = githubRepoUrl(kind?.url);
+  if (!repoUrl) return {};
+  // --trust 는 붙이지 않는다. 없으면 Grok 이 출처와 경고를 보이고 확인을 받는다
+  return { repoUrl, installCommands: [`grok plugin install ${githubSlug(repoUrl)}`] };
+}
+
+/** 스킬 출처. ~/.agents/.skill-lock.json 에 같은 이름이 있으면 그 sourceUrl·source 를 쓴다. 번들 스킬은 출처 없음. */
+export function lockSkillSource(skill, lock) {
+  if (skill.source === "bundled") return {};
+  const entry = lock?.skills?.[skill.name];
+  const repoUrl = githubRepoUrl(entry?.sourceUrl);
+  if (!repoUrl) return {};
+  // source 가 owner/repo 형식이 아니면 링크에서 만든다(이상한 값이 명령에 섞이지 않게)
+  const source = /^[\w.-]+\/[\w.-]+$/.test(entry.source ?? "") ? entry.source : githubSlug(repoUrl);
+  return { repoUrl, installCommands: [`npx skills add ${source} --skill ${skill.name}`] };
+}
+
+/** ZIP 대상 스킬인지. 출처가 없고 번들이 아닌 스킬만 대상이다. */
+export function isZipTarget(skill) {
+  return !skill.repoUrl && skill.source !== "bundled";
+}
+
+/** 이전 스냅샷에서 같은 도구/이름의 zipKey 를 이어받는다. 지금도 ZIP 대상인 스킬에만 붙인다. */
+export function inheritZipKeys(snapshot, previous) {
+  const keys = new Map();
+  for (const t of previous?.tools ?? []) {
+    for (const s of t.skills ?? []) if (s.zipKey) keys.set(`${t.id}/${s.name}`, s.zipKey);
+  }
+  for (const t of snapshot.tools) {
+    for (const s of t.skills) {
+      const key = keys.get(`${t.id}/${s.name}`);
+      if (key && isZipTarget(s)) s.zipKey = key;
+    }
+  }
+}
+
+/** ZIP 파일 1개 상한(1MB)과 스킬 하나의 압축 전 합계 상한(5MB). */
+export const ZIP_FILE_LIMIT = 1024 * 1024;
+export const ZIP_SKILL_LIMIT = 5 * 1024 * 1024;
+
+/** ZIP 에서 뺄 파일인지. rel 은 스킬 폴더 기준 상대 경로(/ 구분), 이름 비교는 대소문자를 무시한다. */
+export function isExcludedFile(rel, size) {
+  const parts = rel.split("/");
+  if (parts.some((p) => p === ".git" || p === "node_modules")) return true;
+  const base = parts.at(-1).toLowerCase();
+  if (base === ".ds_store" || base.startsWith(".env") || base.endsWith(".pem") || base.endsWith(".key")) return true;
+  if (/credential|secret|token|id_rsa/.test(base)) return true;
+  return size > ZIP_FILE_LIMIT;
+}
+
+/** 파일 목록 [{rel, size}] 에서 넣을 것과 뺄 것을 나누고, 남은 파일 합계가 5MB 를 넘으면 skipped. */
+export function planZipEntries(files) {
+  const keep = files.filter((f) => !isExcludedFile(f.rel, f.size));
+  const total = keep.reduce((sum, f) => sum + f.size, 0);
+  return { keep, excludedCount: files.length - keep.length, total, skipped: total > ZIP_SKILL_LIMIT };
 }
 
 /** 스냅샷 문자열에 홈 디렉터리 경로가 섞였으면 에러를 던진다. */
@@ -293,13 +425,24 @@ function installedNames(tool) {
 async function scanClaude(home) {
   const skills = await listSkills(join(home, ".claude/skills"), "user");
   const installed = await readJson(join(home, ".claude/plugins/installed_plugins.json"));
+  const markets = (await readJson(join(home, ".claude/plugins/known_marketplaces.json"))) ?? {};
   const plugins = [];
   for (const [key, entries] of Object.entries(installed?.plugins ?? {})) {
     const first = Array.isArray(entries) ? entries[0] : null;
     const info = first?.installPath
       ? await readPluginInfo(first.installPath)
       : { description: "", skillCount: 0 };
-    plugins.push({ ...splitKey(key), version: first?.version ?? "", ...info });
+    const manifest = first?.installPath
+      ? await readJson(join(first.installPath, ".claude-plugin", "plugin.json"))
+      : null;
+    const { name, marketplace } = splitKey(key);
+    plugins.push({
+      name,
+      marketplace,
+      version: first?.version ?? "",
+      ...info,
+      ...claudePluginSource({ name, marketplace, manifest, market: markets[marketplace] }),
+    });
   }
   return { id: "claude", label: "Claude", skills, plugins };
 }
@@ -308,6 +451,7 @@ async function scanClaude(home) {
 async function scanCodex(home) {
   const skills = await listSkills(join(home, ".codex/skills"), "user");
   const toml = (await readText(join(home, ".codex/config.toml"))) ?? "";
+  const markets = parseCodexMarketplaces(toml);
   const plugins = [];
   for (const { name, marketplace } of parseCodexPlugins(toml)) {
     const base = join(home, ".codex/plugins/cache", marketplace, name);
@@ -316,7 +460,7 @@ async function scanCodex(home) {
     const info = version
       ? await readPluginInfo(join(base, version))
       : { description: "", skillCount: 0 };
-    plugins.push({ name, version, marketplace, ...info });
+    plugins.push({ name, version, marketplace, ...info, ...codexPluginSource({ name, marketplace }, markets) });
   }
   return { id: "codex", label: "Codex", skills, plugins };
 }
@@ -339,7 +483,7 @@ async function scanGrok(home) {
         const subDir = sub ? join(repo.path, sub) : null;
         info = await readPluginInfo(subDir && (await exists(subDir)) ? subDir : repo.path);
       }
-      plugins.push({ name, version: meta?.version ?? "", marketplace, ...info });
+      plugins.push({ name, version: meta?.version ?? "", marketplace, ...info, ...grokPluginSource(repo?.kind) });
     }
   }
   return { id: "grok", label: "Grok", skills, plugins };
@@ -354,7 +498,11 @@ async function scanGemini(home) {
 /** 네 도구를 모두 훑어 스냅샷 객체를 만든다. */
 export async function scanAll(home = homedir()) {
   const tools = await Promise.all([scanClaude(home), scanCodex(home), scanGrok(home), scanGemini(home)]);
-  for (const tool of tools) tool.plugins.sort(byName);
+  const lock = await readJson(join(home, ".agents/.skill-lock.json"));
+  for (const tool of tools) {
+    tool.plugins.sort(byName);
+    for (const s of tool.skills) Object.assign(s, lockSkillSource(s, lock));
+  }
   const [claude, codex, grok, gemini] = tools;
   applyUses(claude, await countUsage(jsonlLines(join(home, ".claude/projects")), installedNames(claude)));
   applyUses(
@@ -390,11 +538,154 @@ export function missingTranslations(snapshot, ko) {
   return missing;
 }
 
+/** 폴더 아래 일반 파일을 모은다. 심볼릭 링크는 따라가지 않고 개수만 센다. */
+async function walkFiles(root) {
+  const files = [];
+  let links = 0;
+  async function walk(dir, rel) {
+    for (const e of await readdir(dir, { withFileTypes: true })) {
+      const r = rel ? `${rel}/${e.name}` : e.name;
+      const abs = join(dir, e.name);
+      if (e.isSymbolicLink()) links++;
+      else if (e.isDirectory()) await walk(abs, r);
+      else if (e.isFile()) files.push({ rel: r, abs, size: (await lstat(abs)).size });
+    }
+  }
+  await walk(root, "");
+  return { files, links };
+}
+
+/** 바이트 수를 MB 문자열로. */
+const mb = (n) => `${(n / 1024 / 1024).toFixed(2)}MB`;
+
+/** 프로젝트 .env.local 을 기존 import 스크립트와 같은 방식으로 읽어 비어 있는 환경변수만 채운다. */
+function loadEnvLocal() {
+  const envPath = fileURLToPath(new URL("../.env.local", import.meta.url));
+  if (!existsSync(envPath)) return;
+  for (const line of readFileSync(envPath, "utf8").split("\n")) {
+    const match = line.match(/^([^#=]+)=(.*)$/);
+    if (!match) continue;
+    const key = match[1].trim();
+    let value = match[2].trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+
+/**
+ * ZIP 단계. 대상 스킬을 realpath 로 묶어 임시 폴더에 ZIP 을 만들고 요약을 출력한다.
+ * upload 가 참이면 Supabase 비공개 버킷에 올리고 성공한 스킬에 zipKey 를 붙인다. 임시 폴더는 항상 지운다.
+ */
+async function zipStage(snapshot, { upload }) {
+  // 같은 실제 폴더를 가리키는 스킬은 한 번만 만든다. 키는 처음 만난 도구 기준
+  const groups = new Map();
+  const unreadable = [];
+  for (const t of snapshot.tools) {
+    for (const s of t.skills) {
+      if (!isZipTarget(s)) continue;
+      let real;
+      try {
+        real = await realpath(s.dir);
+      } catch {
+        unreadable.push(`${t.id}/${s.name}`);
+        continue;
+      }
+      const g = groups.get(real) ?? { real, key: `${t.id}/${s.name}.zip`, name: s.name, skills: [] };
+      g.skills.push(s);
+      groups.set(real, g);
+    }
+  }
+  const tmp = await mkdtemp(join(tmpdir(), "installed-tools-"));
+  const built = [];
+  const skipped = [];
+  let excluded = 0;
+  let links = 0;
+  let rawTotal = 0;
+  let zipTotal = 0;
+  try {
+    for (const g of groups.values()) {
+      const walked = await walkFiles(g.real);
+      links += walked.links;
+      const plan = planZipEntries(walked.files);
+      excluded += plan.excludedCount;
+      if (plan.skipped) {
+        skipped.push(`${g.key} (${mb(plan.total)})`);
+        continue;
+      }
+      const entries = {};
+      for (const f of plan.keep) entries[`${g.name}/${f.rel}`] = new Uint8Array(await readFile(f.abs));
+      const zipPath = join(tmp, g.key.replace("/", "__"));
+      const bytes = zipSync(entries);
+      await writeFile(zipPath, bytes);
+      rawTotal += plan.total;
+      zipTotal += bytes.length;
+      built.push({ ...g, zipPath });
+    }
+    console.log(
+      `ZIP 대상 스킬 ${[...groups.values()].reduce((n, g) => n + g.skills.length, 0)}개(고유 폴더 ${groups.size}개), 생성 ${built.length}개`
+    );
+    console.log(`  압축 전 합계 ${mb(rawTotal)}, ZIP 합계 ${mb(zipTotal)}`);
+    console.log(`  제외 파일 ${excluded}개, 건너뛴 심볼릭 링크 ${links}개`);
+    console.log(`  5MB 초과로 건너뛴 스킬 ${skipped.length}개${skipped.length ? `: ${skipped.join(", ")}` : ""}`);
+    if (unreadable.length) console.log(`  폴더를 읽지 못한 스킬: ${unreadable.join(", ")}`);
+    if (!upload) {
+      console.log("  --dry-run: 업로드하지 않고 임시 ZIP 을 지운다");
+      return;
+    }
+    loadEnvLocal();
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !key) {
+      console.log("  업로드 건너뜀: NEXT_PUBLIC_SUPABASE_URL 또는 SUPABASE_SERVICE_ROLE_KEY 가 없다");
+      return;
+    }
+    // 기본 실행과 테스트가 supabase 모듈을 읽지 않게 업로드 때만 불러온다
+    const { createClient } = await import("@supabase/supabase-js");
+    const storage = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } }).storage;
+    if ((await storage.getBucket(BUCKET)).error) {
+      const { error } = await storage.createBucket(BUCKET, { public: false });
+      if (error) throw new Error(`버킷 생성 실패: ${error.message}`);
+    }
+    let ok = 0;
+    for (const b of built) {
+      const { error } = await storage
+        .from(BUCKET)
+        .upload(b.key, await readFile(b.zipPath), { contentType: "application/zip", upsert: true });
+      if (error) {
+        console.log(`  업로드 실패 ${b.key}: ${error.message}`);
+        continue;
+      }
+      for (const s of b.skills) s.zipKey = b.key;
+      ok++;
+    }
+    console.log(`  업로드 ${ok}/${built.length}개`);
+  } finally {
+    await rm(tmp, { recursive: true, force: true });
+  }
+}
+
+/** ZIP 을 올리는 Supabase Storage 비공개 버킷 */
+const BUCKET = "installed-tools";
+
 async function main() {
+  const args = process.argv.slice(2);
+  const upload = args.includes("--upload");
   const snapshot = await scanAll();
+  // 업로드 없이 다시 돌려도 이전 zipKey 를 잃지 않게 이어받는다
+  inheritZipKeys(snapshot, await readJson(OUT_PATH));
+  if (upload || args.includes("--dry-run")) await zipStage(snapshot, { upload });
+  for (const t of snapshot.tools) for (const s of t.skills) delete s.dir;
   const json = `${JSON.stringify(snapshot, null, 2)}\n`;
   assertNoHomePaths(json);
   await writeFile(OUT_PATH, json);
+  for (const t of snapshot.tools) {
+    const items = [...t.skills, ...t.plugins];
+    console.log(
+      `${t.label} 출처: 링크 ${items.filter((x) => x.repoUrl).length}개(스킬 ${t.skills.filter((x) => x.repoUrl).length}·플러그인 ${t.plugins.filter((x) => x.repoUrl).length}), 설치 명령 ${items.filter((x) => x.installCommands).length}개, zipKey ${t.skills.filter((x) => x.zipKey).length}개`
+    );
+  }
   // 번역 파일이 없으면 전부 누락으로 본다
   const ko = await readFile(KO_PATH, "utf8").then(JSON.parse, () => ({}));
   console.log(`한글 번역 누락 ${missingTranslations(snapshot, ko).length}개`);
