@@ -16,6 +16,7 @@ import {
   isExcludedFile,
   listSkills,
   lockSkillSource,
+  missingTags,
   missingTranslations,
   parseCodexMarketplaces,
   parseCodexPlugins,
@@ -104,6 +105,30 @@ test("한글 없는 설명 중 번역 키가 없는 것만 누락으로 센다",
   const ko = { "claude/skill/done": "번역됨", "claude/skill/dup/shared": "공유 번역" };
   assert.deepEqual(missingTranslations(snapshot, ko), [
     "claude/skill/en",
+    "claude/skill/dup",
+    "claude/plugin/p",
+  ]);
+});
+
+test("설명과 상관없이 분류 키가 없는 스킬·플러그인을 누락으로 센다", () => {
+  const snapshot = {
+    tools: [
+      {
+        id: "claude",
+        skills: [
+          { name: "done", description: "Has tags", source: "user" },
+          { name: "empty", description: "", source: "user" },
+          // 이름이 같고 출처만 다른 쌍은 출처 한정 키로 각각 본다
+          { name: "dup", description: "a", source: "shared" },
+          { name: "dup", description: "b", source: "bundled" },
+        ],
+        plugins: [{ name: "p", description: "", marketplace: "m" }],
+      },
+    ],
+  };
+  const tags = { "claude/skill/done": ["개발"], "claude/skill/dup/shared": ["보안·검수"] };
+  assert.deepEqual(missingTags(snapshot, tags), [
+    "claude/skill/empty",
     "claude/skill/dup",
     "claude/plugin/p",
   ]);
