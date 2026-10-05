@@ -29,6 +29,7 @@ Source: intent.md (Status: draft)
 20. ZIP 에서 제외하는 파일. `.git`, `node_modules`, `.DS_Store`, `.env*`, `*.pem`, `*.key`, 이름에 `credential`·`secret`·`token`·`id_rsa` 가 든 파일, 파일 1개 1MB 초과. 스킬 하나의 압축 전 합계가 5MB 를 넘으면 그 스킬은 ZIP 을 만들지 않는다. 제외한 파일 수와 건너뛴 스킬 목록을 출력한다. 심볼릭 링크 파일은 따라가지 않고 건너뛴다.
 21. 스냅샷 항목에 `zipKey`(업로드된 경우만)가 붙는다. 버튼은 `zipKey` 가 있을 때만 보인다. ZIP 이 없는 직접 만든 스킬은 버튼 대신 아무것도 보이지 않는다.
 22. 저장소가 공개이므로 ZIP 과 업로드 자격 증명은 git 에 들어가지 않는다. 스크립트는 ZIP 을 임시 폴더에서 만들고 업로드 뒤 지운다.
+23. 검색창 옆에 정렬 선택이 있다. 선택지는 `이름순`(기본), `많이 쓴 순`, `출처 있는 순`이다. 현재 탭의 스킬·플러그인 두 구역에 같이 적용한다. 같은 값이면 이름순으로 정한다. `많이 쓴 순`은 사용 횟수 내림차순, `출처 있는 순`은 GitHub 링크가 있는 항목을 앞에 둔다. 탭을 바꾸면 정렬은 유지하고 검색어는 비운다. 정렬 선택은 키보드로 조작되고 라벨이 있다.
 
 ## Design
 스냅샷 형태.
@@ -41,7 +42,7 @@ Source: intent.md (Status: draft)
 - Codex 스킬은 `~/.codex/skills/*/SKILL.md`(점으로 시작하는 폴더 제외). 플러그인은 `~/.codex/config.toml` 의 `[plugins."이름@마켓"]` 중 `enabled = true` 인 것. 설명은 `~/.codex/plugins/cache/<마켓>/<이름>/*/` 의 plugin.json 에서 찾고 없으면 빈 문자열.
 - Grok 스킬은 `~/.grok/skills/*`, 번들 스킬은 `~/.grok/bundled/skills/*` 로 source `bundled`. 플러그인은 `~/.grok/installed-plugins/registry.json` 의 `repos.*.plugins` 와 `marketplace.source_display_name`.
 - Gemini 스킬은 `~/.gemini/skills/*/SKILL.md`. 플러그인은 없으면 빈 배열.
-- 이름 정렬은 가나다·알파벳 순.
+- 스냅샷 기본 순서는 가나다·알파벳 순이다. 화면 정렬은 클라이언트에서 한다.
 
 경계. 새 DB 테이블·API 없음. 서버 컴포넌트가 JSON 을 읽어 클라이언트 목록에 props 로 넘긴다.
 

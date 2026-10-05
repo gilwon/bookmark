@@ -94,3 +94,32 @@ export function skillSourceLabel(source: string): string {
   if (source === "bundled") return "번들";
   return "사용자";
 }
+
+/** 설치 현황 정렬 모드. 이름순·많이 쓴 순·출처 있는 순 */
+export type SortMode = "name" | "uses" | "source";
+
+export const SORT_MODES: { value: SortMode; label: string }[] = [
+  { value: "name", label: "이름순" },
+  { value: "uses", label: "많이 쓴 순" },
+  { value: "source", label: "출처 있는 순" },
+];
+
+/** URL 쿼리 값을 정렬 모드로 바꾼다. 알 수 없는 값은 이름순 */
+export function parseSortMode(value: unknown): SortMode {
+  return SORT_MODES.some((m) => m.value === value) ? (value as SortMode) : "name";
+}
+
+/**
+ * 스킬·플러그인 목록을 복사해 정렬한다(원본 배열은 바꾸지 않는다).
+ * uses 는 사용 횟수 내림차순, source 는 repoUrl 있는 항목 먼저, 동률은 이름순
+ */
+export function sortItems<T extends { name: string; uses: number; repoUrl?: string }>(
+  items: readonly T[],
+  mode: SortMode
+): T[] {
+  return [...items].sort((a, b) => {
+    if (mode === "uses" && a.uses !== b.uses) return b.uses - a.uses;
+    if (mode === "source" && !a.repoUrl !== !b.repoUrl) return a.repoUrl ? -1 : 1;
+    return a.name.localeCompare(b.name, "ko");
+  });
+}
