@@ -1,7 +1,9 @@
 // 이 머신의 Claude·Codex·Grok·Gemini 스킬과 플러그인을 훑어 src/data/installed-tools.json 스냅샷을 만든다
+import { createReadStream } from "node:fs";
 import { lstat, readFile, readdir, readlink, stat, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
+import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
 
 const OUT_PATH = fileURLToPath(new URL("../src/data/installed-tools.json", import.meta.url));
@@ -156,6 +158,135 @@ export function assertNoHomePaths(jsonText, home = homedir()) {
   }
 }
 
+/** 이름별 횟수를 하나 올린다. */
+function bump(map, name) {
+  map[name] = (map[name] ?? 0) + 1;
+}
+
+/**
+ * 호출 이름 하나를 스킬 또는 플러그인 횟수에 더한다.
+ * `플러그인:스킬` 형태는 설치된 플러그인에만 더하고 스킬 쪽에는 넣지 않는다(오탐 방지).
+ * 접두 없는 이름은 설치된 스킬과 정확히 같을 때만 센다.
+ */
+function addName(counts, installed, raw) {
+  if (typeof raw !== "string") return;
+  const name = raw.replace(/^\//, "");
+  const colon = name.indexOf(":");
+  if (colon !== -1) {
+    const plugin = name.slice(0, colon);
+    if (installed.plugins.includes(plugin)) bump(counts.plugins, plugin);
+    return;
+  }
+  if (installed.skills.includes(name)) bump(counts.skills, name);
+}
+
+/** `mcp__plugin_<플러그인>_` 도구 이름에서 설치된 플러그인을 찾는다. 하이픈은 언더스코어로도 비교하고 가장 긴 일치를 고른다. */
+function mcpPlugin(toolName, plugins) {
+  let best = null;
+  for (const p of plugins) {
+    const hit = [p, p.replaceAll("-", "_")].some((v) => toolName.startsWith(`mcp__plugin_${v}_`));
+    if (hit && (!best || p.length > best.length)) best = p;
+  }
+  return best;
+}
+
+/**
+ * Claude 세션 jsonl 줄들에서 스킬·플러그인 사용 횟수를 센다.
+ * lines 는 줄 문자열의 (비동기) 반복자, installed 는 { skills: 이름[], plugins: 이름[] }.
+ * Skill 도구 호출·mcp 플러그인 도구는 tool_use id 로, 슬래시 명령은 메시지 uuid 로 중복을 없앤다.
+ * 결과는 숫자만 담은 { skills: {이름: 횟수}, plugins: {이름: 횟수} }.
+ */
+export async function countUsage(lines, installed) {
+  const counts = { skills: {}, plugins: {} };
+  const seen = new Set();
+  // id 가 없으면 중복 판정 없이 센다
+  const firstTime = (id) => {
+    if (!id) return true;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  };
+  for await (const line of lines) {
+    // 대용량 로그라 관련 문자열이 없는 줄은 파싱하지 않는다
+    if (!line.includes('"Skill"') && !line.includes("<command-") && !line.includes("mcp__plugin_")) continue;
+    let o;
+    try {
+      o = JSON.parse(line);
+    } catch {
+      continue;
+    }
+    const content = o?.message?.content;
+    if (o?.type === "assistant" && Array.isArray(content)) {
+      for (const b of content) {
+        if (b?.type !== "tool_use" || typeof b.name !== "string") continue;
+        if (b.name === "Skill") {
+          if (firstTime(b.id)) addName(counts, installed, b.input?.skill);
+        } else if (b.name.startsWith("mcp__plugin_")) {
+          const p = mcpPlugin(b.name, installed.plugins);
+          if (p && firstTime(b.id)) bump(counts.plugins, p);
+        }
+      }
+    } else if (o?.type === "user") {
+      // tool_result 블록은 도구 출력이라 건너뛰고, 문자열이나 text 블록만 본다
+      const text =
+        typeof content === "string"
+          ? content
+          : Array.isArray(content)
+            ? content.filter((b) => b?.type === "text").map((b) => b.text).join("\n")
+            : "";
+      // 실제 슬래시 명령 메시지는 <command-message> 나 <command-name> 으로 시작한다
+      if (!/^\s*<command-(?:message|name)>/.test(text)) continue;
+      const m = /<command-name>([^<]+)<\/command-name>/.exec(text);
+      if (m && firstTime(o.uuid)) addName(counts, installed, m[1].trim());
+    }
+  }
+  return counts;
+}
+
+/**
+ * Grok prompt_history.jsonl 줄들에서 `/이름` 으로 시작하는 프롬프트를 센다.
+ * 한 줄이 제출 1건이라 중복 제거는 하지 않는다. `/Users` 같은 경로는 설치 이름 정확 일치로 걸러진다.
+ */
+export async function countSlashPrompts(lines, installed) {
+  const counts = { skills: {}, plugins: {} };
+  for await (const line of lines) {
+    let o;
+    try {
+      o = JSON.parse(line);
+    } catch {
+      continue;
+    }
+    const m = typeof o?.prompt === "string" ? /^\/(\S+)/.exec(o.prompt) : null;
+    if (m) addName(counts, installed, m[1]);
+  }
+  return counts;
+}
+
+/** dir 아래 모든 jsonl 파일(파일 이름 조건 통과분)을 줄 단위로 흘려 준다. 메모리를 아끼려고 스트리밍한다. */
+async function* jsonlLines(dir, keep = () => true) {
+  let files;
+  try {
+    files = await readdir(dir, { recursive: true });
+  } catch {
+    return;
+  }
+  for (const f of files) {
+    if (!f.endsWith(".jsonl") || !keep(basename(f))) continue;
+    yield* createInterface({ input: createReadStream(join(dir, f)), crlfDelay: Infinity });
+  }
+}
+
+/** 횟수 맵을 각 항목의 uses 에 붙인다. 없으면 0. */
+function applyUses(tool, counts = { skills: {}, plugins: {} }) {
+  for (const s of tool.skills) s.uses = counts.skills[s.name] ?? 0;
+  for (const p of tool.plugins) p.uses = counts.plugins[p.name] ?? 0;
+}
+
+/** 도구의 설치 이름 목록. */
+function installedNames(tool) {
+  return { skills: tool.skills.map((s) => s.name), plugins: tool.plugins.map((p) => p.name) };
+}
+
 /** Claude 스킬과 플러그인. */
 async function scanClaude(home) {
   const skills = await listSkills(join(home, ".claude/skills"), "user");
@@ -222,6 +353,18 @@ async function scanGemini(home) {
 export async function scanAll(home = homedir()) {
   const tools = await Promise.all([scanClaude(home), scanCodex(home), scanGrok(home), scanGemini(home)]);
   for (const tool of tools) tool.plugins.sort(byName);
+  const [claude, codex, grok, gemini] = tools;
+  applyUses(claude, await countUsage(jsonlLines(join(home, ".claude/projects")), installedNames(claude)));
+  applyUses(
+    grok,
+    await countSlashPrompts(
+      jsonlLines(join(home, ".grok/sessions"), (n) => n === "prompt_history.jsonl"),
+      installedNames(grok)
+    )
+  );
+  // Codex 는 구조화된 스킬 신호가 최신 기록에만 있고 텍스트 멘션은 중복 기록돼 횟수가 불확실하다. Gemini 는 채팅 기록이 없다. 둘 다 0 으로 둔다
+  applyUses(codex);
+  applyUses(gemini);
   return { generatedAt: new Date().toISOString(), tools };
 }
 
@@ -232,6 +375,9 @@ async function main() {
   await writeFile(OUT_PATH, json);
   for (const t of snapshot.tools) {
     console.log(`${t.label}: 스킬 ${t.skills.length}개, 플러그인 ${t.plugins.length}개`);
+    const used = [...t.skills, ...t.plugins].filter((x) => x.uses > 0).sort((a, b) => b.uses - a.uses);
+    const top = used.slice(0, 5).map((x) => `${x.name} ${x.uses}`).join(", ");
+    console.log(`  사용 ${used.length}개${top ? ` · 상위 ${top}` : ""}`);
   }
 }
 

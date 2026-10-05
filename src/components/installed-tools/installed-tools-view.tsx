@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  HEAVY_USE,
   skillSourceLabel,
   type InstalledTool,
 } from "@/lib/installed-tools";
@@ -30,6 +31,31 @@ function SectionTitle({ title, count }: { title: string; count: number }) {
     <h2 className="text-sm font-medium">
       {title} <span className="tabular-nums text-muted-foreground">{count}</span>
     </h2>
+  );
+}
+
+/** 많이 쓴 항목 카드의 강조 색(amber). 기본 카드 hover 테두리도 amber 로 덮는다 */
+function usageCardClass(uses: number) {
+  return uses >= HEAVY_USE
+    ? "border-amber-500/60 bg-amber-50 hover:border-amber-500 dark:border-amber-400/40 dark:bg-amber-400/10 dark:hover:border-amber-400/70"
+    : undefined;
+}
+
+/** 사용 횟수 배지. 색에만 기대지 않도록 자주 쓴 항목은 '자주' 글자를 붙인다 */
+function UsesBadge({ uses }: { uses: number }) {
+  if (uses < 1) return null;
+  const heavy = uses >= HEAVY_USE;
+  return (
+    <span
+      className={cn(
+        "shrink-0 rounded border px-1.5 text-[11px] tabular-nums",
+        heavy
+          ? "border-amber-400 bg-amber-100 font-medium text-amber-900 dark:border-amber-400/50 dark:bg-amber-400/15 dark:text-amber-200"
+          : "border-border text-muted-foreground"
+      )}
+    >
+      {heavy ? `자주 ${uses}회` : `${uses}회`}
+    </span>
   );
 }
 
@@ -85,6 +111,14 @@ export function InstalledToolsView({
         />
       </label>
 
+      <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+        <span
+          aria-hidden
+          className="inline-block h-2.5 w-2.5 rounded-sm border border-amber-500/60 bg-amber-100 dark:border-amber-400/50 dark:bg-amber-400/20"
+        />
+        자주 사용 = {HEAVY_USE}회 이상
+      </p>
+
       <section className="space-y-3">
         <SectionTitle title="스킬" count={skills.length} />
         {skills.length === 0 ? (
@@ -92,15 +126,21 @@ export function InstalledToolsView({
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {skills.map((s) => (
-              <Card key={`${s.source}-${s.name}`} className="h-full">
+              <Card
+                key={`${s.source}-${s.name}`}
+                className={cn("h-full", usageCardClass(s.uses))}
+              >
                 <CardContent className="space-y-2 p-4">
                   <div className="flex items-start justify-between gap-2">
                     <span className="min-w-0 break-words text-sm font-semibold">
                       {s.name}
                     </span>
-                    <span className="shrink-0 rounded border border-border px-1.5 text-[11px] text-muted-foreground">
-                      {skillSourceLabel(s.source)}
-                    </span>
+                    <div className="flex shrink-0 gap-1">
+                      <UsesBadge uses={s.uses} />
+                      <span className="rounded border border-border px-1.5 text-[11px] text-muted-foreground">
+                        {skillSourceLabel(s.source)}
+                      </span>
+                    </div>
                   </div>
                   <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                     {s.description}
@@ -119,17 +159,23 @@ export function InstalledToolsView({
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {plugins.map((p) => (
-              <Card key={`${p.marketplace}-${p.name}`} className="h-full">
+              <Card
+                key={`${p.marketplace}-${p.name}`}
+                className={cn("h-full", usageCardClass(p.uses))}
+              >
                 <CardContent className="space-y-2 p-4">
-                  <div>
-                    <span className="block break-words text-sm font-semibold">
-                      {p.name}
-                    </span>
-                    <span className="block break-words text-[11px] text-muted-foreground">
-                      {[p.version && `v${p.version}`, p.marketplace]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </span>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <span className="block break-words text-sm font-semibold">
+                        {p.name}
+                      </span>
+                      <span className="block break-words text-[11px] text-muted-foreground">
+                        {[p.version && `v${p.version}`, p.marketplace]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </span>
+                    </div>
+                    <UsesBadge uses={p.uses} />
                   </div>
                   {p.description && (
                     <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">

@@ -1,12 +1,17 @@
 // 설치 현황 정적 스냅샷(src/data/installed-tools.json)의 타입과 로더
 import raw from "@/data/installed-tools.json";
 
+/** 이 횟수 이상 쓴 항목은 카드를 강조 색으로 보인다 */
+export const HEAVY_USE = 3;
+
 export type InstalledSkillSource = "user" | "shared" | "bundled";
 
 export type InstalledSkill = {
   name: string;
   description: string;
   source: InstalledSkillSource | string;
+  /** 세션 기록에서 센 사용 횟수(신호가 없는 도구는 0) */
+  uses: number;
 };
 
 export type InstalledPlugin = {
@@ -15,6 +20,8 @@ export type InstalledPlugin = {
   marketplace: string;
   description: string;
   skillCount: number;
+  /** 세션 기록에서 센 사용 횟수(신호가 없는 도구는 0) */
+  uses: number;
 };
 
 export type InstalledTool = {

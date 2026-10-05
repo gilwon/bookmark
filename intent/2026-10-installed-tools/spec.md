@@ -10,10 +10,15 @@ Source: intent.md (Status: draft)
 6. 빈 구역은 "설치된 항목이 없습니다" 를 보인다.
 7. 데이터는 `src/data/installed-tools.json` 스냅샷이다. 런타임에 파일시스템을 읽지 않는다.
 8. `scripts/scan-installed-tools.mjs` 가 스냅샷을 만든다. 홈 디렉터리 경로, 토큰, 인증 정보는 쓰지 않는다. 스킬 설명은 SKILL.md 프론트매터 `description` 이다.
+9. 많이 쓴 항목은 카드 색을 달리한다. 사용 횟수가 3회 이상이면 강조 색(amber 계열 테두리·배경)이고, 카드 오른쪽에 `N회` 배지를 붙인다. 1~2회는 배지만 붙이고 색은 그대로다. 라이트·다크 모두 대비를 지킨다.
+10. 사용 횟수는 스캔 스크립트가 센다. Claude 는 `~/.claude/projects/**/*.jsonl` 에서 Skill 도구 호출(`input.skill`)과 슬래시 명령(`<command-name>`)을 이름별로 합산한다. 플러그인은 `플러그인:스킬` 형태 호출, `mcp__plugin_<플러그인>_` 도구 호출, `<플러그인>:` 슬래시 명령을 해당 플러그인에 합산한다. Codex·Grok·Gemini 는 신뢰할 신호가 있을 때만 센다. 없으면 0으로 두고 보고한다.
+11. 설명에 한글이 없는 스킬·플러그인은 한글 설명을 함께 보인다. 카드에 한글 설명을 먼저, 영어 원문을 그 아래 흐린 글씨로 둘 다 보인다(각 두 줄 말줄임). 한글이 이미 있는 설명은 그대로 한 줄만 보인다.
+12. 한글 설명은 `src/data/installed-tools-ko.json` 에 따로 둔다. 키는 `도구id/skill|plugin/이름` 이고 값은 한글 설명 문자열이다. 스캔 스크립트는 이 파일을 건드리지 않으므로 재스캔해도 번역이 남는다. 로더가 두 파일을 합쳐 `descriptionKo` 를 채운다.
+13. 번역은 원문 의미만 옮긴다. 고유명사·명령어·파일명·스킬 이름은 원문 그대로 두고, 없던 내용을 보태지 않는다. 설명이 빈 항목은 빈 채로 둔다.
 
 ## Design
 스냅샷 형태.
-`{ generatedAt, tools: [{ id, label, skills: [{name, description, source}], plugins: [{name, version, marketplace, description, skillCount}] }] }`
+`{ generatedAt, tools: [{ id, label, skills: [{name, description, source, uses}], plugins: [{name, version, marketplace, description, skillCount, uses}] }] }`
 
 스캔 규칙.
 - Claude 스킬은 `~/.claude/skills/*/SKILL.md`. 심볼릭 링크가 `~/.agents/skills` 를 가리키면 source 는 `shared`, 아니면 `user`.
@@ -26,9 +31,12 @@ Source: intent.md (Status: draft)
 경계. 새 DB 테이블·API 없음. 서버 컴포넌트가 JSON 을 읽어 클라이언트 목록에 props 로 넘긴다.
 
 ## Decisions
+많이 쓴 기준. 3회 이상. 기록이 짧아 분포가 작고(최다 10회 안팎) 1~2회까지 강조하면 구분이 사라진다. 상수 하나로 둔다.
 저장 방식. 정적 JSON. 설치 상태가 이 머신에만 있고 목록이 수백 건이라 DB 가 필요 없다.
 통합 검색·대시보드. 넣지 않는다. 필요하면 후속 작업.
 `~/.agents/skills` 는 별도 탭이 아니다. 다른 도구가 심볼릭 링크로 공유하는 원본이다.
+
+번역 파일 갱신. 새로 설치된 항목은 한글이 없으면 영어만 보인다. 번역 누락 목록은 스캔 스크립트 끝에서 개수로 출력한다.
 
 ## Conflicts
 기존 `/skills` 메뉴는 heyjames 카탈로그다. 이름 충돌을 피하려고 새 메뉴는 `설치 현황` 으로 부른다.
