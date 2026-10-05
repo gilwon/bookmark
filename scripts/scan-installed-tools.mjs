@@ -250,6 +250,11 @@ export function isZipTarget(skill) {
   return !skill.repoUrl && skill.source !== "bundled";
 }
 
+/** Storage 키는 ASCII 만 받으므로 한글 등 이름은 UTF-8 hex 로 바꾼다 */
+export function zipObjectName(name) {
+  return /^[\w.-]+$/.test(name) ? name : `u-${Buffer.from(name, "utf8").toString("hex")}`;
+}
+
 /** 이전 스냅샷에서 같은 도구/이름의 zipKey 를 이어받는다. 지금도 ZIP 대상인 스킬에만 붙인다. */
 export function inheritZipKeys(snapshot, previous) {
   const keys = new Map();
@@ -592,7 +597,7 @@ async function zipStage(snapshot, { upload }) {
         unreadable.push(`${t.id}/${s.name}`);
         continue;
       }
-      const g = groups.get(real) ?? { real, key: `${t.id}/${s.name}.zip`, name: s.name, skills: [] };
+      const g = groups.get(real) ?? { real, key: `${t.id}/${zipObjectName(s.name)}.zip`, name: s.name, skills: [] };
       g.skills.push(s);
       groups.set(real, g);
     }

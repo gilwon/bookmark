@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T03:08:52.187Z",
+  "generatedAt": "2026-10-05T03:15:59.271Z",
   "tools": [
     {
       "id": "claude",
@@ -9,19 +9,22 @@
           "name": "animation-vocabulary",
           "description": "Reverse-lookup glossary that turns a vague description of a web animation or motion effect into its exact term (\"the bouncy thing when a popover opens\" → Pop in; \"the iOS rubber-band scroll\" → Rubber-banding). Use when the user asks \"what's it called when…\", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/animation-vocabulary.zip"
         },
         {
           "name": "apple-design",
           "description": "Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/sheet interactions, momentum and interruptible transitions, translucent materials and depth, typography (optical sizing, tracking, leading), reduced-motion, or the design foundations (feedback, spatial consistency, restraint) behind Apple-style interfaces.",
           "source": "user",
-          "uses": 1
+          "uses": 1,
+          "zipKey": "claude/apple-design.zip"
         },
         {
           "name": "aside-browser",
           "description": "Read when you need a browser, or have to work across user's logged-in websites (e.g. Gmail, Slack, cloud consoles, etc.), or have to refer personal contexts like memory and browsing history.",
           "source": "user",
-          "uses": 2
+          "uses": 2,
+          "zipKey": "claude/aside-browser.zip"
         },
         {
           "name": "ask-matt",
@@ -37,13 +40,15 @@
           "name": "attention-kind",
           "description": "Answer in the ADHD-friendly Attention-kind style for the rest of this chat.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/attention-kind.zip"
         },
         {
           "name": "claude-fable5-prompt-builder",
           "description": "Claude Fable 5에서 실행할 프롬프트를 만들거나 기존 프롬프트를 줄이고 개선할 때 사용한다. \"페이블5 프롬프트 만들어줘\", \"이 아이디어를 프롬프트로 바꿔줘\", \"Claude용 지시문 작성해줘\", \"프롬프트 최적화해줘\", \"기존 프롬프트가 너무 길어\", \"Effort 추천해줘\", \"페이블5에 시킬 프롬프트가 필요해\"라고 말하거나 자유 메모·기존 프롬프트·문서·사진·링크를 제공하며 Fable 5용 프롬프트 생성·개선을 요청하면 반드시 이 스킬을 사용하라. 일반 결과물 제작에는 사용하지 말고, 재사용 가능한 SKILL.md 제작은 스킬 제조기 워크플로를 우선하라.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/claude-fable5-prompt-builder.zip"
         },
         {
           "name": "claude-handoff",
@@ -59,7 +64,8 @@
           "name": "clone-website",
           "description": "Reverse-engineer and clone one or more websites in one shot — extracts assets, CSS, and content section-by-section and proactively dispatches parallel builder agents in worktrees as it goes. Use this whenever the user wants to clone, replicate, rebuild, reverse-engineer, or copy any website. Also triggers on phrases like \"make a copy of this site\", \"rebuild this page\", \"pixel-perfect clone\". Provide one or more target URLs as arguments.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/clone-website.zip"
         },
         {
           "name": "code-review",
@@ -85,7 +91,8 @@
           "name": "componentdoc-design-system",
           "description": "Use when 웹 UI(페이지·컴포넌트·대시보드·문서 사이트)를 만들거나 스타일링할 때 ComponentDoc Designer 디자인 시스템을 적용해야 하는 경우. 트리거 — \"컴포넌트 디자인 시스템\", \"ComponentDoc\", \"doc-system\", \"--doc- 토큰\", \"내 디자인 시스템 적용해줘\", 오렌지(#F6821F) 브랜드 UI 요청. 순수 CSS 토큰 + 프레임워크 독립(React/Vue/Svelte/바닐라/Tailwind) 컴포넌트 CSS.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/componentdoc-design-system.zip"
         },
         {
           "name": "computer-use",
@@ -111,7 +118,8 @@
           "name": "design-quality-check",
           "description": "UI·디자인 작업 전후 자가 점검 체크리스트. 시각적 일관성(톤앤매너·모바일웹 동일), 핵심 원칙(데이터 우선·컬러 시스템·타이포그래피·WCAG 대비), 퀄리티 체크포인트(포커스/에러 상태, hover/active, 반응형 480/1024/1440px, 키보드 네비게이션)를 다룬다. 화면·컴포넌트·랜딩페이지·대시보드를 만들거나 스타일을 고칠 때, 디자인 리뷰를 할 때, 반응형·접근성·컬러 대비를 확인할 때 사용.",
           "source": "user",
-          "uses": 10
+          "uses": 10,
+          "zipKey": "claude/design-quality-check.zip"
         },
         {
           "name": "diagnosing-bugs",
@@ -147,25 +155,29 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 2
+          "uses": 2,
+          "zipKey": "claude/ego-browser.zip"
         },
         {
           "name": "emil-design-eng",
           "description": "This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/emil-design-eng.zip"
         },
         {
           "name": "fallback-image",
           "description": "imagegen을 쓸 수 없을 때의 폴백. 순서가 정해져 있다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/fallback-image.zip"
         },
         {
           "name": "find-animation-opportunities",
           "description": "Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks \"what could be animated here?\" or wants to \"make this feel more alive\". For fixing existing animations, use improve-animations or review-animations instead.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/find-animation-opportunities.zip"
         },
         {
           "name": "find-skills",
@@ -181,19 +193,22 @@
           "name": "g5-admin-ui",
           "description": "그누보드5 관리자 페이지 UI 코드 생성기. 이 스킬은 사용자가 `adm/` 디렉토리에서 관리자 페이지 작업을 수행할 때 자동으로 활성화됩니다. 테이블, 버튼, 폼, 모달, 배지, 필터, 페이징 등 디자인 시스템에 맞는 HTML/CSS/JavaScript 코드를 생성하고, 일관된 UI 패턴을 적용합니다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/g5-admin-ui.zip"
         },
         {
           "name": "g5-make",
           "description": "그누보드5 테마·전 스킨 타입·영카트5 쇼핑몰 스킨을 상용(SIR 컨텐츠몰) 품질로 제작하는 파이프라인. \"테마 만들어줘\", \"게시판 스킨\", \"회원가입 스킨\", \"상품 스킨\", \"쇼핑몰 디자인\" 등 그누보드/영카트 산출물 제작 요청 시 사용. 게시판·회원·컨텐츠·FAQ·문의·설문·검색·최신글·로그인 위젯, 영카트 상품 리스트/상세/메인 진열까지 지원 (skin-catalog.md). 기존 프로젝트에 스킨 추가 요청(\"{프로젝트}에 갤러리 스킨 추가\")도 이 스킬.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/g5-make.zip"
         },
         {
           "name": "generate-cover",
           "description": "imagegen으로 커버 이미지를 만들고 프론트매터에 출처와 함께 기록한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/generate-cover.zip"
         },
         {
           "name": "git-guardrails-claude-code",
@@ -209,31 +224,36 @@
           "name": "gnuboard-dev",
           "description": "그누보드5(Gnuboard5)·영카트5(YoungCart5) 기능 추가 및 수정 개발 전용 스킬. 다음 상황에서 반드시 이 스킬을 사용한다: 그누보드/영카트 기능 추가, 기존 동작 수정, 플러그인 제작, 훅(hook/extend) 작업, 게시판 커스터마이징, 스킨·테마 수정, 관리자 페이지 제작, 회원/포인트/쿠폰 기능 변경, 상품·주문·결제 흐름 커스텀, g5_ 테이블 조회·설계. 사용자가 \"그누보드\", \"영카트\", \"gnuboard\", \"youngcart\", \"g5\", \"SIR\"를 언급하거나, 코드에 `_GNUBOARD_` 상수, `g5_` 테이블 접두사, `sql_query()`, `G5_PATH` 같은 그누보드 고유 식별자가 보이면 — 명시적 요청이 없어도 — 이 스킬을 먼저 읽는다. PHP 쇼핑몰/게시판 수정 요청이 그누보드 기반으로 추정되면 역시 이 스킬을 쓴다.",
           "source": "user",
-          "uses": 3
+          "uses": 3,
+          "zipKey": "claude/gnuboard-dev.zip"
         },
         {
           "name": "gnuboard-relearn",
           "description": "그누보드5·Rebuilder 업스트림 재학습 스킬. 그누보드가 버전업됐거나 \"그누보드 재학습\", \"업스트림 업데이트 반영\", \"리빌더 최신 내용 학습\", \"/gnuboard-relearn\"이라고 하면 사용한다. 원격 저장소 최신 태그를 확인해 학습 저장소(upstream.md)와 g5-upstream-expert 에이전트를 갱신한다.",
           "source": "user",
-          "uses": 1
+          "uses": 1,
+          "zipKey": "claude/gnuboard-relearn.zip"
         },
         {
           "name": "gnuboard5-db-schema",
           "description": "그누보드5/영카트5 MySQL 테이블 스키마 참조 도구. DB 관련 코드 작업 시 테이블 구조, 컬럼 정보, 테이블 간 관계를 확인할 때 사용합니다. 그누보드5, 영카트5 작업을 수행하는 경우 DB 관련 코드가 포함되어 있거나 추가되는 경우 호출합니다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/gnuboard5-db-schema.zip"
         },
         {
           "name": "graft",
           "description": "This repo is indexed by graft/. For ANY task here, whether",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/graft.zip"
         },
         {
           "name": "graphify",
           "description": "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/graphify.zip"
         },
         {
           "name": "grill-me",
@@ -299,19 +319,22 @@
           "name": "humanize",
           "description": "AI가 쓴 한글 텍스트를 자연스럽게 윤문하는 진입 명령. humanize-korean 파이프라인을 Fast 모드(기본)로 실행하고 `--strict`면 정밀 3콜(진단→겨냥 윤문→finalize). 트리거 — \"/humanize\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize.zip"
         },
         {
           "name": "humanize-korean",
           "description": "AI(ChatGPT·Claude·Gemini 등)가 쓴 한글 텍스트를 \"사람이 쓴 글처럼\" 윤문해주는 오케스트레이터 스킬. 번역투·영어 인용 과다·기계적 병렬·관용구·피동태 남용·접속사 남발·리듬 균일성·이모지/불릿 과다 등 10대 카테고리 70개 AI 티 패턴을 탐지·분류해 내용은 한 글자도 건드리지 않고 문체·리듬·표현만 자연스러운 한국어로 재작성한다. shim의 route_hint(light|standard|heavy)로 경로를 정해 잘 쓴 글은 1콜, 표준은 2콜, 중증·장문만 3+콜(진단→겨냥 윤문→finalize)로 처리한다. 트리거 — \"AI 티 없애줘\", \"AI 같은 글 자연스럽게\", \"GPT/ChatGPT 문체\", \"AI 번역투 고쳐\", \"사람이 쓴 것처럼 윤문\", \"AI 윤문\", \"ChatGPT 티 제거\", \"한글 AI 탐지·윤문\", \"AI 글 사람처럼\", \"번역투 제거\", \"영어 인용 많은 글 윤문\", \"AI 글 티 안 나게\", \"휴머나이저\", \"humanize Korean\", \"AI detector bypass 한글\". 후속 작업 — \"특정 카테고리만 다시\", \"윤문 강도 조정\", \"장르 바꿔서\", \"이 문단만\", \"2차 윤문\" 도 모두 이 스킬. 단순 맞춤법·오탈자 교정은 직접 처리, 번역은 번역 스킬, 내용 추가·삭제를 동반한 재작성은 별도 집필 스킬.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize-korean.zip"
         },
         {
           "name": "humanize-redo",
           "description": "가장 최근 윤문 결과를 2차로 다시 다듬는다 — 특정 카테고리·문단·강도 조정도 가능. humanize-korean strict 윤문(Phase B)을 기존 run_id에 재실행해 잔존 finding을 처리한다. 트리거 — \"/humanize-redo\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize-redo.zip"
         },
         {
           "name": "humanizer",
@@ -347,7 +370,8 @@
           "name": "improve-animations",
           "description": "Survey a codebase's animation and motion code as a senior motion advisor, then produce a prioritized audit and self-contained implementation plans for other agents (or cheaper models) to execute. Read-only on source code — it plans improvements, it does not apply them. Use when the user asks to \"improve the animations\", \"audit the motion\", \"make this app feel better\", or wants a roadmap of animation fixes rather than a review of a single diff.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/improve-animations.zip"
         },
         {
           "name": "improve-codebase-architecture",
@@ -363,19 +387,22 @@
           "name": "install-anti-slop",
           "description": "Install, configure, update, or upgrade vendored anti-slop Oxlint plugins. Use when adding anti-slop, picking up upstream rules or fixes, or migrating an existing installation while preserving local customizations.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/install-anti-slop.zip"
         },
         {
           "name": "intranet-style",
           "description": "Lean-AX 인트라넷과 픽셀 단위로 동일한 UI를 만들 때 사용. \"인트라넷 스타일로 만들어줘\", \"인트라넷처럼\", \"우리 인트라넷 디자인으로\", \"intranet style\", 그리고 인트라넷 도입 기업용 화면·앱을 구축(디자인 동일·기능 커스텀)할 때 트리거. 색·여백·글씨크기·컴포넌트 규격을 임의로 정하지 않고 정본 스펙에서 가져다 쓴다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/intranet-style.zip"
         },
         {
           "name": "karpathy-guidelines",
           "description": "Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/karpathy-guidelines.zip"
         },
         {
           "name": "loop-me",
@@ -401,7 +428,8 @@
           "name": "naver-blog-seo-geo",
           "description": "네이버 블로그 글을 검색(SEO)·생성형 검색(GEO)·네이버 발행 설정에 맞춰 쓸 때 사용한다. 제목·첫문단·소제목·태그·카테고리·대표이미지·출처를 검색 의도에 맞추고, 노출을 보장한다고 쓰지 않는다. 사용자가 \"네이버 블로그 글 써줘\", \"블로그 포스팅 초안\", \"네이버 검색 잘 되게\", \"상위노출\", \"블로그 SEO\", \"GEO\", \"AI 검색·생성형 검색에 잡히게\", \"블로그 제목/태그 뽑아줘\", \"네이버 발행 설정\", \"카테고리·대표이미지 뭐로 할까\", \"블로그 글 다듬어줘\"를 요청하거나, 주제·자료·초안·사진을 주며 네이버에 올릴 글로 만들어 달라고 하면 반드시 이 스킬을 사용하라. 플랫폼 언급이 없는 한국어 블로그 SEO 글도 이 스킬로 시작하고, 네이버가 아니면 발행 설정 절만 뺀다. ⚠️ 네이버 발행과 무관하게 사용자 말투 학습·SNS 대필만 원하면 ghostwriter-clone이 담당한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/naver-blog-seo-geo.zip"
         },
         {
           "name": "obsidian-vault",
@@ -417,7 +445,8 @@
           "name": "optimize-seo-geo",
           "description": "프론트매터의 seo/geo 블록을 채운다. 본문은 건드리지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/optimize-seo-geo.zip"
         },
         {
           "name": "orca-cli",
@@ -443,13 +472,15 @@
           "name": "pick-ui-library",
           "description": "Pick the right library for a given frontend task from a curated, opinionated list — numbers, OTP inputs, charts, command menus, virtualization, drag and drop, toasts, state, styling, and more. Only runs when explicitly invoked; it does not trigger on its own.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/pick-ui-library.zip"
         },
         {
           "name": "plan-post",
           "description": "주제를 정하고 중복을 확인한 뒤 아웃라인과 프론트매터 뼈대를 만든다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/plan-post.zip"
         },
         {
           "name": "prototype",
@@ -475,7 +506,8 @@
           "name": "remotion",
           "description": "Best practices and domain knowledge for building videos programmatically with Remotion (videos in React/TypeScript, rendered to MP4). Use whenever writing or editing Remotion code — scaffolding a video project, animating with interpolate/spring over useCurrentFrame(), sequencing scenes and transitions, captions/subtitles, audio, GIFs/Lottie/3D, charts, visual effects, dynamic duration via calculateMetadata, or rendering. Consult before reaching for a Remotion API, since its components and props evolve (e.g. @remotion/media).",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/remotion.zip"
         },
         {
           "name": "request-refactor-plan",
@@ -511,19 +543,22 @@
           "name": "review-and-submit",
           "description": "감사를 돌리고 사실을 확인한 뒤 in_review로 올린다. 발행은 하지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/review-and-submit.zip"
         },
         {
           "name": "review-animations",
           "description": "Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/review-animations.zip"
         },
         {
           "name": "rundown",
           "description": "Answer in the Rundown briefing style (TL;DR + checklist + numbered choices).",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/rundown.zip"
         },
         {
           "name": "scaffold-exercises",
@@ -539,7 +574,8 @@
           "name": "sdlc",
           "description": "앤트로픽 AI 네이티브 SDLC 플레이북의 문서 사슬(intent.md → spec.md → plan.md → 리뷰)을 저장소 안 `intent/슬러그/` 폴더에 남기는 스킬. 세 모드가 있다 — `intent`(인터뷰로 무엇을 왜 만들지 다섯 항목 작성), `spec`(intent.md와 CLAUDE.md를 읽고 요구사항·설계 명세 작성), `review`(diff를 intent·spec·plan과 대조해 의도 이탈을 지적). 사용자가 \"sdlc intent\", \"intent.md 써줘\", \"인텐트 만들어줘\", \"뭘 만들지 먼저 정리하자\", \"인터뷰해줘\", \"sdlc spec\", \"spec.md 만들어줘\", \"명세 써줘\", \"sdlc review\", \"의도대로 됐는지 검토\", \"intent랑 대조해줘\"라고 하거나, 새 기능·자동화 아이디어를 설명하며 코드 전에 문서로 남기자고 하면 반드시 이 스킬을 사용하라. Advisor가 구현 전에 intent·spec·plan 유무를 확인하고 없는 것을 만들 때도 이 스킬을 쓴다. ⚠️ plan.md는 이 스킬이 만들지 않는다 — 플랜 모드에서 승인한 계획을 work-artifacts가 `intent/슬러그/plan.md`에 저장한다. 한국형 기획서 문서가 목적이면 planning-doc-kr, 빌더용 HTML 실행 계획서가 목적이면 project-architect가 담당한다. 이 스킬의 산출물은 짧고 열린 질문이 남은 저장소 커밋용 문서다.",
           "source": "user",
-          "uses": 4
+          "uses": 4,
+          "zipKey": "claude/sdlc.zip"
         },
         {
           "name": "setup-matt-pocock-skills",
@@ -575,31 +611,36 @@
           "name": "spartan",
           "description": "Answer in the terse, zero-warmth Spartan style for the rest of this chat.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/spartan.zip"
         },
         {
           "name": "supanova-design-engine",
           "description": "Supanova Landing Page Design Engine. Generates premium, conversion-optimized landing pages using pure HTML + Tailwind CSS (CDN). Overrides default LLM biases toward generic templates. Enforces metric-based design rules, Korean typography standards, and hardware-accelerated motion for standalone HTML output.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/supanova-design-engine.zip"
         },
         {
           "name": "supanova-full-output",
           "description": "Overrides default LLM truncation behavior. Enforces complete HTML generation with zero placeholder patterns. Every landing page must be delivered as a complete, production-ready file. No shortcuts, no skeletons, no \"add more as needed\" patterns.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/supanova-full-output.zip"
         },
         {
           "name": "supanova-premium-aesthetic",
           "description": "Teaches AI to design landing pages that feel like $150k agency work. Defines exact fonts, spacing, shadows, card structures, animations, and Korean typography standards that make Supanova-generated pages feel expensive and intentional. Blocks all common defaults that make AI designs look cheap or generic.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/supanova-premium-aesthetic.zip"
         },
         {
           "name": "supanova-redesign-engine",
           "description": "Upgrades existing landing pages to premium quality. Audits current design for generic AI patterns and applies Supanova's high-end standards. Works with any HTML/CSS landing page — Tailwind, vanilla CSS, or inline styles.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/supanova-redesign-engine.zip"
         },
         {
           "name": "tdd",
@@ -625,7 +666,8 @@
           "name": "tldr",
           "description": "Compress a document, thread, transcript, or pasted text into a scannable TL;DR.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/tldr.zip"
         },
         {
           "name": "to-questionnaire",
@@ -691,25 +733,29 @@
           "name": "ui-inspector",
           "description": "라이브 프리뷰에서 UI 요소를 클릭하면 코드 위치, 컴포넌트 이름, 상세 스타일, UI/UX 전문 용어를 즉시 확인하고 그 자리에서 수정할 수 있는 인스펙터. Agentation 스타일 다중 annotation 지원 — 여러 요소(같은 요소 중복 포함)에 핀+코멘트를 남기면 annotation_list로 한 번에 읽어 일괄 수정하고 annotation_resolve로 해결 처리한다(브라우저 핀이 초록색으로 실시간 전환). 사용자가 \"이 부분\", \"여기\", \"선택한 요소\", \"클릭한 거\"라고 말하면 반드시 inspector_get_selection을 먼저 호출해서 컨텍스트를 가져온 뒤 작업한다. 사용자가 \"핀 단 것들\", \"annotation 반영해줘\", \"메모한 것들 수정해줘\", \"표시한 부분들 처리해줘\"라고 말하면 반드시 annotation_list를 먼저 호출한다. 트리거: \"인스펙터\", \"프리뷰 띄워줘\", \"이 부분 수정\", \"여기 색 바꿔\", \"선택한 요소\", \"preview_attach\", \"라이브 프리뷰\", \"어노테이션\", \"핀\", \"annotation\", \"메모 반영\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/ui-inspector.zip"
         },
         {
           "name": "unlazy",
           "description": "Anti-laziness execution discipline for substantial tasks. Use when work keeps coming back half done, when an agent reports done before it is done, when output must be exhaustive rather than fast, on long autonomous runs that tend to stall at 80 percent, or on any invocation like /unlazy, \"tree N\", \"gates\", or \"do not stop until it is done\". v2 enforces completion through gate files and runnable checks instead of promises. Core method is the Depth Tree, which decomposes work into leaves that each get finished against their own gates.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/unlazy.zip"
         },
         {
           "name": "update-post",
           "description": "기존 글을 갱신한다. 슬러그와 createdAt은 불변, 내용과 메타데이터는 재검토.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/update-post.zip"
         },
         {
           "name": "vibe-check",
           "description": "바이브코딩 산출을 Scale·Failure·Tradeoffs·MVP 네 축으로 판정해 .vibe-check 리포트와 체크리스트를 낸다. 승인 전에는 고치지 않는다. /vibe-check, 바이브 체크, 스케일·장애 시나리오, 커밋·배포 직전 게이트, Worker 산출 검토에 쓴다. 보안 전수 조사나 과설계 삭제 목록은 이 스킬이 아니다.",
           "source": "shared",
-          "uses": 2
+          "uses": 2,
+          "zipKey": "claude/vibe-check.zip"
         },
         {
           "name": "wait-what",
@@ -735,7 +781,8 @@
           "name": "web-design-guidelines",
           "description": "Review UI code for Web Interface Guidelines compliance. Use when asked to \"review my UI\", \"check accessibility\", \"audit design\", \"review UX\", or \"check my site against best practices\".",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/web-design-guidelines.zip"
         },
         {
           "name": "wizard",
@@ -751,13 +798,15 @@
           "name": "work-artifacts",
           "description": "비자명한 코딩 작업을 시작하기 전에 계획·체크리스트·컨텍스트 노트 3종 산출물을 만들고 유지하는 절차. 파일 여러 개를 만들거나 설계 결정이 필요한 작업, 여러 세션에 걸쳐 이어질 작업을 시작할 때 반드시 사용한다. 사용자가 계획만 주고 바로 코딩을 요청할 때, \"체크리스트 만들어줘\", \"컨텍스트 노트\", \"작업 기록 남겨줘\"라고 할 때도 트리거된다. 단순 질문·한두 줄 수정에는 사용하지 않는다.",
           "source": "user",
-          "uses": 4
+          "uses": 4,
+          "zipKey": "claude/work-artifacts.zip"
         },
         {
           "name": "write-draft",
           "description": "아웃라인을 본문으로 채운다. 가이드라인 준수가 창의성보다 우선한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/write-draft.zip"
         },
         {
           "name": "writing-beats",
@@ -803,7 +852,8 @@
           "name": "writing-guidelines",
           "description": "Review docs/prose for Writing Guidelines compliance. Use when asked to \"review my docs\", \"check writing style\", \"audit prose\", \"review docs voice and tone\", or \"check this page against the writing handbook\".",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/writing-guidelines.zip"
         },
         {
           "name": "writing-shape",
@@ -1061,601 +1111,701 @@
           "name": "수노프롬프트빌더",
           "description": "한국어 적응형 역질문으로 Suno 음악 생성용 제목, 영문 Style, 구조화된 Lyrics를 설계한다. Suno 프롬프트, 수노 스타일과 가사, 한 곡 빌더, 여러 곡 앨범, 시대·장르·분위기·악기·보컬·템포 선택, 수노용 노래 제목이나 가사 생성을 요청할 때 사용한다. Suno 맥락 없는 일반 작사 요청에는 사용하지 않는다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/u-ec8898eb85b8ed9484eba1aced9484ed8ab8ebb98ceb8d94.zip"
         },
         {
           "name": "animation-vocabulary",
           "description": "Reverse-lookup glossary that turns a vague description of a web animation or motion effect into its exact term (\"the bouncy thing when a popover opens\" → Pop in; \"the iOS rubber-band scroll\" → Rubber-banding). Use when the user asks \"what's it called when…\", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/animation-vocabulary.zip"
         },
         {
           "name": "api-and-interface-design",
           "description": "Guides stable API and interface design. Use when designing APIs, module boundaries, or any public interface. Use when creating REST or GraphQL endpoints, defining type contracts between modules, or establishing boundaries between frontend and backend.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/api-and-interface-design.zip"
         },
         {
           "name": "apple-design",
           "description": "Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/sheet interactions, momentum and interruptible transitions, translucent materials and depth, typography (optical sizing, tracking, leading), reduced-motion, or the design foundations (feedback, spatial consistency, restraint) behind Apple-style interfaces.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/apple-design.zip"
         },
         {
           "name": "attention-kind",
           "description": "Answer in the ADHD-friendly Attention-kind style for the rest of this chat.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/attention-kind.zip"
         },
         {
           "name": "benefit-copywriter",
           "description": "검증된 제품 사실을 고객이 원하는 결과와 판매 문구로 바꾸고 진단한다. 상세페이지, 광고, 프로필, 상품 소개, CTA의 판매 문구를 진단하거나 재작성할 때, 스펙 중심 문구를 혜택 중심으로 바꿀 때, 릴스 판매 문구를 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/benefit-copywriter.zip"
         },
         {
           "name": "brand-identity-architect",
           "description": "여러 단계에 걸친 브랜드 구축의 승인, 결정 기록, 상태 인계와 재개가 필요할 때 사용한다. 단독 로고 탐색, 이미지 생성, 단일 산출물 제작에는 사용하지 말고 brand-identity-studio 등 해당 전문 스킬을 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/brand-identity-architect.zip"
         },
         {
           "name": "brand-identity-studio",
           "description": "브랜드 전략, 브랜드 성격과 말투, 포지셔닝, 태그라인, 로고 콘셉트, 미니멀 럭셔리 방향, 모노그램, 컬러·타이포그래피, 전체 비주얼 시스템, 로고 비평, AI 로고 프롬프트를 하나의 일관된 브랜드 논리로 설계한다. 신규 브랜드 아이덴티티 개발, 리브랜딩, 로고 방향 탐색, 로고 아이디어 평가, 브랜드 가이드 초안, 이미지 생성용 로고 프롬프트 작성 또는 이들을 묶은 전체 브랜드 워크플로우가 필요할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/brand-identity-studio.zip"
         },
         {
           "name": "brandkit",
           "description": "Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultural, security, gaming, developer-tool, and consumer-app brand systems. Optimized for intentional logo concepting, refined composition, sparse typography, strong symbolic meaning, premium mockups, art-directed imagery, and flexible grid layouts.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/brandkit.zip"
         },
         {
           "name": "browser-testing-with-devtools",
           "description": "Tests in real browsers via Chrome DevTools MCP. Use when building or debugging anything that runs in a browser. Use when you need to inspect the DOM, capture console errors, analyze network requests, profile performance, or verify visual output with real runtime data. Requires the chrome-devtools MCP server to be configured.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/browser-testing-with-devtools.zip"
         },
         {
           "name": "brutalist-skill",
           "description": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/brutalist-skill.zip"
         },
         {
           "name": "build-meta-prompt",
           "description": "회의록, 아이디어, 기획안이나 초기 요구사항을 바탕으로 Cursor, Claude, AI 코딩 에이전트, 챗봇 등의 실행 환경에서 사용할 제품·기능·서비스의 실행 메타프롬프트를 설계한다. 사용자가 신규 웹앱, 기존 웹앱의 기능 추가·수정, SaaS, 대시보드, 관리자 도구, CRM, 업무 자동화, 데이터 시각화, API·외부 서비스 연동 또는 리서치 기반 구현을 위한 메타프롬프트나 구현 프롬프트를 만들거나 다듬어 달라고 할 때 사용한다. 목표·사용자·범위·데이터·권한·기술 및 운영 제약·보안·검증 방법을 구조적으로 질문하고, 성공 조건·검증 절차·산출물·완료 및 중지 조건을 포함한 복사 가능한 최종 프롬프트를 작성한다. 최종 프롬프트만 작성하며 그 프롬프트가 지시하는 작업은 직접 실행하지 않는다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/build-meta-prompt.zip"
         },
         {
           "name": "build-sellable-ebook",
           "description": "현재 유료 수요를 조사해 전자책 주제를 선정하고, 3일 MVP 목차, 투명한 예약 판매, 상세페이지, 판매 콘텐츠 30개, 첫 구매자 100명 목표 전략, 오늘 실행 계획을 7단계로 만든다. 전자책 시장 조사, 팔리는 전자책 기획, 선판매·출시, 상세페이지·홍보 콘텐츠, 첫 구매자 확보 계획을 요청할 때 사용한다. 수익이나 판매를 보장하지 않는다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/build-sellable-ebook.zip"
         },
         {
           "name": "cavn",
           "description": "CAVN AI 음악 생성기의 영감 모드와 커스텀 모드에 바로 붙여 넣을 입력 세트를 한국어 대화로 만들고, 생성된 곡의 보컬 문제를 다음 생성용 수정 문구와 외부 EQ 시작점으로 바꾼다. 창작 영감 프롬프트, 곡 제목, 구조화 가사, 발매 가사 재해석, 장르·BPM·구조·보컬·프로덕션, 즉시 몰입 인트로, 상세 보컬 프로필, 사운드 어휘를 조립한 영어 음악 스타일, 전체 스타일 카탈로그, 제외 스타일과 고급 설정이 필요할 때 사용한다. \"CAVN 프롬프트 만들어줘\", \"CAVN 커스텀 가사\", \"발매 가사 분석해서 새로 만들어줘\", \"사운드 단어 추천해줘\", \"보컬이 답답하고 뒤에 묻혀\", \"보컬 EQ 어떻게 해\", \"고음 노이즈를 줄여줘\", \"다음 생성에서 보컬을 앞으로 빼줘\" 같은 요청에 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/cavn.zip"
         },
         {
           "name": "ci-cd-and-automation",
           "description": "Automates CI/CD pipeline setup. Use when setting up or modifying build and deployment pipelines. Use when you need to automate quality gates, configure test runners in CI, or establish deployment strategies.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/ci-cd-and-automation.zip"
         },
         {
           "name": "clean-codex-storage",
           "description": "오래된 Codex 캐시·로그·임시 파일을 안전하게 감사하고 명시적 승인 후 정리한다. Codex 저장공간 정리, 첫 실행 후보 목록 확인, 오래된 파일 삭제, 주간 자동 정리, 삭제 내역과 확보 용량 보고를 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/clean-codex-storage.zip"
         },
         {
           "name": "code-review-and-quality",
           "description": "Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code quality across multiple dimensions before it enters the main branch.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/code-review-and-quality.zip"
         },
         {
           "name": "code-simplification",
           "description": "Simplifies code for clarity. Use when refactoring code for clarity without changing behavior. Use when code works but is harder to read, maintain, or extend than it should be. Use when reviewing code that has accumulated unnecessary complexity.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/code-simplification.zip"
         },
         {
           "name": "componentdoc-design-system",
           "description": "Use when 웹 UI(페이지·컴포넌트·대시보드·문서 사이트)를 만들거나 스타일링할 때 ComponentDoc Designer 디자인 시스템을 적용해야 하는 경우. 트리거 — \"컴포넌트 디자인 시스템\", \"ComponentDoc\", \"doc-system\", \"--doc- 토큰\", \"내 디자인 시스템 적용해줘\", 오렌지(#F6821F) 브랜드 UI 요청. 순수 CSS 토큰 + 프레임워크 독립(React/Vue/Svelte/바닐라/Tailwind) 컴포넌트 CSS.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/componentdoc-design-system.zip"
         },
         {
           "name": "context-engineering",
           "description": "Optimizes agent context setup. Use when starting a new session, when agent output quality degrades, when switching between tasks, or when you need to configure rules files and context for a project.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/context-engineering.zip"
         },
         {
           "name": "create-menu-campaign-image",
           "description": "메뉴명, 가격, 선택적 참고 이미지를 입력받아 ChatGPT 이미지 생성·편집 기능으로 밝고 깨끗한 1080×1350px 푸드 캠페인 PNG를 제작한다. 음식·음료 광고, 메뉴판 비주얼, 소셜 미디어용 푸드 포스터를 새로 만들거나 참고 사진을 전문 광고 이미지로 재구성할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/create-menu-campaign-image.zip"
         },
         {
           "name": "create-pastel-product-poster",
           "description": "제품 사진 또는 제품명으로 4:5 세로형 소프트 파스텔 상업 광고 이미지를 생성·편집하고 자연스러운 영문 제품명과 설명 카피를 배치한다. 제품 광고, 상품 포스터, 메뉴 포스터, 이커머스·SNS 제품 이미지, 제품 사진 리스타일링 요청에 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/create-pastel-product-poster.zip"
         },
         {
           "name": "create-remotion-lyric-video",
           "description": "MP3/WAV, LRC와 커버로 한국어 Remotion 단일곡 리릭비디오, 무가사 단일곡, 번호형 BGM·플레이리스트 컬렉션을 제작·미리보기·렌더·리타이틀하고 YouTube 제목·설명·챕터·해시태그와 업로드용 썸네일까지 만든다. 단일 MP3/WAV+LRC, 단일 MP3/WAV 무LRC, _N 또는 (N) 연속 파일 컬렉션, 기존 프로젝트 미리보기·렌더·문구 변경, 썸네일 전용, 메타데이터 전용 요청에 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/create-remotion-lyric-video.zip"
         },
         {
           "name": "create-waedalu-stories",
           "description": "왜달루라는 아기 수달 캐릭터로 만 3~6세 대상 교육 동화를 기획하고 숏폼 또는 롱폼 대본, 장면표, 기준 이미지 프롬프트, Higgsfield MCP 영상 프롬프트와 검수 결과를 만드는 스킬. 사용자가 왜달루 동화, 유아 교육 영상, 교육 숏폼·롱폼, 반복 캐릭터 시리즈, Higgsfield 기반 어린이 콘텐츠 제작을 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/create-waedalu-stories.zip"
         },
         {
           "name": "debugging-and-error-recovery",
           "description": "Guides systematic root-cause debugging. Use when tests fail, builds break, behavior doesn't match expectations, or you encounter any unexpected error. Use when you need a systematic approach to finding and fixing the root cause rather than guessing.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/debugging-and-error-recovery.zip"
         },
         {
           "name": "deprecation-and-migration",
           "description": "Manages deprecation and migration. Use when removing old systems, APIs, or features. Use when migrating users from one implementation to another. Use when deciding whether to maintain or sunset existing code.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/deprecation-and-migration.zip"
         },
         {
           "name": "documentation-and-adrs",
           "description": "Records decisions and documentation. Use when making architectural decisions, changing public APIs, shipping features, or when you need to record context that future engineers and agents will need to understand the codebase.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/documentation-and-adrs.zip"
         },
         {
           "name": "doubt-driven-development",
           "description": "Subjects every non-trivial decision to a fresh-context adversarial review before it stands. Use when correctness matters more than speed, when working in unfamiliar code, when stakes are high (production, security-sensitive logic, irreversible operations), or any time a confident output would be cheaper to verify now than to debug later.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/doubt-driven-development.zip"
         },
         {
           "name": "drama-shorts-factory",
           "description": "감동형·반전형 한국어 드라마 숏폼의 소재 선정, 컷별 대본, 캐릭터·장소 시트, 영상 생성 프롬프트, 미디어 타임라인 검증, QA와 편집 명세를 만드는 스킬. 사용자가 드라마 쇼츠, 시니어 쇼츠, AI 숏폼 자동화, 대본의 세로 영상화, 컷별 영상 제작을 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/drama-shorts-factory.zip"
         },
         {
           "name": "emil-design-eng",
           "description": "This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/emil-design-eng.zip"
         },
         {
           "name": "fallback-image",
           "description": "imagegen을 쓸 수 없을 때의 폴백. 순서가 정해져 있다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/fallback-image.zip"
         },
         {
           "name": "find-animation-opportunities",
           "description": "Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks \"what could be animated here?\" or wants to \"make this feel more alive\". For fixing existing animations, use improve-animations or review-animations instead.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/find-animation-opportunities.zip"
         },
         {
           "name": "fire-your-seo-agency",
           "description": "Use this when writing or auditing blog posts or sites for search and AI citation (SEO·AEO·GEO·LLMO·네이버 AI 브리핑) — 글 쓰기 전 브리프 다섯 줄, 첫 문단 직답·문단 자립·표 우선 집필 규칙, 발행 게이트, 네이버 AI 브리핑 인용 요건, 사이트 진단·측정 루프.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/fire-your-seo-agency.zip"
         },
         {
           "name": "frontend-ui-engineering",
           "description": "Builds production-quality UIs. Use when building or modifying user-facing interfaces. Use when creating components, implementing layouts, managing state, or when the output needs to look and feel production-quality rather than AI-generated.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/frontend-ui-engineering.zip"
         },
         {
           "name": "generate-cover",
           "description": "imagegen으로 커버 이미지를 만들고 프론트매터에 출처와 함께 기록한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/generate-cover.zip"
         },
         {
           "name": "git-workflow-and-versioning",
           "description": "Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, or when you need to organize work across multiple parallel streams.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/git-workflow-and-versioning.zip"
         },
         {
           "name": "gnuboard-dev",
           "description": "그누보드5(Gnuboard5)·영카트5(YoungCart5) 기능 추가 및 수정 개발 전용 스킬. 다음 상황에서 반드시 이 스킬을 사용한다: 그누보드/영카트 기능 추가, 기존 동작 수정, 플러그인 제작, 훅(hook/extend) 작업, 게시판 커스터마이징, 스킨·테마 수정, 관리자 페이지 제작, 회원/포인트/쿠폰 기능 변경, 상품·주문·결제 흐름 커스텀, g5_ 테이블 조회·설계. 사용자가 \"그누보드\", \"영카트\", \"gnuboard\", \"youngcart\", \"g5\", \"SIR\"를 언급하거나, 코드에 `_GNUBOARD_` 상수, `g5_` 테이블 접두사, `sql_query()`, `G5_PATH` 같은 그누보드 고유 식별자가 보이면 — 명시적 요청이 없어도 — 이 스킬을 먼저 읽는다. PHP 쇼핑몰/게시판 수정 요청이 그누보드 기반으로 추정되면 역시 이 스킬을 쓴다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/gnuboard-dev.zip"
         },
         {
           "name": "gpt-tasteskill",
           "description": "Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/gpt-tasteskill.zip"
         },
         {
           "name": "gpt56-model-router",
           "description": "Route explicitly requested work across GPT-5.6 Sol, Terra, and Luna using a user-selected performance, balanced, or token-saving profile, with Sol-owned but creatively open product, UX/UI, visual, interaction, motion, and art-direction work. Includes read-only discovery, parent-model-aware delegation, explicit approval before execution, and outcome-based design acceptance that preserves exploration and implementation creativity. Use only when the user explicitly invokes $gpt56-model-router or directly asks for the GPT-5.6 model router. Do not invoke implicitly for ordinary tasks.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/gpt56-model-router.zip"
         },
         {
           "name": "graphify",
           "description": "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/graphify.zip"
         },
         {
           "name": "hatch-pet",
           "description": "Create, repair, validate, visually QA, and package Codex-compatible v2 animated pets from character art, generated images, company or prospect brand cues, or visual references. Use for any new Codex pet, custom mascot, non-pixel pet style, brand-inspired pet, existing-pet repair, or 8x11 spritesheet workflow requiring all 9 standard animation rows, 16 look directions, deterministic assembly, QA artifacts, and spriteVersionNumber 2 packaging.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/hatch-pet.zip"
         },
         {
           "name": "higgsfield-canvas-ad-planner",
           "description": "제품 정보를 단계형 선택 질문과 자유 입력으로 수집하고, 한국 시장에 맞는 타겟·모델·촬영 장소·광고 콘셉트·카피·AI 이미지 프롬프트·Seedance 2.0 영상 프롬프트까지 완성하는 Higgsfield Canvas 광고 기획 스킬. 사용자가 제품 광고 기획, 자동 광고 제안서, 모델 캐스팅, 로케이션 추천, 제품 이미지 생성 프롬프트, 숏폼 광고 또는 Seedance 레퍼런스 기반 영상 프롬프트를 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/higgsfield-canvas-ad-planner.zip"
         },
         {
           "name": "humanize-korean",
           "description": "AI가 쓴 한글을 사람 글처럼 윤문할 때 사용한다. 번역투 제거, GPT 문체, AI 티 없애기, humanize Korean, 사람이 쓴 것처럼 고쳐달라는 요청에 쓴다. 블로그일 때 인사말 도입·막연한 만족 표현도 seo-geo에 맞춰 손본다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/humanize-korean.zip"
         },
         {
           "name": "idea-refine",
           "description": "Refines raw ideas into sharp, actionable concepts through structured divergent and convergent thinking. Use when an idea is still vague, when you need to stress-test assumptions before committing to a plan, or when you want to expand options before converging on one. Triggers on \"ideate\", \"refine this idea\", or \"stress-test my plan\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/idea-refine.zip"
         },
         {
           "name": "image-to-code-skill",
           "description": "Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In Codex, it must prefer large, readable, section-specific images instead of tiny compressed boards, generate fresh standalone images for sections or detail views instead of cropping old ones, avoid lazy under-generation, avoid cards-inside-cards-inside-cards UI, and keep the hero clean, spacious, readable, and visible on a small laptop.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/image-to-code-skill.zip"
         },
         {
           "name": "imagegen-frontend-mobile",
           "description": "Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, strong multi-screen consistency, controlled color palettes, non-generic creative direction, textured surfaces, image-led composition, tasteful custom iconography, and clean phone mockup framing. By default, screens should be shown inside a subtle premium iPhone or similar phone mockup with a visible frame, while the main focus stays on the app content itself. This skill generates images only. It does not write code.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/imagegen-frontend-mobile.zip"
         },
         {
           "name": "imagegen-frontend-web",
           "description": "Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections produces 8 images. Never compress multiple sections into one image. Enforces composition variety (not always left-text / right-image), background-image freedom, varied CTAs, varied hero scales (giant / mid / mini minimalist), narrative concept spine, second-read moments, and a single consistent palette across all images. Optimized for landing pages, marketing sites, and product comps that developers or coding models can accurately recreate.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/imagegen-frontend-web.zip"
         },
         {
           "name": "improve-animations",
           "description": "Survey a codebase's animation and motion code as a senior motion advisor, then produce a prioritized audit and self-contained implementation plans for other agents (or cheaper models) to execute. Read-only on source code — it plans improvements, it does not apply them. Use when the user asks to \"improve the animations\", \"audit the motion\", \"make this app feel better\", or wants a roadmap of animation fixes rather than a review of a single diff.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/improve-animations.zip"
         },
         {
           "name": "incremental-implementation",
           "description": "Delivers changes incrementally. Use when implementing any feature or change that touches more than one file. Use when you're about to write a large amount of code at once, or when a task feels too big to land in one step.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/incremental-implementation.zip"
         },
         {
           "name": "install-anti-slop",
           "description": "Install, configure, update, or upgrade vendored anti-slop Oxlint plugins. Use when adding anti-slop, picking up upstream rules or fixes, or migrating an existing installation while preserving local customizations.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/install-anti-slop.zip"
         },
         {
           "name": "interview-me",
           "description": "Extracts what the user actually wants instead of what they think they should want. Achieves this through one-question-at-a-time interview until ~95% confidence about the underlying intent. Use when an ask is underspecified (\"build me X\" without \"for whom\" or \"why now\"), when the user explicitly invokes (\"interview me\", \"grill me\", \"are we sure?\", \"stress-test my thinking\"), or when you catch yourself silently filling in ambiguous requirements before any plan, spec, or code exists.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/interview-me.zip"
         },
         {
           "name": "karpathy-guidelines",
           "description": "Behavioral guidelines to reduce common LLM coding mistakes. Use when writing, reviewing, or refactoring code to avoid overcomplication, make surgical changes, surface assumptions, and define verifiable success criteria.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/karpathy-guidelines.zip"
         },
         {
           "name": "minimalist-skill",
           "description": "Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/minimalist-skill.zip"
         },
         {
           "name": "naver-blog-seo-geo",
           "description": "네이버 블로그 글을 검색(SEO)·생성형 검색(GEO)·네이버 발행 설정에 맞춰 쓸 때 사용한다. 제목·첫문단·소제목·태그·카테고리·대표이미지·출처를 검색 의도에 맞추고, 노출을 보장한다고 쓰지 않는다. 사용자가 \"네이버 블로그 글 써줘\", \"블로그 포스팅 초안\", \"네이버 검색 잘 되게\", \"상위노출\", \"블로그 SEO\", \"GEO\", \"AI 검색·생성형 검색에 잡히게\", \"블로그 제목/태그 뽑아줘\", \"네이버 발행 설정\", \"카테고리·대표이미지 뭐로 할까\", \"블로그 글 다듬어줘\"를 요청하거나, 주제·자료·초안·사진을 주며 네이버에 올릴 글로 만들어 달라고 하면 반드시 이 스킬을 사용하라. 플랫폼 언급이 없는 한국어 블로그 SEO 글도 이 스킬로 시작하고, 네이버가 아니면 발행 설정 절만 뺀다. ⚠️ 네이버 발행과 무관하게 사용자 말투 학습·SNS 대필만 원하면 ghostwriter-clone이 담당한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/naver-blog-seo-geo.zip"
         },
         {
           "name": "optimize-seo-geo",
           "description": "프론트매터의 seo/geo 블록을 채운다. 본문은 건드리지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/optimize-seo-geo.zip"
         },
         {
           "name": "output-skill",
           "description": "Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/output-skill.zip"
         },
         {
           "name": "package-design-board",
           "description": "첨부된 제품 패키지 이미지를 분석해 산업디자인 포트폴리오 수준의 패키징 도면 시트 또는 이미지 생성 프롬프트를 만든다. “패키지 도안 만들어줘”, “패키지 도면 만들어줘”, “패키지 설계도 만들어줘”, “패키징 시트 만들어줘” 같은 짧은 요청과 패키지 도면화, 전개도, 구조 스케치, 정면·측면·윗면·아랫면도, 3D 패키지 렌더링, 치수 표기, 한글 패키지 디자인 보드, 재질 및 라벨 상세 표현 요청에 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/package-design-board.zip"
         },
         {
           "name": "pdf",
           "description": "Use when tasks involve reading, creating, or reviewing PDF files where rendering and layout matter; prefer visual checks by rendering pages (Poppler) and use Python tools such as `reportlab`, `pdfplumber`, and `pypdf` for generation and extraction.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/pdf.zip"
         },
         {
           "name": "performance-optimization",
           "description": "Optimizes application performance. Use when performance requirements exist, when you suspect performance regressions, or when Core Web Vitals or load times need improvement. Use when profiling reveals bottlenecks that need fixing.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/performance-optimization.zip"
         },
         {
           "name": "persona-system",
           "description": "Design, audit, or revise governed AI-agent persona systems, including application policy, runtime task contracts, persona defaults, optional long-term memory, and optional specialist-agent roles. Use when creating or reviewing an agent persona, runtime instruction composition, memory governance with LangMem or Mem0, CrewAI-style role cards, tool approval controls, or resistance to memory and prompt injection.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/persona-system.zip"
         },
         {
           "name": "pick-ui-library",
           "description": "Pick the right library for a given frontend task from a curated, opinionated list — numbers, OTP inputs, charts, command menus, virtualization, drag and drop, toasts, state, styling, and more. Only runs when explicitly invoked; it does not trigger on its own.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/pick-ui-library.zip"
         },
         {
           "name": "plan-post",
           "description": "주제를 정하고 중복을 확인한 뒤 아웃라인과 프론트매터 뼈대를 만든다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/plan-post.zip"
         },
         {
           "name": "planning-and-task-breakdown",
           "description": "Breaks work into ordered tasks. Use when you have a spec or clear requirements and need to break work into implementable tasks. Use when a task feels too large to start, when you need to estimate scope, or when parallel work is possible.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/planning-and-task-breakdown.zip"
         },
         {
           "name": "playwright",
           "description": "Use when the task requires automating a real browser from the terminal (navigation, form filling, snapshots, screenshots, data extraction, UI-flow debugging) via `playwright-cli` or the bundled wrapper script.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/playwright.zip"
         },
         {
           "name": "redesign-skill",
           "description": "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/redesign-skill.zip"
         },
         {
           "name": "remotion-best-practices",
           "description": "Best practices for Remotion - Video creation in React",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-best-practices.zip"
         },
         {
           "name": "remotion-captions",
           "description": "Dealing with captions in Remotion",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-captions.zip"
         },
         {
           "name": "remotion-create",
           "description": "Creating a new Remotion video",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-create.zip"
         },
         {
           "name": "remotion-interactivity",
           "description": "Best practices for writing Remotion animations that stay intuitive for agents and editable in Remotion Studio Visual Mode.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-interactivity.zip"
         },
         {
           "name": "remotion-markup",
           "description": "Best practices for writing Remotion React Markup",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-markup.zip"
         },
         {
           "name": "remotion-render",
           "description": "Best practices for rendering videos",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-render.zip"
         },
         {
           "name": "remotion-saas",
           "description": "Building video apps with Remotion - framework, rendering and Player advice",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/remotion-saas.zip"
         },
         {
           "name": "review-and-submit",
           "description": "감사를 돌리고 사실을 확인한 뒤 in_review로 올린다. 발행은 하지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/review-and-submit.zip"
         },
         {
           "name": "review-animations",
           "description": "Reviews animation and motion code against a high craft bar derived from Emil Kowalski's design engineering philosophy. Default to flagging; approval is earned.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/review-animations.zip"
         },
         {
           "name": "rundown",
           "description": "Answer in the Rundown briefing style (TL;DR + checklist + numbered choices).",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/rundown.zip"
         },
         {
           "name": "security-and-hardening",
           "description": "Hardens code against vulnerabilities. Use when handling user input, authentication, data storage, or external integrations. Use when building any feature that accepts untrusted data, manages user sessions, or interacts with third-party services.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/security-and-hardening.zip"
         },
         {
           "name": "seo-geo",
           "description": "한국어 블로그 글을 검색(SEO)·생성형 검색(GEO)에 맞춰 새로 쓰거나, 기존 글을 진단해 고치거나, 네이버 발행 설정을 맞출 때 사용한다. 끝까지 읽히는 흐름(공감→원인→해결→예시→CTA), 첫 문장 결론·가격·비교 배치, 막연한 만족 표현 금지, 소제목·문단마다 사진 한 장, FAQ·메타·장문 패키지 선택 항목, 다음 글 내부 링크 전략, 발행 전 오타·한글결손 가드·블로그 마케팅 검수, 네이버 SEO 마스터 포맷(경쟁 구조·롱테일·썸네일·홈판/검색 초안), 발행 후 Naver-SEO 최종 검수도 포함한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/seo-geo.zip"
         },
         {
           "name": "shipping-and-launch",
           "description": "Prepares production launches. Use when preparing to deploy to production. Use when you need a pre-launch checklist, when setting up monitoring, when planning a staged rollout, or when you need a rollback strategy.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/shipping-and-launch.zip"
         },
         {
           "name": "soft-skill",
           "description": "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/soft-skill.zip"
         },
         {
           "name": "soul-writer",
           "description": "Hermes가 지속 정체성으로 사용할 SOUL.md를 생성·수정한다. 일반 페르소나 글쓰기, 일회성 역할 프롬프트, 프로젝트 지침 요청에는 사용하지 않는다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/soul-writer.zip"
         },
         {
           "name": "source-driven-development",
           "description": "Grounds every implementation decision in official documentation. Use when you want authoritative, source-cited code free from outdated patterns. Use when building with any framework or library where correctness matters.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/source-driven-development.zip"
         },
         {
           "name": "spartan",
           "description": "Answer in the terse, zero-warmth Spartan style for the rest of this chat.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/spartan.zip"
         },
         {
           "name": "spec-driven-development",
           "description": "Creates specs before coding. Use when starting a new project, feature, or significant change and no specification exists yet. Use when requirements are unclear, ambiguous, or only exist as a vague idea.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/spec-driven-development.zip"
         },
         {
           "name": "stitch-skill",
           "description": "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/stitch-skill.zip"
         },
         {
           "name": "suno-prompt-builder",
           "description": "한국어 적응형 역질문으로 Suno 음악 생성용 제목, 영문 Style, 구조화된 Lyrics를 설계한다. Suno 프롬프트, 수노 스타일과 가사, 한 곡 빌더, 여러 곡 앨범, 시대·장르·분위기·악기·보컬·템포 선택, 수노용 노래 제목이나 가사 생성을 요청할 때 사용한다. Suno 맥락 없는 일반 작사 요청에는 사용하지 않는다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/suno-prompt-builder.zip"
         },
         {
           "name": "taste-skill",
           "description": "Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/taste-skill.zip"
         },
         {
           "name": "taste-skill-v1",
           "description": "The original v1 taste-skill, preserved for projects depending on its exact behavior. The current default is `design-taste-frontend` (v2 experimental), which is a substantial rewrite. Use this v1 install name only if you need exact backward compatibility.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/taste-skill-v1.zip"
         },
         {
           "name": "test-driven-development",
           "description": "Drives development with tests. Use when implementing any logic, fixing any bug, or changing any behavior. Use when you need to prove that code works, when a bug report arrives, or when you're about to modify existing functionality.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/test-driven-development.zip"
         },
         {
           "name": "thumbnail-prompt-maker-kr",
           "description": "한국어 대화로 유튜브 플레이리스트 썸네일, 앨범 커버, 쇼츠 배경용 이미지 프롬프트를 설계하고 선택값 변경에 따라 결과를 재생성한다. 가사·Suno Style Prompt 기반 자동 설정, 썸네일 구성·인물·텍스트·이미지 스타일·분위기·카메라·계절·색감·레퍼런스·이미지 AI별 프롬프트가 필요할 때 사용한다. \"썸네일 프롬프트 만들어줘\", \"앨범 커버 프롬프트\", \"옵션 보기 이미지 스타일\", \"분위기를 몽환적으로 변경\", \"가사 기반 자동 설정\" 같은 요청에 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/thumbnail-prompt-maker-kr.zip"
         },
         {
           "name": "tistory-agent-team",
           "description": "티스토리 gilwon.tistory.com의 글감 검색, 초안, BM·SEO·AEO 검수, 예약 준비, 승인된 발행과 공개 URL 재검수를 실제 서브에이전트 팀으로 실행한다. 기존 블로그 봇을 에이전트로 바꾸거나 이 파이프라인을 실행할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/tistory-agent-team.zip"
         },
         {
           "name": "tistory-seo-geo",
           "description": "한국어 티스토리 블로그 글을 검색(SEO)·생성형 검색(GEO)에 맞춰 새로 쓰거나, 기존 글을 진단해 고치거나, 티스토리 발행 설정을 맞출 때 사용한다. 끝까지 읽히는 흐름(공감→원인→해결→예시→CTA), 첫 문장 결론·가격·비교 배치, 막연한 만족 표현 금지, 소제목·문단마다 사진 한 장, FAQ·메타·장문 패키지 선택 항목, 다음 글 내부 링크 전략, 발행 전 오타·한글결손 가드, 경쟁 구조·롱테일·썸네일 규칙을 포함한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/tistory-seo-geo.zip"
         },
         {
           "name": "tldr",
           "description": "Compress a document, thread, transcript, or pasted text into a scannable TL;DR.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/tldr.zip"
         },
         {
           "name": "unlazy",
           "description": "Anti-laziness execution discipline for substantial tasks. Use when work keeps coming back half done, when an agent reports done before it is done, when output must be exhaustive rather than fast, on long autonomous runs that tend to stall at 80 percent, or on any invocation like /unlazy, \"tree N\", \"gates\", or \"do not stop until it is done\". v2 enforces completion through gate files and runnable checks instead of promises. Core method is the Depth Tree, which decomposes work into leaves that each get finished against their own gates.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/unlazy.zip"
         },
         {
           "name": "update-post",
           "description": "기존 글을 갱신한다. 슬러그와 createdAt은 불변, 내용과 메타데이터는 재검토.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/update-post.zip"
         },
         {
           "name": "using-agent-skills",
           "description": "Discovers and invokes agent skills. Use when starting a session or when you need to discover which skill applies to the current task. This is the meta-skill that governs how all other skills are discovered and invoked.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/using-agent-skills.zip"
         },
         {
           "name": "vibe-check",
           "description": "바이브코딩 산출을 Scale·Failure·Tradeoffs·MVP 네 축으로 판정해 .vibe-check 리포트와 체크리스트를 낸다. 승인 전에는 고치지 않는다. /vibe-check, 바이브 체크, 스케일·장애 시나리오, 커밋·배포 직전 게이트, Worker 산출 검토에 쓴다. 보안 전수 조사나 과설계 삭제 목록은 이 스킬이 아니다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/vibe-check.zip"
         },
         {
           "name": "write-draft",
           "description": "아웃라인을 본문으로 채운다. 가이드라인 준수가 창의성보다 우선한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/write-draft.zip"
         },
         {
           "name": "write-korean-social-hooks",
           "description": "한국어 숏폼 콘텐츠의 첫 문장, 후킹, CTA를 작성하고 개선한다. 스크롤 정지, 타깃 호명, 시청 지속, 손실회피, 신뢰 형성, 숫자 체감, 행동 유도를 위한 문구나 릴스·쇼츠·틱톡 오프닝을 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/write-korean-social-hooks.zip"
         },
         {
           "name": "write-pasona-sales-copy",
           "description": "PASONA 구조로 한국어 홍보·판매 문구를 작성하고 개선한다. 인스타그램, 현수막, 광고, 상세페이지, 쿠팡·스마트스토어 같은 이커머스, 크라우드펀딩, 랜딩페이지 또는 CTA 문구를 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/write-pasona-sales-copy.zip"
         },
         {
           "name": "youtube-upload",
           "description": "가사 또는 곡 설명을 바탕으로 유튜브용 업로드 제목, 업로드 내용, 썸네일 이미지와 수익화 관점의 A/B 테스트를 한 번에 설계하고 생성한다. 노래·뮤직비디오·리릭 비디오의 업로드 패키지, 클릭률과 시청 지속 시간 개선, 가사·곡 설명·곡 소개·곡 콘셉트 기반 제목·내용·썸네일 제작을 요청할 때 사용한다.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "codex/youtube-upload.zip"
         }
       ],
       "plugins": [
@@ -2141,7 +2291,8 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 19
+          "uses": 19,
+          "zipKey": "claude/ego-browser.zip"
         },
         {
           "name": "execute-plan",
@@ -2153,7 +2304,8 @@
           "name": "fallback-image",
           "description": "imagegen을 쓸 수 없을 때의 폴백. 순서가 정해져 있다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/fallback-image.zip"
         },
         {
           "name": "game-assets",
@@ -2165,7 +2317,8 @@
           "name": "generate-cover",
           "description": "imagegen으로 커버 이미지를 만들고 프론트매터에 출처와 함께 기록한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/generate-cover.zip"
         },
         {
           "name": "git-guardrails-claude-code",
@@ -2241,19 +2394,22 @@
           "name": "humanize",
           "description": "AI가 쓴 한글 텍스트를 자연스럽게 윤문하는 진입 명령. humanize-korean 파이프라인을 Fast 모드(기본)로 실행하고 `--strict`면 정밀 3콜(진단→겨냥 윤문→finalize). 트리거 — \"/humanize\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize.zip"
         },
         {
           "name": "humanize-korean",
           "description": "AI(ChatGPT·Claude·Gemini 등)가 쓴 한글 텍스트를 \"사람이 쓴 글처럼\" 윤문해주는 오케스트레이터 스킬. 번역투·영어 인용 과다·기계적 병렬·관용구·피동태 남용·접속사 남발·리듬 균일성·이모지/불릿 과다 등 10대 카테고리 70개 AI 티 패턴을 탐지·분류해 내용은 한 글자도 건드리지 않고 문체·리듬·표현만 자연스러운 한국어로 재작성한다. shim의 route_hint(light|standard|heavy)로 경로를 정해 잘 쓴 글은 1콜, 표준은 2콜, 중증·장문만 3+콜(진단→겨냥 윤문→finalize)로 처리한다. 트리거 — \"AI 티 없애줘\", \"AI 같은 글 자연스럽게\", \"GPT/ChatGPT 문체\", \"AI 번역투 고쳐\", \"사람이 쓴 것처럼 윤문\", \"AI 윤문\", \"ChatGPT 티 제거\", \"한글 AI 탐지·윤문\", \"AI 글 사람처럼\", \"번역투 제거\", \"영어 인용 많은 글 윤문\", \"AI 글 티 안 나게\", \"휴머나이저\", \"humanize Korean\", \"AI detector bypass 한글\". 후속 작업 — \"특정 카테고리만 다시\", \"윤문 강도 조정\", \"장르 바꿔서\", \"이 문단만\", \"2차 윤문\" 도 모두 이 스킬. 단순 맞춤법·오탈자 교정은 직접 처리, 번역은 번역 스킬, 내용 추가·삭제를 동반한 재작성은 별도 집필 스킬.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize-korean.zip"
         },
         {
           "name": "humanize-redo",
           "description": "가장 최근 윤문 결과를 2차로 다시 다듬는다 — 특정 카테고리·문단·강도 조정도 가능. humanize-korean strict 윤문(Phase B)을 기존 run_id에 재실행해 잔존 finding을 처리한다. 트리거 — \"/humanize-redo\".",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/humanize-redo.zip"
         },
         {
           "name": "humanizer",
@@ -2343,13 +2499,15 @@
           "name": "naver-blog-seo-geo",
           "description": "네이버 블로그 글을 검색(SEO)·생성형 검색(GEO)·네이버 발행 설정에 맞춰 쓸 때 사용한다. 제목·첫문단·소제목·태그·카테고리·대표이미지·출처를 검색 의도에 맞추고, 노출을 보장한다고 쓰지 않는다. 사용자가 \"네이버 블로그 글 써줘\", \"블로그 포스팅 초안\", \"네이버 검색 잘 되게\", \"상위노출\", \"블로그 SEO\", \"GEO\", \"AI 검색·생성형 검색에 잡히게\", \"블로그 제목/태그 뽑아줘\", \"네이버 발행 설정\", \"카테고리·대표이미지 뭐로 할까\", \"블로그 글 다듬어줘\"를 요청하거나, 주제·자료·초안·사진을 주며 네이버에 올릴 글로 만들어 달라고 하면 반드시 이 스킬을 사용하라. 플랫폼 언급이 없는 한국어 블로그 SEO 글도 이 스킬로 시작하고, 네이버가 아니면 발행 설정 절만 뺀다. ⚠️ 네이버 발행과 무관하게 사용자 말투 학습·SNS 대필만 원하면 ghostwriter-clone이 담당한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/naver-blog-seo-geo.zip"
         },
         {
           "name": "optimize-seo-geo",
           "description": "프론트매터의 seo/geo 블록을 채운다. 본문은 건드리지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/optimize-seo-geo.zip"
         },
         {
           "name": "orca-cli",
@@ -2381,7 +2539,8 @@
           "name": "plan-post",
           "description": "주제를 정하고 중복을 확인한 뒤 아웃라인과 프론트매터 뼈대를 만든다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/plan-post.zip"
         },
         {
           "name": "pptx",
@@ -2453,7 +2612,8 @@
           "name": "review-and-submit",
           "description": "감사를 돌리고 사실을 확인한 뒤 in_review로 올린다. 발행은 하지 않는다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/review-and-submit.zip"
         },
         {
           "name": "scaffold-exercises",
@@ -2577,13 +2737,15 @@
           "name": "update-post",
           "description": "기존 글을 갱신한다. 슬러그와 createdAt은 불변, 내용과 메타데이터는 재검토.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/update-post.zip"
         },
         {
           "name": "vibe-check",
           "description": "바이브코딩 산출을 Scale·Failure·Tradeoffs·MVP 네 축으로 판정해 .vibe-check 리포트와 체크리스트를 낸다. 승인 전에는 고치지 않는다. /vibe-check, 바이브 체크, 스케일·장애 시나리오, 커밋·배포 직전 게이트, Worker 산출 검토에 쓴다. 보안 전수 조사나 과설계 삭제 목록은 이 스킬이 아니다.",
           "source": "shared",
-          "uses": 1
+          "uses": 1,
+          "zipKey": "claude/vibe-check.zip"
         },
         {
           "name": "wayfinder",
@@ -2599,7 +2761,8 @@
           "name": "write-draft",
           "description": "아웃라인을 본문으로 채운다. 가이드라인 준수가 창의성보다 우선한다.",
           "source": "shared",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "claude/write-draft.zip"
         },
         {
           "name": "writing-beats",
@@ -2667,307 +2830,358 @@
           "name": "accidental-data-loss-prevention",
           "description": "**STOP AND VERIFY**: Before running any command or tool that results in irreversible data loss, you MUST obtain explicit user consent. When in doubt, ask. It is better to wait for confirmation than to accidentally delete production data or critical project assets. Use this for: - SQL: DROP TABLE/VIEW/SCHEMA/DATABASE, TRUNCATE, or broad DELETE (missing WHERE or using 1=1). - Cloud Storage: gsutil rm or gcloud storage rm targeting production data or critical buckets. - Infrastructure: gcloud projects delete, deleting Spanner/BigQuery/Dataproc resources, deleting secrets, or KMS key destruction.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/accidental-data-loss-prevention.zip"
         },
         {
           "name": "alloydb-omni-access-control",
           "description": "Use these skills when you need to manage user roles, inspect permissions,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-access-control.zip"
         },
         {
           "name": "alloydb-omni-container",
           "description": "You're an expert in AlloyDB Omni running in a container. You can help",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-container.zip"
         },
         {
           "name": "alloydb-omni-data",
           "description": "Use these skills when you need to explore the database structure, identify",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-data.zip"
         },
         {
           "name": "alloydb-omni-health",
           "description": "Use these skills when you need to audit database health, identify storage",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-health.zip"
         },
         {
           "name": "alloydb-omni-kubernetes",
           "description": "You're an expert in AlloyDB Omni Operator running in Kubernetes. You",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-kubernetes.zip"
         },
         {
           "name": "alloydb-omni-monitor",
           "description": "Use these skills when you need to troubleshoot production issues by identifying",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-monitor.zip"
         },
         {
           "name": "alloydb-omni-optimize",
           "description": "Use these skills when you need to fine-tune the database engine settings,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-optimize.zip"
         },
         {
           "name": "alloydb-omni-performance",
           "description": "Use these skills when you need to analyze query performance, generate",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-performance.zip"
         },
         {
           "name": "alloydb-omni-replication",
           "description": "Use these skills when you need to monitor the health of database replication,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-omni-replication.zip"
         },
         {
           "name": "alloydb-postgres-access-management",
           "description": "Use these skills when you need to manage database users, inspect permissions",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-access-management.zip"
         },
         {
           "name": "alloydb-postgres-admin",
           "description": "Use these skills when you need to provision new AlloyDB clusters and",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-admin.zip"
         },
         {
           "name": "alloydb-postgres-data",
           "description": "Use these skills when you need to explore the database schema, identify",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-data.zip"
         },
         {
           "name": "alloydb-postgres-health",
           "description": "Use these skills when you need to optimize storage, identify index issues,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-health.zip"
         },
         {
           "name": "alloydb-postgres-monitor",
           "description": "Use these skills when you need to troubleshoot slow performance, analyze",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-monitor.zip"
         },
         {
           "name": "alloydb-postgres-optimize",
           "description": "Use these skills when you need to discover and manage PostgreSQL extensions",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-optimize.zip"
         },
         {
           "name": "alloydb-postgres-replication",
           "description": "Use these skills when you need to monitor replication health, manage",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/alloydb-postgres-replication.zip"
         },
         {
           "name": "bigquery",
           "description": "Provides BigQuery-specific logic, knowledge, and specialized standards. Use this skill whenever you are doing anything with BigQuery, including: 1. BigQuery query optimization (SQL) 2. BigFrames Python code 3. BigQuery ML/AI functions (SQL & Python) 4. Graph Analytics (GQL & Property Graphs)",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/bigquery.zip"
         },
         {
           "name": "bigquery-data-transfer-service",
           "description": "Discovers and inspects BigQuery Data Transfer Service (DTS) configurations.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/bigquery-data-transfer-service.zip"
         },
         {
           "name": "building-data-apps",
           "description": "Build modern data apps, dashboards, and interactive reports using either React + Vite or Streamlit. Includes optional Gemini Data Analytics chat integration for an AI powered \"chat with your data\" experience. Relevant when any of the following conditions are true: 1. User explicitly requests to build a data dashboard, data application, or visualization UI, and the UI pulls data from a GCP database (defaulting to BigQuery unless otherwise specified). 2. You need to generate a frontend web application to interact with, query, and visualize data from GCP data sources. 3. User wants to build a \"chat with your data\" experience or integrate the Gemini Data Analytics chat API into a web interface. Do NOT use when any of the following conditions are true: 1. The request is for building backend-only services. 2. The request is for simple CLI scripts or command-line applications. 3. The web application is not data-centric or does not involve visualizing/querying data from GCP sources.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/building-data-apps.zip"
         },
         {
           "name": "cloud-sql-mysql-admin",
           "description": "Use these skills when you need to provision new Cloud SQL for MySQL instances,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-mysql-admin.zip"
         },
         {
           "name": "cloud-sql-mysql-data",
           "description": "Use these skills when you need to explore your database schema, execute",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-mysql-data.zip"
         },
         {
           "name": "cloud-sql-mysql-lifecycle",
           "description": "Use these skills when you need to manage the durability and safety of",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-mysql-lifecycle.zip"
         },
         {
           "name": "cloud-sql-mysql-monitor",
           "description": "Use these skills when you need to troubleshoot slow queries, analyze",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-mysql-monitor.zip"
         },
         {
           "name": "cloud-sql-postgres-admin",
           "description": "Use these skills when you need to provision new Cloud SQL instances,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-admin.zip"
         },
         {
           "name": "cloud-sql-postgres-data",
           "description": "Use these skills when you need to explore the database structure, discover",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-data.zip"
         },
         {
           "name": "cloud-sql-postgres-health",
           "description": "Use these skills when you need to audit database health, identify storage",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-health.zip"
         },
         {
           "name": "cloud-sql-postgres-lifecycle",
           "description": "Use these skills when you need to manage the lifecycle of your instances,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-lifecycle.zip"
         },
         {
           "name": "cloud-sql-postgres-monitor",
           "description": "Use these skills when you need to troubleshoot performance bottlenecks,",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-monitor.zip"
         },
         {
           "name": "cloud-sql-postgres-replication",
           "description": "Use these skills when you need to monitor replication health, manage",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-replication.zip"
         },
         {
           "name": "cloud-sql-postgres-vectorassist",
           "description": "Use these skills to set up and optimize production-ready vector workloads",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-vectorassist.zip"
         },
         {
           "name": "cloud-sql-postgres-view-config",
           "description": "Use these skills when you need to discover and manage PostgreSQL extensions",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-postgres-view-config.zip"
         },
         {
           "name": "cloud-sql-sqlserver-admin",
           "description": "Use these skills when you need to provision new Cloud SQL for SQL Server",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-sqlserver-admin.zip"
         },
         {
           "name": "cloud-sql-sqlserver-data",
           "description": "Use these skills when you need to explore the database schema, execute",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-sqlserver-data.zip"
         },
         {
           "name": "cloud-sql-sqlserver-lifecycle",
           "description": "Use these skills when you need to manage the lifecycle and durability",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-sqlserver-lifecycle.zip"
         },
         {
           "name": "cloud-sql-sqlserver-monitor",
           "description": "Use these skills when you need to troubleshoot slow queries and analyze",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/cloud-sql-sqlserver-monitor.zip"
         },
         {
           "name": "data-autocleaning",
           "description": "Automated data quality and transformation capabilities for Dataform/dbt/BigQuery",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/data-autocleaning.zip"
         },
         {
           "name": "dataform-bigquery",
           "description": "Expertise in generating clean, correct, and efficient Dataform pipeline",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/dataform-bigquery.zip"
         },
         {
           "name": "dbt-bigquery",
           "description": "Expert guidance for creating, modifying, and optimizing dbt pipelines",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/dbt-bigquery.zip"
         },
         {
           "name": "discovering-gcp-data-assets",
           "description": "Finds and inspects data assets within Google Cloud. Relevant when any of the following conditions are true: 1. The user request involves finding, exploring, or inspecting data assets in Google Cloud, such as: - BigQuery datasets, tables, or views - BigLake catalog or tables - Spanner instances, databases or tables - etc. 2. You need to retrieve the schema, metadata, or governance policies for a GCP data asset. 3. You have a keyword or topic (e.g., \"sales data\") but lack the specific table or resource ID. 4. You are attempting to find data using `bq ls`, as this skill offers a superior approach. Don't use when: - Assets are outside Google Cloud",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/discovering-gcp-data-assets.zip"
         },
         {
           "name": "federate-lakehouse-catalog",
           "description": "'Sets up Google Cloud Lakehouse federated catalogs to remote Iceberg",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/federate-lakehouse-catalog.zip"
         },
         {
           "name": "firestore-data",
           "description": "Handles NoSQL document operations and collection hierarchy exploration.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/firestore-data.zip"
         },
         {
           "name": "gcloud-auth-verification",
           "description": "Guidelines for identifying and resolving missing Google Cloud authentication",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcloud-auth-verification.zip"
         },
         {
           "name": "gcp-composer-troubleshooting",
           "description": "'Provides expert guidance for troubleshooting Cloud Composer (Apache",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-composer-troubleshooting.zip"
         },
         {
           "name": "gcp-data-pipelines",
           "description": "'Primary entry point for building, managing, and orchestrating data pipelines",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-data-pipelines.zip"
         },
         {
           "name": "gcp-dataflow",
           "description": "Guides writing, packaging, executing, and troubleshooting Apache Beam pipelines on Dataflow. Use when creating new pipelines, configuring Flex Templates, or analyzing performance of Dataflow jobs. Capabilities include Java/Python/Go setup, Cloud Build integration, and deep diagnostic analysis of job health and autoscaling. Use when: - Creating an Apache Beam Dataflow pipeline. - Creating a Google Dataflow Flex Template. - Using an existing Google Dataflow Template. - Debugging Dataflow pipeline - Troubleshooting Dataflow pipeline - Analyzing Performance of Dataflow pipeline. Key capabilities: Java/Python/Go project setup, Flex Templates (with Cloud Build), and diagnostics for streaming job health, bottlenecks, and autoscaling. Do NOT use for: - General GCP resource management unrelated to Dataflow. - Issues with other GCP services (e.g., GCE, GCS, BigQuery) unless directly impacting Dataflow pipeline execution. - Pipeline technologies other than Apache Beam on Dataflow.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-dataflow.zip"
         },
         {
           "name": "gcp-managed-airflow-migrations",
           "description": "Provides guidance for migrating Apache Airflow DAGs in Managed Service",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-managed-airflow-migrations.zip"
         },
         {
           "name": "gcp-pipeline-orchestration",
           "description": "This skill helps the agent generate or update orchestration pipeline",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-pipeline-orchestration.zip"
         },
         {
           "name": "gcp-pipeline-resource-provisioning",
           "description": "Automates declarative resource creation and provisioning for data pipelines, supporting BigQuery, Dataform, Dataproc, BigQuery Data Transfer Service (DTS), and other resources. It manages environment-specific configurations (dev, staging, prod) through a deployment.yaml file. Use when: - Modifying or creating deployment.yaml for deployment settings. - Resolving environment-specific variables (e.g., Project IDs, Regions) for deployment. - Provisioning supported infrastructure like BigQuery datasets/tables, Dataform resources, or DTS resources via deployment.yaml. Do not use when: - Resources already exist. - Managing resources not supported by `gcloud beta orchestration-pipelines resource-types list`. - Managing general cloud infrastructure (VMs, networks, Kubernetes, IAM policies), which are better suited for Terraform. - Infrastructure spans multiple cloud providers (AWS, Azure, etc.). - Already uses Terraform for the target resources.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-pipeline-resource-provisioning.zip"
         },
         {
           "name": "gcp-spark",
           "description": "Develops and executes Spark code on Dataproc Clusters and Serverless. Reads and writes data using BigLake Iceberg catalogs, BigQuery and Spanner. Debugs execution failures. Use when: - Writing Spark ETL pipelines on GCP. - Training or running inference with ML models with spark on GCP. - Managing Spark clusters, jobs, batches, and interactive sessions. Don't use when: - Writing generic Python scripts that don't use Spark. - Performing simple SQL queries that can be done directly in BigQuery.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcp-spark.zip"
         },
         {
           "name": "gcs-security-assessment",
           "description": "'Assesses security posture, evaluates risks, and checks SAIF compliance",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/gcs-security-assessment.zip"
         },
         {
           "name": "impeccable",
@@ -2983,31 +3197,36 @@
           "name": "managing-python-dependencies",
           "description": "Ensures proper Python dependency management, avoiding global `pip install` and adhering to project-specific tooling. Use this skill if any of the following are true: 1. Attempting to run `pip install {package_name}`. 2. Python packages or dependencies need to be added or modified. 3. Initiating a new Python project. 4. Creating a new notebook, even if just using BigQuery cells. 5. Generating Python code that includes `import` statements for third-party libraries. 6. Before executing Python scripts via the terminal to ensure the correct virtual environment is active.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/managing-python-dependencies.zip"
         },
         {
           "name": "ml-best-practices",
           "description": "CRITICAL RULE: You MUST use this skill whenever the task involves any machine learning tasks or data analysis. Use this skill if the user's prompt or requirements mention any of the following: * Clustering * Classification * Regression * Time series forecasting * Statistical testing * Model comparison * ML * Data analysis SQL/BigQuery ML HANDOFF: If the user requires a SQL solution, use this skill to dictate the ANALYSIS STEPS (e.g., markdown analysis cells, visualization logic), but defer to `bigquery` for all SQL syntax.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/ml-best-practices.zip"
         },
         {
           "name": "notebook-guidance",
           "description": "This skill guides the use of Jupyter notebooks for data analysis, exploration, and visualization, particularly with BigQuery. It outlines best practices for notebook execution and validation (supporting both cell-by-cell execution and full notebook generation depending on tool availability), library installation, and structuring notebooks for clarity. It also covers specific rules for data cleaning, plotting, and integrating with BigQuery SQL and machine learning workflows. Relevant when any of the following conditions are true: 1. The user request involves a data analysis, data exploration, data visualization, or data insights task that requires multiple steps, queries, or visualizations to answer. 2. The user explicitly requests a notebook (.ipynb). 3. You are creating, editing, or executing cells in a Jupyter notebook. 4. You need to query BigQuery from within a notebook. DO NOT use the Python BigQuery client library; instead, you MUST use the `%%bqsql` magics explained in this skill.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/notebook-guidance.zip"
         },
         {
           "name": "skill-repair",
           "description": "Use this to fix and re-install agent skills that have failed installation. This skill provides the necessary context and permissions to surgically update the `manifest.json` after a fix has been applied.",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/skill-repair.zip"
         },
         {
           "name": "spanner-data",
           "description": "Use these skills when you need to explore the database structure, discover",
           "source": "user",
-          "uses": 0
+          "uses": 0,
+          "zipKey": "gemini/spanner-data.zip"
         }
       ],
       "plugins": []

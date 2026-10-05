@@ -21,6 +21,7 @@ import {
   parseCodexPlugins,
   parseDescription,
   planZipEntries,
+  zipObjectName,
 } from "../scripts/scan-installed-tools.mjs";
 
 test("프론트매터 description 을 한 줄·여러 줄로 읽고 실패하면 빈 문자열", () => {
@@ -261,4 +262,9 @@ test("이전 스냅샷의 zipKey 는 지금도 ZIP 대상인 스킬에만 이어
   assert.deepEqual(snap.tools[0].skills.map((s) => s.zipKey), ["claude/mine.zip", undefined, undefined, undefined]);
   // 이전 스냅샷이 없어도 깨지지 않는다
   assert.doesNotThrow(() => inheritZipKeys(snap, null));
+});
+
+test("zipObjectName: ASCII 이름은 그대로, 한글 이름은 hex 로 바꾼다", () => {
+  assert.equal(zipObjectName("design-quality-check"), "design-quality-check");
+  assert.match(zipObjectName("수노프롬프트빌더"), /^u-[0-9a-f]+$/);
 });
