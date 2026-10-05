@@ -5,6 +5,7 @@ import {
   Bookmark,
   Bot,
   BotMessageSquare,
+  Boxes,
   FileText,
   GitBranch,
   GitFork,
@@ -45,6 +46,7 @@ const navSections = [
       { href: "/copies", label: "카피", icon: PenLine },
       { href: "/grok-bots", label: "그록봇", icon: BotMessageSquare },
       { href: "/pdf-viewer", label: "PDF 뷰어", icon: FileText },
+      { href: "/installed-tools", label: "설치 현황", icon: Boxes },
     ],
   },
   {
