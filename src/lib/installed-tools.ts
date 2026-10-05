@@ -179,6 +179,27 @@ export function parseSortMode(value: unknown): SortMode {
   return SORT_MODES.some((m) => m.value === value) ? (value as SortMode) : "name";
 }
 
+/** URL 쿼리 값을 용도 칩으로 바꾼다. TOOL_TAGS 밖의 값은 undefined(선택 없음) */
+export function parseTag(value: unknown): string | undefined {
+  return (TOOL_TAGS as readonly unknown[]).includes(value) ? (value as string) : undefined;
+}
+
+/** 용도 필터 판정. 선택된 용도가 없으면 모두 통과, 있으면 tags 에 포함된 항목만 */
+export function hasTag(tags: readonly string[] | undefined, tag: string | undefined): boolean {
+  return !tag || Boolean(tags?.includes(tag));
+}
+
+/**
+ * 설치 현황 URL 쿼리 문자열(? 제외). 탭 링크·정렬 변경·칩 클릭이 모두 이 함수로 만든다.
+ * 기본 정렬(이름순)과 용도 미선택은 URL 에서 뺀다
+ */
+export function installedToolsQuery(tool: string, sort: SortMode, tag?: string): string {
+  const params = new URLSearchParams({ tool });
+  if (sort !== "name") params.set("sort", sort);
+  if (tag) params.set("tag", tag);
+  return params.toString();
+}
+
 /**
  * 스킬·플러그인 목록을 복사해 정렬한다(원본 배열은 바꾸지 않는다).
  * uses 는 사용 횟수 내림차순, source 는 repoUrl 있는 항목 먼저, 동률은 이름순
