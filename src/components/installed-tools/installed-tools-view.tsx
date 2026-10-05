@@ -320,13 +320,13 @@ export function InstalledToolsView({
       {/* 검색창과 정렬. 좁은 화면에서는 정렬이 아랫줄로 내려간다 */}
       <div className="flex flex-wrap items-center gap-2">
         <label className="relative block w-full max-w-md">
-          <span className="sr-only">이름·설명 검색</span>
+          <span className="sr-only">이름·설명·용도 검색</span>
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="이름·설명 검색"
+            placeholder="이름·설명·용도 검색"
             className="h-9 w-full rounded-md border border-border bg-transparent pl-8 pr-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-indigo-500/50 focus-visible:ring-2 focus-visible:ring-indigo-500/20"
           />
         </label>
