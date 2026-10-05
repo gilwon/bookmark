@@ -6,6 +6,8 @@ import { join } from "node:path";
 import test from "node:test";
 import {
   assertNoHomePaths,
+  countSlashPrompts,
+  countUsage,
   listSkills,
   parseCodexPlugins,
   parseDescription,
@@ -74,4 +76,46 @@ test("스냅샷에 홈 경로가 있으면 에러를 던진다", () => {
   assert.throws(() => assertNoHomePaths('{"p":"/Users/someone/x"}', "/home/x"));
   assert.throws(() => assertNoHomePaths('{"p":"/home/x/y"}', "/home/x"));
   assert.doesNotThrow(() => assertNoHomePaths('{"p":"skills"}', "/home/x"));
+});
+
+test("Claude 로그에서 Skill 호출·슬래시 명령·mcp 플러그인 도구를 중복 없이 센다", async () => {
+  const installed = { skills: ["sdlc", "eli5", "vibe-check"], plugins: ["eli5", "claude-md-management", "playwright"] };
+  const skill = (id, name) =>
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", id, name: "Skill", input: { skill: name } }] } });
+  const tool = (id, name) =>
+    JSON.stringify({ type: "assistant", message: { content: [{ type: "tool_use", id, name, input: {} }] } });
+  const slash = (uuid, name) =>
+    JSON.stringify({ type: "user", uuid, message: { content: `<command-message>x</command-message>\n<command-name>/${name}</command-name>` } });
+  const lines = [
+    skill("t1", "sdlc"),
+    skill("t1", "sdlc"), // 같은 tool_use id 중복 기록
+    skill("t2", "sdlc"),
+    skill("t3", "eli5:eli5"), // 플러그인 접두는 스킬 목록에 같은 이름이 있어도 플러그인에만
+    skill("t4", "anthropic-skills:sdlc"), // 미설치 플러그인 접두는 버린다
+    skill("t5", "없는-스킬"),
+    tool("t6", "mcp__plugin_playwright_playwright__browser_click"),
+    tool("t7", "mcp__plugin_claude_md_management_x__y"), // 하이픈이 언더스코어로 바뀐 이름
+    slash("u1", "vibe-check"),
+    slash("u1", "vibe-check"), // 같은 uuid 중복 기록
+    slash("u2", "claude-md-management:revise-claude-md"),
+    // tool_result 안의 command-name 은 도구 출력이라 무시한다
+    JSON.stringify({ type: "user", uuid: "u3", message: { content: [{ type: "tool_result", content: "<command-name>/sdlc</command-name>" }] } }),
+    // 프롬프트 본문 중간에 나온 command-name 도 무시한다
+    JSON.stringify({ type: "user", uuid: "u4", message: { content: "설명 <command-name>/sdlc</command-name>" } }),
+    '{"type":"assistant","message":{"content":[{"name":"Skill"', // 깨진 줄
+  ];
+  assert.deepEqual(await countUsage(lines, installed), {
+    skills: { sdlc: 2, "vibe-check": 1 },
+    plugins: { eli5: 1, playwright: 1, "claude-md-management": 2 },
+  });
+});
+
+test("Grok 프롬프트 기록에서 설치된 이름의 슬래시 명령만 센다", async () => {
+  const installed = { skills: ["sdlc"], plugins: ["eli5"] };
+  const p = (prompt) => JSON.stringify({ prompt });
+  const lines = [p("/sdlc spec"), p("/sdlc"), p("/Users/x/a.png 봐줘"), p("/eli5:eli5 토픽"), p("그냥 /sdlc"), "깨짐"];
+  assert.deepEqual(await countSlashPrompts(lines, installed), {
+    skills: { sdlc: 2 },
+    plugins: { eli5: 1 },
+  });
 });
