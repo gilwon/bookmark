@@ -9,6 +9,7 @@ import {
   countSlashPrompts,
   countUsage,
   listSkills,
+  missingTranslations,
   parseCodexPlugins,
   parseDescription,
 } from "../scripts/scan-installed-tools.mjs";
@@ -69,6 +70,32 @@ test("Codex config.toml 에서 enabled = true 플러그인만 뽑는다", () => 
   assert.deepEqual(parseCodexPlugins(toml), [
     { name: "on", marketplace: "market" },
     { name: "late", marketplace: "other" },
+  ]);
+});
+
+test("한글 없는 설명 중 번역 키가 없는 것만 누락으로 센다", () => {
+  const snapshot = {
+    tools: [
+      {
+        id: "claude",
+        skills: [
+          { name: "en", description: "English only" },
+          { name: "done", description: "Translated" },
+          { name: "ko", description: "한글 설명" },
+          { name: "empty", description: "" },
+          // 이름이 같고 출처만 다른 쌍은 출처 한정 키로 각각 본다
+          { name: "dup", description: "Shared one", source: "shared" },
+          { name: "dup", description: "Bundled one", source: "bundled" },
+        ],
+        plugins: [{ name: "p", description: "Plugin text", marketplace: "m" }],
+      },
+    ],
+  };
+  const ko = { "claude/skill/done": "번역됨", "claude/skill/dup/shared": "공유 번역" };
+  assert.deepEqual(missingTranslations(snapshot, ko), [
+    "claude/skill/en",
+    "claude/skill/dup",
+    "claude/plugin/p",
   ]);
 });
 
