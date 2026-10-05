@@ -17,7 +17,7 @@ import {
 } from "@/lib/installed-tools";
 import { cn } from "@/lib/utils";
 
-/** 이름·설명에 검색어가 들어 있는지 본다(대소문자 무시). */
+/** 이름·설명·용도 칩에 검색어가 들어 있는지 본다(대소문자 무시). */
 function matches(q: string, ...fields: string[]) {
   return !q || fields.some((f) => f.toLowerCase().includes(q));
 }
@@ -86,6 +86,26 @@ function Description({ text, ko }: { text: string; ko?: string }) {
         {text}
       </p>
     </div>
+  );
+}
+
+/**
+ * 용도 칩 줄(읽기 전용). 출처·사용 배지(각진 모서리)와 구분되게 알약 모양의 중립 색으로 두고,
+ * 좁은 화면에서는 줄바꿈된다. 칩이 없으면 빈 목록을 남기지 않는다
+ */
+function TagChips({ tags }: { tags?: string[] }) {
+  if (!tags?.length) return null;
+  return (
+    <ul aria-label="용도" className="flex flex-wrap gap-1">
+      {tags.map((t) => (
+        <li
+          key={t}
+          className="rounded-full border border-border bg-muted px-2 text-[11px] leading-5 text-muted-foreground"
+        >
+          {t}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -253,13 +273,13 @@ export function InstalledToolsView({
   const q = query.trim().toLowerCase();
   const skills = sortItems(
     active?.skills.filter((s) =>
-      matches(q, s.name, s.description, s.descriptionKo ?? "")
+      matches(q, s.name, s.description, s.descriptionKo ?? "", ...(s.tags ?? []))
     ) ?? [],
     sort
   );
   const plugins = sortItems(
     active?.plugins.filter((p) =>
-      matches(q, p.name, p.description, p.descriptionKo ?? "")
+      matches(q, p.name, p.description, p.descriptionKo ?? "", ...(p.tags ?? []))
     ) ?? [],
     sort
   );
@@ -364,6 +384,7 @@ export function InstalledToolsView({
                     </div>
                   </div>
                   <Description text={s.description} ko={s.descriptionKo} />
+                  <TagChips tags={s.tags} />
                   <SourceActions
                     repoUrl={s.repoUrl}
                     installCommands={s.installCommands}
@@ -404,6 +425,7 @@ export function InstalledToolsView({
                   {p.description && (
                     <Description text={p.description} ko={p.descriptionKo} />
                   )}
+                  <TagChips tags={p.tags} />
                   <p className="text-[11px] text-muted-foreground">
                     포함 스킬 {p.skillCount}
                   </p>

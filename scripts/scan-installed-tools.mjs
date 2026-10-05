@@ -11,6 +11,8 @@ import { zipSync } from "fflate";
 const OUT_PATH = fileURLToPath(new URL("../src/data/installed-tools.json", import.meta.url));
 // 한글 번역 파일. 스캔은 읽기만 하고 절대 쓰지 않는다
 const KO_PATH = fileURLToPath(new URL("../src/data/installed-tools-ko.json", import.meta.url));
+/** 용도 칩 분류 파일. 스캐너는 읽기만 하고 쓰지 않는다 */
+const TAGS_PATH = fileURLToPath(new URL("../src/data/installed-tools-tags.json", import.meta.url));
 
 /** 이름 정렬(가나다·알파벳 순). */
 const byName = (a, b) => a.name.localeCompare(b.name, "ko");
@@ -542,6 +544,24 @@ export function missingTranslations(snapshot, ko) {
   return missing;
 }
 
+/**
+ * 분류 파일에 키가 없는 스킬·플러그인의 키 목록. 설명 유무와 상관없이 모든 항목이 대상이다.
+ * 로더와 같이 `키/출처` 를 먼저 보고 없으면 `키` 를 본다. 값이 목록(TOOL_TAGS) 안인지는 테스트가 본다
+ */
+export function missingTags(snapshot, tags) {
+  const missing = [];
+  for (const tool of snapshot.tools) {
+    for (const kind of ["skill", "plugin"]) {
+      for (const item of tool[`${kind}s`]) {
+        const key = `${tool.id}/${kind}/${item.name}`;
+        const from = kind === "skill" ? item.source : item.marketplace;
+        if (!tags[`${key}/${from}`] && !tags[key]) missing.push(key);
+      }
+    }
+  }
+  return missing;
+}
+
 /** 폴더 아래 일반 파일을 모은다. 심볼릭 링크는 따라가지 않고 개수만 센다. */
 async function walkFiles(root) {
   const files = [];
@@ -726,6 +746,9 @@ async function main() {
   // 번역 파일이 없으면 전부 누락으로 본다
   const ko = await readFile(KO_PATH, "utf8").then(JSON.parse, () => ({}));
   console.log(`한글 번역 누락 ${missingTranslations(snapshot, ko).length}개`);
+  // 분류 파일이 없으면 전부 누락으로 본다
+  const tags = await readFile(TAGS_PATH, "utf8").then(JSON.parse, () => ({}));
+  console.log(`분류 누락 ${missingTags(snapshot, tags).length}개`);
   for (const t of snapshot.tools) {
     console.log(`${t.label}: 스킬 ${t.skills.length}개, 플러그인 ${t.plugins.length}개`);
     const used = [...t.skills, ...t.plugins].filter((x) => x.uses > 0).sort((a, b) => b.uses - a.uses);

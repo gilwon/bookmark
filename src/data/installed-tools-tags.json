@@ -1,0 +1,1205 @@
+{
+  "claude/plugin/andrej-karpathy-skills": [
+    "개발"
+  ],
+  "claude/plugin/attention-span": [
+    "문서·글쓰기"
+  ],
+  "claude/plugin/caveman": [
+    "문서·글쓰기"
+  ],
+  "claude/plugin/claude-code-setup": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/claude-dashboard": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/claude-md-management": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/codex": [
+    "에이전트·워크플로",
+    "보안·검수"
+  ],
+  "claude/plugin/context7": [
+    "개발"
+  ],
+  "claude/plugin/data": [
+    "데이터·DB"
+  ],
+  "claude/plugin/eli5": [
+    "문서·글쓰기"
+  ],
+  "claude/plugin/hookify": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/loadout": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/oh-my-fable": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/playwright": [
+    "브라우저·자동화"
+  ],
+  "claude/plugin/ponytail": [
+    "개발"
+  ],
+  "claude/plugin/session-report": [
+    "에이전트·워크플로"
+  ],
+  "claude/plugin/supabase": [
+    "데이터·DB"
+  ],
+  "claude/plugin/taste-skill": [
+    "디자인·UI"
+  ],
+  "claude/skill/animation-vocabulary": [
+    "디자인·UI"
+  ],
+  "claude/skill/apple-design": [
+    "디자인·UI"
+  ],
+  "claude/skill/aside-browser": [
+    "브라우저·자동화"
+  ],
+  "claude/skill/ask-matt": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/attention-kind": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/claude-fable5-prompt-builder": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/claude-handoff": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/clone-website": [
+    "디자인·UI"
+  ],
+  "claude/skill/code-review": [
+    "보안·검수"
+  ],
+  "claude/skill/codebase-design": [
+    "개발"
+  ],
+  "claude/skill/componentdoc-design-system": [
+    "디자인·UI"
+  ],
+  "claude/skill/computer-use": [
+    "브라우저·자동화"
+  ],
+  "claude/skill/design-an-interface": [
+    "개발"
+  ],
+  "claude/skill/design-quality-check": [
+    "디자인·UI"
+  ],
+  "claude/skill/diagnosing-bugs": [
+    "개발"
+  ],
+  "claude/skill/domain-modeling": [
+    "개발"
+  ],
+  "claude/skill/edit-article": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/ego-browser": [
+    "브라우저·자동화"
+  ],
+  "claude/skill/emil-design-eng": [
+    "디자인·UI"
+  ],
+  "claude/skill/fallback-image": [
+    "이미지·영상"
+  ],
+  "claude/skill/find-animation-opportunities": [
+    "디자인·UI"
+  ],
+  "claude/skill/find-skills": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/g5-admin-ui": [
+    "그누보드·쇼핑몰"
+  ],
+  "claude/skill/g5-make": [
+    "그누보드·쇼핑몰"
+  ],
+  "claude/skill/generate-cover": [
+    "이미지·영상"
+  ],
+  "claude/skill/git-guardrails-claude-code": [
+    "보안·검수"
+  ],
+  "claude/skill/gnuboard-dev": [
+    "그누보드·쇼핑몰"
+  ],
+  "claude/skill/gnuboard-relearn": [
+    "그누보드·쇼핑몰"
+  ],
+  "claude/skill/gnuboard5-db-schema": [
+    "그누보드·쇼핑몰",
+    "데이터·DB"
+  ],
+  "claude/skill/graft": [
+    "개발"
+  ],
+  "claude/skill/graphify": [
+    "개발"
+  ],
+  "claude/skill/grill-me": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/grill-with-docs": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/grilling": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/handoff": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/higgsfield-generate": [
+    "이미지·영상"
+  ],
+  "claude/skill/higgsfield-websites": [
+    "개발",
+    "클라우드·배포"
+  ],
+  "claude/skill/humanize": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/humanize-korean": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/humanize-redo": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/humanizer": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/impeccable": [
+    "디자인·UI"
+  ],
+  "claude/skill/implement": [
+    "개발"
+  ],
+  "claude/skill/improve-animations": [
+    "디자인·UI"
+  ],
+  "claude/skill/improve-codebase-architecture": [
+    "개발"
+  ],
+  "claude/skill/install-anti-slop": [
+    "개발"
+  ],
+  "claude/skill/intranet-style": [
+    "디자인·UI"
+  ],
+  "claude/skill/karpathy-guidelines": [
+    "개발"
+  ],
+  "claude/skill/loop-me": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/migrate-to-shoehorn": [
+    "개발"
+  ],
+  "claude/skill/naver-blog-seo-geo": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "claude/skill/obsidian-vault": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/optimize-seo-geo": [
+    "마케팅·SEO"
+  ],
+  "claude/skill/orca-cli": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/orchestration": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/pick-ui-library": [
+    "디자인·UI"
+  ],
+  "claude/skill/plan-post": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/prototype": [
+    "개발"
+  ],
+  "claude/skill/qa": [
+    "보안·검수"
+  ],
+  "claude/skill/remotion": [
+    "이미지·영상"
+  ],
+  "claude/skill/request-refactor-plan": [
+    "개발"
+  ],
+  "claude/skill/research": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/resolving-merge-conflicts": [
+    "개발"
+  ],
+  "claude/skill/review-and-submit": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/review-animations": [
+    "디자인·UI"
+  ],
+  "claude/skill/rundown": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/scaffold-exercises": [
+    "개발"
+  ],
+  "claude/skill/sdlc": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/setup-matt-pocock-skills": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/setup-pre-commit": [
+    "개발"
+  ],
+  "claude/skill/setup-ts-deep-modules": [
+    "개발"
+  ],
+  "claude/skill/spartan": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/supanova-design-engine": [
+    "디자인·UI"
+  ],
+  "claude/skill/supanova-full-output": [
+    "디자인·UI"
+  ],
+  "claude/skill/supanova-premium-aesthetic": [
+    "디자인·UI"
+  ],
+  "claude/skill/supanova-redesign-engine": [
+    "디자인·UI"
+  ],
+  "claude/skill/tdd": [
+    "개발"
+  ],
+  "claude/skill/teach": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/tldr": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/to-questionnaire": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/to-spec": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/to-tickets": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/triage": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/typesafe-ai": [
+    "개발"
+  ],
+  "claude/skill/ubiquitous-language": [
+    "개발"
+  ],
+  "claude/skill/ui-inspector": [
+    "디자인·UI"
+  ],
+  "claude/skill/unlazy": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/update-post": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/vibe-check": [
+    "보안·검수"
+  ],
+  "claude/skill/wait-what": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/wayfinder": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/web-design-guidelines": [
+    "디자인·UI",
+    "보안·검수"
+  ],
+  "claude/skill/wizard": [
+    "개발"
+  ],
+  "claude/skill/work-artifacts": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/write-draft": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/writing-beats": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/writing-for-agents": [
+    "문서·글쓰기",
+    "에이전트·워크플로"
+  ],
+  "claude/skill/writing-fragments": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/writing-great-skills": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/writing-guidelines": [
+    "문서·글쓰기"
+  ],
+  "claude/skill/writing-shape": [
+    "문서·글쓰기"
+  ],
+  "codex/plugin/browser": [
+    "브라우저·자동화"
+  ],
+  "codex/plugin/build-ios-apps": [
+    "개발"
+  ],
+  "codex/plugin/build-macos-apps": [
+    "개발"
+  ],
+  "codex/plugin/build-web-apps": [
+    "개발"
+  ],
+  "codex/plugin/chrome": [
+    "브라우저·자동화"
+  ],
+  "codex/plugin/claude-md-management": [
+    "에이전트·워크플로"
+  ],
+  "codex/plugin/code-review/claude-plugins-official": [
+    "보안·검수"
+  ],
+  "codex/plugin/code-review/openai-bundled": [
+    "보안·검수"
+  ],
+  "codex/plugin/code-simplifier": [
+    "개발"
+  ],
+  "codex/plugin/codex": [
+    "에이전트·워크플로",
+    "보안·검수"
+  ],
+  "codex/plugin/codex-app-tools": [
+    "에이전트·워크플로"
+  ],
+  "codex/plugin/computer-use": [
+    "브라우저·자동화"
+  ],
+  "codex/plugin/context7": [
+    "개발"
+  ],
+  "codex/plugin/documents": [
+    "문서·글쓰기"
+  ],
+  "codex/plugin/expo": [
+    "개발"
+  ],
+  "codex/plugin/feature-dev": [
+    "개발"
+  ],
+  "codex/plugin/frontend-design": [
+    "디자인·UI"
+  ],
+  "codex/plugin/github/claude-plugins-official": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/github/openai-curated": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/gmail": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/google-calendar": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/google-drive": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/knowledge-catalog": [
+    "데이터·DB",
+    "연동·커넥터"
+  ],
+  "codex/plugin/notion": [
+    "연동·커넥터"
+  ],
+  "codex/plugin/openai-developers": [
+    "개발"
+  ],
+  "codex/plugin/pdf": [
+    "문서·글쓰기"
+  ],
+  "codex/plugin/playwright": [
+    "브라우저·자동화"
+  ],
+  "codex/plugin/ponytail": [
+    "개발"
+  ],
+  "codex/plugin/presentations": [
+    "문서·글쓰기"
+  ],
+  "codex/plugin/ralph-loop": [
+    "에이전트·워크플로"
+  ],
+  "codex/plugin/skill-creator": [
+    "에이전트·워크플로"
+  ],
+  "codex/plugin/spreadsheets": [
+    "문서·글쓰기",
+    "데이터·DB"
+  ],
+  "codex/plugin/supabase/claude-plugins-official": [
+    "데이터·DB"
+  ],
+  "codex/plugin/supabase/openai-curated": [
+    "데이터·DB"
+  ],
+  "codex/plugin/template-creator": [
+    "문서·글쓰기"
+  ],
+  "codex/plugin/unified-computer-use": [
+    "브라우저·자동화"
+  ],
+  "codex/plugin/visualize": [
+    "데이터·DB"
+  ],
+  "codex/skill/animation-vocabulary": [
+    "디자인·UI"
+  ],
+  "codex/skill/api-and-interface-design": [
+    "개발"
+  ],
+  "codex/skill/apple-design": [
+    "디자인·UI"
+  ],
+  "codex/skill/attention-kind": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/benefit-copywriter": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/brand-identity-architect": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/brand-identity-studio": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/brandkit": [
+    "이미지·영상",
+    "디자인·UI"
+  ],
+  "codex/skill/browser-testing-with-devtools": [
+    "브라우저·자동화"
+  ],
+  "codex/skill/brutalist-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/build-meta-prompt": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/build-sellable-ebook": [
+    "문서·글쓰기",
+    "마케팅·SEO"
+  ],
+  "codex/skill/cavn": [
+    "음악·오디오"
+  ],
+  "codex/skill/ci-cd-and-automation": [
+    "클라우드·배포"
+  ],
+  "codex/skill/clean-codex-storage": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/code-review-and-quality": [
+    "보안·검수"
+  ],
+  "codex/skill/code-simplification": [
+    "개발"
+  ],
+  "codex/skill/componentdoc-design-system": [
+    "디자인·UI"
+  ],
+  "codex/skill/context-engineering": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/create-menu-campaign-image": [
+    "이미지·영상",
+    "마케팅·SEO"
+  ],
+  "codex/skill/create-pastel-product-poster": [
+    "이미지·영상"
+  ],
+  "codex/skill/create-remotion-lyric-video": [
+    "이미지·영상",
+    "음악·오디오"
+  ],
+  "codex/skill/create-waedalu-stories": [
+    "이미지·영상",
+    "문서·글쓰기"
+  ],
+  "codex/skill/debugging-and-error-recovery": [
+    "개발"
+  ],
+  "codex/skill/deprecation-and-migration": [
+    "개발"
+  ],
+  "codex/skill/documentation-and-adrs": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/doubt-driven-development": [
+    "보안·검수"
+  ],
+  "codex/skill/drama-shorts-factory": [
+    "이미지·영상"
+  ],
+  "codex/skill/emil-design-eng": [
+    "디자인·UI"
+  ],
+  "codex/skill/fallback-image": [
+    "이미지·영상"
+  ],
+  "codex/skill/find-animation-opportunities": [
+    "디자인·UI"
+  ],
+  "codex/skill/fire-your-seo-agency": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/frontend-ui-engineering": [
+    "디자인·UI",
+    "개발"
+  ],
+  "codex/skill/generate-cover": [
+    "이미지·영상"
+  ],
+  "codex/skill/git-workflow-and-versioning": [
+    "개발"
+  ],
+  "codex/skill/gnuboard-dev": [
+    "그누보드·쇼핑몰"
+  ],
+  "codex/skill/gpt-tasteskill": [
+    "디자인·UI"
+  ],
+  "codex/skill/gpt56-model-router": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/graphify": [
+    "개발"
+  ],
+  "codex/skill/hatch-pet": [
+    "이미지·영상"
+  ],
+  "codex/skill/higgsfield-canvas-ad-planner": [
+    "이미지·영상",
+    "마케팅·SEO"
+  ],
+  "codex/skill/humanize-korean": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/idea-refine": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/image-to-code-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/imagegen-frontend-mobile": [
+    "디자인·UI",
+    "이미지·영상"
+  ],
+  "codex/skill/imagegen-frontend-web": [
+    "디자인·UI",
+    "이미지·영상"
+  ],
+  "codex/skill/improve-animations": [
+    "디자인·UI"
+  ],
+  "codex/skill/incremental-implementation": [
+    "개발"
+  ],
+  "codex/skill/install-anti-slop": [
+    "개발"
+  ],
+  "codex/skill/interview-me": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/karpathy-guidelines": [
+    "개발"
+  ],
+  "codex/skill/minimalist-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/naver-blog-seo-geo": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "codex/skill/optimize-seo-geo": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/output-skill": [
+    "개발"
+  ],
+  "codex/skill/package-design-board": [
+    "디자인·UI",
+    "이미지·영상"
+  ],
+  "codex/skill/pdf": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/performance-optimization": [
+    "개발"
+  ],
+  "codex/skill/persona-system": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/pick-ui-library": [
+    "디자인·UI"
+  ],
+  "codex/skill/plan-post": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/planning-and-task-breakdown": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/playwright": [
+    "브라우저·자동화"
+  ],
+  "codex/skill/redesign-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/remotion-best-practices": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-captions": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-create": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-interactivity": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-markup": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-render": [
+    "이미지·영상"
+  ],
+  "codex/skill/remotion-saas": [
+    "이미지·영상"
+  ],
+  "codex/skill/review-and-submit": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/review-animations": [
+    "디자인·UI"
+  ],
+  "codex/skill/rundown": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/security-and-hardening": [
+    "보안·검수"
+  ],
+  "codex/skill/seo-geo": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "codex/skill/shipping-and-launch": [
+    "클라우드·배포"
+  ],
+  "codex/skill/soft-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/soul-writer": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/source-driven-development": [
+    "개발"
+  ],
+  "codex/skill/spartan": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/spec-driven-development": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/stitch-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/suno-prompt-builder": [
+    "음악·오디오"
+  ],
+  "codex/skill/taste-skill": [
+    "디자인·UI"
+  ],
+  "codex/skill/taste-skill-v1": [
+    "디자인·UI"
+  ],
+  "codex/skill/test-driven-development": [
+    "개발"
+  ],
+  "codex/skill/thumbnail-prompt-maker-kr": [
+    "이미지·영상"
+  ],
+  "codex/skill/tistory-agent-team": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "codex/skill/tistory-seo-geo": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "codex/skill/tldr": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/unlazy": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/update-post": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/using-agent-skills": [
+    "에이전트·워크플로"
+  ],
+  "codex/skill/vibe-check": [
+    "보안·검수"
+  ],
+  "codex/skill/write-draft": [
+    "문서·글쓰기"
+  ],
+  "codex/skill/write-korean-social-hooks": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/write-pasona-sales-copy": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/youtube-upload": [
+    "마케팅·SEO"
+  ],
+  "codex/skill/수노프롬프트빌더": [
+    "음악·오디오"
+  ],
+  "gemini/skill/accidental-data-loss-prevention": [
+    "보안·검수"
+  ],
+  "gemini/skill/alloydb-omni-access-control": [
+    "데이터·DB",
+    "보안·검수"
+  ],
+  "gemini/skill/alloydb-omni-container": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/alloydb-omni-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-omni-health": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-omni-kubernetes": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/alloydb-omni-monitor": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-omni-optimize": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-omni-performance": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-omni-replication": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-postgres-access-management": [
+    "데이터·DB",
+    "보안·검수"
+  ],
+  "gemini/skill/alloydb-postgres-admin": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/alloydb-postgres-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-postgres-health": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-postgres-monitor": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-postgres-optimize": [
+    "데이터·DB"
+  ],
+  "gemini/skill/alloydb-postgres-replication": [
+    "데이터·DB"
+  ],
+  "gemini/skill/bigquery": [
+    "데이터·DB"
+  ],
+  "gemini/skill/bigquery-data-transfer-service": [
+    "데이터·DB"
+  ],
+  "gemini/skill/building-data-apps": [
+    "데이터·DB",
+    "개발"
+  ],
+  "gemini/skill/cloud-sql-mysql-admin": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/cloud-sql-mysql-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-mysql-lifecycle": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-mysql-monitor": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-admin": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/cloud-sql-postgres-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-health": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-lifecycle": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-monitor": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-replication": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-vectorassist": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-postgres-view-config": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-sqlserver-admin": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/cloud-sql-sqlserver-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-sqlserver-lifecycle": [
+    "데이터·DB"
+  ],
+  "gemini/skill/cloud-sql-sqlserver-monitor": [
+    "데이터·DB"
+  ],
+  "gemini/skill/data-autocleaning": [
+    "데이터·DB"
+  ],
+  "gemini/skill/dataform-bigquery": [
+    "데이터·DB"
+  ],
+  "gemini/skill/dbt-bigquery": [
+    "데이터·DB"
+  ],
+  "gemini/skill/discovering-gcp-data-assets": [
+    "데이터·DB"
+  ],
+  "gemini/skill/federate-lakehouse-catalog": [
+    "데이터·DB"
+  ],
+  "gemini/skill/firestore-data": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcloud-auth-verification": [
+    "클라우드·배포"
+  ],
+  "gemini/skill/gcp-composer-troubleshooting": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcp-data-pipelines": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcp-dataflow": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcp-managed-airflow-migrations": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcp-pipeline-orchestration": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcp-pipeline-resource-provisioning": [
+    "데이터·DB",
+    "클라우드·배포"
+  ],
+  "gemini/skill/gcp-spark": [
+    "데이터·DB"
+  ],
+  "gemini/skill/gcs-security-assessment": [
+    "보안·검수",
+    "클라우드·배포"
+  ],
+  "gemini/skill/impeccable": [
+    "디자인·UI"
+  ],
+  "gemini/skill/managing-python-dependencies": [
+    "개발"
+  ],
+  "gemini/skill/ml-best-practices": [
+    "데이터·DB"
+  ],
+  "gemini/skill/notebook-guidance": [
+    "데이터·DB"
+  ],
+  "gemini/skill/skill-repair": [
+    "에이전트·워크플로"
+  ],
+  "gemini/skill/spanner-data": [
+    "데이터·DB"
+  ],
+  "grok/plugin/supabase": [
+    "데이터·DB"
+  ],
+  "grok/plugin/vercel": [
+    "클라우드·배포"
+  ],
+  "grok/skill/ask-matt": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/build-with-ai": [
+    "개발"
+  ],
+  "grok/skill/claude-handoff": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/code-review/bundled": [
+    "보안·검수"
+  ],
+  "grok/skill/code-review/shared": [
+    "보안·검수"
+  ],
+  "grok/skill/codebase-design": [
+    "개발"
+  ],
+  "grok/skill/computer-use": [
+    "브라우저·자동화"
+  ],
+  "grok/skill/create-skill": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/create-workflow": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/design": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/diagnosing-bugs": [
+    "개발"
+  ],
+  "grok/skill/docx": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/domain-modeling": [
+    "개발"
+  ],
+  "grok/skill/ego-browser": [
+    "브라우저·자동화"
+  ],
+  "grok/skill/execute-plan": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/fallback-image": [
+    "이미지·영상"
+  ],
+  "grok/skill/game-assets": [
+    "이미지·영상"
+  ],
+  "grok/skill/generate-cover": [
+    "이미지·영상"
+  ],
+  "grok/skill/git-guardrails-claude-code": [
+    "보안·검수"
+  ],
+  "grok/skill/grill-me": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/grill-with-docs": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/grilling": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/handoff": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/higgsfield-generate": [
+    "이미지·영상"
+  ],
+  "grok/skill/higgsfield-websites": [
+    "개발",
+    "클라우드·배포"
+  ],
+  "grok/skill/humanize": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/humanize-korean": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/humanize-redo": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/humanizer": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/imagine": [
+    "이미지·영상"
+  ],
+  "grok/skill/impeccable": [
+    "디자인·UI"
+  ],
+  "grok/skill/implement/bundled": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/implement/shared": [
+    "개발"
+  ],
+  "grok/skill/improve-codebase-architecture": [
+    "개발"
+  ],
+  "grok/skill/learn": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/long-running-background-tasks": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/loop-me": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/migrate-to-shoehorn": [
+    "개발"
+  ],
+  "grok/skill/naver-blog-seo-geo": [
+    "마케팅·SEO",
+    "문서·글쓰기"
+  ],
+  "grok/skill/optimize-seo-geo": [
+    "마케팅·SEO"
+  ],
+  "grok/skill/orca-cli": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/orchestration": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/pdf": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/plan-post": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/pptx": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/pr-babysit": [
+    "개발"
+  ],
+  "grok/skill/prototype": [
+    "개발"
+  ],
+  "grok/skill/research": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/resolving-merge-conflicts": [
+    "개발"
+  ],
+  "grok/skill/resume-claude": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/resume-codex": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/resume-cursor": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/review": [
+    "보안·검수"
+  ],
+  "grok/skill/review-and-submit": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/scaffold-exercises": [
+    "개발"
+  ],
+  "grok/skill/setup-matt-pocock-skills": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/setup-pre-commit": [
+    "개발"
+  ],
+  "grok/skill/setup-ts-deep-modules": [
+    "개발"
+  ],
+  "grok/skill/skill-design-principles": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/statusline": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/tdd": [
+    "개발"
+  ],
+  "grok/skill/teach": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/threejs-frame-conventions": [
+    "개발"
+  ],
+  "grok/skill/to-spec": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/to-tickets": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/triage": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/typesafe-ai": [
+    "개발"
+  ],
+  "grok/skill/update-post": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/vibe-check": [
+    "보안·검수"
+  ],
+  "grok/skill/wayfinder": [
+    "에이전트·워크플로"
+  ],
+  "grok/skill/write-draft": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/writing-beats": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/writing-fragments": [
+    "문서·글쓰기"
+  ],
+  "grok/skill/writing-shape": [
+    "문서·글쓰기"
+  ]
+}

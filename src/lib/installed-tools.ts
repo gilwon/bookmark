@@ -1,9 +1,28 @@
-// 설치 현황 스냅샷의 타입과 순수 함수(번역 병합·원본 선택). Storage 읽기는 installed-tools-source.ts
+// 설치 현황 스냅샷의 타입과 순수 함수(번역·용도 칩 병합·원본 선택). Storage 읽기는 installed-tools-source.ts
 import raw from "@/data/installed-tools.json";
 import ko from "@/data/installed-tools-ko.json";
+import tagsMap from "@/data/installed-tools-tags.json";
 
 /** 이 횟수 이상 쓴 항목은 카드를 강조 색으로 보인다 */
 export const HEAVY_USE = 3;
+
+/** 카드 용도 칩의 고정 목록(spec 30). 분류 파일 값은 이 안에서만 고른다 */
+export const TOOL_TAGS = [
+  "개발",
+  "디자인·UI",
+  "문서·글쓰기",
+  "마케팅·SEO",
+  "데이터·DB",
+  "클라우드·배포",
+  "브라우저·자동화",
+  "에이전트·워크플로",
+  "이미지·영상",
+  "음악·오디오",
+  "보안·검수",
+  "그누보드·쇼핑몰",
+  "연동·커넥터",
+  "기타",
+] as const;
 
 export type InstalledSkillSource = "user" | "shared" | "bundled";
 
@@ -20,6 +39,8 @@ export type InstalledSkill = {
   installCommands?: string[];
   /** Supabase Storage 비공개 버킷의 ZIP 경로(업로드된 경우만) */
   zipKey?: string;
+  /** 용도 칩(installed-tools-tags.json, TOOL_TAGS 안의 값만) */
+  tags?: string[];
 };
 
 export type InstalledPlugin = {
@@ -37,6 +58,8 @@ export type InstalledPlugin = {
   installCommands?: string[];
   /** Supabase Storage 비공개 버킷의 ZIP 경로(업로드된 경우만) */
   zipKey?: string;
+  /** 용도 칩(installed-tools-tags.json, TOOL_TAGS 안의 값만) */
+  tags?: string[];
 };
 
 export type InstalledTool = {
@@ -61,6 +84,17 @@ function koFor(key: string, from: string, description: string): string | undefin
   return map[`${key}/${from}`] || map[key] || undefined;
 }
 
+/**
+ * 분류 파일에서 키로 찾은 용도 칩. `키/출처` 를 먼저 보고, 목록 밖 문자열은 버린다. 없으면 undefined
+ */
+function tagsFor(key: string, from: string): string[] | undefined {
+  const map = tagsMap as Record<string, string[]>;
+  const list = (map[`${key}/${from}`] ?? map[key] ?? []).filter((t) =>
+    (TOOL_TAGS as readonly string[]).includes(t)
+  );
+  return list.length ? list : undefined;
+}
+
 /** 빌드에 포함된 정적 스냅샷(src/data/installed-tools.json). Storage 원본이 없을 때 쓴다 */
 export const localSnapshot = raw as InstalledToolsSnapshot;
 
@@ -80,7 +114,7 @@ export function pickLatestSnapshot(
   return Number.isNaN(lt) || rt >= lt ? (r as InstalledToolsSnapshot) : local;
 }
 
-/** 스냅샷 전체에 한글 번역을 합쳐 돌려준다. 원본(Storage·정적)과 상관없이 같은 규칙이다 */
+/** 스냅샷 전체에 한글 번역과 용도 칩을 합쳐 돌려준다. 원본(Storage·정적)과 상관없이 같은 규칙이다 */
 export function mergeKo(snapshot: InstalledToolsSnapshot): InstalledToolsSnapshot {
   return {
     ...snapshot,
@@ -89,10 +123,12 @@ export function mergeKo(snapshot: InstalledToolsSnapshot): InstalledToolsSnapsho
       skills: t.skills.map((s) => ({
         ...s,
         descriptionKo: koFor(`${t.id}/skill/${s.name}`, s.source, s.description),
+        tags: tagsFor(`${t.id}/skill/${s.name}`, s.source),
       })),
       plugins: t.plugins.map((p) => ({
         ...p,
         descriptionKo: koFor(`${t.id}/plugin/${p.name}`, p.marketplace, p.description),
+        tags: tagsFor(`${t.id}/plugin/${p.name}`, p.marketplace),
       })),
     })),
   };
