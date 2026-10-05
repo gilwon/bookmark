@@ -59,6 +59,30 @@ function UsesBadge({ uses }: { uses: number }) {
   );
 }
 
+/** 카드 설명. 한글 번역이 있으면 한글을 먼저, 영어 원문을 그 아래 흐리게 둔다 */
+function Description({ text, ko }: { text: string; ko?: string }) {
+  if (!ko) {
+    return (
+      <p className="line-clamp-2 break-words text-xs leading-relaxed text-muted-foreground">
+        {text}
+      </p>
+    );
+  }
+  return (
+    <div className="space-y-1">
+      <p className="line-clamp-2 break-words text-xs leading-relaxed text-muted-foreground">
+        {ko}
+      </p>
+      <p
+        lang="en"
+        className="line-clamp-2 break-words text-[11px] leading-relaxed text-muted-foreground opacity-70"
+      >
+        {text}
+      </p>
+    </div>
+  );
+}
+
 export function InstalledToolsView({
   tools,
   activeId,
@@ -69,9 +93,14 @@ export function InstalledToolsView({
   const [query, setQuery] = useState("");
   const active = tools.find((t) => t.id === activeId) ?? tools[0];
   const q = query.trim().toLowerCase();
-  const skills = active?.skills.filter((s) => matches(q, s.name, s.description)) ?? [];
+  const skills =
+    active?.skills.filter((s) =>
+      matches(q, s.name, s.description, s.descriptionKo ?? "")
+    ) ?? [];
   const plugins =
-    active?.plugins.filter((p) => matches(q, p.name, p.description)) ?? [];
+    active?.plugins.filter((p) =>
+      matches(q, p.name, p.description, p.descriptionKo ?? "")
+    ) ?? [];
 
   return (
     <div className="space-y-6">
@@ -142,9 +171,7 @@ export function InstalledToolsView({
                       </span>
                     </div>
                   </div>
-                  <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                    {s.description}
-                  </p>
+                  <Description text={s.description} ko={s.descriptionKo} />
                 </CardContent>
               </Card>
             ))}
@@ -178,9 +205,7 @@ export function InstalledToolsView({
                     <UsesBadge uses={p.uses} />
                   </div>
                   {p.description && (
-                    <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                      {p.description}
-                    </p>
+                    <Description text={p.description} ko={p.descriptionKo} />
                   )}
                   <p className="text-[11px] text-muted-foreground">
                     포함 스킬 {p.skillCount}
