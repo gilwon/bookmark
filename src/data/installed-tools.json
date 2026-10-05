@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T02:45:55.286Z",
+  "generatedAt": "2026-10-05T03:08:52.187Z",
   "tools": [
     {
       "id": "claude",
@@ -27,6 +27,10 @@
           "name": "ask-matt",
           "description": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill ask-matt"
+          ],
           "uses": 0
         },
         {
@@ -45,6 +49,10 @@
           "name": "claude-handoff",
           "description": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill claude-handoff"
+          ],
           "uses": 0
         },
         {
@@ -57,12 +65,20 @@
           "name": "code-review",
           "description": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \\\"review since X\\\".",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill code-review"
+          ],
           "uses": 0
         },
         {
           "name": "codebase-design",
           "description": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill codebase-design"
+          ],
           "uses": 0
         },
         {
@@ -75,36 +91,56 @@
           "name": "computer-use",
           "description": "Drives the GUI of a visible local app window through `orca computer`: accessibility tree, clicks, typing, menus, dialogs, and screenshots in native apps and external browser windows (Chrome, Edge, Safari) or webviews. Prefer a programmatic path (shell, filesystem, git, HTTP, existing CLIs) whenever it can complete the task. Use only when a visible window needs GUI control those cannot reach. Do not use for Orca's embedded browser (`orca-cli`).",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill computer-use"
+          ],
           "uses": 0
         },
         {
           "name": "design-an-interface",
           "description": "Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions \"design it twice\".",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill design-an-interface"
+          ],
           "uses": 0
         },
         {
           "name": "design-quality-check",
           "description": "UI·디자인 작업 전후 자가 점검 체크리스트. 시각적 일관성(톤앤매너·모바일웹 동일), 핵심 원칙(데이터 우선·컬러 시스템·타이포그래피·WCAG 대비), 퀄리티 체크포인트(포커스/에러 상태, hover/active, 반응형 480/1024/1440px, 키보드 네비게이션)를 다룬다. 화면·컴포넌트·랜딩페이지·대시보드를 만들거나 스타일을 고칠 때, 디자인 리뷰를 할 때, 반응형·접근성·컬러 대비를 확인할 때 사용.",
           "source": "user",
-          "uses": 9
+          "uses": 10
         },
         {
           "name": "diagnosing-bugs",
           "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill diagnosing-bugs"
+          ],
           "uses": 0
         },
         {
           "name": "domain-modeling",
           "description": "Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill domain-modeling"
+          ],
           "uses": 0
         },
         {
           "name": "edit-article",
           "description": "Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill edit-article"
+          ],
           "uses": 0
         },
         {
@@ -135,6 +171,10 @@
           "name": "find-skills",
           "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
           "source": "shared",
+          "repoUrl": "https://github.com/vercel-labs/skills",
+          "installCommands": [
+            "npx skills add vercel-labs/skills --skill find-skills"
+          ],
           "uses": 0
         },
         {
@@ -159,6 +199,10 @@
           "name": "git-guardrails-claude-code",
           "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill git-guardrails-claude-code"
+          ],
           "uses": 0
         },
         {
@@ -195,36 +239,60 @@
           "name": "grill-me",
           "description": "A relentless interview to sharpen a plan or design.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grill-me"
+          ],
           "uses": 0
         },
         {
           "name": "grill-with-docs",
           "description": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grill-with-docs"
+          ],
           "uses": 0
         },
         {
           "name": "grilling",
           "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grilling"
+          ],
           "uses": 0
         },
         {
           "name": "handoff",
           "description": "Compact the current conversation into a handoff document for another agent to pick up.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill handoff"
+          ],
           "uses": 0
         },
         {
           "name": "higgsfield-generate",
           "description": "Generate images/videos/3D assets/audio via Higgsfield AI. Defaults: GPT Image 2 for image/design/text, Seedance 2.0 for video, Nano Banana 2/Lite/Pro for character/reference images, Marketing Studio for ads, Seed Audio 1.0 for audio. Use when: \"generate an image\", \"make a video\", \"animate this photo\", \"image-to-video\", \"edit/stylize/remix this image\", \"reframe this video\", \"edit this video from a sketch\", \"create a 3D model/GLB\", \"create a sound effect\", \"make music\", \"text-to-audio\", \"create an ad\", \"make a UGC video\", \"unboxing\", \"presenter video\", \"import product from URL\", or \"analyze video virality\". Supports generic generation, workflows, Marketing Studio, and Virality Predictor. Chain with higgsfield-soul-id for face/identity consistency. NOT for: Soul training, brand systems/brandbooks (use higgsfield-brandkit), photoshoots, cards, YouTube thumbnails (use higgsfield-youtube-thumbnail), explainers (use higgsfield-video-explainer), playable games/assets (use higgsfield-game-generation), or TTS.",
           "source": "shared",
+          "repoUrl": "https://github.com/higgsfield-ai/skills",
+          "installCommands": [
+            "npx skills add higgsfield-ai/skills --skill higgsfield-generate"
+          ],
           "uses": 0
         },
         {
           "name": "higgsfield-websites",
           "description": "Build, edit, and deploy full-stack websites, apps and games via the Higgsfield CLI (`higgsfield website …`). Each is a React 19 + TanStack Start SSR app in one Cloudflare Worker (D1/R2/KV/DO/Containers). THREE product types, picked via `--type` on create: `website` (standalone, no Higgsfield integration — references/website-flow.md), `app` (Sign in with Higgsfield + fnf SDK, Quanta — references/app-flow.md), `game` (realtime multiplayer rooms — references/game-flow.md). Routes to the right flow; each carries its own rules and deploy/publish gates. Use when: \"build me a website\", \"make a landing page\", \"create a web app\", \"build a SaaS dashboard / portfolio\", \"make me a game\", \"deploy this site\", \"publish\". Also owns GAME ART: \"make a spritesheet\", \"tileable texture\", \"animate a 3D character\", game music/SFX — see the game-* references. NOT for: single image/video/audio generation (higgsfield-generate), product photos (higgsfield-product-photoshoot), marketplace cards (higgsfield-marketplace-cards).",
           "source": "shared",
+          "repoUrl": "https://github.com/higgsfield-ai/skills",
+          "installCommands": [
+            "npx skills add higgsfield-ai/skills --skill higgsfield-websites"
+          ],
           "uses": 0
         },
         {
@@ -249,18 +317,30 @@
           "name": "humanizer",
           "description": "Rewrite AI-sounding text so it reads naturally without changing what it says. Use when editing or reviewing prose for inflated claims, sales language, vague sources, repetitive structure, stock AI words, passive voice, filler, or chatbot artifacts. Based on Wikipedia's \"Signs of AI writing.\"",
           "source": "shared",
+          "repoUrl": "https://github.com/blader/humanizer",
+          "installCommands": [
+            "npx skills add blader/humanizer --skill humanizer"
+          ],
           "uses": 0
         },
         {
           "name": "impeccable",
           "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
           "source": "shared",
+          "repoUrl": "https://github.com/pbakaus/impeccable",
+          "installCommands": [
+            "npx skills add pbakaus/impeccable --skill impeccable"
+          ],
           "uses": 0
         },
         {
           "name": "implement",
           "description": "Implement a piece of work based on a spec or set of tickets.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill implement"
+          ],
           "uses": 0
         },
         {
@@ -273,6 +353,10 @@
           "name": "improve-codebase-architecture",
           "description": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill improve-codebase-architecture"
+          ],
           "uses": 0
         },
         {
@@ -297,12 +381,20 @@
           "name": "loop-me",
           "description": "Grill me about specs for the workflows I want to build, within this workspace.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill loop-me"
+          ],
           "uses": 0
         },
         {
           "name": "migrate-to-shoehorn",
           "description": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill migrate-to-shoehorn"
+          ],
           "uses": 0
         },
         {
@@ -315,6 +407,10 @@
           "name": "obsidian-vault",
           "description": "Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill obsidian-vault"
+          ],
           "uses": 0
         },
         {
@@ -327,12 +423,20 @@
           "name": "orca-cli",
           "description": "Use the public `orca` CLI to operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and the browser embedded inside the Orca app. Use when the user says \"$orca-cli\", \"use orca cli\", \"Orca worktree\", \"child worktree\", \"cardStatus\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"terminal send\", \"full handoff\", \"handover\", \"give this to another agent\", \"another worktree\", \"Orca browser\", \"orca artifacts\", \"share HTML/Markdown\", \"public artifact link\", \"share skills\", or \"control the browser inside Orca\". Prefer this over raw `git worktree`, ad hoc PTYs, Playwright, or Computer Use when the task touches Orca-managed state. Use Computer Use for external browser windows, webviews, or desktop UI only when the task requires OS/window-level control such as focus, menus, dialogs, coordinates, or screenshots. Use `orca-cli` for Orca's embedded pages and a page-automation tool such as Playwright or CDP for external pages.",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill orca-cli"
+          ],
           "uses": 0
         },
         {
           "name": "orchestration",
           "description": "Coordinate supervised Orca workers: threaded messages, blocking ask/reply, task dispatch, worker_done/escalation waits, task DAGs, decision gates, coordinator loops, and decomposing work across agents. Use `orca-cli` for full ownership handoffs — \"hand off\", \"handoff\", \"handover\", \"give this to another agent\", \"another worktree\" — unless asked to supervise, monitor, or coordinate a DAG, and for terminal control, lightweight terminal prompts, shell commands, Orca worktree management, and reading or waiting on terminals.",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill orchestration"
+          ],
           "uses": 0
         },
         {
@@ -351,12 +455,20 @@
           "name": "prototype",
           "description": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill prototype"
+          ],
           "uses": 0
         },
         {
           "name": "qa",
           "description": "Interactive QA session where user reports bugs or issues conversationally, and the agent files GitHub issues. Explores the codebase in the background for context and domain language. Use when user wants to report bugs, do QA, file issues conversationally, or mentions \"QA session\".",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill qa"
+          ],
           "uses": 0
         },
         {
@@ -369,18 +481,30 @@
           "name": "request-refactor-plan",
           "description": "Create a detailed refactor plan with tiny commits via user interview, then file it as a GitHub issue. Use when user wants to plan a refactor, create a refactoring RFC, or break a refactor into safe incremental steps.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill request-refactor-plan"
+          ],
           "uses": 0
         },
         {
           "name": "research",
           "description": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill research"
+          ],
           "uses": 0
         },
         {
           "name": "resolving-merge-conflicts",
           "description": "Use when you need to resolve an in-progress git merge/rebase conflict.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill resolving-merge-conflicts"
+          ],
           "uses": 0
         },
         {
@@ -405,6 +529,10 @@
           "name": "scaffold-exercises",
           "description": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill scaffold-exercises"
+          ],
           "uses": 0
         },
         {
@@ -417,18 +545,30 @@
           "name": "setup-matt-pocock-skills",
           "description": "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-matt-pocock-skills"
+          ],
           "uses": 0
         },
         {
           "name": "setup-pre-commit",
           "description": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-pre-commit"
+          ],
           "uses": 0
         },
         {
           "name": "setup-ts-deep-modules",
           "description": "Wire dependency-cruiser into a TypeScript repo so each package is a deep module, with implementation hidden in subfolders and reachable only through its entry-point files. User-invoked.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-ts-deep-modules"
+          ],
           "uses": 0
         },
         {
@@ -465,12 +605,20 @@
           "name": "tdd",
           "description": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill tdd"
+          ],
           "uses": 0
         },
         {
           "name": "teach",
           "description": "Teach the user a new skill or concept, within this workspace.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill teach"
+          ],
           "uses": 0
         },
         {
@@ -483,36 +631,60 @@
           "name": "to-questionnaire",
           "description": "Turn a decision you can't fully answer into a questionnaire for someone else to fill in.",
           "source": "user",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill to-questionnaire"
+          ],
           "uses": 0
         },
         {
           "name": "to-spec",
           "description": "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill to-spec"
+          ],
           "uses": 0
         },
         {
           "name": "to-tickets",
           "description": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill to-tickets"
+          ],
           "uses": 0
         },
         {
           "name": "triage",
           "description": "Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill triage"
+          ],
           "uses": 0
         },
         {
           "name": "typesafe-ai",
           "description": "Build AI-powered software with TypeSafe: small units of AI intelligence you can use like programming primitives. Its System One models, including Jev, turn natural language and application state into typed judgments and probabilities that code can combine. Use when a feature needs programmable common sense, when brainstorming what AI could make possible in an app, or when an LLM prompt-and-parse step could become a structured decision. Applications include routing, ranking, extraction, verification, and interactive experiences; these are starting points, not the limits. Read live docs and cookbooks to find useful patterns and discover new combinations.",
           "source": "user",
+          "repoUrl": "https://github.com/typesafe-ai/skills",
+          "installCommands": [
+            "npx skills add typesafe-ai/skills --skill typesafe-ai"
+          ],
           "uses": 0
         },
         {
           "name": "ubiquitous-language",
           "description": "Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to UBIQUITOUS_LANGUAGE.md. Use when user wants to define domain terms, build a glossary, harden terminology, create a ubiquitous language, or mentions \"domain model\" or \"DDD\".",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill ubiquitous-language"
+          ],
           "uses": 0
         },
         {
@@ -543,12 +715,20 @@
           "name": "wait-what",
           "description": "Stop. That last message did not land: re-pitch it.",
           "source": "user",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill wait-what"
+          ],
           "uses": 0
         },
         {
           "name": "wayfinder",
           "description": "Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill wayfinder"
+          ],
           "uses": 0
         },
         {
@@ -561,6 +741,10 @@
           "name": "wizard",
           "description": "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.",
           "source": "user",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill wizard"
+          ],
           "uses": 0
         },
         {
@@ -579,24 +763,40 @@
           "name": "writing-beats",
           "description": "Writing, exploit; assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-beats"
+          ],
           "uses": 0
         },
         {
           "name": "writing-for-agents",
           "description": "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.",
           "source": "user",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-for-agents"
+          ],
           "uses": 0
         },
         {
           "name": "writing-fragments",
           "description": "Writing, explore: mine raw fragments, no structure yet.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-fragments"
+          ],
           "uses": 0
         },
         {
           "name": "writing-great-skills",
           "description": "Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-great-skills"
+          ],
           "uses": 0
         },
         {
@@ -609,6 +809,10 @@
           "name": "writing-shape",
           "description": "Writing, exploit: shape raw material into an article, paragraph by paragraph.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-shape"
+          ],
           "uses": 0
         }
       ],
@@ -619,6 +823,11 @@
           "version": "1.0.0",
           "description": "Behavioral guidelines to reduce common LLM coding mistakes, derived from Andrej Karpathy's observations on LLM coding pitfalls",
           "skillCount": 1,
+          "repoUrl": "https://github.com/multica-ai/andrej-karpathy-skills",
+          "installCommands": [
+            "/plugin marketplace add multica-ai/andrej-karpathy-skills",
+            "/plugin install andrej-karpathy-skills@karpathy-skills"
+          ],
           "uses": 0
         },
         {
@@ -627,6 +836,11 @@
           "version": "0.8.0",
           "description": "Output styles that make Claude answer-first, plain, and easy to skim, plus a /tldr transform. Attention-kind, Spartan, and Rundown ship as both output styles and user-invoked skills.",
           "skillCount": 4,
+          "repoUrl": "https://github.com/alexgreensh/attention-span",
+          "installCommands": [
+            "/plugin marketplace add alexgreensh/attention-span",
+            "/plugin install attention-span@attention-span"
+          ],
           "uses": 0
         },
         {
@@ -635,6 +849,11 @@
           "version": "3.1.0",
           "description": "Ultra-compressed communication mode. Shortens prose while preserving technical terms, code, commands, and exact errors.",
           "skillCount": 22,
+          "repoUrl": "https://github.com/JuliusBrussee/caveman",
+          "installCommands": [
+            "/plugin marketplace add JuliusBrussee/caveman",
+            "/plugin install caveman@caveman"
+          ],
           "uses": 0
         },
         {
@@ -643,6 +862,11 @@
           "version": "1.0.0",
           "description": "Analyze codebases and recommend tailored Claude Code automations such as hooks, skills, MCP servers, and subagents.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install claude-code-setup@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -651,6 +875,11 @@
           "version": "1.34.0",
           "description": "Unified status line for Claude Code with multi-CLI (Claude, Codex, Gemini, Antigravity, z.ai) usage monitoring, context, rate limits, and cost tracking",
           "skillCount": 0,
+          "repoUrl": "https://github.com/uppinote20/claude-dashboard",
+          "installCommands": [
+            "/plugin marketplace add uppinote20/claude-dashboard",
+            "/plugin install claude-dashboard@claude-dashboard"
+          ],
           "uses": 3
         },
         {
@@ -659,6 +888,11 @@
           "version": "1.0.0",
           "description": "Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install claude-md-management@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -667,6 +901,11 @@
           "version": "1.0.6",
           "description": "Use Codex from Claude Code to review code or delegate tasks.",
           "skillCount": 3,
+          "repoUrl": "https://github.com/openai/codex-plugin-cc",
+          "installCommands": [
+            "/plugin marketplace add openai/codex-plugin-cc",
+            "/plugin install codex@openai-codex"
+          ],
           "uses": 0
         },
         {
@@ -675,6 +914,11 @@
           "version": "d182ca456ca0",
           "description": "Upstash Context7 MCP server for up-to-date documentation lookup. Connects to Context7's hosted remote MCP server (https://mcp.context7.com/mcp) — no local Node.js or npx required — to pull version-specific documentation and code examples directly from source repositories into your LLM context. Authenticate with Context7 when prompted.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install context7@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -683,6 +927,11 @@
           "version": "1.1.0",
           "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders.",
           "skillCount": 10,
+          "repoUrl": "https://github.com/anthropics/knowledge-work-plugins",
+          "installCommands": [
+            "/plugin marketplace add anthropics/knowledge-work-plugins",
+            "/plugin install data@knowledge-work-plugins"
+          ],
           "uses": 0
         },
         {
@@ -691,6 +940,11 @@
           "version": "1.0.0",
           "description": "Explain any topic like I'm 5: a dead-simple HTML picture explainer with big visuals and few words. Use /eli5 <topic>.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-community",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-community",
+            "/plugin install eli5@claude-community"
+          ],
           "uses": 2
         },
         {
@@ -699,6 +953,11 @@
           "version": "d182ca456ca0",
           "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install hookify@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -707,6 +966,11 @@
           "version": "0.5.2",
           "description": "CLAUDE.md/AGENTS.md 구성 백화점. 작업 폴더 성격에 맞는 구성 조각(카파시 4원칙·Fable5 단독·멀티에이전트·에이전트 루프 등)을 카탈로그에서 골라 담아 결정적으로 설치한다 — 마커 멱등 append, 코너 기반 배타, 조건부 문단 조합, flavor(claude·codex) 지원, 읽기 전용 doctor 진단.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/netwaif/loadout",
+          "installCommands": [
+            "/plugin marketplace add netwaif/loadout",
+            "/plugin install loadout@loadout"
+          ],
           "uses": 0
         },
         {
@@ -715,6 +979,11 @@
           "version": "2.4.0",
           "description": "Anthropic's prompting-guide rules for Claude Code, always on (Opus 5.5, Fable 5.1; Sonnet 5.5, Opus 5 and Sonnet 5 too): install and forget: the working rules load at every session start and reach subagents, unattended sessions are detected automatically and get the early-stop rules, sessions at xhigh or max effort get the stop-after-checks rule, /fable turns a rough request into a guide-aligned prompt, /fable-status shows what is in effect, /fable-audit finds which guide sections your own rules are missing, /fable-setup moves the rules into a rules file (recommended once).",
           "skillCount": 5,
+          "repoUrl": "https://github.com/Junhan2/oh-my-fable",
+          "installCommands": [
+            "/plugin marketplace add Junhan2/oh-my-fable",
+            "/plugin install oh-my-fable@oh-my-fable"
+          ],
           "uses": 0
         },
         {
@@ -723,6 +992,11 @@
           "version": "d182ca456ca0",
           "description": "Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install playwright@claude-plugins-official"
+          ],
           "uses": 319
         },
         {
@@ -731,6 +1005,11 @@
           "version": "4.11.0",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
+          "repoUrl": "https://github.com/DietrichGebert/ponytail",
+          "installCommands": [
+            "/plugin marketplace add DietrichGebert/ponytail",
+            "/plugin install ponytail@ponytail"
+          ],
           "uses": 0
         },
         {
@@ -739,6 +1018,11 @@
           "version": "d182ca456ca0",
           "description": "",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install session-report@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -747,6 +1031,11 @@
           "version": "0.1.15",
           "description": "Official Supabase plugin for Claude Code with bundled Supabase skills and MCP access for project management, database work, auth, storage, and Postgres best practices.",
           "skillCount": 2,
+          "repoUrl": "https://github.com/supabase-community/supabase-plugin",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install supabase@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -755,6 +1044,11 @@
           "version": "1.0.0",
           "description": "Frontend design taste skills including brutalist, minimalist, soft, redesign, stitch, and more",
           "skillCount": 13,
+          "repoUrl": "https://github.com/leonxlnx/taste-skill",
+          "installCommands": [
+            "/plugin marketplace add Leonxlnx/taste-skill",
+            "/plugin install taste-skill@taste-skill"
+          ],
           "uses": 0
         }
       ]
@@ -1411,6 +1705,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add claude-md-management@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1419,6 +1718,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Automated code review for pull requests using multiple specialized agents with confidence-based scoring",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add code-review@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1435,6 +1739,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add code-simplifier@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1443,6 +1752,11 @@
           "marketplace": "openai-codex",
           "description": "Use Codex from Claude Code to review code or delegate tasks.",
           "skillCount": 3,
+          "repoUrl": "https://github.com/openai/codex-plugin-cc",
+          "installCommands": [
+            "codex plugin marketplace add openai/codex-plugin-cc",
+            "codex plugin add codex@openai-codex"
+          ],
           "uses": 0
         },
         {
@@ -1467,6 +1781,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Upstash Context7 MCP server for up-to-date documentation lookup. Connects to Context7's hosted remote MCP server (https://mcp.context7.com/mcp) — no local Node.js or npx required — to pull version-specific documentation and code examples directly from source repositories into your LLM context. Authenticate with Context7 when prompted.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add context7@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1491,6 +1810,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add feature-dev@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1499,6 +1823,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Frontend design skill for UI/UX implementation",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add frontend-design@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1507,6 +1836,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Official GitHub MCP server for repository management. Create issues, manage pull requests, review code, search repositories, and interact with GitHub's full API directly from Claude Code.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add github@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1547,6 +1881,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Connect to Knowledge Catalog to discover, manage, monitor, and govern data and AI artifacts across your data platform",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add knowledge-catalog@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1579,6 +1918,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add playwright@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1587,6 +1931,11 @@
           "marketplace": "ponytail",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
+          "repoUrl": "https://github.com/DietrichGebert/ponytail",
+          "installCommands": [
+            "codex plugin marketplace add DietrichGebert/ponytail",
+            "codex plugin add ponytail@ponytail"
+          ],
           "uses": 0
         },
         {
@@ -1603,6 +1952,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion.",
           "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add ralph-loop@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1611,6 +1965,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Create new skills, improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, or benchmark skill performance with variance analysis.",
           "skillCount": 1,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add skill-creator@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1627,6 +1986,11 @@
           "marketplace": "claude-plugins-official",
           "description": "Official Supabase plugin for Claude Code with bundled Supabase skills and MCP access for project management, database work, auth, storage, and Postgres best practices.",
           "skillCount": 2,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "codex plugin marketplace add anthropics/claude-plugins-official",
+            "codex plugin add supabase@claude-plugins-official"
+          ],
           "uses": 0
         },
         {
@@ -1671,6 +2035,10 @@
           "name": "ask-matt",
           "description": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill ask-matt"
+          ],
           "uses": 0
         },
         {
@@ -1683,12 +2051,20 @@
           "name": "claude-handoff",
           "description": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill claude-handoff"
+          ],
           "uses": 0
         },
         {
           "name": "code-review",
           "description": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \\\"review since X\\\".",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill code-review"
+          ],
           "uses": 1
         },
         {
@@ -1701,12 +2077,20 @@
           "name": "codebase-design",
           "description": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill codebase-design"
+          ],
           "uses": 0
         },
         {
           "name": "computer-use",
           "description": "Drives the GUI of a visible local app window through `orca computer`: accessibility tree, clicks, typing, menus, dialogs, and screenshots in native apps and external browser windows (Chrome, Edge, Safari) or webviews. Prefer a programmatic path (shell, filesystem, git, HTTP, existing CLIs) whenever it can complete the task. Use only when a visible window needs GUI control those cannot reach. Do not use for Orca's embedded browser (`orca-cli`).",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill computer-use"
+          ],
           "uses": 0
         },
         {
@@ -1731,6 +2115,10 @@
           "name": "diagnosing-bugs",
           "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill diagnosing-bugs"
+          ],
           "uses": 0
         },
         {
@@ -1743,6 +2131,10 @@
           "name": "domain-modeling",
           "description": "Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill domain-modeling"
+          ],
           "uses": 0
         },
         {
@@ -1779,42 +2171,70 @@
           "name": "git-guardrails-claude-code",
           "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill git-guardrails-claude-code"
+          ],
           "uses": 0
         },
         {
           "name": "grill-me",
           "description": "A relentless interview to sharpen a plan or design.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grill-me"
+          ],
           "uses": 0
         },
         {
           "name": "grill-with-docs",
           "description": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grill-with-docs"
+          ],
           "uses": 0
         },
         {
           "name": "grilling",
           "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill grilling"
+          ],
           "uses": 0
         },
         {
           "name": "handoff",
           "description": "Compact the current conversation into a handoff document for another agent to pick up.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill handoff"
+          ],
           "uses": 0
         },
         {
           "name": "higgsfield-generate",
           "description": "Generate images/videos/3D assets/audio via Higgsfield AI. Defaults: GPT Image 2 for image/design/text, Seedance 2.0 for video, Nano Banana 2/Lite/Pro for character/reference images, Marketing Studio for ads, Seed Audio 1.0 for audio. Use when: \"generate an image\", \"make a video\", \"animate this photo\", \"image-to-video\", \"edit/stylize/remix this image\", \"reframe this video\", \"edit this video from a sketch\", \"create a 3D model/GLB\", \"create a sound effect\", \"make music\", \"text-to-audio\", \"create an ad\", \"make a UGC video\", \"unboxing\", \"presenter video\", \"import product from URL\", or \"analyze video virality\". Supports generic generation, workflows, Marketing Studio, and Virality Predictor. Chain with higgsfield-soul-id for face/identity consistency. NOT for: Soul training, brand systems/brandbooks (use higgsfield-brandkit), photoshoots, cards, YouTube thumbnails (use higgsfield-youtube-thumbnail), explainers (use higgsfield-video-explainer), playable games/assets (use higgsfield-game-generation), or TTS.",
           "source": "shared",
+          "repoUrl": "https://github.com/higgsfield-ai/skills",
+          "installCommands": [
+            "npx skills add higgsfield-ai/skills --skill higgsfield-generate"
+          ],
           "uses": 0
         },
         {
           "name": "higgsfield-websites",
           "description": "Build, edit, and deploy full-stack websites, apps and games via the Higgsfield CLI (`higgsfield website …`). Each is a React 19 + TanStack Start SSR app in one Cloudflare Worker (D1/R2/KV/DO/Containers). THREE product types, picked via `--type` on create: `website` (standalone, no Higgsfield integration — references/website-flow.md), `app` (Sign in with Higgsfield + fnf SDK, Quanta — references/app-flow.md), `game` (realtime multiplayer rooms — references/game-flow.md). Routes to the right flow; each carries its own rules and deploy/publish gates. Use when: \"build me a website\", \"make a landing page\", \"create a web app\", \"build a SaaS dashboard / portfolio\", \"make me a game\", \"deploy this site\", \"publish\". Also owns GAME ART: \"make a spritesheet\", \"tileable texture\", \"animate a 3D character\", game music/SFX — see the game-* references. NOT for: single image/video/audio generation (higgsfield-generate), product photos (higgsfield-product-photoshoot), marketplace cards (higgsfield-marketplace-cards).",
           "source": "shared",
+          "repoUrl": "https://github.com/higgsfield-ai/skills",
+          "installCommands": [
+            "npx skills add higgsfield-ai/skills --skill higgsfield-websites"
+          ],
           "uses": 0
         },
         {
@@ -1839,6 +2259,10 @@
           "name": "humanizer",
           "description": "Rewrite AI-sounding text so it reads naturally without changing what it says. Use when editing or reviewing prose for inflated claims, sales language, vague sources, repetitive structure, stock AI words, passive voice, filler, or chatbot artifacts. Based on Wikipedia's \"Signs of AI writing.\"",
           "source": "shared",
+          "repoUrl": "https://github.com/blader/humanizer",
+          "installCommands": [
+            "npx skills add blader/humanizer --skill humanizer"
+          ],
           "uses": 0
         },
         {
@@ -1851,12 +2275,20 @@
           "name": "impeccable",
           "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
           "source": "shared",
+          "repoUrl": "https://github.com/pbakaus/impeccable",
+          "installCommands": [
+            "npx skills add pbakaus/impeccable --skill impeccable"
+          ],
           "uses": 1
         },
         {
           "name": "implement",
           "description": "Implement a piece of work based on a spec or set of tickets.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill implement"
+          ],
           "uses": 0
         },
         {
@@ -1869,6 +2301,10 @@
           "name": "improve-codebase-architecture",
           "description": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill improve-codebase-architecture"
+          ],
           "uses": 0
         },
         {
@@ -1887,12 +2323,20 @@
           "name": "loop-me",
           "description": "Grill me about specs for the workflows I want to build, within this workspace.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill loop-me"
+          ],
           "uses": 0
         },
         {
           "name": "migrate-to-shoehorn",
           "description": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill migrate-to-shoehorn"
+          ],
           "uses": 0
         },
         {
@@ -1911,12 +2355,20 @@
           "name": "orca-cli",
           "description": "Use the public `orca` CLI to operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and the browser embedded inside the Orca app. Use when the user says \"$orca-cli\", \"use orca cli\", \"Orca worktree\", \"child worktree\", \"cardStatus\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"terminal send\", \"full handoff\", \"handover\", \"give this to another agent\", \"another worktree\", \"Orca browser\", \"orca artifacts\", \"share HTML/Markdown\", \"public artifact link\", \"share skills\", or \"control the browser inside Orca\". Prefer this over raw `git worktree`, ad hoc PTYs, Playwright, or Computer Use when the task touches Orca-managed state. Use Computer Use for external browser windows, webviews, or desktop UI only when the task requires OS/window-level control such as focus, menus, dialogs, coordinates, or screenshots. Use `orca-cli` for Orca's embedded pages and a page-automation tool such as Playwright or CDP for external pages.",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill orca-cli"
+          ],
           "uses": 0
         },
         {
           "name": "orchestration",
           "description": "Coordinate supervised Orca workers: threaded messages, blocking ask/reply, task dispatch, worker_done/escalation waits, task DAGs, decision gates, coordinator loops, and decomposing work across agents. Use `orca-cli` for full ownership handoffs — \"hand off\", \"handoff\", \"handover\", \"give this to another agent\", \"another worktree\" — unless asked to supervise, monitor, or coordinate a DAG, and for terminal control, lightweight terminal prompts, shell commands, Orca worktree management, and reading or waiting on terminals.",
           "source": "shared",
+          "repoUrl": "https://github.com/stablyai/orca",
+          "installCommands": [
+            "npx skills add stablyai/orca --skill orchestration"
+          ],
           "uses": 1
         },
         {
@@ -1947,18 +2399,30 @@
           "name": "prototype",
           "description": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill prototype"
+          ],
           "uses": 0
         },
         {
           "name": "research",
           "description": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill research"
+          ],
           "uses": 0
         },
         {
           "name": "resolving-merge-conflicts",
           "description": "Use when you need to resolve an in-progress git merge/rebase conflict.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill resolving-merge-conflicts"
+          ],
           "uses": 0
         },
         {
@@ -1995,24 +2459,40 @@
           "name": "scaffold-exercises",
           "description": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill scaffold-exercises"
+          ],
           "uses": 0
         },
         {
           "name": "setup-matt-pocock-skills",
           "description": "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-matt-pocock-skills"
+          ],
           "uses": 0
         },
         {
           "name": "setup-pre-commit",
           "description": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-pre-commit"
+          ],
           "uses": 0
         },
         {
           "name": "setup-ts-deep-modules",
           "description": "Wire dependency-cruiser into a TypeScript repo so each package is a deep module, with implementation hidden in subfolders and reachable only through its entry-point files. User-invoked.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill setup-ts-deep-modules"
+          ],
           "uses": 0
         },
         {
@@ -2031,12 +2511,20 @@
           "name": "tdd",
           "description": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill tdd"
+          ],
           "uses": 0
         },
         {
           "name": "teach",
           "description": "Teach the user a new skill or concept, within this workspace.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill teach"
+          ],
           "uses": 0
         },
         {
@@ -2049,24 +2537,40 @@
           "name": "to-spec",
           "description": "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill to-spec"
+          ],
           "uses": 0
         },
         {
           "name": "to-tickets",
           "description": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill to-tickets"
+          ],
           "uses": 0
         },
         {
           "name": "triage",
           "description": "Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill triage"
+          ],
           "uses": 0
         },
         {
           "name": "typesafe-ai",
           "description": "Build AI-powered software with TypeSafe: small units of AI intelligence you can use like programming primitives. Its System One models, including Jev, turn natural language and application state into typed judgments and probabilities that code can combine. Use when a feature needs programmable common sense, when brainstorming what AI could make possible in an app, or when an LLM prompt-and-parse step could become a structured decision. Applications include routing, ranking, extraction, verification, and interactive experiences; these are starting points, not the limits. Read live docs and cookbooks to find useful patterns and discover new combinations.",
           "source": "user",
+          "repoUrl": "https://github.com/typesafe-ai/skills",
+          "installCommands": [
+            "npx skills add typesafe-ai/skills --skill typesafe-ai"
+          ],
           "uses": 0
         },
         {
@@ -2085,6 +2589,10 @@
           "name": "wayfinder",
           "description": "Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill wayfinder"
+          ],
           "uses": 0
         },
         {
@@ -2097,18 +2605,30 @@
           "name": "writing-beats",
           "description": "Writing, exploit; assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-beats"
+          ],
           "uses": 0
         },
         {
           "name": "writing-fragments",
           "description": "Writing, explore: mine raw fragments, no structure yet.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-fragments"
+          ],
           "uses": 0
         },
         {
           "name": "writing-shape",
           "description": "Writing, exploit: shape raw material into an article, paragraph by paragraph.",
           "source": "shared",
+          "repoUrl": "https://github.com/mattpocock/skills",
+          "installCommands": [
+            "npx skills add mattpocock/skills --skill writing-shape"
+          ],
           "uses": 0
         }
       ],
@@ -2119,6 +2639,10 @@
           "marketplace": "xAI Official",
           "description": "Official Supabase plugin for Claude Code with bundled Supabase skills and MCP access for project management, database work, auth, storage, and Postgres best practices.",
           "skillCount": 2,
+          "repoUrl": "https://github.com/supabase-community/supabase-plugin",
+          "installCommands": [
+            "grok plugin install supabase-community/supabase-plugin"
+          ],
           "uses": 0
         },
         {
@@ -2127,6 +2651,10 @@
           "marketplace": "xAI Official",
           "description": "Build and deploy web apps and agents",
           "skillCount": 26,
+          "repoUrl": "https://github.com/vercel/vercel-plugin",
+          "installCommands": [
+            "grok plugin install vercel/vercel-plugin"
+          ],
           "uses": 0
         }
       ]
@@ -2445,6 +2973,10 @@
           "name": "impeccable",
           "description": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
           "source": "user",
+          "repoUrl": "https://github.com/pbakaus/impeccable",
+          "installCommands": [
+            "npx skills add pbakaus/impeccable --skill impeccable"
+          ],
           "uses": 0
         },
         {

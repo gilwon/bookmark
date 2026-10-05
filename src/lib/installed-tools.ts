@@ -14,7 +14,12 @@ export type InstalledSkill = {
   /** 세션 기록에서 센 사용 횟수(신호가 없는 도구는 0) */
   uses: number;
   /** 영어뿐인 설명의 한글 번역(installed-tools-ko.json) */
-  descriptionKo?: string;
+  descriptionKo?: string;  /** GitHub 저장소 링크(로컬에서 확인된 출처만) */
+  repoUrl?: string;
+  /** 설치 명령(줄 단위) */
+  installCommands?: string[];
+  /** Supabase Storage 비공개 버킷의 ZIP 경로(업로드된 경우만) */
+  zipKey?: string;
 };
 
 export type InstalledPlugin = {
@@ -26,7 +31,12 @@ export type InstalledPlugin = {
   /** 세션 기록에서 센 사용 횟수(신호가 없는 도구는 0) */
   uses: number;
   /** 영어뿐인 설명의 한글 번역(installed-tools-ko.json) */
-  descriptionKo?: string;
+  descriptionKo?: string;  /** GitHub 저장소 링크(로컬에서 확인된 출처만) */
+  repoUrl?: string;
+  /** 설치 명령(줄 단위) */
+  installCommands?: string[];
+  /** Supabase Storage 비공개 버킷의 ZIP 경로(업로드된 경우만) */
+  zipKey?: string;
 };
 
 export type InstalledTool = {
@@ -68,6 +78,14 @@ export function getInstalledTools(): InstalledToolsSnapshot {
       })),
     })),
   };
+}
+
+/** 스냅샷에 실린 zipKey 집합. 다운로드 라우트가 허용 키 검증에 쓴다 */
+export function getInstalledZipKeys(): Set<string> {
+  const snapshot = raw as InstalledToolsSnapshot;
+  return new Set(
+    snapshot.tools.flatMap((t) => t.skills.map((s) => s.zipKey).filter((k): k is string => Boolean(k)))
+  );
 }
 
 /** 스킬 출처 배지 라벨 */

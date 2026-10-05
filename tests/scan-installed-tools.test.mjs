@@ -6,12 +6,21 @@ import { join } from "node:path";
 import test from "node:test";
 import {
   assertNoHomePaths,
+  claudePluginSource,
+  codexPluginSource,
   countSlashPrompts,
   countUsage,
+  githubRepoUrl,
+  grokPluginSource,
+  inheritZipKeys,
+  isExcludedFile,
   listSkills,
+  lockSkillSource,
   missingTranslations,
+  parseCodexMarketplaces,
   parseCodexPlugins,
   parseDescription,
+  planZipEntries,
 } from "../scripts/scan-installed-tools.mjs";
 
 test("프론트매터 description 을 한 줄·여러 줄로 읽고 실패하면 빈 문자열", () => {
@@ -43,9 +52,9 @@ test("스킬 폴더에서 SKILL.md 없는 항목과 점 항목을 빼고 공유 
     await symlink(shared, join(skills, "c"));
 
     assert.deepEqual(await listSkills(skills, "user"), [
-      { name: "a", description: "에이", source: "user" },
-      { name: "b", description: "비 설명", source: "user" },
-      { name: "c", description: "공유", source: "shared" },
+      { name: "a", description: "에이", source: "user", dir: join(skills, "a") },
+      { name: "b", description: "비 설명", source: "user", dir: join(skills, "b") },
+      { name: "c", description: "공유", source: "shared", dir: join(skills, "c") },
     ]);
   } finally {
     await rm(root, { recursive: true, force: true });
@@ -145,4 +154,111 @@ test("Grok 프롬프트 기록에서 설치된 이름의 슬래시 명령만 센
     skills: { sdlc: 2 },
     plugins: { eli5: 1 },
   });
+});
+
+test("GitHub 주소만 통과시키고 .git·끝 / 를 떼며 자격 증명·토큰이 든 주소는 버린다", () => {
+  assert.equal(githubRepoUrl("https://github.com/a/b.git"), "https://github.com/a/b");
+  assert.equal(githubRepoUrl("https://github.com/a/b/"), "https://github.com/a/b");
+  assert.equal(githubRepoUrl({ type: "git", url: "https://github.com/a/b" }), "https://github.com/a/b");
+  assert.equal(githubRepoUrl("https://user:pass@github.com/a/b.git"), undefined);
+  assert.equal(githubRepoUrl("https://github.com/a/b?token=x"), undefined);
+  assert.equal(githubRepoUrl("https://gitlab.com/a/b"), undefined);
+  assert.equal(githubRepoUrl("git@github.com:a/b.git"), undefined);
+  assert.equal(githubRepoUrl("/Users/me/market"), undefined);
+  assert.equal(githubRepoUrl(undefined), undefined);
+});
+
+test("Claude 플러그인은 plugin.json 링크를 우선하고 명령은 마켓 저장소 기준 두 줄", () => {
+  const market = { source: { source: "github", repo: "org/market" } };
+  assert.deepEqual(
+    claudePluginSource({ name: "p", marketplace: "m", manifest: { repository: "https://github.com/x/p" }, market }),
+    { repoUrl: "https://github.com/x/p", installCommands: ["/plugin marketplace add org/market", "/plugin install p@m"] }
+  );
+  assert.deepEqual(claudePluginSource({ name: "p", marketplace: "m", manifest: null, market }).repoUrl, "https://github.com/org/market");
+  // 마켓이 github 가 아니면 명령이 없다
+  assert.deepEqual(
+    claudePluginSource({ name: "p", marketplace: "m", manifest: { homepage: "https://github.com/x/p" }, market: { source: { source: "directory" } } }),
+    { repoUrl: "https://github.com/x/p" }
+  );
+  assert.deepEqual(claudePluginSource({ name: "p", marketplace: "m", manifest: null, market: undefined }), {});
+});
+
+test("Codex 마켓은 git 소스만 출처로 쓰고 로컬 경로 마켓은 버린다", () => {
+  const toml = [
+    "[marketplaces.local-one]",
+    'source_type = "local"',
+    'source = "/Users/me/x"',
+    "",
+    "[marketplaces.gh]",
+    'source_type = "git"',
+    'source = "https://github.com/o/r.git"',
+    "",
+    '[plugins."p@gh"]',
+    "enabled = true",
+  ].join("\n");
+  const markets = parseCodexMarketplaces(toml);
+  assert.deepEqual(markets.gh, { sourceType: "git", source: "https://github.com/o/r.git" });
+  assert.deepEqual(codexPluginSource({ name: "p", marketplace: "gh" }, markets), {
+    repoUrl: "https://github.com/o/r",
+    installCommands: ["codex plugin marketplace add o/r", "codex plugin add p@gh"],
+  });
+  assert.deepEqual(codexPluginSource({ name: "q", marketplace: "local-one" }, markets), {});
+});
+
+test("Grok 플러그인은 kind.url 을 링크로, 설치 명령은 owner/repo 한 줄", () => {
+  assert.deepEqual(grokPluginSource({ type: "Git", url: "https://github.com/o/r.git" }), {
+    repoUrl: "https://github.com/o/r",
+    installCommands: ["grok plugin install o/r"],
+  });
+  assert.deepEqual(grokPluginSource({ type: "Local", path: "/Users/me/p" }), {});
+});
+
+test("스킬 락 파일의 같은 이름 항목만 출처로 쓰고 번들은 제외한다", () => {
+  const lock = { skills: { a: { source: "o/r", sourceUrl: "https://github.com/o/r.git" }, b: { source: "x y", sourceUrl: "https://github.com/o/b" } } };
+  assert.deepEqual(lockSkillSource({ name: "a", source: "shared" }, lock), {
+    repoUrl: "https://github.com/o/r",
+    installCommands: ["npx skills add o/r --skill a"],
+  });
+  // source 가 owner/repo 가 아니면 링크에서 만든다
+  assert.deepEqual(lockSkillSource({ name: "b", source: "user" }, lock).installCommands, ["npx skills add o/b --skill b"]);
+  assert.deepEqual(lockSkillSource({ name: "a", source: "bundled" }, lock), {});
+  assert.deepEqual(lockSkillSource({ name: "none", source: "user" }, lock), {});
+  assert.deepEqual(lockSkillSource({ name: "a", source: "user" }, null), {});
+});
+
+test("ZIP 제외 규칙과 5MB 상한", () => {
+  for (const rel of [".git/HEAD", "node_modules/x/i.js", ".DS_Store", ".env.local", "a/server.pem", "id.KEY", "my-Credentials.json", "SECRET.md", "tokens.txt", "keys/id_rsa.pub"]) {
+    assert.equal(isExcludedFile(rel, 10), true, rel);
+  }
+  assert.equal(isExcludedFile("SKILL.md", 10), false);
+  assert.equal(isExcludedFile("big.bin", 1024 * 1024 + 1), true);
+  assert.equal(isExcludedFile("ok.bin", 1024 * 1024), false);
+
+  const plan = planZipEntries([{ rel: "SKILL.md", size: 100 }, { rel: ".env", size: 5 }, { rel: "big", size: 2 * 1024 * 1024 }]);
+  assert.deepEqual(plan, { keep: [{ rel: "SKILL.md", size: 100 }], excludedCount: 2, total: 100, skipped: false });
+  const mb1 = 1024 * 1024;
+  const heavy = planZipEntries(Array.from({ length: 6 }, (_, i) => ({ rel: `f${i}`, size: mb1 })));
+  assert.equal(heavy.skipped, true);
+  assert.equal(heavy.total, 6 * mb1);
+});
+
+test("이전 스냅샷의 zipKey 는 지금도 ZIP 대상인 스킬에만 이어받는다", () => {
+  const prev = { tools: [{ id: "claude", skills: [{ name: "mine", zipKey: "claude/mine.zip" }, { name: "now-linked", zipKey: "claude/now-linked.zip" }, { name: "b", zipKey: "claude/b.zip" }] }] };
+  const snap = {
+    tools: [
+      {
+        id: "claude",
+        skills: [
+          { name: "mine", source: "user" },
+          { name: "now-linked", source: "shared", repoUrl: "https://github.com/o/r" },
+          { name: "b", source: "bundled" },
+          { name: "new", source: "user" },
+        ],
+      },
+    ],
+  };
+  inheritZipKeys(snap, prev);
+  assert.deepEqual(snap.tools[0].skills.map((s) => s.zipKey), ["claude/mine.zip", undefined, undefined, undefined]);
+  // 이전 스냅샷이 없어도 깨지지 않는다
+  assert.doesNotThrow(() => inheritZipKeys(snap, null));
 });

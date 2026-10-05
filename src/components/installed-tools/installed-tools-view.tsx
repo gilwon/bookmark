@@ -1,8 +1,8 @@
 "use client";
 // 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 스킬·플러그인 구역
-import { Search } from "lucide-react";
+import { Check, Copy, Download, ExternalLink, Search } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   HEAVY_USE,
@@ -79,6 +79,92 @@ function Description({ text, ko }: { text: string; ko?: string }) {
       >
         {text}
       </p>
+    </div>
+  );
+}
+
+/** 카드 하단 액션 버튼·링크 공통 모양. 터치 타겟 36px, hover·포커스 링 포함 */
+const actionClass =
+  "inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium text-foreground transition-colors hover:border-indigo-500/40 hover:bg-indigo-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background";
+
+/**
+ * 출처 액션 묶음. GitHub 링크, 설치 명령 복사, ZIP 다운로드를 있는 것만 보인다.
+ * 복사 상태는 카드마다 따로 둔다. 복사에 실패하면 명령을 선택 가능한 블록으로 펼친다
+ */
+function SourceActions({
+  repoUrl,
+  installCommands,
+  zipKey,
+}: {
+  repoUrl?: string;
+  installCommands?: string[];
+  zipKey?: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // 언마운트 때 남은 타이머를 지운다
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current);
+  }, []);
+
+  if (!repoUrl && !installCommands?.length && !zipKey) return null;
+  const text = installCommands?.join("\n") ?? "";
+
+  async function copy() {
+    try {
+      // 비보안 컨텍스트에서는 clipboard 자체가 없어 실패로 본다
+      if (!navigator.clipboard) throw new Error("clipboard 없음");
+      await navigator.clipboard.writeText(text);
+      setFailed(false);
+      setCopied(true);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setFailed(true);
+    }
+  }
+
+  return (
+    <div className="space-y-2 pt-1">
+      <div className="flex flex-wrap gap-2">
+        {repoUrl && (
+          <a href={repoUrl} target="_blank" rel="noopener noreferrer" className={actionClass}>
+            <ExternalLink aria-hidden className="h-3.5 w-3.5" />
+            GitHub
+            <span className="sr-only">(새 탭)</span>
+          </a>
+        )}
+        {installCommands?.length ? (
+          <button type="button" onClick={copy} className={actionClass}>
+            {copied ? (
+              <Check aria-hidden className="h-3.5 w-3.5" />
+            ) : (
+              <Copy aria-hidden className="h-3.5 w-3.5" />
+            )}
+            <span aria-live="polite">{copied ? "복사됨" : "설치 명령 복사"}</span>
+          </button>
+        ) : null}
+        {zipKey && (
+          <a
+            href={`/api/installed-tools/download?key=${encodeURIComponent(zipKey)}`}
+            className={actionClass}
+          >
+            <Download aria-hidden className="h-3.5 w-3.5" />
+            ZIP 다운로드
+          </a>
+        )}
+      </div>
+      {failed && (
+        <div className="space-y-1">
+          <p className="text-[11px] text-muted-foreground">
+            복사하지 못했습니다. 아래 명령을 직접 선택해 복사하세요.
+          </p>
+          <pre className="select-all overflow-x-auto whitespace-pre-wrap break-all rounded-md border border-border bg-muted px-2 py-1.5 font-mono text-[11px] text-foreground">
+            {text}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }
@@ -172,6 +258,11 @@ export function InstalledToolsView({
                     </div>
                   </div>
                   <Description text={s.description} ko={s.descriptionKo} />
+                  <SourceActions
+                    repoUrl={s.repoUrl}
+                    installCommands={s.installCommands}
+                    zipKey={s.zipKey}
+                  />
                 </CardContent>
               </Card>
             ))}
@@ -210,6 +301,11 @@ export function InstalledToolsView({
                   <p className="text-[11px] text-muted-foreground">
                     포함 스킬 {p.skillCount}
                   </p>
+                  <SourceActions
+                    repoUrl={p.repoUrl}
+                    installCommands={p.installCommands}
+                    zipKey={p.zipKey}
+                  />
                 </CardContent>
               </Card>
             ))}
