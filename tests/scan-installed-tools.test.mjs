@@ -268,3 +268,10 @@ test("zipObjectName: ASCII 이름은 그대로, 한글 이름은 hex 로 바꾼�
   assert.equal(zipObjectName("design-quality-check"), "design-quality-check");
   assert.match(zipObjectName("수노프롬프트빌더"), /^u-[0-9a-f]+$/);
 });
+
+test("parseDescription: 첫 줄 값에 이어 들여쓴 줄도 합친다", () => {
+  assert.equal(
+    parseDescription("---\ndescription: Use these skills when you need to explore the database\n  schema, execute queries.\nname: x\n---"),
+    "Use these skills when you need to explore the database schema, execute queries."
+  );
+});
