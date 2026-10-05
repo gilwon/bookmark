@@ -1,3 +1,15 @@
+# 한국 시간 10월 4일 Notion 신규 1건 Pages 이관 메모
+
+- 이번 주 범위는 2026-10-05 00:00 KST부터다. 10월 5일 검색에는 최상위 페이지가 없고 마음 달력 행만 있다.
+- 10월 4일 14:04 KST에 생긴 최상위 글은 직전 일요일 검색 뒤에 만들어져 Pages에 없었다. 그 글을 넣었다.
+- 제목. `한국인 전용 AI 스킬 125개 설치 가이드`. pageId `ef4b2568-27ac-8250-ac80-01830bc891b4`. 이미지 4. 첨부 0. 표 0. 코드 10. 루트 65.
+- 이미지 파일명 순서. `image.png`, `kskill_card3_부동산_v3.png`, `kskill_card4_법률_v2.png`, `kskill_card6_쇼핑_v2.png`. 화면 대체 텍스트는 부동산·법률·쇼핑 설명이다. 너비는 1255, 2048, 2048, 2048이다.
+- 링크. `https://github.com/NomaDamas/k-skill`, `https://k-skill-proxy.nomadamas.org/privacy`, `https://www.instagram.com/moodmode.ai`, `https://nodejs.org`.
+- 본문 약 3.7MB라 편집기 자동 저장 PATCH는 400이 날 수 있다. 조회는 된다.
+- 저장 경로 `/pages/9618ec9c-20bf-4727-ba3d-9520420f12c3`. 로컬 `dev`와 운영이 같은 id다. `updated_at`은 `2026-10-05T04:53:38.057Z`다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 한국 시간 9월 27일 Notion 신규 2건 Pages 이관 메모
 
 - 이번 주 범위는 2026-09-28 00:00 KST부터다. 9월 28일·29일·30일 검색에는 최상위 페이지가 없고 마음 달력 행만 있다.
