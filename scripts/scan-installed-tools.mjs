@@ -65,7 +65,7 @@ function unquote(value) {
 
 /**
  * SKILL.md 프론트매터에서 description 을 꺼낸다.
- * 한 줄 값과 들여쓴 여러 줄 값(>, |, 빈 값 다음 줄)만 처리하고, 실패하면 빈 문자열.
+ * 한 줄 값과 들여쓴 여러 줄 값(첫 줄 값 뒤 이어쓰기, >, |, 빈 값 다음 줄)만 처리하고, 실패하면 빈 문자열.
  */
 export function parseDescription(text) {
   try {
@@ -76,9 +76,8 @@ export function parseDescription(text) {
     const i = front.findIndex((l) => /^description\s*:/.test(l));
     if (i === -1) return "";
     const value = front[i].replace(/^description\s*:/, "").trim();
-    if (value && !/^[>|][+-]?$/.test(value)) return unquote(value);
-    // 여러 줄 값은 들여쓴 다음 줄을 들여쓰기가 끝날 때까지 모은다
-    const parts = [];
+    // 첫 줄 값(있으면)에 이어 들여쓴 다음 줄을 들여쓰기가 끝날 때까지 모은다
+    const parts = value && !/^[>|][+-]?$/.test(value) ? [value] : [];
     for (const line of front.slice(i + 1)) {
       if (line.trim() === "") continue;
       if (!/^\s/.test(line)) break;
