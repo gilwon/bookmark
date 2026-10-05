@@ -1167,4 +1167,28 @@ describe("Star 설명 번역", () => {
     assert.equal(withKoreanTranslation("kargulstudio/workflow-editor", null, null), korean);
     assert.equal(withKoreanTranslation("kargulstudio/sales-crm", null, null), korean);
   });
+
+  it("2026-10-06에 추가된 Star 5개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["alexgreensh/attention-span", "Make your agents talk human. ADHD-friendly output styles for Claude Code, Codex, and others. So you can pay attention, not tokens."],
+      ["dmmulroy/anti-slop", "Opinionated Oxlint rules for rejecting low-evidence TypeScript and JavaScript patterns"],
+      ["OrchestratorInc/agent-orchestrator", "Run and supervise teams of coding agents from planning to merge. Any harness (Claude code, codex, +25 more). Desktop, web, mobile, and cloud agents."],
+      ["birobirobiro/awesome-shadcn-ui", "A curated list of awesome things related to shadcn/ui."],
+      ["pauljoda/Crest", "An open source browser for Mac, iPhone, and iPad."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-06에 About가 비어 있는 kanban은 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("kargulstudio/kanban", null, null),
+      "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다."
+    );
+  });
 });

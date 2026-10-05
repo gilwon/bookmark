@@ -561,5 +561,11 @@
   "lidge-jun/design-isms": "디자인 사조 35개를 모은 시각 참고 보드입니다. AI 목업, 실제 예시, 프롬프트, 컴포넌트 단위 개발 노트를 담습니다.",
   "kargulstudio/sales-crm": "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.",
   "uppinote20/claude-pets": "Claude Code 창에 사는 픽셀 펫입니다. 돌아다니고, 세션에 반응하고, 일할수록 자랍니다.",
-  "datalab-to/lift": "문서에서 구조화된 데이터를 빠르고 정확하게 뽑습니다."
+  "datalab-to/lift": "문서에서 구조화된 데이터를 빠르고 정확하게 뽑습니다.",
+  "alexgreensh/attention-span": "에이전트가 사람처럼 말하게 합니다. Claude Code, Codex 등을 위한 ADHD 친화 출력 스타일입니다. 토큰이 아니라 내용에 집중합니다.",
+  "dmmulroy/anti-slop": "근거가 약한 TypeScript와 JavaScript 패턴을 거르는, 취향이 분명한 Oxlint 규칙입니다.",
+  "OrchestratorInc/agent-orchestrator": "코딩 에이전트 팀을 계획부터 머지까지 실행하고 감독합니다. Claude Code, Codex와 그 밖 25개 하네스를 씁니다. 데스크톱, 웹, 모바일, 클라우드 에이전트를 다룹니다.",
+  "kargulstudio/kanban": "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.",
+  "birobirobiro/awesome-shadcn-ui": "shadcn/ui와 관련된 좋은 자료를 모아 둔 목록입니다.",
+  "pauljoda/Crest": "Mac, iPhone, iPad용 오픈소스 브라우저입니다."
 }
