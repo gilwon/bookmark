@@ -1140,4 +1140,31 @@ describe("Star 설명 번역", () => {
       "UI 디자인 결정을 빠르게 반복하며 고르는 Claude Code 플러그인입니다. 컴포넌트나 페이지의 서로 다른 안을 여러 개 만들고, 브라우저에서 나란히 비교한 뒤 고른 점을 반영해 다듬습니다."
     );
   });
+
+  it("2026-10-05에 추가된 Star 9개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["omlahore/RemoveMacAI", "Turn off Apple Intelligence on macOS 27 and get its disk space back. One command, fully reversible."],
+      ["vercel/next.js", "The React Framework"],
+      ["infiniflow/ragflow", "RAGFlow is a leading open-source Retrieval-Augmented Generation (RAG) engine that fuses cutting-edge RAG with Agent capabilities to create a superior context layer for LLMs"],
+      ["docling-project/docling", "Get your documents ready for gen AI"],
+      ["microsoft/graphrag", "A modular graph-based Retrieval-Augmented Generation (RAG) system"],
+      ["rohitg00/ai-engineering-from-scratch", "Learn it. Build it. Ship it for others."],
+      ["lidge-jun/design-isms", "35 design -isms visual reference board with AI mockups, live examples, prompts, and component-level dev notes."],
+      ["uppinote20/claude-pets", "A pixel pet that lives in a Claude Code pane: it wanders, reacts to your session, and grows as you work"],
+      ["datalab-to/lift", "Extract structured data from documents quickly and accurately."],
+    ];
+    assert.equal(cases.length, 9);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-05에 About가 비어 있는 Star 2개는 한국어만 채운다", () => {
+    const korean = "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.";
+    assert.equal(withKoreanTranslation("kargulstudio/workflow-editor", null, null), korean);
+    assert.equal(withKoreanTranslation("kargulstudio/sales-crm", null, null), korean);
+  });
 });

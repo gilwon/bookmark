@@ -550,5 +550,16 @@
   "SWE-agent/SWE-agent": "SWE-agent는 GitHub 이슈를 받아 선택한 언어 모델로 자동 수정을 시도합니다. 공격적 보안이나 경쟁 코딩에도 쓸 수 있습니다. NeurIPS 2024입니다.",
   "carnot-tech/consulting-pptx-skill": "AI에게 제대로 된 PPTX를 만들게 하는 Claude Code 스킬입니다. 슬라이드 규약, 62종 슬라이드 유형 목록, 생성 파이프라인, 기계 검사를 담습니다. 목록은 SlideSpec 36종과 자유 서술 27개 부품입니다.",
   "jarrodwatts/claude-image-view": "Claude Code에 붙여 넣은 이미지를 봅니다. 빈 [Image #1] 태그 대신 프롬프트 위에 썸네일을 둡니다.",
-  "cloudflare/cloudflare-os": "Cloudflare Workers 위에 올린 에이전트 작업 공간입니다. 회사의 맥락과 시스템으로 문서를 만들고, 앱을 짓고, 에이전트를 돌립니다."
+  "cloudflare/cloudflare-os": "Cloudflare Workers 위에 올린 에이전트 작업 공간입니다. 회사의 맥락과 시스템으로 문서를 만들고, 앱을 짓고, 에이전트를 돌립니다.",
+  "omlahore/RemoveMacAI": "macOS 27에서 Apple Intelligence를 끄고 디스크 용량을 되돌립니다. 명령 하나이고, 언제든 되돌릴 수 있습니다.",
+  "vercel/next.js": "React 프레임워크입니다.",
+  "kargulstudio/workflow-editor": "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.",
+  "infiniflow/ragflow": "RAGFlow는 앞선 오픈소스 검색 증강 생성 엔진입니다. 최신 RAG와 에이전트 기능을 합쳐 LLM을 위한 맥락 층을 만듭니다.",
+  "docling-project/docling": "생성형 AI에 맞게 문서를 준비합니다.",
+  "microsoft/graphrag": "모듈형 그래프 기반 검색 증강 생성 시스템입니다.",
+  "rohitg00/ai-engineering-from-scratch": "배우고, 만들고, 다른 사람을 위해 내보냅니다.",
+  "lidge-jun/design-isms": "디자인 사조 35개를 모은 시각 참고 보드입니다. AI 목업, 실제 예시, 프롬프트, 컴포넌트 단위 개발 노트를 담습니다.",
+  "kargulstudio/sales-crm": "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.",
+  "uppinote20/claude-pets": "Claude Code 창에 사는 픽셀 펫입니다. 돌아다니고, 세션에 반응하고, 일할수록 자랍니다.",
+  "datalab-to/lift": "문서에서 구조화된 데이터를 빠르고 정확하게 뽑습니다."
 }
