@@ -636,14 +636,14 @@ async function zipStage(snapshot, { upload }) {
     if (unreadable.length) console.log(`  폴더를 읽지 못한 스킬: ${unreadable.join(", ")}`);
     if (!upload) {
       console.log("  --dry-run: 업로드하지 않고 임시 ZIP 을 지운다");
-      return;
+      return { uploaded: 0, storage: null };
     }
     loadEnvLocal();
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!url || !key) {
       console.log("  업로드 건너뜀: NEXT_PUBLIC_SUPABASE_URL 또는 SUPABASE_SERVICE_ROLE_KEY 가 없다");
-      return;
+      return { uploaded: 0, storage: null };
     }
     // 기본 실행과 테스트가 supabase 모듈을 읽지 않게 업로드 때만 불러온다
     const { createClient } = await import("@supabase/supabase-js");
@@ -665,6 +665,8 @@ async function zipStage(snapshot, { upload }) {
       ok++;
     }
     console.log(`  업로드 ${ok}/${built.length}개`);
+    // --sync 가 같은 클라이언트로 snapshot.json 을 올리도록 함께 돌려준다
+    return { uploaded: ok, storage };
   } finally {
     await rm(tmp, { recursive: true, force: true });
   }
@@ -673,17 +675,48 @@ async function zipStage(snapshot, { upload }) {
 /** ZIP 을 올리는 Supabase Storage 비공개 버킷 */
 const BUCKET = "installed-tools";
 
+/** --sync 가 스냅샷을 올리는 Storage 키 */
+export const SNAPSHOT_KEY = "snapshot.json";
+
+/**
+ * 스냅샷 JSON 문자열을 버킷의 snapshot.json 으로 덮어 올린다.
+ * 홈 경로 가드를 다시 거치고, 로컬 파일과 같은 문자열을 그대로 보낸다. 실패하면 에러를 던진다
+ */
+export async function uploadSnapshot(storage, json) {
+  assertNoHomePaths(json);
+  const { error } = await storage
+    .from(BUCKET)
+    .upload(SNAPSHOT_KEY, json, { contentType: "application/json", upsert: true });
+  if (error) throw new Error(`스냅샷 업로드 실패: ${error.message}`);
+}
+
+/** 동기화 API 가 파싱하는 마지막 요약 줄. 스킬·플러그인은 전 도구 합계, zip 은 이번에 올린 ZIP 수 */
+export function syncSummaryLine(snapshot, zip) {
+  const sum = (kind) => snapshot.tools.reduce((n, t) => n + t[kind].length, 0);
+  return `SYNC_SUMMARY skills=${sum("skills")} plugins=${sum("plugins")} zip=${zip} generatedAt=${snapshot.generatedAt}`;
+}
+
 async function main() {
   const args = process.argv.slice(2);
-  const upload = args.includes("--upload");
+  // --sync 는 --upload 의 ZIP 업로드를 그대로 쓰고 snapshot.json 업로드를 더한다
+  const sync = args.includes("--sync");
+  const upload = sync || args.includes("--upload");
   const snapshot = await scanAll();
   // 업로드 없이 다시 돌려도 이전 zipKey 를 잃지 않게 이어받는다
   inheritZipKeys(snapshot, await readJson(OUT_PATH));
-  if (upload || args.includes("--dry-run")) await zipStage(snapshot, { upload });
+  const zip =
+    upload || args.includes("--dry-run")
+      ? await zipStage(snapshot, { upload })
+      : { uploaded: 0, storage: null };
   for (const t of snapshot.tools) for (const s of t.skills) delete s.dir;
   const json = `${JSON.stringify(snapshot, null, 2)}\n`;
   assertNoHomePaths(json);
   await writeFile(OUT_PATH, json);
+  if (sync) {
+    if (!zip.storage) throw new Error("동기화 실패: Supabase 환경변수가 없어 스냅샷을 올리지 못했다");
+    console.log(`스냅샷 업로드 ${(Buffer.byteLength(json) / 1024).toFixed(1)}KB → ${BUCKET}/${SNAPSHOT_KEY}`);
+    await uploadSnapshot(zip.storage, json);
+  }
   for (const t of snapshot.tools) {
     const items = [...t.skills, ...t.plugins];
     console.log(
@@ -699,6 +732,8 @@ async function main() {
     const top = used.slice(0, 5).map((x) => `${x.name} ${x.uses}`).join(", ");
     console.log(`  사용 ${used.length}개${top ? ` · 상위 ${top}` : ""}`);
   }
+  // 요약 줄은 항상 맨 마지막에 출력한다(API 가 출력 꼬리에서 찾는다)
+  if (sync) console.log(syncSummaryLine(snapshot, zip.uploaded));
 }
 
 // 직접 실행할 때만 스캔한다(import 시에는 실행하지 않는다)
