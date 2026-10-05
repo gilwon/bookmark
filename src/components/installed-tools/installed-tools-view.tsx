@@ -1,6 +1,6 @@
 "use client";
 // 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 정렬(?sort=) + 스킬·플러그인 구역
-import { Check, Copy, Download, ExternalLink, Search } from "lucide-react";
+import { Check, Copy, Download, ExternalLink, RefreshCw, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   HEAVY_USE,
   SORT_MODES,
+  formatKst,
   parseSortMode,
   skillSourceLabel,
   sortItems,
@@ -174,14 +175,75 @@ function SourceActions({
   );
 }
 
+/**
+ * 동기화 버튼과 마지막 동기화 시각. POST 결과나 서버가 준 한국어 오류를 aria-live 영역에 보이고,
+ * 성공하면 router.refresh() 로 새 스냅샷을 다시 불러온다
+ */
+function SyncBar({ generatedAt }: { generatedAt: string }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function sync() {
+    setBusy(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/installed-tools/sync", { method: "POST" });
+      // JSON 이 아닌 응답(프록시 오류 등)은 일반 문구로 처리한다
+      const body = (await res.json().catch(() => ({}))) as {
+        skills?: number;
+        plugins?: number;
+        zip?: number;
+        error?: string;
+      };
+      if (!res.ok) {
+        setMessage(body.error ?? "동기화에 실패했습니다.");
+        return;
+      }
+      setMessage(`스킬 ${body.skills} · 플러그인 ${body.plugins} 갱신, ZIP ${body.zip}개 업로드`);
+      router.refresh();
+    } catch {
+      setMessage("서버에 연결하지 못해 동기화에 실패했습니다.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const last = formatKst(generatedAt);
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <button
+        type="button"
+        onClick={sync}
+        disabled={busy}
+        aria-busy={busy}
+        className={cn(actionClass, "active:bg-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-60")}
+      >
+        <RefreshCw aria-hidden className={cn("h-3.5 w-3.5", busy && "animate-spin motion-reduce:animate-none")} />
+        {busy ? "동기화 중…" : "동기화"}
+      </button>
+      {last && (
+        <span className="text-xs tabular-nums text-muted-foreground">마지막 동기화 {last}</span>
+      )}
+      {/* 비어 있어도 DOM 에 두어야 스크린 리더가 바뀐 문구를 읽는다 */}
+      <p aria-live="polite" className="min-w-0 basis-full break-words text-xs text-foreground sm:basis-auto">
+        {message}
+      </p>
+    </div>
+  );
+}
+
 export function InstalledToolsView({
   tools,
   activeId,
   sortMode,
+  generatedAt,
 }: {
   tools: InstalledTool[];
   activeId: string;
   sortMode: SortMode;
+  /** 로드된 스냅샷의 생성 시각(ISO) */
+  generatedAt: string;
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -209,6 +271,8 @@ export function InstalledToolsView({
 
   return (
     <div className="space-y-6">
+      <SyncBar generatedAt={generatedAt} />
+
       <div className="flex flex-wrap gap-2">
         {tools.map((t) => {
           const on = t.id === active?.id;

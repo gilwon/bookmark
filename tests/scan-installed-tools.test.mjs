@@ -275,3 +275,50 @@ test("parseDescription: 첫 줄 값에 이어 들여쓴 줄도 합친다", () =>
     "Use these skills when you need to explore the database schema, execute queries."
   );
 });
+
+test("--sync 요약 줄은 전 도구 스킬·플러그인 합계와 이번 ZIP 수, generatedAt 을 담는다", async () => {
+  const { syncSummaryLine } = await import("../scripts/scan-installed-tools.mjs");
+  const snap = {
+    generatedAt: "2026-10-05T01:02:03.000Z",
+    tools: [
+      { id: "claude", skills: [{}, {}], plugins: [{}] },
+      { id: "codex", skills: [{}], plugins: [] },
+    ],
+  };
+  assert.equal(
+    syncSummaryLine(snap, 4),
+    "SYNC_SUMMARY skills=3 plugins=1 zip=4 generatedAt=2026-10-05T01:02:03.000Z"
+  );
+});
+
+test("snapshot.json 업로드는 같은 문자열을 installed-tools 버킷에 upsert 하고 홈 경로가 있으면 막는다", async () => {
+  const { uploadSnapshot, SNAPSHOT_KEY } = await import("../scripts/scan-installed-tools.mjs");
+  const calls = [];
+  const storage = (error = null) => ({
+    from(bucket) {
+      return {
+        async upload(key, body, options) {
+          calls.push({ bucket, key, body, options });
+          return { error };
+        },
+      };
+    },
+  });
+  const json = '{"generatedAt":"x","tools":[]}\n';
+  await uploadSnapshot(storage(), json);
+  assert.equal(SNAPSHOT_KEY, "snapshot.json");
+  assert.deepEqual(calls, [
+    {
+      bucket: "installed-tools",
+      key: "snapshot.json",
+      body: json,
+      options: { contentType: "application/json", upsert: true },
+    },
+  ]);
+  // 업로드 실패는 에러로 올라가 종료 코드 1 이 된다
+  await assert.rejects(uploadSnapshot(storage({ message: "boom" }), json), /스냅샷 업로드 실패/);
+  // 홈 경로가 섞이면 업로드 전에 멈춘다
+  calls.length = 0;
+  await assert.rejects(uploadSnapshot(storage(), '{"p":"/Users/x"}'));
+  assert.equal(calls.length, 0);
+});

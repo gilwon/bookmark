@@ -1,4 +1,4 @@
-// 설치 현황 정적 스냅샷(src/data/installed-tools.json)의 타입과 로더
+// 설치 현황 스냅샷의 타입과 순수 함수(번역 병합·원본 선택). Storage 읽기는 installed-tools-source.ts
 import raw from "@/data/installed-tools.json";
 import ko from "@/data/installed-tools-ko.json";
 
@@ -61,9 +61,27 @@ function koFor(key: string, from: string, description: string): string | undefin
   return map[`${key}/${from}`] || map[key] || undefined;
 }
 
-/** 스냅샷 전체에 한글 번역을 합쳐 돌려준다. 런타임에 파일시스템을 읽지 않는다. */
-export function getInstalledTools(): InstalledToolsSnapshot {
-  const snapshot = raw as InstalledToolsSnapshot;
+/** 빌드에 포함된 정적 스냅샷(src/data/installed-tools.json). Storage 원본이 없을 때 쓴다 */
+export const localSnapshot = raw as InstalledToolsSnapshot;
+
+/**
+ * Storage 스냅샷과 정적 스냅샷 중 쓸 쪽을 고른다.
+ * 원격이 없거나 형태가 깨졌거나 generatedAt 을 못 읽으면 정적, 둘 다 있으면 generatedAt 이 더 나중인 쪽(같으면 원격)
+ */
+export function pickLatestSnapshot(
+  remote: unknown,
+  local: InstalledToolsSnapshot
+): InstalledToolsSnapshot {
+  const r = remote as Partial<InstalledToolsSnapshot> | null | undefined;
+  if (!r || typeof r.generatedAt !== "string" || !Array.isArray(r.tools)) return local;
+  const rt = Date.parse(r.generatedAt);
+  if (Number.isNaN(rt)) return local;
+  const lt = Date.parse(local.generatedAt);
+  return Number.isNaN(lt) || rt >= lt ? (r as InstalledToolsSnapshot) : local;
+}
+
+/** 스냅샷 전체에 한글 번역을 합쳐 돌려준다. 원본(Storage·정적)과 상관없이 같은 규칙이다 */
+export function mergeKo(snapshot: InstalledToolsSnapshot): InstalledToolsSnapshot {
   return {
     ...snapshot,
     tools: snapshot.tools.map((t) => ({
@@ -81,11 +99,27 @@ export function getInstalledTools(): InstalledToolsSnapshot {
 }
 
 /** 스냅샷에 실린 zipKey 집합. 다운로드 라우트가 허용 키 검증에 쓴다 */
-export function getInstalledZipKeys(): Set<string> {
-  const snapshot = raw as InstalledToolsSnapshot;
+export function zipKeysOf(snapshot: InstalledToolsSnapshot): Set<string> {
   return new Set(
     snapshot.tools.flatMap((t) => t.skills.map((s) => s.zipKey).filter((k): k is string => Boolean(k)))
   );
+}
+
+/** 한국 시간 `YYYY-MM-DD HH:mm`. 시간대를 고정해 서버·브라우저 출력이 같다 */
+const kstFormat = new Intl.DateTimeFormat("sv-SE", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+/** ISO 시각을 한국 시간 문자열로. 읽을 수 없으면 빈 문자열 */
+export function formatKst(iso: string): string {
+  const t = Date.parse(iso);
+  return Number.isNaN(t) ? "" : kstFormat.format(t);
 }
 
 /** 스킬 출처 배지 라벨 */
