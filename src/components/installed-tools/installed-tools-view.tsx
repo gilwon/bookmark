@@ -1,13 +1,18 @@
 "use client";
-// 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 스킬·플러그인 구역
+// 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 정렬(?sort=) + 스킬·플러그인 구역
 import { Check, Copy, Download, ExternalLink, Search } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   HEAVY_USE,
+  SORT_MODES,
+  parseSortMode,
   skillSourceLabel,
+  sortItems,
   type InstalledTool,
+  type SortMode,
 } from "@/lib/installed-tools";
 import { cn } from "@/lib/utils";
 
@@ -172,21 +177,35 @@ function SourceActions({
 export function InstalledToolsView({
   tools,
   activeId,
+  sortMode,
 }: {
   tools: InstalledTool[];
   activeId: string;
+  sortMode: SortMode;
 }) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
+  // URL 왕복을 기다리지 않고 바로 다시 정렬하도록 로컬 상태로 들고, URL 에도 적는다
+  const [sort, setSort] = useState(sortMode);
   const active = tools.find((t) => t.id === activeId) ?? tools[0];
   const q = query.trim().toLowerCase();
-  const skills =
+  const skills = sortItems(
     active?.skills.filter((s) =>
       matches(q, s.name, s.description, s.descriptionKo ?? "")
-    ) ?? [];
-  const plugins =
+    ) ?? [],
+    sort
+  );
+  const plugins = sortItems(
     active?.plugins.filter((p) =>
       matches(q, p.name, p.description, p.descriptionKo ?? "")
-    ) ?? [];
+    ) ?? [],
+    sort
+  );
+
+  /** 탭 링크·정렬 변경에 쓰는 쿼리. 기본 정렬(이름순)은 URL 에서 뺀다 */
+  function queryFor(tool: string, sort: SortMode): Record<string, string> {
+    return sort === "name" ? { tool } : { tool, sort };
+  }
 
   return (
     <div className="space-y-6">
@@ -196,7 +215,7 @@ export function InstalledToolsView({
           return (
             <Link
               key={t.id}
-              href={{ pathname: "/installed-tools", query: { tool: t.id } }}
+              href={{ pathname: "/installed-tools", query: queryFor(t.id, sort) }}
               aria-current={on ? "page" : undefined}
               className={cn(
                 "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
@@ -214,17 +233,40 @@ export function InstalledToolsView({
         })}
       </div>
 
-      <label className="relative block max-w-md">
-        <span className="sr-only">이름·설명 검색</span>
-        <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="이름·설명 검색"
-          className="h-9 w-full rounded-md border border-border bg-transparent pl-8 pr-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-indigo-500/50 focus-visible:ring-2 focus-visible:ring-indigo-500/20"
-        />
-      </label>
+      {/* 검색창과 정렬. 좁은 화면에서는 정렬이 아랫줄로 내려간다 */}
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="relative block w-full max-w-md">
+          <span className="sr-only">이름·설명 검색</span>
+          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="이름·설명 검색"
+            className="h-9 w-full rounded-md border border-border bg-transparent pl-8 pr-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-indigo-500/50 focus-visible:ring-2 focus-visible:ring-indigo-500/20"
+          />
+        </label>
+        <label className="flex items-center gap-2 text-xs text-muted-foreground">
+          정렬
+          <select
+            value={sort}
+            onChange={(e) => {
+              const next = parseSortMode(e.target.value);
+              setSort(next);
+              const params = new URLSearchParams(queryFor(active?.id ?? activeId, next));
+              // 쿼리만 바꾸고 스크롤 위치는 그대로 둔다
+              router.replace(`/installed-tools?${params}`, { scroll: false });
+            }}
+            className="h-9 rounded-md border border-border bg-background px-2 text-sm text-foreground outline-none transition-colors focus-visible:border-indigo-500/50 focus-visible:ring-2 focus-visible:ring-indigo-500/20"
+          >
+            {SORT_MODES.map((m) => (
+              <option key={m.value} value={m.value}>
+                {m.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
         <span
