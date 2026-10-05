@@ -1,5 +1,5 @@
 "use client";
-// 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 정렬(?sort=) + 스킬·플러그인 구역
+// 설치 현황 뷰 — 모델 탭(?tool=) + 검색 + 정렬(?sort=) + 용도 필터(?tag=) + 스킬·플러그인 구역
 import { Check, Copy, Download, ExternalLink, RefreshCw, Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,8 @@ import {
   HEAVY_USE,
   SORT_MODES,
   formatKst,
+  hasTag,
+  installedToolsQuery,
   parseSortMode,
   skillSourceLabel,
   sortItems,
@@ -90,21 +92,44 @@ function Description({ text, ko }: { text: string; ko?: string }) {
 }
 
 /**
- * 용도 칩 줄(읽기 전용). 출처·사용 배지(각진 모서리)와 구분되게 알약 모양의 중립 색으로 두고,
- * 좁은 화면에서는 줄바꿈된다. 칩이 없으면 빈 목록을 남기지 않는다
+ * 용도 칩 줄. 출처·사용 배지(각진 모서리)와 구분되게 알약 모양의 중립 색으로 두고,
+ * 좁은 화면에서는 줄바꿈된다. 칩은 용도 필터 토글 버튼이며 선택된 용도는 indigo·체크·aria-pressed 로 보인다.
+ * 칩이 없으면 빈 목록을 남기지 않는다
  */
-function TagChips({ tags }: { tags?: string[] }) {
+function TagChips({
+  tags,
+  selected,
+  onToggle,
+}: {
+  tags?: string[];
+  selected?: string;
+  onToggle: (tag: string) => void;
+}) {
   if (!tags?.length) return null;
   return (
     <ul aria-label="용도" className="flex flex-wrap gap-1">
-      {tags.map((t) => (
-        <li
-          key={t}
-          className="rounded-full border border-border bg-muted px-2 text-[11px] leading-5 text-muted-foreground"
-        >
-          {t}
-        </li>
-      ))}
+      {tags.map((t) => {
+        const on = t === selected;
+        return (
+          <li key={t}>
+            {/* 터치 타겟 최소 24px(leading-5 + py-0.5) */}
+            <button
+              type="button"
+              aria-pressed={on}
+              onClick={() => onToggle(t)}
+              className={cn(
+                "inline-flex min-h-6 items-center gap-0.5 rounded-full border px-2 py-0.5 text-[11px] leading-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+                on
+                  ? "border-indigo-500/50 bg-indigo-600/15 text-indigo-700 dark:text-indigo-200"
+                  : "border-border bg-muted text-muted-foreground hover:border-indigo-500/30 hover:text-foreground active:bg-indigo-500/10"
+              )}
+            >
+              {on && <Check aria-hidden className="h-[11px] w-[11px]" />}
+              {t}
+            </button>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -257,36 +282,54 @@ export function InstalledToolsView({
   tools,
   activeId,
   sortMode,
+  selectedTag,
   generatedAt,
 }: {
   tools: InstalledTool[];
   activeId: string;
   sortMode: SortMode;
+  /** URL ?tag= 에서 읽은 용도(TOOL_TAGS 안의 값만) */
+  selectedTag?: string;
   /** 로드된 스냅샷의 생성 시각(ISO) */
   generatedAt: string;
 }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  // URL 왕복을 기다리지 않고 바로 다시 정렬하도록 로컬 상태로 들고, URL 에도 적는다
+  // URL 왕복을 기다리지 않고 바로 다시 정렬·거르도록 로컬 상태로 들고, URL 에도 적는다
   const [sort, setSort] = useState(sortMode);
+  const [tag, setTag] = useState(selectedTag);
   const active = tools.find((t) => t.id === activeId) ?? tools[0];
   const q = query.trim().toLowerCase();
   const skills = sortItems(
-    active?.skills.filter((s) =>
-      matches(q, s.name, s.description, s.descriptionKo ?? "", ...(s.tags ?? []))
+    active?.skills.filter(
+      (s) =>
+        hasTag(s.tags, tag) &&
+        matches(q, s.name, s.description, s.descriptionKo ?? "", ...(s.tags ?? []))
     ) ?? [],
     sort
   );
   const plugins = sortItems(
-    active?.plugins.filter((p) =>
-      matches(q, p.name, p.description, p.descriptionKo ?? "", ...(p.tags ?? []))
+    active?.plugins.filter(
+      (p) =>
+        hasTag(p.tags, tag) &&
+        matches(q, p.name, p.description, p.descriptionKo ?? "", ...(p.tags ?? []))
     ) ?? [],
     sort
   );
 
-  /** 탭 링크·정렬 변경에 쓰는 쿼리. 기본 정렬(이름순)은 URL 에서 뺀다 */
-  function queryFor(tool: string, sort: SortMode): Record<string, string> {
-    return sort === "name" ? { tool } : { tool, sort };
+  /** 정렬·용도를 바꾼 뒤 URL 쿼리만 갈아 끼운다. 스크롤 위치는 그대로 둔다 */
+  function replaceUrl(nextSort: SortMode, nextTag: string | undefined) {
+    router.replace(
+      `/installed-tools?${installedToolsQuery(active?.id ?? activeId, nextSort, nextTag)}`,
+      { scroll: false }
+    );
+  }
+
+  /** 칩 클릭. 같은 용도면 해제, 다르면 그 용도로 바꾼다 */
+  function toggleTag(next: string | undefined) {
+    const value = next === tag ? undefined : next;
+    setTag(value);
+    replaceUrl(sort, value);
   }
 
   return (
@@ -299,7 +342,7 @@ export function InstalledToolsView({
           return (
             <Link
               key={t.id}
-              href={{ pathname: "/installed-tools", query: queryFor(t.id, sort) }}
+              href={`/installed-tools?${installedToolsQuery(t.id, sort, tag)}`}
               aria-current={on ? "page" : undefined}
               className={cn(
                 "inline-flex h-7 items-center gap-1.5 rounded-md border px-2 text-xs font-medium transition-colors",
@@ -337,9 +380,7 @@ export function InstalledToolsView({
             onChange={(e) => {
               const next = parseSortMode(e.target.value);
               setSort(next);
-              const params = new URLSearchParams(queryFor(active?.id ?? activeId, next));
-              // 쿼리만 바꾸고 스크롤 위치는 그대로 둔다
-              router.replace(`/installed-tools?${params}`, { scroll: false });
+              replaceUrl(next, tag);
             }}
             className="h-9 rounded-md border border-border bg-background px-2 text-sm text-foreground outline-none transition-colors focus-visible:border-indigo-500/50 focus-visible:ring-2 focus-visible:ring-indigo-500/20"
           >
@@ -351,6 +392,21 @@ export function InstalledToolsView({
           </select>
         </label>
       </div>
+
+      {/* 선택된 용도가 있을 때만 해제 버튼을 보인다. 빈 결과여도 남는다 */}
+      {tag && (
+        <div>
+          <button
+            type="button"
+            onClick={() => toggleTag(undefined)}
+            aria-label={`용도 필터 해제: ${tag}`}
+            className="inline-flex h-8 items-center gap-1.5 rounded-full border border-indigo-500/50 bg-indigo-600/15 px-3 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-600/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background active:bg-indigo-600/30 dark:text-indigo-200"
+          >
+            용도: {tag}
+            <span aria-hidden>✕</span>
+          </button>
+        </div>
+      )}
 
       <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
         <span
@@ -384,7 +440,7 @@ export function InstalledToolsView({
                     </div>
                   </div>
                   <Description text={s.description} ko={s.descriptionKo} />
-                  <TagChips tags={s.tags} />
+                  <TagChips tags={s.tags} selected={tag} onToggle={toggleTag} />
                   <SourceActions
                     repoUrl={s.repoUrl}
                     installCommands={s.installCommands}
@@ -425,7 +481,7 @@ export function InstalledToolsView({
                   {p.description && (
                     <Description text={p.description} ko={p.descriptionKo} />
                   )}
-                  <TagChips tags={p.tags} />
+                  <TagChips tags={p.tags} selected={tag} onToggle={toggleTag} />
                   <p className="text-[11px] text-muted-foreground">
                     포함 스킬 {p.skillCount}
                   </p>
