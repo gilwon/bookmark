@@ -13,12 +13,27 @@ Source: intent.md (Status: draft)
 9. 많이 쓴 항목은 카드 색을 달리한다. 사용 횟수가 3회 이상이면 강조 색(amber 계열 테두리·배경)이고, 카드 오른쪽에 `N회` 배지를 붙인다. 1~2회는 배지만 붙이고 색은 그대로다. 라이트·다크 모두 대비를 지킨다.
 10. 사용 횟수는 스캔 스크립트가 센다. Claude 는 `~/.claude/projects/**/*.jsonl` 에서 Skill 도구 호출(`input.skill`)과 슬래시 명령(`<command-name>`)을 이름별로 합산한다. 플러그인은 `플러그인:스킬` 형태 호출, `mcp__plugin_<플러그인>_` 도구 호출, `<플러그인>:` 슬래시 명령을 해당 플러그인에 합산한다. Codex·Grok·Gemini 는 신뢰할 신호가 있을 때만 센다. 없으면 0으로 두고 보고한다.
 11. 설명에 한글이 없는 스킬·플러그인은 한글 설명을 함께 보인다. 카드에 한글 설명을 먼저, 영어 원문을 그 아래 흐린 글씨로 둘 다 보인다(각 두 줄 말줄임). 한글이 이미 있는 설명은 그대로 한 줄만 보인다.
-12. 한글 설명은 `src/data/installed-tools-ko.json` 에 따로 둔다. 키는 `도구id/skill|plugin/이름` 이고 값은 한글 설명 문자열이다. 스캔 스크립트는 이 파일을 건드리지 않으므로 재스캔해도 번역이 남는다. 로더가 두 파일을 합쳐 `descriptionKo` 를 채운다.
+12. 한글 설명은 `src/data/installed-tools-ko.json` 에 따로 둔다. 키는 `도구id/skill|plugin/이름` 이고 값은 한글 설명 문자열이다. 같은 도구 안에서 이름이 같고 출처(스킬 source, 플러그인 marketplace)만 다른 항목은 키 끝에 `/출처` 를 붙인다. 로더는 출처 붙은 키를 먼저 찾는다. 스캔 스크립트는 이 파일을 건드리지 않으므로 재스캔해도 번역이 남는다. 로더가 두 파일을 합쳐 `descriptionKo` 를 채운다.
 13. 번역은 원문 의미만 옮긴다. 고유명사·명령어·파일명·스킬 이름은 원문 그대로 두고, 없던 내용을 보태지 않는다. 설명이 빈 항목은 빈 채로 둔다.
+14. 출처가 확인되는 항목은 카드에 GitHub 링크(새 탭, `rel=noopener noreferrer`)와 `설치 명령 복사` 버튼을 보인다. 버튼은 명령을 클립보드에 복사하고 잠시 `복사됨` 으로 바뀐다. 복사에 실패하면 명령 텍스트를 선택 가능한 상태로 보여 준다. 출처가 없는 항목은 링크도 버튼도 없다.
+15. 출처는 로컬에서 확인되는 것만 쓴다. 추정·웹 검색으로 채우지 않는다.
+- Claude 플러그인. `~/.claude/plugins/known_marketplaces.json` 의 마켓 `source.repo`(github)이면 `https://github.com/<repo>`. 플러그인 plugin.json 에 `repository` 나 `homepage` 가 github 주소면 그것이 우선. 명령은 `/plugin marketplace add <repo>` 와 `/plugin install <이름>@<마켓>` 두 줄.
+- Codex 플러그인. `~/.codex/config.toml` 의 `[marketplaces.<마켓>]` 중 `source_type = "git"` 의 `source`. 로컬 경로 마켓은 링크 없음. 명령은 `codex plugin marketplace add <github owner/repo>` 와 `codex plugin add <이름>@<마켓>` 두 줄.
+- Grok 플러그인. `registry.json` 의 `kind.url`. 설치 명령은 Grok CLI 문서나 `~/.grok/docs` 에서 확인되는 경우만 넣고, 확인되지 않으면 링크만 둔다.
+- 스킬. `~/.agents/.skill-lock.json` 에 같은 이름이 있으면 `sourceUrl` 을 링크로, 명령은 `npx skills add <source> --skill <이름>`. 도구 폴더가 그 스킬을 심볼릭 링크로 공유하는 경우 네 도구 모두 같은 출처가 붙는다. 락 파일에 없는 직접 만든 스킬과 번들 스킬은 출처 없음.
+- 링크는 `https://github.com/` 로 시작하고 `.git` 접미사는 뗀다. 토큰이나 자격 증명이 든 URL(`user:pass@`)은 버린다.
+16. 출처(`repoUrl`)가 없는 스킬 중 번들이 아닌 것(직접 만든 스킬, 락 파일에 없는 스킬)은 `ZIP 다운로드` 버튼을 둔다. 출처가 있는 항목은 명령 복사만 하고 ZIP 은 만들지 않는다. 번들 스킬과 플러그인은 ZIP 대상이 아니다.
+17. ZIP 은 `scan-installed-tools.mjs --upload` 일 때만 만든다. 옵션이 없으면 스냅샷만 갱신하고 업로드하지 않는다. 업로드 전에 대상 개수와 총 용량을 출력한다. 환경변수 `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 가 없으면 업로드를 건너뛰고 이유를 출력한다. 버킷이 없으면 비공개로 만든다.
+18. ZIP 은 Supabase Storage 비공개 버킷 `installed-tools` 에 둔다. 경로는 `<도구id>/<이름>.zip`. 심볼릭 링크로 같은 폴더를 가리키는 스킬은 realpath 가 같으면 한 번만 올리고 모든 도구가 같은 객체를 가리킨다(경로는 첫 도구 기준). 버킷은 공개하지 않는다.
+19. 다운로드는 로그인한 사용자만 한다. `GET /api/installed-tools/download?key=<경로>` 가 `requireUser()` 로 확인하고, 스냅샷에 있는 키인지 검증한 뒤(경로 조작 차단), 서비스 롤로 60초짜리 서명 URL 을 만들어 302 로 보낸다. 스냅샷에 없는 키와 `..` 가 든 키는 404 다.
+20. ZIP 에서 제외하는 파일. `.git`, `node_modules`, `.DS_Store`, `.env*`, `*.pem`, `*.key`, 이름에 `credential`·`secret`·`token`·`id_rsa` 가 든 파일, 파일 1개 1MB 초과. 스킬 하나의 압축 전 합계가 5MB 를 넘으면 그 스킬은 ZIP 을 만들지 않는다. 제외한 파일 수와 건너뛴 스킬 목록을 출력한다. 심볼릭 링크 파일은 따라가지 않고 건너뛴다.
+21. 스냅샷 항목에 `zipKey`(업로드된 경우만)가 붙는다. 버튼은 `zipKey` 가 있을 때만 보인다. ZIP 이 없는 직접 만든 스킬은 버튼 대신 아무것도 보이지 않는다.
+22. 저장소가 공개이므로 ZIP 과 업로드 자격 증명은 git 에 들어가지 않는다. 스크립트는 ZIP 을 임시 폴더에서 만들고 업로드 뒤 지운다.
 
 ## Design
 스냅샷 형태.
 `{ generatedAt, tools: [{ id, label, skills: [{name, description, source, uses}], plugins: [{name, version, marketplace, description, skillCount, uses}] }] }`
+각 스킬·플러그인에 선택 필드 `repoUrl`(문자열), `installCommands`(문자열 배열), `zipKey`(문자열)가 붙는다.
 
 스캔 규칙.
 - Claude 스킬은 `~/.claude/skills/*/SKILL.md`. 심볼릭 링크가 `~/.agents/skills` 를 가리키면 source 는 `shared`, 아니면 `user`.
