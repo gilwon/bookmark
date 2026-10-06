@@ -454,6 +454,12 @@ export const TARGETS = [
     tags: ["블로그", "자동화"],
     phrase: "쇼핑커넥트",
   },
+  {
+    id: "9dc09107-fde6-4349-b4b2-9f7f7fb277ba",
+    title: "Opus 5.5를 70시간 쓴 운영 팁",
+    tags: ["클로드", "설정"],
+    phrase: "스킬의 90%를 비활성화",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
