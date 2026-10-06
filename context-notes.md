@@ -1,3 +1,18 @@
+# every._ai 앱 프롬프트 8가지와 AI TREND 스킬 안내 Pages 이관 메모
+
+- 원문 둘은 서로 다른 글이다. 제목이나 `source_url`이 같으면 건너뛰고, 기존 행은 고치지 않는다.
+- every._ai 제목. `클로드 코드로 앱 만드는 프롬프트 8가지`. 사이트 접미는 넣지 않는다. 주소 `https://every-ai-guides.vercel.app/posts/claude-code-app-prompts-8`.
+- every._ai 본문은 `article.post`만 쓴다. 부트캠프 배너와 `claude-icon.png`, 모집 폼, 유튜브·인스타 메뉴는 뺀다. PNG 1장은 `오늘셋 실제 실행 화면 · 390px · 목록과 완료 표시`, 32448바이트, 780x1688. 첨부 0. 표 2. 코드 8.
+- every._ai 링크. 원문, `https://code.claude.com/docs/en/overview`, `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview`.
+- every._ai 저장 경로 `/pages/5eb8bccd-b53b-4b27-8d41-d2f6e834039b`. 로컬 `dev`와 운영이 같은 id다. `updated_at`은 `2026-10-06T23:50:58.663Z`다.
+- AI TREND 제목. `한국인 전용 AI 스킬, 바로 쓰는 법`. 주소 `https://agentc.live/shared/g-709b8e755c010fa7/view`. 토큰 쿼리 없이 받는다.
+- AI TREND 본문. 카드 5개, 표 5, 설치 명령 2개와 앱 프롬프트 5개가 코드 7개다. 설정 화면 JPEG는 67533바이트이고 화면에서는 1200x637로 보인다. 첨부 0. `전체 125개` 분야 목록은 남긴다.
+- AI TREND 링크. 원문, `https://claude.ai/settings/capabilities`, `https://nodejs.org/`, `https://github.com/NomaDamas/k-skill`, `https://www.instagram.com/ai.trend.kr/`.
+- 노션에 이미 있는 `한국인 전용 AI 스킬 125개 설치 가이드`는 다른 글이다. 그 행은 건드리지 않는다.
+- AI TREND 저장 경로 `/pages/b6ad44a2-c35c-42dd-a167-b7f3def0837f`. 로컬 `dev`와 운영 본문이 같다. `updated_at`은 `2026-10-06T23:51:02.500Z`다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- Prompts 테이블은 쓰지 않는다.
+
 # 한국 시간 10월 6일 Notion 신규 1건 Pages 이관 메모
 
 - 이번 주 범위는 2026-10-05 00:00 KST부터다. 10월 5일과 10월 6일 아침까지는 마음 달력만 있었다.
