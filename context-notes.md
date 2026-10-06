@@ -1,3 +1,16 @@
+# 한국 시간 10월 6일 Notion 신규 1건 Pages 이관 메모
+
+- 이번 주 범위는 2026-10-05 00:00 KST부터다. 10월 5일과 10월 6일 아침까지는 마음 달력만 있었다.
+- 10월 6일 21:36 KST 최상위 글 1건을 넣었다.
+- 제목. `[trenddalkak] Claude Code Mods 입문 가이드+ 바로 따라할 프롬프트 + 추천 Mods`. pageId `7e6b2568-27ac-8249-ab38-0184459a6b47`. 이미지 2. 첨부 0. 표 0. 코드 18. 루트 131.
+- 이미지. `스크린샷_2026-10-06_오후_5.05.01.png` 너비 2048, `스크린샷_2026-10-06_오후_4.59.59.png` 너비 1502. 화면 대체 텍스트는 같은 시각의 캡션이다.
+- 링크. `https://claude.com/blog/claude-code-mods`, `https://claude.dev/blog/getting-started-with-claude-code-mods/`, `https://claude.dev/`, `https://www.instagram.com/trenddalkak.ai`, x.com 상태 5개.
+- 트윗 블록은 제목 없이 source URL만 있다. 링크 문단으로 바꿨다. x.com 의 `s` 쿼리는 뺀다.
+- `https://l.threads.com/?u=http://Claude.dev/&e=...` 는 추적 주소다. 목적지만 `https://claude.dev/` 로 남긴다.
+- 저장 경로 `/pages/42f2942e-17ff-4770-a844-a1149fb3c3c5`. 로컬 `dev`와 운영이 같은 id다. `updated_at`은 `2026-10-06T23:30:48.403Z`다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 한국 시간 10월 4일 Notion 신규 1건 Pages 이관 메모
 
 - 이번 주 범위는 2026-10-05 00:00 KST부터다. 10월 5일 검색에는 최상위 페이지가 없고 마음 달력 행만 있다.
