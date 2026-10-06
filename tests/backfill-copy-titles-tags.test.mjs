@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 74건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 74);
+test("대상 75건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 75);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 74);
+  assert.equal(new Set(ids).size, 75);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -565,4 +565,18 @@ test("어제·오늘 추가된 지침·모델·수익 7건의 제목과 태그�
     assert.notEqual(item.title, expected[item.id].raw);
     assert.equal(item.title.endsWith(":"), false);
   }
+});
+
+test("오늘 추가된 Opus 70시간 운영 팁 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "9dc09107-fde6-4349-b4b2-9f7f7fb277ba"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "Opus 5.5를 70시간 쓴 운영 팁");
+  assert.deepEqual(item.tags, ["클로드", "설정"]);
+  assert.equal(item.title.endsWith(":"), false);
+  assert.notEqual(
+    item.title,
+    "Claude Code 안에서 Opus 5.5와 함께 70시간 이상을 보냈습니다... 여기 이걸 최대한 활용하는 방법이 있어요:"
+  );
 });
