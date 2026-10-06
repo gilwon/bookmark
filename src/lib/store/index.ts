@@ -46,6 +46,7 @@ export type {
   CustomPageRow,
   AgentDocRow,
   OauthTokenRow,
+  XBookmarkRow,
   PromptRow,
   ThreadCopyRow,
   GrokBotRow,

@@ -53,6 +53,20 @@ export const githubStars = pgTable("github_stars", {
   detailFetchedAt: text("detail_fetched_at"),
 });
 
+/** X에 북마크한 게시. 동기화 응답에 없어도 행은 남긴다. */
+export const xBookmarks = pgTable("x_bookmarks", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  tweetId: text("tweet_id").notNull(),
+  text: text("text").notNull().default(""),
+  authorName: text("author_name").notNull().default(""),
+  authorUsername: text("author_username").notNull().default(""),
+  postedAt: text("posted_at").notNull().default(""),
+  url: text("url").notNull(),
+  lastSynced: text("last_synced").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+
 export const customPages = pgTable("custom_pages", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),

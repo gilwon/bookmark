@@ -53,6 +53,21 @@ create table if not exists public.github_stars (
   unique (user_id, repo_full_name)
 );
 
+-- X에 북마크한 게시. 동기화 응답에 없어도 행은 남긴다.
+create table if not exists public.x_bookmarks (
+  id text primary key,
+  user_id text not null,
+  tweet_id text not null,
+  text text not null default '',
+  author_name text not null default '',
+  author_username text not null default '',
+  posted_at text not null default '',
+  url text not null,
+  last_synced text not null,
+  created_at text not null,
+  unique (user_id, tweet_id)
+);
+
 -- 북마크 URL 중복 방지 (동일 user+url)
 create unique index if not exists idx_bookmarks_user_url
   on public.bookmarks (user_id, url);
@@ -163,6 +178,7 @@ create index if not exists idx_bookmarks_user on public.bookmarks (user_id);
 create index if not exists idx_categories_user on public.categories (user_id);
 create index if not exists idx_stars_user on public.github_stars (user_id);
 create index if not exists idx_stars_repo on public.github_stars (user_id, repo_full_name);
+create index if not exists idx_x_bookmarks_user on public.x_bookmarks (user_id);
 create index if not exists idx_pages_user on public.custom_pages (user_id);
 create index if not exists idx_oauth_user on public.oauth_tokens (user_id);
 create index if not exists idx_agent_docs_user on public.agent_docs (user_id);
@@ -182,6 +198,7 @@ create unique index if not exists idx_grok_bots_user_template on public.grok_bot
 alter table public.bookmarks enable row level security;
 alter table public.categories enable row level security;
 alter table public.github_stars enable row level security;
+alter table public.x_bookmarks enable row level security;
 alter table public.custom_pages enable row level security;
 alter table public.oauth_tokens enable row level security;
 alter table public.agent_docs enable row level security;
@@ -223,6 +240,20 @@ create policy "stars_insert_own" on public.github_stars
 create policy "stars_update_own" on public.github_stars
   for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
 create policy "stars_delete_own" on public.github_stars
+  for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+
+drop policy if exists "x_bookmarks_select_own" on public.x_bookmarks;
+drop policy if exists "x_bookmarks_insert_own" on public.x_bookmarks;
+drop policy if exists "x_bookmarks_update_own" on public.x_bookmarks;
+drop policy if exists "x_bookmarks_delete_own" on public.x_bookmarks;
+
+create policy "x_bookmarks_select_own" on public.x_bookmarks
+  for select using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "x_bookmarks_insert_own" on public.x_bookmarks
+  for insert with check (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "x_bookmarks_update_own" on public.x_bookmarks
+  for update using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
+create policy "x_bookmarks_delete_own" on public.x_bookmarks
   for delete using (user_id = coalesce(auth.jwt() ->> 'sub', auth.uid()::text));
 
 create policy "pages_select_own" on public.custom_pages

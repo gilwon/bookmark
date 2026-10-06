@@ -14,9 +14,11 @@ import {
   oauthTokens,
   prompts,
   threadCopies,
+  xBookmarks,
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import { preparePageFindability } from "@/lib/page-findability";
+import type { MappedXBookmark } from "@/lib/x-bookmarks";
 import { normalizeTemplateUrl } from "@/lib/grok-bot";
 import { copyBodiesMatch, normalizeCopyBody } from "@/lib/thread-copy";
 import type {
@@ -35,6 +37,7 @@ import type {
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
+  XBookmarkRow,
 } from "./types";
 
 // --- bookmarks ---
@@ -1486,4 +1489,70 @@ export async function searchPrompts(
       .orderBy(desc(prompts.isFavorite), desc(prompts.updatedAt))
       .limit(lim)
   );
+}
+
+/** 사용자 X 북마크. 게시 시각이 최신인 것부터. */
+export async function listXBookmarks(userId: string): Promise<XBookmarkRow[]> {
+  return qall(
+    db
+      .select()
+      .from(xBookmarks)
+      .where(eq(xBookmarks.userId, userId))
+      .orderBy(desc(xBookmarks.postedAt), desc(xBookmarks.createdAt))
+  );
+}
+
+/** 게시 ID로 맞추고, 이번 응답에 없는 행은 지우지 않는다. */
+export async function upsertXBookmarks(
+  userId: string,
+  items: MappedXBookmark[]
+): Promise<{ count: number; added: number; updated: number }> {
+  const now = new Date().toISOString();
+  const seen = new Map<string, MappedXBookmark>();
+  for (const item of items) seen.set(item.tweetId, item);
+  let added = 0;
+  let updated = 0;
+  for (const item of seen.values()) {
+    const existing = await qget(
+      db
+        .select()
+        .from(xBookmarks)
+        .where(
+          and(eq(xBookmarks.userId, userId), eq(xBookmarks.tweetId, item.tweetId))
+        )
+    );
+    if (existing) {
+      await qrun(
+        db
+          .update(xBookmarks)
+          .set({
+            text: item.text,
+            authorName: item.authorName,
+            authorUsername: item.authorUsername,
+            postedAt: item.postedAt,
+            url: item.url,
+            lastSynced: now,
+          })
+          .where(eq(xBookmarks.id, existing.id))
+      );
+      updated += 1;
+    } else {
+      await qrun(
+        db.insert(xBookmarks).values({
+          id: uuidv4(),
+          userId,
+          tweetId: item.tweetId,
+          text: item.text,
+          authorName: item.authorName,
+          authorUsername: item.authorUsername,
+          postedAt: item.postedAt,
+          url: item.url,
+          lastSynced: now,
+          createdAt: now,
+        })
+      );
+      added += 1;
+    }
+  }
+  return { count: seen.size, added, updated };
 }
