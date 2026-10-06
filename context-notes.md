@@ -1856,3 +1856,11 @@
 - `kargulstudio/kanban`은 About가 비어 있다. README가 `workflow-editor`, `sales-crm`과 같은 시작 템플릿이라 한국어 문장도 같다. 세 저장소는 서로 다르다.
 - 정적 번역표는 563개에서 569개로 늘었다.
 - 백필 6건을 갱신했다. 빈 설명 채움은 1건이다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-07 추가 Star 한글 설명 7건 메모
+
+- 한국 시간 2026-10-06부터 2026-10-07까지 운영 `github_stars`에 들어온 항목은 12건이다. 2026-10-06에 들어온 5건은 이미 한글이 있다.
+- 2026-10-07에 들어온 항목은 7건이다. 한글이 없고 빈 설명은 0건이다.
+- 대상은 `sinaptik-ai/pandas-ai`, `tinyhumansai/openhuman`, `djfksjd/castor`, `storytold/photocraft`, `shhivv/arc-cua`, `tester-army/e2e`, `mindsdb/mindshub`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
+- 정적 번역표는 569개에서 576개로 늘었다.
+- 백필 7건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
