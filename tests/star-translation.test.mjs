@@ -1191,4 +1191,23 @@ describe("Star 설명 번역", () => {
       "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다."
     );
   });
+
+  it("2026-10-07에 추가된 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["sinaptik-ai/pandas-ai", "Chat with your database or your datalake (SQL, CSV, parquet). PandasAI makes data analysis conversational using LLMs and RAG."],
+      ["tinyhumansai/openhuman", "OpenHuman is the fastest, cheapest, most efficient open-source agent harness. Written in Rust"],
+      ["djfksjd/castor", "CASTOR: an engineering gate skill for AI agents (Claude Code + Codex CLI). Code, firmware, HDL and hardware design. Formerly ironcode."],
+      ["storytold/photocraft", "An open-source, clean-room reimplementation of Adobe Photoshop in pure Rust"],
+      ["shhivv/arc-cua", "Superfast action layer for computer-use agents, on MacOS."],
+      ["tester-army/e2e", "Next generation e2e testing framework for web and mobile apps."],
+      ["mindsdb/mindshub", "The unified workspace where open-source models get things done for you."],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

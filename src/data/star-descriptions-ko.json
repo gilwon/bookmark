@@ -567,5 +567,12 @@
   "OrchestratorInc/agent-orchestrator": "코딩 에이전트 팀을 계획부터 머지까지 실행하고 감독합니다. Claude Code, Codex와 그 밖 25개 하네스를 씁니다. 데스크톱, 웹, 모바일, 클라우드 에이전트를 다룹니다.",
   "kargulstudio/kanban": "Next.js 16, React 19, Tailwind CSS 4로 만든 시작 템플릿입니다. 컴포넌트와 페이지를 쓰기 전에 CONVENTIONS.md를 따릅니다.",
   "birobirobiro/awesome-shadcn-ui": "shadcn/ui와 관련된 좋은 자료를 모아 둔 목록입니다.",
-  "pauljoda/Crest": "Mac, iPhone, iPad용 오픈소스 브라우저입니다."
+  "pauljoda/Crest": "Mac, iPhone, iPad용 오픈소스 브라우저입니다.",
+  "sinaptik-ai/pandas-ai": "데이터베이스나 데이터 레이크와 대화합니다. SQL, CSV, parquet를 다룹니다. PandasAI는 LLM과 RAG로 데이터 분석을 대화로 바꿉니다.",
+  "tinyhumansai/openhuman": "OpenHuman은 가장 빠르고 저렴하며 효율적인 오픈소스 에이전트 하네스입니다. Rust로 만들었습니다.",
+  "djfksjd/castor": "CASTOR는 AI 에이전트용 엔지니어링 관문 스킬입니다. Claude Code와 Codex CLI에서 코드, 펌웨어, HDL, 하드웨어 설계를 다룹니다. 예전 이름은 ironcode입니다.",
+  "storytold/photocraft": "Adobe Photoshop을 순수 Rust로 클린룸 방식으로 다시 구현한 오픈소스입니다.",
+  "shhivv/arc-cua": "macOS에서 컴퓨터 사용 에이전트를 위한 매우 빠른 동작 층입니다.",
+  "tester-army/e2e": "웹과 모바일 앱을 위한 다음 세대 E2E 테스트 프레임워크입니다.",
+  "mindsdb/mindshub": "오픈소스 모델이 일을 대신하는 통합 작업 공간입니다."
 }
