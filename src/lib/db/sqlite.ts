@@ -101,6 +101,14 @@ function createSqlite(): SqliteDb {
     CREATE UNIQUE INDEX IF NOT EXISTS idx_categories_user_name ON categories(user_id, name);
     CREATE INDEX IF NOT EXISTS idx_stars_user ON github_stars(user_id);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_stars_user_repo ON github_stars(user_id, repo_full_name);
+    CREATE TABLE IF NOT EXISTS x_bookmarks (
+      id TEXT PRIMARY KEY, user_id TEXT NOT NULL, tweet_id TEXT NOT NULL,
+      text TEXT NOT NULL DEFAULT '', author_name TEXT NOT NULL DEFAULT '',
+      author_username TEXT NOT NULL DEFAULT '', posted_at TEXT NOT NULL DEFAULT '',
+      url TEXT NOT NULL, last_synced TEXT NOT NULL, created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_x_bookmarks_user ON x_bookmarks(user_id);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_x_bookmarks_user_tweet ON x_bookmarks(user_id, tweet_id);
     CREATE INDEX IF NOT EXISTS idx_pages_user ON custom_pages(user_id);
     CREATE INDEX IF NOT EXISTS idx_agent_docs_user ON agent_docs(user_id);
     CREATE INDEX IF NOT EXISTS idx_prompts_user ON prompts(user_id);

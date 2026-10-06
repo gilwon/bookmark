@@ -3,6 +3,7 @@
 
 import {
   Bookmark,
+  BookmarkCheck,
   Bot,
   BotMessageSquare,
   Boxes,
@@ -48,6 +49,10 @@ const navSections = [
       { href: "/pdf-viewer", label: "PDF 뷰어", icon: FileText },
       { href: "/installed-tools", label: "설치 현황", icon: Boxes },
     ],
+  },
+  {
+    label: "X",
+    items: [{ href: "/x-bookmarks", label: "X북마크", icon: BookmarkCheck }],
   },
   {
     label: "GitHub",

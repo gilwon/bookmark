@@ -31,6 +31,7 @@ import {
   mapStar,
   mapThreadCopy,
   mapToken,
+  mapXBookmark,
   pageToDb,
   promptToDb,
   starToDb,
@@ -52,6 +53,11 @@ import {
   STAR_LIST_SELECT,
 } from "./star-list";
 import { fetchAllPaged } from "./supabase-page";
+import {
+  isMissingXBookmarksTable,
+  X_BOOKMARKS_TABLE_USER_MESSAGE,
+  type MappedXBookmark,
+} from "@/lib/x-bookmarks";
 import type {
   AgentDocRow,
   BookmarkRow,
@@ -62,6 +68,7 @@ import type {
   OauthTokenRow,
   PromptRow,
   ThreadCopyRow,
+  XBookmarkRow,
 } from "./types";
 
 function sb() {
@@ -1800,4 +1807,88 @@ export async function searchPrompts(
   }
 
   return rows.slice(0, lim);
+}
+
+const X_BOOKMARK_SELECT =
+  "id, user_id, tweet_id, text, author_name, author_username, posted_at, url, last_synced, created_at";
+
+function throwIfXBookmarkTable(
+  error: { message: string } | null,
+  ctx: string
+) {
+  if (error && isMissingXBookmarksTable(error.message)) {
+    throw new Error(X_BOOKMARKS_TABLE_USER_MESSAGE);
+  }
+  throwIfError(error, ctx);
+}
+
+/** 사용자 X 북마크. 게시 시각이 최신인 것부터. */
+export async function listXBookmarks(userId: string): Promise<XBookmarkRow[]> {
+  return fetchAllPaged(async (from, to) => {
+    const { data, error } = await sb()
+      .from("x_bookmarks")
+      .select(X_BOOKMARK_SELECT)
+      .eq("user_id", userId)
+      .order("posted_at", { ascending: false })
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    throwIfXBookmarkTable(error, "listXBookmarks");
+    return (data ?? []).map(mapXBookmark);
+  });
+}
+
+/** 게시 ID로 맞추고, 이번 응답에 없는 행은 지우지 않는다. */
+export async function upsertXBookmarks(
+  userId: string,
+  items: MappedXBookmark[]
+): Promise<{ count: number; added: number; updated: number }> {
+  const now = new Date().toISOString();
+  const seen = new Map<string, MappedXBookmark>();
+  for (const item of items) seen.set(item.tweetId, item);
+  const ids = [...seen.keys()];
+  const existing = new Map<string, { id: string; created_at: string }>();
+  for (let i = 0; i < ids.length; i += 100) {
+    const chunk = ids.slice(i, i + 100);
+    const { data, error } = await sb()
+      .from("x_bookmarks")
+      .select("id, tweet_id, created_at")
+      .eq("user_id", userId)
+      .in("tweet_id", chunk);
+    throwIfXBookmarkTable(error, "upsertXBookmarks");
+    for (const row of data ?? []) {
+      existing.set(row.tweet_id as string, {
+        id: row.id as string,
+        created_at: row.created_at as string,
+      });
+    }
+  }
+
+  const rowsToWrite = [...seen.values()].map((item) => {
+    const prev = existing.get(item.tweetId);
+    return {
+      id: prev?.id ?? uuidv4(),
+      user_id: userId,
+      tweet_id: item.tweetId,
+      text: item.text,
+      author_name: item.authorName,
+      author_username: item.authorUsername,
+      posted_at: item.postedAt,
+      url: item.url,
+      last_synced: now,
+      created_at: prev?.created_at ?? now,
+    };
+  });
+  for (let i = 0; i < rowsToWrite.length; i += 200) {
+    const chunk = rowsToWrite.slice(i, i + 200);
+    const { error } = await sb()
+      .from("x_bookmarks")
+      .upsert(chunk, { onConflict: "user_id,tweet_id" });
+    throwIfXBookmarkTable(error, "upsertXBookmarks");
+  }
+  const updated = existing.size;
+  return {
+    count: rowsToWrite.length,
+    added: rowsToWrite.length - updated,
+    updated,
+  };
 }

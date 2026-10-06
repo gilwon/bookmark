@@ -79,6 +79,20 @@ export type OauthTokenRow = {
   updatedAt: string;
 };
 
+/** X에 북마크한 게시 */
+export type XBookmarkRow = {
+  id: string;
+  userId: string;
+  tweetId: string;
+  text: string;
+  authorName: string;
+  authorUsername: string;
+  postedAt: string;
+  url: string;
+  lastSynced: string;
+  createdAt: string;
+};
+
 export type AgentDocRow = {
   id: string;
   userId: string;

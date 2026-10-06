@@ -9,6 +9,7 @@ import {
   GitFork,
   LayoutDashboard,
   Bookmark,
+  BookmarkCheck,
   MessageSquareText,
   PenLine,
   Search,
@@ -154,6 +155,13 @@ export function CommandPalette() {
         keywords: "bookmarks",
         icon: <Bookmark className="h-4 w-4" />,
         run: go("/bookmarks"),
+      },
+      {
+        id: "nav-x-bookmarks",
+        label: "X북마크",
+        keywords: "x twitter 트위터 북마크",
+        icon: <BookmarkCheck className="h-4 w-4" />,
+        run: go("/x-bookmarks"),
       },
       {
         id: "nav-stars",

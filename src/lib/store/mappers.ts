@@ -8,6 +8,7 @@ import type {
   GrokBotRow,
   OauthTokenRow,
   PromptRow,
+  XBookmarkRow,
   ThreadCopyRow,
 } from "./types";
 
@@ -94,6 +95,21 @@ export function mapPage(r: any): CustomPageRow {
     isFavorite: toFavoriteFlag(r.is_favorite ?? r.isFavorite),
     createdAt: r.created_at ?? r.createdAt,
     updatedAt: r.updated_at ?? r.updatedAt,
+  };
+}
+
+export function mapXBookmark(r: any): XBookmarkRow {
+  return {
+    id: r.id,
+    userId: r.user_id ?? r.userId,
+    tweetId: r.tweet_id ?? r.tweetId,
+    text: r.text ?? "",
+    authorName: r.author_name ?? r.authorName ?? "",
+    authorUsername: r.author_username ?? r.authorUsername ?? "",
+    postedAt: r.posted_at ?? r.postedAt ?? "",
+    url: r.url,
+    lastSynced: r.last_synced ?? r.lastSynced,
+    createdAt: r.created_at ?? r.createdAt,
   };
 }
 
