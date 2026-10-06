@@ -1,3 +1,18 @@
+# every._ai 앱 프롬프트 8가지와 AI TREND 스킬 안내 Pages 이관
+
+- [x] 추적 쿼리 `from=dm`, `fbclid`, `mcp_token`은 저장 주소에서 뺀다
+- [x] every._ai는 이미지 1, 첨부 0, 표 2, 코드 8이다
+- [x] AI TREND 안내는 이미지 1, 첨부 0, 표 5, 코드 7이다
+- [x] 부트캠프 배너와 모집 폼은 빼고, 접힌 설정 화면 이미지는 남긴다
+- [x] `scripts/import-every-ai-claude-code-app-prompts-8.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] `scripts/import-agentc-kskill-howto.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 둘 다 insert, 재실행은 둘 다 skip
+- [x] every._ai 저장 경로 `/pages/5eb8bccd-b53b-4b27-8d41-d2f6e834039b`
+- [x] AI TREND 저장 경로 `/pages/b6ad44a2-c35c-42dd-a167-b7f3def0837f`
+- [x] 브라우저에서 제목·이미지 크기·코드·표·공식 링크가 보이는지 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 이미 있는 노션 글 `한국인 전용 AI 스킬 125개 설치 가이드`는 그대로 둔다
+
 # 한국 시간 10월 6일 Notion 신규 1건 Pages 이관
 
 - [x] 10월 6일 21:36 글 1건이 이번 주 신규 최상위 페이지다
