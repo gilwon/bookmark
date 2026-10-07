@@ -1,3 +1,14 @@
+# 코딩 몰라도 쓰는 클로드 실전 스킬 7개 Pages 이관 메모
+
+- 제목. `코딩 몰라도 쓰는 클로드 실전 스킬 7개`. pageId `3f17d0f1-98f6-801b-90ec-f6d47cd10def`. 만든 시각은 2026-10-06 21:43 KST다.
+- 주소 `https://app.notion.com/p/3f17d0f198f6801b90ecf6d47cd10def`. `source=copy_link`는 뺀다.
+- 이미지 0. 첨부 0. 표 5. 코드 47. 루트 338. 할 일 0.
+- 링크. GitHub `anthropics/skills`, `epoko77-ai/im-not-ai`, `coreyhaines31/marketingskills`, `vercel-labs/skills`, `vercel-labs/agent-browser`. `https://code.claude.com/docs/en/discover-plugins`, `https://code.claude.com/docs/en/skills`, `https://code.claude.com/docs/en/setup`. `https://skills.sh/`, `https://git-scm.com/downloads/win`, `https://nodejs.org/`.
+- 공간은 GILWON 주간 검색 공간이 아니다. 그래서 10월 6일 주간 이관에 들어가지 않았다.
+- 저장 경로 `/pages/5710dda0-0510-4067-b4fa-30b9c5187006`. 로컬 `dev`와 운영이 같은 id이고 본문도 같다. `updated_at`은 `2026-10-07T22:50:56.584Z`다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # every._ai 앱 프롬프트 8가지와 AI TREND 스킬 안내 Pages 이관 메모
 
 - 원문 둘은 서로 다른 글이다. 제목이나 `source_url`이 같으면 건너뛰고, 기존 행은 고치지 않는다.
