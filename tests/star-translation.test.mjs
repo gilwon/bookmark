@@ -1210,4 +1210,33 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-08에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["prekuter/dryforge", "Bounded-autonomy plugin harness for agents. Intent to implementation: ready, then go."],
+      ["gmh5225/awesome-skills", "A curated list of Agent Skills, resources, and tools for AI coding agents like Claude Code, Codex, Gemini CLI, GitHub Copilot, and more."],
+      ["morluto/rea", "Reverse engineer anything with agents, from app behavior down to native binaries."],
+      ["yihui-dev/awesome-opus5-5-videos", "A growing collection of viral videos made with Claude Opus 5.5 and the prompts behind them. Watch each original next to a live remake on Skillry. Updated regularly."],
+      ["carnot-tech/jinba-consulting-pptx-skill", "AIにまじなPPTXを作らせる Claude Code / Codex スキル"],
+      ["VictorTaelin/OptMem", "Permanent memory for AI agents. A 426-token prompt, a script, plug and play."],
+      ["jungjin0003/Claude-Mythos-5.1-System-Prompt", "The Claude Mythos 5.1 System Prompt"],
+      ["jkf87/ide-mod", "Claude Code IDE pane mod: agent board + file tree + tabbed viewer"],
+      ["samyost1/3dicon", "One prompt in, a looping animated 3D icon out — with real transparency. A Claude Code skill."],
+      ["mvschwarz/openrig", "Build your own network of agents from Claude Code, Codex and Pi: persistent teams with roles, shared context and owned work."],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-08에 About가 비어 있는 t3code는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("pingdotgg/t3code", null, null),
+      "T3 Code는 에이전트 하네스 조종면입니다. 컴퓨터에 있는 Claude Code, Codex, Cursor, Grok Build, OpenCode, Google Antigravity를 모바일, 웹, 데스크톱 앱에서 다룹니다."
+    );
+  });
 });

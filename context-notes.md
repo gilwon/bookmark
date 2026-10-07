@@ -1892,3 +1892,13 @@
 - 대상은 `sinaptik-ai/pandas-ai`, `tinyhumansai/openhuman`, `djfksjd/castor`, `storytold/photocraft`, `shhivv/arc-cua`, `tester-army/e2e`, `mindsdb/mindshub`다. GitHub About가 있어 영문을 유지하고 한국어를 병기한다.
 - 정적 번역표는 569개에서 576개로 늘었다.
 - 백필 7건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-08 추가 Star 한글 설명 11건 메모
+
+- 한국 시간 2026-10-07부터 2026-10-08까지 운영 `github_stars`에 들어온 항목은 20건이다. 2026-10-07에 들어온 7건은 이미 한글이 있다.
+- 2026-10-08에 들어온 항목은 13건이다. `JinHo-von-Choi/anti-samcheonpo`와 `kagla/gnucms`는 About 자체가 한글이라 그대로 둔다.
+- 한글이 없는 항목은 11건이다. 빈 설명은 1건이다.
+- About가 있는 10건은 원문을 유지하고 한국어를 병기한다. `carnot-tech/jinba-consulting-pptx-skill`은 일본어 About다. `carnot-tech/consulting-pptx-skill`과 다른 저장소다.
+- `pingdotgg/t3code`는 About가 비어 README를 보고 한국어만 채웠다.
+- 정적 번역표는 576개에서 587개로 늘었다.
+- 백필 11건을 갱신했다. 빈 설명 채움은 1건이다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
