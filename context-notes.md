@@ -1,3 +1,15 @@
+# every._ai 클로드 UI 프롬프트 8가지 Pages 이관 메모
+
+- 제목. `클로드로 밤티 없는 화면 만드는 프롬프트 8가지`. 사이트 접미는 넣지 않는다.
+- 주소 `https://every-ai-guides.vercel.app/posts/claude-ui-prompts-8`. `from=dm`과 `fbclid`는 뺀다.
+- 본문은 `article.post`만 쓴다. 부트캠프 배너와 `claude-icon.png`, 모집 폼, 유튜브·인스타 메뉴는 뺀다.
+- 이미지 2장. `390px · 시작 화면과 08 최종 화면`은 77292바이트, 828x895. `1440px · 시작 화면과 08 최종 화면`은 42308바이트, 1488x501. 둘 다 PNG data URL이다. 첨부 0. 표 3. 코드 8.
+- 링크. 원문, `https://code.claude.com/docs/en/overview`, `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview`.
+- 이미 있는 `클로드 코드로 앱 만드는 프롬프트 8가지`는 다른 글이다. 그 행은 건드리지 않는다.
+- 저장 경로 `/pages/381a3d90-4b88-4651-8f0f-1439b72dea81`. 로컬 `dev`와 운영이 같은 id이고 본문도 같다. `updated_at`은 `2026-10-07T23:08:14.659Z`다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 코딩 몰라도 쓰는 클로드 실전 스킬 7개 Pages 이관 메모
 
 - 제목. `코딩 몰라도 쓰는 클로드 실전 스킬 7개`. pageId `3f17d0f1-98f6-801b-90ec-f6d47cd10def`. 만든 시각은 2026-10-06 21:43 KST다.
