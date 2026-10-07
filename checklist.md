@@ -1,3 +1,14 @@
+# every._ai 클로드 UI 프롬프트 8가지 Pages 이관
+
+- [x] 추적 쿼리 `from=dm`과 `fbclid`는 저장 주소에서 뺀다
+- [x] 이미지 2, 첨부 0, 표 3, 코드 8을 확인한다
+- [x] 부트캠프 배너와 모집 폼은 빼고 전후 화면 두 장은 남긴다
+- [x] `scripts/import-every-ai-claude-ui-prompts-8.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 insert, 재실행은 skip
+- [x] 저장 경로 `/pages/381a3d90-4b88-4651-8f0f-1439b72dea81`
+- [x] 브라우저에서 제목·이미지 2장·코드 8·표 3·공식 링크가 보이는지 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+
 # 코딩 몰라도 쓰는 클로드 실전 스킬 7개 Pages 이관
 
 - [x] 원문 쿼리 `source=copy_link`는 저장 주소에서 뺀다
