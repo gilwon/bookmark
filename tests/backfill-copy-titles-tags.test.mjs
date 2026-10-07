@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 75건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 75);
+test("대상 78건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 78);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 75);
+  assert.equal(new Set(ids).size, 78);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -579,4 +579,32 @@ test("오늘 추가된 Opus 70시간 운영 팁 1건의 제목과 태그를 정�
     item.title,
     "Claude Code 안에서 Opus 5.5와 함께 70시간 이상을 보냈습니다... 여기 이걸 최대한 활용하는 방법이 있어요:"
   );
+});
+
+test("오늘 추가된 세션·OptMem·스킬 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "1d4776fd-b9de-4ad1-bedd-c7eff1dc3f08": {
+      title: "클로드 코드 세션끼리 메시지를 받는 설정",
+      tags: ["클로드", "설정"],
+      raw: "클로드 코드 세션끼리 서로 대화가 되는 거 오늘 처음 알았다;;",
+    },
+    "744832ba-2dba-4bd1-b0ec-322c2230b277": {
+      title: "클로드에 OptMem 기억을 붙일 때 주의할 4가지",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code·Codex에 영구 기억을 붙이는 OptMem, 써보기 전에 알아둘 4가지.",
+    },
+    "b88bcf3d-18ba-4d71-a561-0acb6eac234c": {
+      title: "깃허브 스타 순 클로드 코드 스킬 모음",
+      tags: ["클로드", "스킬"],
+      raw: "클로드 코드 스킬,",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+    assert.equal(item.title.endsWith(":"), false);
+  }
 });

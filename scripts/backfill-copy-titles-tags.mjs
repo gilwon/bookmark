@@ -460,6 +460,24 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "스킬의 90%를 비활성화",
   },
+  {
+    id: "1d4776fd-b9de-4ad1-bedd-c7eff1dc3f08",
+    title: "클로드 코드 세션끼리 메시지를 받는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "Messages from your other sessions",
+  },
+  {
+    id: "744832ba-2dba-4bd1-b0ec-322c2230b277",
+    title: "클로드에 OptMem 기억을 붙일 때 주의할 4가지",
+    tags: ["클로드", "설정"],
+    phrase: "WAKE_LINES",
+  },
+  {
+    id: "b88bcf3d-18ba-4d71-a561-0acb6eac234c",
+    title: "깃허브 스타 순 클로드 코드 스킬 모음",
+    tags: ["클로드", "스킬"],
+    phrase: "book-to-skill",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
