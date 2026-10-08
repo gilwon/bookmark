@@ -583,7 +583,13 @@
   "carnot-tech/jinba-consulting-pptx-skill": "AI에게 제대로 된 PPTX를 만들게 하는 Claude Code와 Codex 스킬입니다.",
   "VictorTaelin/OptMem": "AI 에이전트의 영구 기억입니다. 426토큰 프롬프트와 스크립트 하나로 바로 붙입니다.",
   "jungjin0003/Claude-Mythos-5.1-System-Prompt": "Claude Mythos 5.1 시스템 프롬프트입니다.",
-  "jkf87/ide-mod": "Claude Code IDE 창 개조입니다. 에이전트 보드, 파일 트리, 탭 뷰어를 둡니다.",
+  "jkf87/ide-mod": "Claude Code IDE 창 개조입니다. 에이전트 보드, 파일 트리, HWP와 PDF 뷰어, 시스템 상태, Claude·Codex·Antigravity 사용량 표시, 세션 인계를 둡니다.",
   "samyost1/3dicon": "프롬프트 하나로 반복되는 3D 아이콘 애니메이션을 만듭니다. 진짜 투명도를 갖춘 Claude Code 스킬입니다.",
-  "mvschwarz/openrig": "Claude Code, Codex, Pi로 에이전트 네트워크를 만듭니다. 역할, 공유 맥락, 맡은 일이 있는 지속 팀입니다."
+  "mvschwarz/openrig": "Claude Code, Codex, Pi로 에이전트 네트워크를 만듭니다. 역할, 공유 맥락, 맡은 일이 있는 지속 팀입니다.",
+  "xingkongliang/skills-manager": "가벼운 데스크톱 앱입니다. Claude Code, Codex, Cursor, Copilot, Gemini CLI 등 코딩 도구 50개 이상에서 AI 에이전트 스킬을 관리하고 동기화하고 정리합니다.",
+  "BuilderIO/skills": "에이전트용 스킬입니다.",
+  "statelyai/graph": "그래프를 다루는 범용 도구입니다.",
+  "ejbills/DockDoor": "macOS용 창 미리보기, Alt-Tab과 그 밖 개선입니다.",
+  "achammah/claude-chat-clean": "Claude Code용 깔끔한 채팅 화면입니다. 내 메시지와 Claude 답만 보이고, 도구 호출은 접어 둡니다.",
+  "jakubkrehel/skills": "좋은 인터페이스를 만드는 데 도움이 되는 에이전트 스킬 모음입니다."
 }
