@@ -1220,7 +1220,7 @@ describe("Star 설명 번역", () => {
       ["carnot-tech/jinba-consulting-pptx-skill", "AIにまじなPPTXを作らせる Claude Code / Codex スキル"],
       ["VictorTaelin/OptMem", "Permanent memory for AI agents. A 426-token prompt, a script, plug and play."],
       ["jungjin0003/Claude-Mythos-5.1-System-Prompt", "The Claude Mythos 5.1 System Prompt"],
-      ["jkf87/ide-mod", "Claude Code IDE pane mod: agent board + file tree + tabbed viewer"],
+      ["jkf87/ide-mod", "Claude Code IDE pane mod: agent board, file tree and HWP/PDF viewer, system status, Claude/Codex/Antigravity usage band, session handoff"],
       ["samyost1/3dicon", "One prompt in, a looping animated 3D icon out — with real transparency. A Claude Code skill."],
       ["mvschwarz/openrig", "Build your own network of agents from Claude Code, Codex and Pi: persistent teams with roles, shared context and owned work."],
     ];
@@ -1238,5 +1238,23 @@ describe("Star 설명 번역", () => {
       withKoreanTranslation("pingdotgg/t3code", null, null),
       "T3 Code는 에이전트 하네스 조종면입니다. 컴퓨터에 있는 Claude Code, Codex, Cursor, Grok Build, OpenCode, Google Antigravity를 모바일, 웹, 데스크톱 앱에서 다룹니다."
     );
+  });
+
+  it("2026-10-09에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["xingkongliang/skills-manager", "A lightweight desktop app to manage, sync, and organize AI agent skills across 50+ coding tools — Claude Code, Codex, Cursor, Copilot, Gemini CLI, and more."],
+      ["BuilderIO/skills", "Skills for agents"],
+      ["statelyai/graph", "Universal utilities for working with graphs"],
+      ["ejbills/DockDoor", "Window peeking, alt-tab and other enhancements for macOS"],
+      ["achammah/claude-chat-clean", "A clean chat view for Claude Code: your messages and Claude's replies, tool calls folded away"],
+      ["jakubkrehel/skills", "A collection of agent skills that help you build great interfaces."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
   });
 });
