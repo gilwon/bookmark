@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 78건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 78);
+test("대상 83건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 83);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 78);
+  assert.equal(new Set(ids).size, 83);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -606,5 +606,42 @@ test("오늘 추가된 세션·OptMem·스킬 3건의 제목과 태그를 정한
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.notEqual(item.title, expected[item.id].raw);
     assert.equal(item.title.endsWith(":"), false);
+  }
+});
+
+test("오늘 추가된 모델 분담·리뷰·Inbox 5건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "e6a8525c-8cb0-4efa-b973-b593830dfecc": {
+      title: "Sonnet·Haiku·Opus를 나눠 쓰는 클로드 시작",
+      tags: ["클로드", "설정"],
+      raw: "Anthropic이 Claude Code를 활용한 최고의 팁 중 하나를 방금 공유했습니다.",
+    },
+    "849a8cdd-c8fe-422a-b647-9e7d7be192a7": {
+      title: "Codex Auto-review를 켜기 전에 볼 숫자 3개",
+      tags: ["코덱스", "설정"],
+      raw: "Codex Auto-review가 무료가 되자 다들 \"승인 지옥 끝났다\"며 켜고 있습니다.",
+    },
+    "ac5ec223-71ff-48a0-bfe5-8bc517712337": {
+      title: "세션의 미해결 항목을 모으는 Inbox 모드",
+      tags: ["클로드", "설정"],
+      raw: "Inbox라는 이름의 Claude 코드 모드를 만들었습니다. 이 모드는 세션 중에 발생하는 모든 미해결 질문, 작업, 발견 사항을 수집하고 정리하여 쉽게 처리할 수 있도록 합니다.",
+    },
+    "f77275bb-83bf-4be1-9b66-ed46b4edf6c5": {
+      title: "Haiku 5.5 autocompact를 100K로 두는 설정",
+      tags: ["클로드", "설정"],
+      raw: "API 과금에 가입되어 있다면, Haiku 5.5의 autocompact 창을 100K로 설정하여 더 저렴한 토큰 가격 등급을 유지할 수 있습니다! 모델별로 저장되므로 이 설정은 Haiku(하위 에이전트 포함)에만 적용됩니다.",
+    },
+    "7ceb3da0-bedb-4b02-91f5-25ad210374ca": {
+      title: "여러 에이전트 스킬을 한곳에서 나누는 Skills Manager",
+      tags: ["스킬", "설정"],
+      raw: "코딩 에이전트를 여러 개 굴리는 사람이 챙겨둘 스킬 관리 기능 4가지.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 5);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
   }
 });
