@@ -478,6 +478,36 @@ export const TARGETS = [
     tags: ["클로드", "스킬"],
     phrase: "book-to-skill",
   },
+  {
+    id: "e6a8525c-8cb0-4efa-b973-b593830dfecc",
+    title: "Sonnet·Haiku·Opus를 나눠 쓰는 클로드 시작",
+    tags: ["클로드", "설정"],
+    phrase: "Sonnet이 구축합니다",
+  },
+  {
+    id: "849a8cdd-c8fe-422a-b647-9e7d7be192a7",
+    title: "Codex Auto-review를 켜기 전에 볼 숫자 3개",
+    tags: ["코덱스", "설정"],
+    phrase: "200배, 99.93%",
+  },
+  {
+    id: "ac5ec223-71ff-48a0-bfe5-8bc517712337",
+    title: "세션의 미해결 항목을 모으는 Inbox 모드",
+    tags: ["클로드", "설정"],
+    phrase: "petekp/inbox",
+  },
+  {
+    id: "f77275bb-83bf-4be1-9b66-ed46b4edf6c5",
+    title: "Haiku 5.5 autocompact를 100K로 두는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "/autocompact 100k",
+  },
+  {
+    id: "7ceb3da0-bedb-4b02-91f5-25ad210374ca",
+    title: "여러 에이전트 스킬을 한곳에서 나누는 Skills Manager",
+    tags: ["스킬", "설정"],
+    phrase: "skills-manager-backup",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
