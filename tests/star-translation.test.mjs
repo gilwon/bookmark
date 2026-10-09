@@ -1257,4 +1257,12 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-09에 이어서 추가된 Star 1개에 한국어 설명을 병기한다", () => {
+    const description = "Agent skill: product URL → 16:9 launch film (EN/KO). Real UI captures, one-take VO, beat-locked motion, −14 LUFS mp4.";
+    const result = withKoreanTranslation("chacha95/demo-video-creator", description, null);
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
+  });
 });
