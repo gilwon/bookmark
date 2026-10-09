@@ -592,5 +592,10 @@
   "ejbills/DockDoor": "macOS용 창 미리보기, Alt-Tab과 그 밖 개선입니다.",
   "achammah/claude-chat-clean": "Claude Code용 깔끔한 채팅 화면입니다. 내 메시지와 Claude 답만 보이고, 도구 호출은 접어 둡니다.",
   "jakubkrehel/skills": "좋은 인터페이스를 만드는 데 도움이 되는 에이전트 스킬 모음입니다.",
-  "chacha95/demo-video-creator": "제품 URL을 16:9 출시 영상으로 만드는 에이전트 스킬입니다. 영어와 한국어를 다루고, 실제 UI 캡처와 한 테이크 내레이션, 비트에 맞춘 모션, −14 LUFS mp4를 넣습니다."
+  "chacha95/demo-video-creator": "제품 URL을 16:9 출시 영상으로 만드는 에이전트 스킬입니다. 영어와 한국어를 다루고, 실제 UI 캡처와 한 테이크 내레이션, 비트에 맞춘 모션, −14 LUFS mp4를 넣습니다.",
+  "midnightai-apps/midnightai-shelf-releases": "Midnight Shelf의 공식 서명 macOS 다운로드와 업데이트입니다. 배포만 담당하고, 소스는 따로 관리합니다.",
+  "hieunc229/mailflare": "전문가와 팀을 위한 이메일입니다.",
+  "KnifeLemon/Filee": "무료 오픈소스 파일 변환기입니다. 끌어다 놓아 180가지가 넘는 형식을 오프라인으로 바꿉니다. 이미지, PDF, Word, Excel, PowerPoint, HWP/HWPX, 영상, 오디오, 전자책, 압축 파일을 다루며, 업로드도 Office도 필요 없습니다.",
+  "noahdunnagan/fsearch": "macOS용 디스크 전체 파일 검색입니다. 비슷한 이름과 오타를 허용하고, 색인된 내용도 찾습니다. 파일 800만 개에서 약 1ms입니다.",
+  "zeusinsight/FinderSearch": "fsearch로 동작하는 macOS 네이티브 파일 브라우저입니다. 파일 이름을 빠르게 비슷하게 찾습니다."
 }
