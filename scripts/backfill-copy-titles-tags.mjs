@@ -508,6 +508,24 @@ export const TARGETS = [
     tags: ["스킬", "설정"],
     phrase: "skills-manager-backup",
   },
+  {
+    id: "013bc2b8-b7b0-4b3c-b331-f0190726242e",
+    title: "Cloudflare에 도메인 메일함을 세우는 Mailflare",
+    tags: ["툴", "설정"],
+    phrase: "Allow MCP access",
+  },
+  {
+    id: "f90ccc42-239e-47db-bf37-07991b020764",
+    title: "Opus 5.5로 모션을 코드로 만드는 스킬 20개",
+    tags: ["클로드", "스킬"],
+    phrase: "npx skills add greensock/gsap-skills",
+  },
+  {
+    id: "ab58cb48-73c9-4b74-81ea-297a82afec23",
+    title: "서브에이전트 effort를 맡길 때마다 정하는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "v2.1.292",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
