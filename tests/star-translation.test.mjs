@@ -1265,4 +1265,21 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("2026-10-10에 추가된 Star 5개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["midnightai-apps/midnightai-shelf-releases", "Official signed macOS downloads and updates for Midnight Shelf. Distribution only; source is maintained separately."],
+      ["hieunc229/mailflare", "Email for professionals and teams"],
+      ["KnifeLemon/Filee", "Free, open-source file converter. Convert 180+ formats offline by drag & drop — images, PDF, Word, Excel, PowerPoint, HWP/HWPX, video, audio, e-books and archives. No upload, no Office needed."],
+      ["noahdunnagan/fsearch", "Whole-disk file search for macOS: fuzzy names, typo tolerance, indexed content grep. ~1 ms over 8M files."],
+      ["zeusinsight/FinderSearch", "A native macOS file browser with fast fuzzy filename search, powered by fsearch."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
