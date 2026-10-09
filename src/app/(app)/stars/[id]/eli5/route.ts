@@ -35,6 +35,9 @@ export async function GET(_req: Request, ctx: Ctx) {
     description: row.description,
     url: row.url,
     detailPath: `/stars/${id}`,
+    readmeMd: row.readmeMd,
+    readmeMdKo: row.readmeMdKo,
+    detailFetchedAt: row.detailFetchedAt,
   });
 
   return new Response(html, {
