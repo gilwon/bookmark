@@ -296,6 +296,29 @@ export function StarDetail({
         )}
       </header>
 
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base font-semibold">다섯 살 설명</h2>
+          <a
+            href={`/stars/${star.id}/eli5`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "sm" }),
+              "min-h-10 justify-start sm:justify-center"
+            )}
+          >
+            HTML 화면으로 열기
+          </a>
+        </div>
+        <iframe
+          title={`${star.repoFullName} 다섯 살 설명`}
+          src={`/stars/${star.id}/eli5`}
+          sandbox="allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+          className="h-[70vh] min-h-[32rem] w-full rounded-xl border border-border bg-[#f4efe6]"
+        />
+      </section>
+
       {star.description && (
         <section className="space-y-2">
           <h2 className="text-sm font-medium text-muted-foreground">설명</h2>
