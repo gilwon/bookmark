@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 83건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 83);
+test("대상 86건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 86);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 83);
+  assert.equal(new Set(ids).size, 86);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -639,6 +639,33 @@ test("오늘 추가된 모델 분담·리뷰·Inbox 5건의 제목과 태그를 
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 5);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("오늘 추가된 메일·모션·effort 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "013bc2b8-b7b0-4b3c-b331-f0190726242e": {
+      title: "Cloudflare에 도메인 메일함을 세우는 Mailflare",
+      tags: ["툴", "설정"],
+      raw: "도메인 메일함 하나 쓰려고 사용자마다 매달 구독료 내는 게 부담이었다면, 내 Cloudflare 계정에 직접 세우는 방법이 있습니다.",
+    },
+    "f90ccc42-239e-47db-bf37-07991b020764": {
+      title: "Opus 5.5로 모션을 코드로 만드는 스킬 20개",
+      tags: ["클로드", "스킬"],
+      raw: "🔥 Opus 5.5와 Claude Code에서 활용하는 모션 스킬",
+    },
+    "ab58cb48-73c9-4b74-81ea-297a82afec23": {
+      title: "서브에이전트 effort를 맡길 때마다 정하는 설정",
+      tags: ["클로드", "설정"],
+      raw: "클로드코드 소소한? 팁? 하나 공유드립니다.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
