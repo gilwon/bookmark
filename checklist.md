@@ -1,3 +1,15 @@
+# 인스타 카드 뉴스 자동화 사이트 Pages 이관
+
+- [x] 원문 주소는 `https://cottony-number-bb7.notion.site/3f3c52851bfd80dc9a1fe328258ba7c6`이다
+- [x] 이미지 2, 첨부 1, 표 0, 코드 10, 루트 64를 확인한다
+- [x] `cardnews-automation.html`은 `data:text/html` 50284바이트다
+- [x] PNG 두 장은 9907바이트 532x193, 308021바이트 1344x853이다
+- [x] `scripts/import-notion-cardnews-automation.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 insert, 재실행은 skip
+- [x] 저장 경로 `/pages/0f652b55-a45c-4f82-ba94-c908f1ae4d69`
+- [x] 브라우저에서 제목·이미지 2장·첨부·코드 10·원문 링크가 보이는지 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+
 # every._ai 클로드 UI 프롬프트 8가지 Pages 이관
 
 - [x] 추적 쿼리 `from=dm`과 `fbclid`는 저장 주소에서 뺀다
