@@ -7,6 +7,14 @@ import {
   pickEli5Scene,
 } from "../src/lib/star-eli5.ts";
 
+function section(html, id) {
+  const start = html.indexOf(`data-section="${id}"`);
+  assert.ok(start >= 0, `${id} 칸이 없습니다.`);
+  const end = html.indexOf("</section>", start);
+  assert.ok(end > start, `${id} 칸이 닫히지 않습니다.`);
+  return html.slice(start, end);
+}
+
 describe("eli5Lines", () => {
   it("한글 문단만 최대 두 문장으로 고른다", () => {
     assert.deepEqual(
@@ -49,16 +57,92 @@ describe("pickEli5Scene", () => {
 });
 
 describe("buildStarEli5Html", () => {
-  it("빈 설명은 아직 없다는 말과 그림만 보여 준다", () => {
+  it("빈 설명은 네 칸과 아직 없다는 말을 보여 준다", () => {
     const html = buildStarEli5Html({
       repoFullName: "owner/repo",
       description: "   ",
     });
     assert.match(html, /이 별은 아직 짧은 설명이 없어요\./);
+    assert.match(html, /data-section="about"/);
+    assert.match(html, /data-section="install"/);
+    assert.match(html, /data-section="usage"/);
+    assert.match(html, /data-section="balance"/);
+    assert.match(html, /저장소 글을 아직 가져오지 않았어요/);
     assert.equal(html.includes("<script"), false);
     assert.match(html, /<!DOCTYPE html>/);
     assert.match(html, /<svg/);
     assert.match(html, /data-scene="star"/);
+  });
+
+  it("README의 설치, 사용, 장단점만 해당 칸에 넣는다", () => {
+    const readme = [
+      "# Tool",
+      "",
+      "npm install tool",
+      "",
+      "## Installation",
+      "",
+      "```bash",
+      "npm install tool",
+      "```",
+      "",
+      "## Usage",
+      "",
+      "- Open the app.",
+      "- Press start.",
+      "",
+      "## Features",
+      "",
+      "- Fast",
+      "- Small",
+      "",
+      "## Limitations",
+      "",
+      "- No Windows build.",
+    ].join("\n");
+    const html = buildStarEli5Html({
+      repoFullName: "owner/tool",
+      description: "영어 소개.\n\n도구입니다.",
+      readmeMd: readme,
+      detailFetchedAt: "2026-10-09T00:00:00Z",
+    });
+    const install = section(html, "install");
+    const usage = section(html, "usage");
+    const balance = section(html, "balance");
+    assert.match(html, /data-section="about"[^]*도구입니다/);
+    assert.match(install, /npm install tool/);
+    assert.equal(install.includes("Open the app"), false);
+    assert.match(usage, /Open the app/);
+    assert.match(usage, /Press start/);
+    assert.match(balance, /Fast/);
+    assert.match(balance, /No Windows build/);
+    assert.equal(balance.includes("npm install tool"), false);
+  });
+
+  it("글에 없는 장단점은 없다고 적고 지어내지 않는다", () => {
+    const html = buildStarEli5Html({
+      repoFullName: "owner/tool",
+      description: "도구입니다.",
+      readmeMd: "## Usage\n\n- Run it.",
+      detailFetchedAt: "2026-10-09T00:00:00Z",
+    });
+    const balance = section(html, "balance");
+    assert.match(balance, /좋은 점이 저장소 글에 없어요/);
+    assert.match(balance, /아쉬운 점이 저장소 글에 없어요/);
+    assert.equal(balance.includes("쉬워요"), false);
+  });
+
+  it("한글 README를 영어 README보다 먼저 쓴다", () => {
+    const html = buildStarEli5Html({
+      repoFullName: "owner/tool",
+      description: "도구입니다.",
+      readmeMd: "## Installation\n\n```bash\nnpm install en\n```",
+      readmeMdKo: "## 설치\n\n```bash\nnpm install ko\n```",
+      detailFetchedAt: "2026-10-09T00:00:00Z",
+    });
+    const install = section(html, "install");
+    assert.match(install, /npm install ko/);
+    assert.equal(install.includes("npm install en"), false);
   });
 
   it("설명과 이름의 태그를 이스케이프하고 스크립트 주소를 빼다", () => {

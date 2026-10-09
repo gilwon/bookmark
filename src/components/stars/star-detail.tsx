@@ -312,10 +312,11 @@ export function StarDetail({
           </a>
         </div>
         <iframe
+          key={`${star.detailFetchedAt ?? ""}:${star.readmeMd?.length ?? 0}:${star.readmeMdKo?.length ?? 0}`}
           title={`${star.repoFullName} 다섯 살 설명`}
           src={`/stars/${star.id}/eli5`}
           sandbox="allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
-          className="h-[70vh] min-h-[32rem] w-full rounded-xl border border-border bg-[#f4efe6]"
+          className="h-[80vh] min-h-[40rem] w-full rounded-xl border border-border bg-[#f4efe6]"
         />
       </section>
 
