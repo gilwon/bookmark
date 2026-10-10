@@ -1,3 +1,15 @@
+# 스케일메이커 클로드 공식 스킬 19개 Pages 이관 메모
+
+- 제목. `클로드 공식 스킬 19개 총정리 + 켜는 법`. 사이트 접미 `· 정리본 | 스케일메이커`는 넣지 않는다.
+- 주소 `https://scalemaker.co/g/2026-10-02-claude-official-skills`. `fbclid`는 뺀다.
+- 본문은 `main`만 쓴다. 헤더·푸터·로고·OG 이미지·복사 버튼·카카오·유튜브는 뺀다. 글 안의 수익 안내와 `/courses`, 인스타 `ai_leeseul`은 남긴다.
+- 이미지 0. 첨부 0. 표 0. 코드 4. 본문 이미지는 원래 없다.
+- 링크. 원문, `https://github.com/anthropics/skills`, `https://support.claude.com/en/articles/12512180-using-skills-in-claude`, `https://scalemaker.co/courses`, `https://www.instagram.com/ai_leeseul/`.
+- 저장 경로 `/pages/c32a2542-dcc7-4d73-bddc-dd379af3143e`. 로컬 `dev`와 운영이 같은 id이고 본문도 같다. `created_at`은 `2026-10-10T01:42:09.469Z`다. 운영 `updated_at`도 같다. 상세를 연 뒤 로컬 `updated_at`만 `2026-10-10T01:42:51.136Z`로 바뀌었고 본문은 같다.
+- 첫 실행은 로컬·운영 모두 insert다. 재실행은 둘 다 skip이다.
+- 목록은 등록일 최신순이라 이 글이 맨 위다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 인스타 카드 뉴스 자동화 사이트 Pages 이관 메모
 
 - 제목. `[무료배포] 인스타 카드 뉴스 자동화 사이트`. pageId `3f3c5285-1bfd-80dc-9a1f-e328258ba7c6`. 만든 시각은 2026-10-08 15:48 KST다.
