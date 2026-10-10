@@ -1974,3 +1974,12 @@
 - `noahdunnagan/fsearch`와 `zeusinsight/FinderSearch`는 서로 다른 저장소다. FinderSearch는 fsearch로 동작한다고 About에 적혀 있다.
 - 정적 번역표는 594개에서 599개로 늘었다.
 - 백필 5건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-11 추가 Star 한글 설명 3건 메모
+
+- 한국 시간 2026-10-10부터 2026-10-11까지 운영 `github_stars`에 들어온 항목은 8건이다. 2026-10-10에 들어온 5건은 이미 한글이 있다.
+- 2026-10-11에 들어온 항목은 3건이다. 한글이 없는 항목은 3건이고, 빈 설명은 1건이다.
+- `Heoooooon/lazy-starter-kit` About 끝의 중국어는 그대로 두고 한국어를 병기한다.
+- `anthropics/oss-scanner`는 About가 비어 README 첫 소개로 한국어만 채웠다. `anthropics/skills`, `anthropics/financial-services`, `anthropics/claude-for-legal`과 다른 저장소다.
+- 정적 번역표는 599개에서 602개로 늘었다.
+- 백필 3건을 갱신했다. 빈 설명 채움은 1건이다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

@@ -1282,4 +1282,25 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-11에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Heoooooon/lazy-starter-kit", "One safe command (or a signed GUI) to set up Claude Code, Codex and a dev environment on macOS, Linux and Windows. Dry-run first, repeatable, tested. 一键搭建 AI 编程环境"],
+      ["oh-my-mermaid/oh-my-mermaid", "Turn complex codebases into clear, navigable architecture diagrams with Claude Code."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-11에 About가 비어 있는 oss-scanner는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("anthropics/oss-scanner", null, null),
+      "Anthropic의 OSS Scanner입니다. 중요한 오픈소스 저장소의 보안 취약점을 검사하는 서비스입니다."
+    );
+  });
 });
