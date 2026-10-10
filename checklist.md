@@ -1,3 +1,14 @@
+# 스케일메이커 클로드 공식 스킬 19개 Pages 이관
+
+- [x] 추적 쿼리 `fbclid`는 저장 주소에서 뺀다
+- [x] 이미지 0, 첨부 0, 표 0, 코드 4를 확인한다
+- [x] 본문 링크 5개를 남긴다. 로고·푸터·카카오·유튜브는 뺀다
+- [x] `scripts/import-scalemaker-claude-official-skills.mjs`와 네트워크 없는 테스트를 추가한다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 insert, 재실행은 skip
+- [x] 저장 경로 `/pages/c32a2542-dcc7-4d73-bddc-dd379af3143e`
+- [x] 브라우저에서 제목·코드 4·공식 링크가 보이고 목록 맨 위에 있는지 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+
 # 인스타 카드 뉴스 자동화 사이트 Pages 이관
 
 - [x] 원문 주소는 `https://cottony-number-bb7.notion.site/3f3c52851bfd80dc9a1fe328258ba7c6`이다
