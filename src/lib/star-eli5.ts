@@ -85,12 +85,12 @@ export function eli5Lines(description: string | null | undefined): string[] {
   const korean = paragraphs.filter((part) => /[가-힣]/.test(part));
   const chosen = korean.at(-1) ?? paragraphs[0];
   if (!chosen) return [];
-  return chosen
+  const parts = chosen
     .split(/(?<=[.!?。])\s+/)
     .map((sentence) => sentence.trim())
-    .filter(Boolean)
-    .slice(0, 2)
-    .map(shortenSentence);
+    .filter(Boolean);
+  const hangul = parts.filter((sentence) => /[가-힣]/.test(sentence));
+  return (hangul.length > 0 ? hangul : parts).slice(0, 2).map(shortenSentence);
 }
 
 /** 이름과 설명의 단어로 그림 장면을 고른다. */
@@ -132,12 +132,13 @@ export function buildStarEli5Html(input: {
   readmeMd?: string | null;
   readmeMdKo?: string | null;
   detailFetchedAt?: string | null;
+  prepared?: Eli5Brief;
 }): string {
   const title = repoTitle(input.repoFullName);
   const scene = pickEli5Scene(
     `${input.repoFullName} ${input.description ?? ""}`
   );
-  const brief = eli5Brief(input);
+  const brief = input.prepared ?? eli5Brief(input);
   const pending = !input.detailFetchedAt && brief.install.length === 0;
   const hasReadme = Boolean(input.readmeMd?.trim() || input.readmeMdKo?.trim());
   const gap = !hasReadme ? (pending ? README_PENDING : README_EMPTY) : "";
@@ -390,7 +391,16 @@ function chunksFromBody(
 ): Eli5Chunk[] {
   const code = firstFence(body, fences);
   const items = listItems(body.replace(/⟦FENCE_\d+⟧/g, ""));
-  if (kind === "install" && code) return [{ kind: "code", text: code }];
+  if (kind === "install" && code) {
+    const spoken =
+      items.length > 0
+        ? items.map((text) => ({ kind: "li" as const, text }))
+        : sentences(body.replace(/⟦FENCE_\d+⟧/g, "")).map((text) => ({
+            kind: "p" as const,
+            text,
+          }));
+    return [...spoken, { kind: "code", text: code }];
+  }
   if (items.length > 0) return items.map((text) => ({ kind: "li", text }));
   if (code && kind !== "pros" && kind !== "cons") {
     return [{ kind: "code", text: code }];

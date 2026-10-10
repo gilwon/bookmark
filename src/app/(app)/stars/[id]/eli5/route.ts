@@ -1,6 +1,14 @@
 // 등록된 Star의 다섯 살 설명 HTML.
 import { auth } from "@/lib/auth";
-import { buildStarEli5Html } from "@/lib/star-eli5";
+import { buildStarEli5Html, eli5Brief } from "@/lib/star-eli5";
+import {
+  applyEli5Korean,
+  eli5KoreanMarkdown,
+  foreignEli5Prose,
+  shouldSaveEli5Korean,
+  translateEli5Lines,
+  withInstallLead,
+} from "@/lib/star-eli5-ko";
 import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -30,15 +38,43 @@ export async function GET(_req: Request, ctx: Ctx) {
     });
   }
 
+  const source = {
+    description: row.description,
+    readmeMd: row.readmeMd,
+    readmeMdKo: row.readmeMdKo,
+    detailFetchedAt: row.detailFetchedAt,
+  };
+  let brief = eli5Brief(source);
+  const foreign = foreignEli5Prose(brief);
+  let translated = foreign.length === 0;
+  if (foreign.length > 0) {
+    const lines = await translateEli5Lines(foreign);
+    if (lines) {
+      brief = applyEli5Korean(brief, lines);
+      translated = true;
+    }
+  }
+  if (translated) {
+    brief = { ...brief, install: withInstallLead(brief.install) };
+  }
   const html = buildStarEli5Html({
     repoFullName: row.repoFullName,
     description: row.description,
     url: row.url,
     detailPath: `/stars/${id}`,
-    readmeMd: row.readmeMd,
-    readmeMdKo: row.readmeMdKo,
-    detailFetchedAt: row.detailFetchedAt,
+    ...source,
+    prepared: brief,
   });
+  const markdown = eli5KoreanMarkdown(brief);
+  if (
+    shouldSaveEli5Korean({
+      markdown,
+      existing: row.readmeMdKo,
+      translated,
+    })
+  ) {
+    await store.updateStar(id, userId, { readmeMdKo: markdown }).catch(() => {});
+  }
 
   return new Response(html, {
     status: 200,
