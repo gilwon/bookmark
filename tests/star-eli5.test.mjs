@@ -3,9 +3,17 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   buildStarEli5Html,
+  eli5Brief,
   eli5Lines,
   pickEli5Scene,
 } from "../src/lib/star-eli5.ts";
+import {
+  applyEli5Korean,
+  eli5KoreanMarkdown,
+  foreignEli5Prose,
+  shouldSaveEli5Korean,
+  withInstallLead,
+} from "../src/lib/star-eli5-ko.ts";
 
 function section(html, id) {
   const start = html.indexOf(`data-section="${id}"`);
@@ -20,6 +28,13 @@ describe("eli5Lines", () => {
     assert.deepEqual(
       eli5Lines("English about stays.\n\n첫번째 문장입니다. 두번째 문장입니다. 세번째 문장입니다."),
       ["첫번째 문장입니다.", "두번째 문장입니다."]
+    );
+  });
+
+  it("같은 문단에 한글 문장이 있으면 그 문장만 쓴다", () => {
+    assert.deepEqual(
+      eli5Lines("Fast agent. Cheap too. 가장 빠른 도구입니다."),
+      ["가장 빠른 도구입니다."]
     );
   });
 
@@ -173,6 +188,80 @@ describe("buildStarEli5Html", () => {
       detailPath: "https://evil.example",
     });
     assert.equal(bad.includes("evil.example"), false);
+  });
+
+  it("영어 문장을 한국어로 바꾼 칸을 다시 읽는다", () => {
+    const brief = eli5Brief({
+      description: "영어 소개.\n\n도구입니다.",
+      readmeMd: [
+        "## Usage",
+        "",
+        "- Open the app.",
+        "",
+        "## Installation",
+        "",
+        "```bash",
+        "npm install tool",
+        "```",
+      ].join("\n"),
+      detailFetchedAt: "2026-10-09T00:00:00Z",
+    });
+    assert.deepEqual(foreignEli5Prose(brief), ["Open the app."]);
+    const korean = applyEli5Korean(brief, ["앱을 엽니다."]);
+    const withLead = {
+      ...korean,
+      install: withInstallLead(korean.install),
+    };
+    const saved = eli5KoreanMarkdown(withLead);
+    const again = eli5Brief({
+      description: "도구입니다.",
+      readmeMdKo: saved,
+      detailFetchedAt: "2026-10-09T00:00:00Z",
+    });
+    assert.deepEqual(
+      again.usage.map((chunk) => chunk.text),
+      ["앱을 엽니다."]
+    );
+    assert.equal(
+      again.install.some((chunk) => chunk.text.includes("터미널에 아래 명령")),
+      true
+    );
+    assert.equal(
+      again.install.some((chunk) => chunk.text.includes("npm install tool")),
+      true
+    );
+    assert.equal(
+      shouldSaveEli5Korean({
+        markdown: saved,
+        existing: null,
+        translated: true,
+      }),
+      true
+    );
+    assert.equal(
+      shouldSaveEli5Korean({
+        markdown: saved,
+        existing: null,
+        translated: false,
+      }),
+      false
+    );
+    assert.equal(
+      shouldSaveEli5Korean({
+        markdown: saved,
+        existing: saved,
+        translated: true,
+      }),
+      false
+    );
+    assert.equal(
+      shouldSaveEli5Korean({
+        markdown: `${saved}\n\`\`\`\n${"npm install package ".repeat(40)}\n\`\`\``,
+        existing: null,
+        translated: true,
+      }),
+      true
+    );
   });
 
   it("영상 설명은 video 장면을 쓴다", () => {
