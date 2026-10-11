@@ -600,5 +600,15 @@
   "zeusinsight/FinderSearch": "fsearch로 동작하는 macOS 네이티브 파일 브라우저입니다. 파일 이름을 빠르게 비슷하게 찾습니다.",
   "Heoooooon/lazy-starter-kit": "안전한 명령 하나 또는 서명된 GUI로 macOS, Linux, Windows에 Claude Code, Codex와 개발 환경을 준비합니다. 먼저 시험 실행을 하고, 반복할 수 있으며, 테스트되어 있습니다. AI 코딩 환경을 한 번에 만듭니다.",
   "anthropics/oss-scanner": "Anthropic의 OSS Scanner입니다. 중요한 오픈소스 저장소의 보안 취약점을 검사하는 서비스입니다.",
-  "oh-my-mermaid/oh-my-mermaid": "Claude Code로 복잡한 코드베이스를 분명하고 살펴보기 쉬운 구조도로 바꿉니다."
+  "oh-my-mermaid/oh-my-mermaid": "Claude Code로 복잡한 코드베이스를 분명하고 살펴보기 쉬운 구조도로 바꿉니다.",
+  "cocoindex-io/cocoindex-code": "바로 동작하는 아주 가벼운 내장 코드 검색 CLI입니다. AST 기반이고, 코딩 에이전트의 속도와 효율을 높입니다. 마음에 들면 스타를 눌러 주세요.",
+  "LeeJuls/ai-relay": "이미 있는 Codex Desktop과 Claude Code 대화 사이에서 메시지를 로컬로 중계합니다. 실험적인 Windows 미리보기이고, MIT 라이선스입니다.",
+  "gholtzap/lintapple": "AI가 나쁜 UI를 만드는 일은 불가능해야 합니다.",
+  "Louis-CFM/coucou": "Mac 노치와 iPhone에 있는 작은 친구입니다. Claude Code, Codex, Cursor, Gemini CLI, Antigravity 같은 AI 코딩 에이전트를 지켜보고, 노치나 잠금 화면에서 승인합니다.",
+  "f/prompts.chat": "예전 이름은 Awesome ChatGPT Prompts입니다. 커뮤니티의 프롬프트를 공유하고 찾고 모읍니다. 무료 오픈소스이고, 조직에서 완전히 비공개로 직접 호스팅할 수 있습니다.",
+  "Paymenter/Paymenter": "호스팅 사업용 무료 오픈소스 웹상점입니다.",
+  "krishhgg/Insomnia": "정해진 시간 동안 에이전트 세션을 돌릴 때 MacBook이 안전하게 잠들지 않게 하는 macOS 메뉴 막대 앱입니다.",
+  "penso/herdr-gpui": "Rust와 GPUI로 만든 Herdr 네이티브 클라이언트입니다. macOS, Linux, Windows에서 로컬 Herdr 데몬을 통해 터미널 세션, 작업 공간, Git 워크트리, 에이전트 활동을 봅니다.",
+  "dalsoop/rustdesk": "Android 한글 입력을 고친 RustDesk 1.5.0 포크입니다. 한글과 F18 전환 키, 두벌식 조합, 소프트 키보드 자모 수정(#7727)을 넣습니다.",
+  "elementalsouls/Claude-BugHunter": "버그 헌팅과 외부 레드팀 작업을 위한 Claude Code 스킬 묶음입니다. 스킬 82개, 슬래시 명령 15개, 공개된 보고서 패턴 681개를 핵심 취약점 분류 24개에 걸쳐 모았고, 기업 신원과 인프라 공격 행렬도 둡니다."
 }

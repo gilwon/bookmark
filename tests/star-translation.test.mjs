@@ -1303,4 +1303,26 @@ describe("Star 설명 번역", () => {
       "Anthropic의 OSS Scanner입니다. 중요한 오픈소스 저장소의 보안 취약점을 검사하는 서비스입니다."
     );
   });
+
+  it("2026-10-12에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["cocoindex-io/cocoindex-code", "A super light-weight embedded code search engine CLI (AST based) that just works -  improves speed and efficiency for coding agent  🌟 Star if you like it!"],
+      ["LeeJuls/ai-relay", "Local message relay between existing Codex Desktop and Claude Code conversations. Experimental Windows preview, MIT licensed."],
+      ["gholtzap/lintapple", "It should be impossible for AI to make a bad UI."],
+      ["Louis-CFM/coucou", "A tiny friend in your Mac's notch and on your iPhone that keeps an eye on your AI coding agents: Claude Code, Codex, Cursor, Gemini CLI, Antigravity and more. Approve from the notch or your Lock Screen."],
+      ["f/prompts.chat", "f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy."],
+      ["Paymenter/Paymenter", "Free and open-source webshop solution for hostings"],
+      ["krishhgg/Insomnia", "A macOS menu bar app that keeps a MacBook awake safely for timed agent sessions."],
+      ["penso/herdr-gpui", "Native client for Herdr on macOS, Linux, and Windows, built with Rust and GPUI. View terminal sessions, workspaces, Git worktrees, and agent activity through your local Herdr daemon."],
+      ["dalsoop/rustdesk", "RustDesk 1.5.0 fork with Android Korean input fixes: Hangul/F18 toggle key, dubeolsik key composition, soft keyboard jamo fix (#7727)"],
+      ["elementalsouls/Claude-BugHunter", "A Claude Code skill bundle for bug hunting and external red-team work - 82 skills, 15 slash commands, 681 disclosed-report patterns curated across 24 core vulnerability classes, plus enterprise identity + infrastructure attack matrices."],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
