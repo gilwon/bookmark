@@ -1983,3 +1983,13 @@
 - `anthropics/oss-scanner`는 About가 비어 README 첫 소개로 한국어만 채웠다. `anthropics/skills`, `anthropics/financial-services`, `anthropics/claude-for-legal`과 다른 저장소다.
 - 정적 번역표는 599개에서 602개로 늘었다.
 - 백필 3건을 갱신했다. 빈 설명 채움은 1건이다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-12 추가 Star 한글 설명 10건 메모
+
+- 한국 시간 2026-10-11부터 2026-10-12까지 운영 `github_stars`에 들어온 항목은 14건이다. 2026-10-11에 들어온 3건은 이미 한글이 있다.
+- 2026-10-12에 들어온 항목은 11건이다. `bdg9412/artex-ko-plus`는 이미 한글이라 그대로 둔다. 한글이 없는 항목은 10건이고, 빈 설명은 0건이다.
+- `penso/herdr-gpui`는 `herdrdev/herdr`, `devswha/herdr-web-ui`와 다른 저장소다.
+- `dalsoop/rustdesk` About에는 Hangul이라는 영단어만 있고 한글 음절은 없다. 원문을 유지하고 한국어를 병기한다.
+- `cocoindex-io/cocoindex-code` About의 별 이모지와 연속 공백은 그대로 둔다. `f/prompts.chat`의 긴 대시는 그대로 둔다.
+- 정적 번역표는 602개에서 612개로 늘었다.
+- 백필 10건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
