@@ -607,8 +607,12 @@
   "Louis-CFM/coucou": "Mac 노치와 iPhone에 있는 작은 친구입니다. Claude Code, Codex, Cursor, Gemini CLI, Antigravity 같은 AI 코딩 에이전트를 지켜보고, 노치나 잠금 화면에서 승인합니다.",
   "f/prompts.chat": "예전 이름은 Awesome ChatGPT Prompts입니다. 커뮤니티의 프롬프트를 공유하고 찾고 모읍니다. 무료 오픈소스이고, 조직에서 완전히 비공개로 직접 호스팅할 수 있습니다.",
   "Paymenter/Paymenter": "호스팅 사업용 무료 오픈소스 웹상점입니다.",
-  "krishhgg/Insomnia": "정해진 시간 동안 에이전트 세션을 돌릴 때 MacBook이 안전하게 잠들지 않게 하는 macOS 메뉴 막대 앱입니다.",
+  "krishhgg/Insomnia": "뚜껑을 닫아도 MacBook이 안전하게 잠들지 않게 하는 macOS 메뉴 막대 앱입니다. 정해진 시간 동안 에이전트 세션에 씁니다.",
   "penso/herdr-gpui": "Rust와 GPUI로 만든 Herdr 네이티브 클라이언트입니다. macOS, Linux, Windows에서 로컬 Herdr 데몬을 통해 터미널 세션, 작업 공간, Git 워크트리, 에이전트 활동을 봅니다.",
   "dalsoop/rustdesk": "Android 한글 입력을 고친 RustDesk 1.5.0 포크입니다. 한글과 F18 전환 키, 두벌식 조합, 소프트 키보드 자모 수정(#7727)을 넣습니다.",
-  "elementalsouls/Claude-BugHunter": "버그 헌팅과 외부 레드팀 작업을 위한 Claude Code 스킬 묶음입니다. 스킬 82개, 슬래시 명령 15개, 공개된 보고서 패턴 681개를 핵심 취약점 분류 24개에 걸쳐 모았고, 기업 신원과 인프라 공격 행렬도 둡니다."
+  "elementalsouls/Claude-BugHunter": "버그 헌팅과 외부 레드팀 작업을 위한 Claude Code 스킬 묶음입니다. 스킬 82개, 슬래시 명령 15개, 공개된 보고서 패턴 681개를 핵심 취약점 분류 24개에 걸쳐 모았고, 기업 신원과 인프라 공격 행렬도 둡니다.",
+  "juliobsz/skills": "한 줄로 수상작 수준의 웹사이트를 만드는 에이전트 스킬입니다.",
+  "0x4m4/hexstrike-ai": "HexStrike AI MCP Agents는 Claude, GPT, Copilot 같은 AI 에이전트가 사이버보안 도구 150개 이상을 스스로 실행하게 하는 MCP 서버입니다. 자동 모의 침투, 취약점 발견, 버그 바운티 자동화, 보안 연구를 다루고, LLM과 실제 공격 보안 기능을 잇습니다.",
+  "TGoddessana/alpine-code": "비개발자도 쓰기 쉬운 오픈소스 코딩 에이전트입니다. 도구까지 포함해 모든 것을 사용자가 정합니다. 데스크톱 앱과 CLI가 있습니다.",
+  "abue-ammar/tinycast": "Tinycast는 아주 작고 완전히 네이티브인 macOS 실행기입니다. 단축키와 클립보드 기록을 둡니다."
 }

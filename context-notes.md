@@ -2041,3 +2041,13 @@
 - `cocoindex-io/cocoindex-code` About의 별 이모지와 연속 공백은 그대로 둔다. `f/prompts.chat`의 긴 대시는 그대로 둔다.
 - 정적 번역표는 602개에서 612개로 늘었다.
 - 백필 10건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-13 추가 Star 한글 설명 5건 메모
+
+- 한국 시간 2026-10-12부터 2026-10-13까지 운영 `github_stars`에 들어온 항목은 17건이다. 2026-10-12에 들어온 11건 가운데 `krishhgg/Insomnia`를 빼면 이미 한글이 있다.
+- `krishhgg/Insomnia`는 About가 바뀌며 기존 한글이 빠졌다. 새 About에 맞춰 한국어를 다시 병기한다. 키는 새로 만들지 않았다.
+- 2026-10-13에 들어온 항목은 6건이다. `ngnicky-ai/kr-secwatch`와 `DHKIM0207/llm-wiki-kit`는 이미 한글이라 그대로 둔다. 한글이 없는 항목은 4건이고, 빈 설명은 0건이다.
+- `juliobsz/skills`는 `BuilderIO/skills`, `jakubkrehel/skills`, `gmh5225/awesome-skills`와 다른 저장소다.
+- `abue-ammar/tinycast` About의 긴 대시는 그대로 둔다.
+- 정적 번역표는 612개에서 616개로 늘었다.
+- 백필 5건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.

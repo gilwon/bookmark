@@ -1312,12 +1312,28 @@ describe("Star 설명 번역", () => {
       ["Louis-CFM/coucou", "A tiny friend in your Mac's notch and on your iPhone that keeps an eye on your AI coding agents: Claude Code, Codex, Cursor, Gemini CLI, Antigravity and more. Approve from the notch or your Lock Screen."],
       ["f/prompts.chat", "f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy."],
       ["Paymenter/Paymenter", "Free and open-source webshop solution for hostings"],
-      ["krishhgg/Insomnia", "A macOS menu bar app that keeps a MacBook awake safely for timed agent sessions."],
+      ["krishhgg/Insomnia", "A macOS menu bar app that safely keeps your MacBook awake with the lid closed, for timed agent sessions."],
       ["penso/herdr-gpui", "Native client for Herdr on macOS, Linux, and Windows, built with Rust and GPUI. View terminal sessions, workspaces, Git worktrees, and agent activity through your local Herdr daemon."],
       ["dalsoop/rustdesk", "RustDesk 1.5.0 fork with Android Korean input fixes: Hangul/F18 toggle key, dubeolsik key composition, soft keyboard jamo fix (#7727)"],
       ["elementalsouls/Claude-BugHunter", "A Claude Code skill bundle for bug hunting and external red-team work - 82 skills, 15 slash commands, 681 disclosed-report patterns curated across 24 core vulnerability classes, plus enterprise identity + infrastructure attack matrices."],
     ];
     assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-13에 추가된 Star 4개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["juliobsz/skills", "An agent skill that builds award-caliber websites from one line"],
+      ["0x4m4/hexstrike-ai", "HexStrike AI MCP Agents is an advanced MCP server that lets AI agents (Claude, GPT, Copilot, etc.) autonomously run 150+ cybersecurity tools for automated pentesting, vulnerability discovery, bug bounty automation, and security research. Seamlessly bridge LLMs with real-world offensive security capabilities."],
+      ["TGoddessana/alpine-code", "Open-source coding agent that's friendly to non-developers and puts you in control of everything, down to its tools. Desktop app and CLI."],
+      ["abue-ammar/tinycast", "Tinycast — a tiny, fully native macOS launcher, hotkeys, and clipboard history."],
+    ];
+    assert.equal(cases.length, 4);
     for (const [repo, description] of cases) {
       const result = withKoreanTranslation(repo, description, null);
       assert.equal(result.startsWith(description), true, repo);
