@@ -1,3 +1,15 @@
+# every._ai 솔로 스킬 4개와 플러그인 5개 Pages 이관 메모
+
+- 마케팅 스킬 글 `https://every-ai-guides.vercel.app/posts/skill-pack-marketing`는 이미 `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`라서 건너뛰었다. 본문은 그대로다.
+- 제목 `혼자 개발할 때 무조건 챙길 클로드 필수 스킬 4개 설치 가이드`. 주소 `https://every-ai-guides.vercel.app/posts/claude-solo-skills-4`. 공개일은 2026-09-10이다. `article.post`만 쓴다. 부트캠프·챌린지 배너, 카카오 CTA, 유튜브, every 인스타는 뺀다.
+- 이미지 0. 첨부 0. 표 1. 코드 15. 링크는 원문, `https://github.com/vercel-labs/skills#install-a-skill`, find-skills, agent-browser, systematic-debugging, Superpowers 설치, skill-creator.
+- 저장 경로 `/pages/c07d7ebd-57b5-4d59-b148-7f76f7334dcb`. 로컬 `dev`와 운영 본문이 같다. `created_at`은 `2026-10-12T01:06:21.271Z`다.
+- 제목 `클로드 코드로 바이브 코딩한다면 무조건 써야 할 플러그인 5개`. 주소 `https://every-ai-guides.vercel.app/posts/cc-plugins-5`. 공개일은 2026-09-17이다. `클로드 코드 플러그인 5개 설치 가이드`와 `클로드 코드 디자인 플러그인 5개 설치 가이드`는 다른 글이다.
+- 이미지 0. 첨부 0. 표 0. 코드 5. 링크는 원문, `https://github.com/obra/superpowers`, `https://github.com/anthropics/claude-plugins-official`, `https://code.claude.com/docs/en/commands`, `https://code.claude.com/docs/en/discover-plugins`.
+- 저장 경로 `/pages/dee80ae0-f32e-4c31-a2dd-57f24252941d`. 로컬과 운영 본문이 같다. `created_at`은 `2026-10-12T01:06:24.978Z`다. 브라우저를 연 뒤 로컬 `updated_at`만 `2026-10-12T01:07:15.868Z`로 바뀌었고 본문은 같다.
+- 두 건 모두 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-every-ai-claude-solo-skills-4.mjs`, `scripts/import-every-ai-cc-plugins-5.mjs`. 커밋 `004b3df`.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 2026-10-12 붙여 넣은 가이드 Pages 이관 메모
 
 - 요청 5개 중 스케일메이커 `https://scalemaker.co/g/2026-10-02-claude-official-skills`는 이미 `/pages/c32a2542-dcc7-4d73-bddc-dd379af3143e`라서 건너뛰었다. `fbclid`는 저장하지 않는다.
