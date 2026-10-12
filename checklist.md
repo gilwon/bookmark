@@ -1,3 +1,20 @@
+# every._ai 글 목록 93편 Pages 이관
+
+- [x] 홈 카드 93개의 저장 주소는 `.html`과 끝 슬래시를 뺀다
+- [x] 이미 있던 6건은 제목 또는 `source_url`이 같아서 건너뛴다
+- [x] 새 글 87건을 로컬·Supabase에 같은 id로 넣는다
+- [x] 제품 사진 상세페이지는 webp 2장이다. `/pages/346bd5ac-2d4b-4d2a-890d-37bb7d7c0402`
+- [x] 스레드 해킹은 png 17, jpeg 8, PDF 1이다. `/pages/1b6cc1c5-af16-455d-a230-5379cff30ba2`
+- [x] 클로드 활용법 10의 zip은 https 링크다. `/pages/8cfcfd99-567f-4a34-ba7e-40e88b217458`
+- [x] 클로드 코드 입문은 PDF 1이다. `/pages/1c69f616-58c4-4a4f-8726-a5c2a6d1b0b8`
+- [x] Paperclip은 png 1장이다. `/pages/0c66087f-3865-43ab-830f-80365a350e1d`
+- [x] 표 안 링크는 남긴다. 챌린지 폼, 쇼츠 홍보, 메뉴는 뺀다
+- [x] 추적 쿼리는 저장하지 않는다
+- [x] 재실행은 93건 전부 skip이고 글 본문은 다시 받지 않는다
+- [x] 브라우저에서 제목·이미지·PDF·zip 링크·표 링크를 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `25e469e`다
+
 # every._ai 솔로 스킬 4개와 플러그인 5개 Pages 이관
 
 - [x] 마케팅 스킬 글은 같은 `source_url`이라 건너뛴다. `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`

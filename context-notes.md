@@ -1,3 +1,23 @@
+# every._ai 글 목록 93편 Pages 이관 메모
+
+- 홈 `https://every-ai-guides.vercel.app/`의 글 카드는 93개다. 카드 주소는 `/posts/<slug>.html`이고 저장 주소는 `https://every-ai-guides.vercel.app/posts/<slug>`다. `.html`과 끝 슬래시는 뺀다.
+- 본문은 `article.post`만 쓴다. 부트캠프·챌린지 배너, 카카오 CTA, 모집 폼, 쇼츠 홍보, 메뉴, 푸터, 유튜브, every 인스타는 뺀다.
+- 이미 있던 6건은 그대로 둔다. `클로드 코드로 앱 만드는 프롬프트 8가지` `/pages/5eb8bccd-b53b-4b27-8d41-d2f6e834039b`, `클로드로 밤티 없는 화면 만드는 프롬프트 8가지` `/pages/381a3d90-4b88-4651-8f0f-1439b72dea81`, `클로드가 숨겨온 지시서, 통째로 유출됐다` `/pages/136bd304-b5c8-4ba6-abbe-04f0f2a7bafc`, `클로드를 10년차 베테랑 마케터로 만드는 marketingskills 스킬 5개` `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`, `혼자 개발할 때 무조건 챙길 클로드 필수 스킬 4개 설치 가이드` `/pages/c07d7ebd-57b5-4d59-b148-7f76f7334dcb`, `클로드 코드로 바이브 코딩한다면 무조건 써야 할 플러그인 5개` `/pages/dee80ae0-f32e-4c31-a2dd-57f24252941d`.
+- 새 글 87건은 로컬 `dev`와 운영에 같은 id, 제목, 본문, `created_at`으로 넣었다. 저장 주소에 `.html`은 없다.
+- `제품 사진 한 장으로 상세페이지 초안 만들기`는 webp 2장, 코드 1이다. `/pages/346bd5ac-2d4b-4d2a-890d-37bb7d7c0402`. `created_at`은 `2026-10-12T23:15:22.563Z`다.
+- `스레드 해킹 - 스레드로 제2의 월급 만들기`는 png 17, jpeg 8, PDF 1이다. 링크 글자는 `무료 가이드북 내려받기`이고 디코드하면 485790바이트다. 원본은 `/downloads/threads-starter-guide.pdf`다. `/pages/1b6cc1c5-af16-455d-a230-5379cff30ba2`. 본문 길이는 4530005다. `created_at`은 `2026-10-12T23:15:40.559Z`다.
+- `클로드 활용법 10가지 무료 프롬프트·실습 자료`의 zip은 `https://every-ai-guides.vercel.app/downloads/claude-10/practice.zip` 44899바이트 링크다. data URL로 넣지 않는다. 코드 20, 표 1. `/pages/8cfcfd99-567f-4a34-ba7e-40e88b217458`. `created_at`은 `2026-10-12T23:15:34.858Z`다.
+- `깔다 접은 사람을 위한 클로드 코드 입문 — 기초부터 스킬·커맨드·MCP까지`는 PDF 1, 표 2, 코드 1이다. 링크 글자는 `클로드 코드 시작하기 — PDF 20면`이고 디코드하면 303542바이트다. 원본은 `/downloads/claude-code-start.pdf`다. `/pages/1c69f616-58c4-4a4f-8726-a5c2a6d1b0b8`. `created_at`은 `2026-10-12T23:18:44.763Z`다.
+- `직원이 전부 AI인 회사를 여는 Paperclip 입문 가이드`는 png 1, 코드 18이다. `/pages/0c66087f-3865-43ab-830f-80365a350e1d`. `created_at`은 `2026-10-12T23:18:56.538Z`다.
+- 표 안 링크는 마크다운으로 먼저 빼서 남긴다. `처음이라면 무조건 클로드 코드 최고의 스킬 5개 설치 가이드` `/pages/633c24db-2df6-4365-9793-c8bbd3924a44`는 표 1, https 링크 18이다.
+- 날짜 줄 `2026. 9. 18.`처럼 숫자로 시작하면 앞에 제로폭 문자를 붙여 순서 있는 목록으로 접히지 않게 한다.
+- 가장 최근 글은 `AI 혼자 일 다 하는 superpowers 가이드` `/pages/1976f7e3-59b1-4144-9f76-1ce95099c455`다. `created_at`은 `2026-10-12T23:18:57.907Z`다.
+- `클로드로 직원 200명 무료로 고용하는 AI 직원 5팀` `/pages/a2f0fdcb-50da-422b-9c97-b52a4a3bfd5b`는 편집기를 연 뒤 로컬 `updated_at`만 `2026-10-12T23:22:06.495Z`로 바뀌었다. 본문은 운영과 같다. 운영은 고치지 않는다.
+- 목록 첫 화면은 30초 캐시라 직후에는 이전 24건이 보일 수 있다. 다시 열면 최신 글이 위에 온다.
+- 브라우저에서 제목 칸, webp 2, png·jpeg 25와 PDF, Paperclip png, 입문 PDF, zip 링크, 표 링크를 확인했다.
+- 재실행은 skip 93, 본문 요청 0이다. 스크립트는 `scripts/import-every-ai-index-20261013.mjs`. 커밋 `25e469e`. 테스트 7개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # every._ai 솔로 스킬 4개와 플러그인 5개 Pages 이관 메모
 
 - 마케팅 스킬 글 `https://every-ai-guides.vercel.app/posts/skill-pack-marketing`는 이미 `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`라서 건너뛰었다. 본문은 그대로다.
