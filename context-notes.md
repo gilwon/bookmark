@@ -1,3 +1,23 @@
+# 2026-10-12 붙여 넣은 가이드 Pages 이관 메모
+
+- 요청 5개 중 스케일메이커 `https://scalemaker.co/g/2026-10-02-claude-official-skills`는 이미 `/pages/c32a2542-dcc7-4d73-bddc-dd379af3143e`라서 건너뛰었다. `fbclid`는 저장하지 않는다.
+- every._ai 제목 `클로드가 숨겨온 지시서, 통째로 유출됐다`. 주소 `https://every-ai-guides.vercel.app/posts/claude-code-leaked-prompts-12`. `article.post`만 쓴다. 부트캠프·챌린지 배너, 카카오 CTA, 유튜브, every 인스타는 뺀다.
+- 이미지 0. 첨부 0. 표 1. 코드 13. 링크는 원문, Claude Code `Prompt.txt`, `Claude Code 2.0.txt`, `https://code.claude.com/docs/en/memory`.
+- 저장 경로 `/pages/136bd304-b5c8-4ba6-abbe-04f0f2a7bafc`. 로컬 `dev`와 운영 본문이 같다. `created_at`은 `2026-10-12T00:04:22.715Z`다. 스크립트 `scripts/import-every-ai-leaked-prompts-12.mjs`. 커밋 `fb8c587`.
+- every._ai 제목 `클로드를 10년차 베테랑 마케터로 만드는 marketingskills 스킬 5개`. 주소 `https://every-ai-guides.vercel.app/posts/skill-pack-marketing`. 같은 배너를 뺀다. 스킬팩 zip은 파일이 아니라 `https://open.kakao.com/o/pQAA9kKi`다.
+- 이미지 0. 첨부 0. 표 0. 코드 7. 링크는 원문, 카카오, `https://github.com/coreyhaines31/marketingskills`, `https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview`.
+- 저장 경로 `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`. 로컬과 운영 본문이 같다. `created_at`은 `2026-10-12T00:04:26.210Z`다. 스크립트 `scripts/import-every-ai-skill-pack-marketing.mjs`. 커밋 `fb8c587`.
+- Notion 제목 `클로드 AI 팀장 켜기 전에, 지시문부터 붙여넣기`. pageId `3f073c7b-15ad-8196-bfc1-e7956a7a1864`. 만든 시각은 2026-10-06 02:13 KST다. 부모는 컬렉션이지만 주소를 붙여 넣어서 넣었다.
+- 주소 `https://app.notion.com/p/3f073c7b15ad8196bfc1e7956a7a1864`. `source=copy_link`는 뺀다.
+- 이미지 0. 첨부 0. 표 2. 코드 5. 루트 65. 링크는 원문, `https://claude.ai/code`, `https://claude.com/form/projects`, `https://code.claude.com/docs/en/claude-projects`, `https://claude.com/blog/projects-redesigned`, `https://sebia.ai`.
+- 저장 경로 `/pages/161af199-cb3a-467f-8fe3-1658c4ca62dc`. `created_at`은 `2026-10-12T00:18:54.550Z`다.
+- Notion 제목 `[가이드] AI로 나만의 노션 대시보드 만들고 자동화하기 - 전체 워크플로우`. pageId `3f3e43a1-6720-80b2-83a5-e5f8ad06a6b9`. 만든 시각은 2026-10-08 17:14 KST다. 부모는 블록이다. 중첩 페이지 `자료 공유`는 본문에 없어서 넣지 않는다.
+- 주소 `https://app.notion.com/p/3f3e43a1672080b283a5e5f8ad06a6b9`.
+- 이미지 0. 첨부 0. 표 4. 코드 6. 루트 59. 코드 6개 중 5개는 콜아웃 안에 있어서 TipTap이 문단으로 접기 전에 이 스크립트에서만 밖으로 꺼냈다. 링크는 원문, `https://www.instagram.com/beucheo.ai`, `https://claude.ai/code`, `https://open.kakao.com/o/g8oGrusi`.
+- 저장 경로 `/pages/dc48914b-7d4a-4448-bf21-e242ba07b12c`. `created_at`은 `2026-10-12T00:19:06.008Z`다. 스크립트 `scripts/import-notion-two-20261012.mjs`. 커밋 `aafa624`.
+- 네 건 모두 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 브라우저를 연 뒤에도 로컬 본문과 운영 본문이 같다.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 한국 시간 10월 12일 Notion 신규 1건 Pages 이관 메모
 
 - 오늘 2026-10-12 08:20 KST. 이번 주 시작은 2026-10-12 00:00 KST, UTC `2026-10-11T15:00:00.000Z`다.

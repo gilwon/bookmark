@@ -1,3 +1,16 @@
+# 2026-10-12 붙여 넣은 가이드 Pages 이관
+
+- [x] 스케일메이커 클로드 공식 스킬 19개는 같은 `source_url`이라 건너뛴다. `/pages/c32a2542-dcc7-4d73-bddc-dd379af3143e`
+- [x] every._ai 유출 지시서는 이미지 0, 첨부 0, 표 1, 코드 13이다. `/pages/136bd304-b5c8-4ba6-abbe-04f0f2a7bafc`
+- [x] every._ai 마케팅 스킬 5개는 이미지 0, 첨부 0, 표 0, 코드 7이다. zip 받기는 카카오 링크다. `/pages/28074c7a-08d8-4d03-b754-eb29bf6e6f49`
+- [x] Notion 지시문은 이미지 0, 첨부 0, 표 2, 코드 5다. `/pages/161af199-cb3a-467f-8fe3-1658c4ca62dc`
+- [x] Notion 대시보드는 이미지 0, 첨부 0, 표 4, 코드 6이다. 콜아웃 안 코드는 코드 블록으로 꺼낸다. `/pages/dc48914b-7d4a-4448-bf21-e242ba07b12c`
+- [x] `fbclid`, `from=dm`, `source=copy_link`는 저장하지 않는다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 insert, 재실행은 skip
+- [x] 브라우저에서 제목·코드·표·링크가 보이고 목록 위에 있는지 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `fb8c587`, `aafa624`다
+
 # 한국 시간 10월 12일 Notion 신규 1건 Pages 이관
 
 - [x] 이번 주 시작은 2026-10-12 00:00 KST다
