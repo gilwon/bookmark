@@ -2071,3 +2071,13 @@
 - `abue-ammar/tinycast` About의 긴 대시는 그대로 둔다.
 - 정적 번역표는 612개에서 616개로 늘었다.
 - 백필 5건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-14 추가 Star 한글 설명 10건 메모
+
+- 한국 시간 2026-10-13부터 2026-10-14까지 운영 `github_stars`에 들어온 항목은 18건이다. 2026-10-13에 들어온 6건은 이미 한글이 있다.
+- 2026-10-14에 들어온 항목은 12건이다. `Seokwoooo/lotto-simulation`과 `Seokwoooo/saju-lab`은 이미 한글이라 그대로 둔다. 한글이 없는 항목은 10건이고, 빈 설명은 0건이다.
+- `kuratlielia/arc-library`는 `shhivv/arc-cua`와 다른 저장소다.
+- `Seokwoooo/astra-xray`, `Seokwoooo/DELETE-DENIED`, `Seokwoooo/lucian-uxui-prompt`는 서로 다른 저장소다.
+- `QingYunA/answer-me-with-html` About 끝의 중국어와 긴 대시는 그대로 둔다.
+- 정적 번역표는 616개에서 626개로 늘었다.
+- 백필 10건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
