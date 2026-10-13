@@ -46,6 +46,63 @@ function formatRelative(iso: string): string {
   }).format(time);
 }
 
+/** 긴 본문과 번역은 접어 두고, 누르면 전부 보여 준다. */
+function TweetBody({ text, textKo }: { text: string; textKo: string }) {
+  const [open, setOpen] = useState(false);
+  const [overflows, setOverflows] = useState(false);
+  const translation = textKo.trim();
+  const manyLines = text.split("\n").length > 6;
+  const canOpen = open || overflows || manyLines || translation.length > 0;
+
+  function assignBody(node: HTMLSpanElement | null) {
+    if (!node || open) return;
+    const check = () => {
+      if (!node.isConnected) return;
+      const next = node.scrollHeight > node.clientHeight + 1;
+      if (next) setOverflows(true);
+    };
+    check();
+    requestAnimationFrame(check);
+  }
+
+  const body = (
+    <span
+      ref={assignBody}
+      className={
+        open
+          ? "block whitespace-pre-wrap text-sm leading-6"
+          : "line-clamp-6 whitespace-pre-wrap text-sm leading-6"
+      }
+    >
+      {text || "본문이 없습니다."}
+    </span>
+  );
+
+  if (!canOpen) return body;
+
+  return (
+    <button
+      type="button"
+      className="w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+      aria-expanded={open}
+      onClick={() => setOpen((value) => !value)}
+    >
+      {body}
+      {open && translation && (
+        <span className="mt-3 block border-t border-border pt-3">
+          <span className="block text-xs font-medium text-muted-foreground">번역</span>
+          <span className="mt-1 block whitespace-pre-wrap text-sm leading-6 text-foreground">
+            {translation}
+          </span>
+        </span>
+      )}
+      <span className="mt-2 inline-flex min-h-10 items-center text-xs font-medium text-indigo-600 underline-offset-2 hover:underline dark:text-indigo-300">
+        {open ? "접기" : "내용 보기"}
+      </span>
+    </button>
+  );
+}
+
 export function XBookmarksView({
   items,
   hasXApp,
@@ -258,14 +315,7 @@ export function XBookmarksView({
                   {item.postedAt ? ` · ${formatPosted(item.postedAt)}` : ""}
                 </p>
               </div>
-              <p className="line-clamp-6 whitespace-pre-wrap text-sm leading-6">
-                {item.text || "본문이 없습니다."}
-              </p>
-              {item.textKo && (
-                <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
-                  {item.textKo}
-                </p>
-              )}
+              <TweetBody text={item.text} textKo={item.textKo} />
               <a
                 href={item.url}
                 target="_blank"
