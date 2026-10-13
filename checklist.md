@@ -1,3 +1,15 @@
+# 리틀리 클로드 자료와 영선 오픈소스 Pages 이관
+
+- [x] 리틀리는 jpeg 6, png 1이다. 첨부 0. `/pages/d73409c7-1b09-4ebb-b88f-04485eadfc22`
+- [x] 리틀리 링크 6개에서 `utm`과 `from=littly`를 뺀다
+- [x] 영선 글은 이미지 0, 첨부 0, 코드 5, 공식 링크 7이다. `/pages/8dc60ddc-f047-4d3a-b10c-d74394eda72d`
+- [x] 단톡, 카페 홍보, 이어서 볼 것, 이메일 신청은 뺀다
+- [x] `http://localhost/install`은 http로 남긴다
+- [x] 로컬·Supabase에 저장한다. 첫 실행은 insert, 재실행은 skip
+- [x] 브라우저에서 제목·이미지·링크·코드를 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `b674740`다
+
 # every._ai 글 목록 93편 Pages 이관
 
 - [x] 홈 카드 93개의 저장 주소는 `.html`과 끝 슬래시를 뺀다

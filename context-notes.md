@@ -1,3 +1,17 @@
+# 리틀리 클로드 자료와 영선 오픈소스 Pages 이관 메모
+
+- 리틀리 제목 `every._ai · 클로드 실전 자료`. 저장 주소 `https://litt.ly/dakjfsdf`. `utm`과 `fbclid`는 뺀다.
+- 프로필 소개는 `댓글 키워드를 눌러 자료를 바로 받으세요`. 이미지는 프로필 jpeg 4155바이트, 카드 png 991851바이트, 카드 jpeg 5장이다. 첨부 파일은 없다.
+- 링크. 원문, `https://every-ai-guides.vercel.app/instatoon-premium`, `posts/claude-design-skills-5`, `posts/claude-document-skills-4`, `posts/ui-mcp-5`, `posts/claude-commands-5`, `posts/claude-connectors-5`. `from=littly`는 뺀다.
+- 저장 경로 `/pages/d73409c7-1b09-4ebb-b88f-04485eadfc22`. 로컬 `dev`와 운영 본문이 같다. `created_at`은 `2026-10-13T22:29:32.707Z`다. 본문 길이는 1965146이다.
+- 영선 제목 `AI 개발자들이 매일 쓰는 무료 오픈소스 3개`. 저장 주소 `https://yeongseon.kr/archive/3e9d86104de280d3a3d3c2fdf6bf80e1.html`. 공개일은 2026-09-28이다. `직장인들을 위한 무료 오픈소스 TOP 3`와 다른 글이다.
+- 본문 이미지 0. 첨부 0. 코드 5. `ollama run qwen3`, `ollama run deepseek-r1`, `pip install 'markitdown[all]'`, `markitdown 보고서.pdf -o 보고서.md`, dify `git clone`. `http://localhost/install`은 http로 남긴다.
+- 링크. 원문, `https://ollama.com/`, `https://github.com/ollama/ollama`, `https://www.python.org/downloads/`, `https://github.com/microsoft/markitdown`, `https://cloud.dify.ai/`, `https://www.docker.com/products/docker-desktop/`, `https://github.com/langgenius/dify`.
+- 단톡 `open.kakao.com`, 네이버 카페 카드, `이어서 볼 것`, 이메일 신청은 뺀다. 카페 썸네일은 홍보라 본문 이미지가 아니다.
+- 저장 경로 `/pages/8dc60ddc-f047-4d3a-b10c-d74394eda72d`. 로컬과 운영 본문이 같다. `created_at`은 `2026-10-13T22:29:34.659Z`다. 브라우저를 연 뒤 로컬 `updated_at`만 `2026-10-13T22:30:59.265Z`로 바뀌었고 본문은 같다.
+- 두 건 모두 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-littly-yeongseon-20261014.mjs`. 커밋 `b674740`. 테스트 6개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # every._ai 글 목록 93편 Pages 이관 메모
 
 - 홈 `https://every-ai-guides.vercel.app/`의 글 카드는 93개다. 카드 주소는 `/posts/<slug>.html`이고 저장 주소는 `https://every-ai-guides.vercel.app/posts/<slug>`다. `.html`과 끝 슬래시는 뺀다.
