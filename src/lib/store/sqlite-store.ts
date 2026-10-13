@@ -18,6 +18,7 @@ import {
 } from "@/lib/db/schema.sqlite";
 import { qall, qget, qrun } from "@/lib/db/query";
 import { preparePageFindability } from "@/lib/page-findability";
+import { mergeKoreanTweet, presentTweet } from "@/lib/x-bookmark-ko";
 import type { MappedXBookmark } from "@/lib/x-bookmarks";
 import { normalizeTemplateUrl } from "@/lib/grok-bot";
 import { copyBodiesMatch, normalizeCopyBody } from "@/lib/thread-copy";
@@ -1493,13 +1494,17 @@ export async function searchPrompts(
 
 /** 사용자 X 북마크. 게시 시각이 최신인 것부터. */
 export async function listXBookmarks(userId: string): Promise<XBookmarkRow[]> {
-  return qall(
+  const rows = await qall(
     db
       .select()
       .from(xBookmarks)
       .where(eq(xBookmarks.userId, userId))
       .orderBy(desc(xBookmarks.postedAt), desc(xBookmarks.createdAt))
   );
+  return rows.map((row) => {
+    const view = presentTweet(row.tweetId, row.text);
+    return { ...row, text: view.text, textKo: view.textKo };
+  });
 }
 
 /** 게시 ID로 맞추고, 이번 응답에 없는 행은 지우지 않는다. */
@@ -1526,7 +1531,7 @@ export async function upsertXBookmarks(
         db
           .update(xBookmarks)
           .set({
-            text: item.text,
+            text: mergeKoreanTweet(item.tweetId, item.text),
             authorName: item.authorName,
             authorUsername: item.authorUsername,
             postedAt: item.postedAt,
@@ -1542,7 +1547,7 @@ export async function upsertXBookmarks(
           id: uuidv4(),
           userId,
           tweetId: item.tweetId,
-          text: item.text,
+          text: mergeKoreanTweet(item.tweetId, item.text),
           authorName: item.authorName,
           authorUsername: item.authorUsername,
           postedAt: item.postedAt,

@@ -104,6 +104,7 @@ export function mapXBookmark(r: any): XBookmarkRow {
     userId: r.user_id ?? r.userId,
     tweetId: r.tweet_id ?? r.tweetId,
     text: r.text ?? "",
+    textKo: r.text_ko ?? r.textKo ?? "",
     authorName: r.author_name ?? r.authorName ?? "",
     authorUsername: r.author_username ?? r.authorUsername ?? "",
     postedAt: r.posted_at ?? r.postedAt ?? "",
