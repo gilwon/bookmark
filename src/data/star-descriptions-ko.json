@@ -614,5 +614,15 @@
   "juliobsz/skills": "한 줄로 수상작 수준의 웹사이트를 만드는 에이전트 스킬입니다.",
   "0x4m4/hexstrike-ai": "HexStrike AI MCP Agents는 Claude, GPT, Copilot 같은 AI 에이전트가 사이버보안 도구 150개 이상을 스스로 실행하게 하는 MCP 서버입니다. 자동 모의 침투, 취약점 발견, 버그 바운티 자동화, 보안 연구를 다루고, LLM과 실제 공격 보안 기능을 잇습니다.",
   "TGoddessana/alpine-code": "비개발자도 쓰기 쉬운 오픈소스 코딩 에이전트입니다. 도구까지 포함해 모든 것을 사용자가 정합니다. 데스크톱 앱과 CLI가 있습니다.",
-  "abue-ammar/tinycast": "Tinycast는 아주 작고 완전히 네이티브인 macOS 실행기입니다. 단축키와 클립보드 기록을 둡니다."
+  "abue-ammar/tinycast": "Tinycast는 아주 작고 완전히 네이티브인 macOS 실행기입니다. 단축키와 클립보드 기록을 둡니다.",
+  "trailhq/Trail-Code": "Claude Code, Cursor, Codex, Gemini와 모든 코딩 에이전트를 더 빠르고 싸게 끌어올립니다. 그 코드베이스에 맞는 맥락을 이해합니다.",
+  "Blackman99/deskfolk": "일을 넘깁니다. 자리를 비웁니다. 돌아와 결과를 봅니다.",
+  "naveedharri/baalda": "팀의 두 번째 뇌입니다. 디스크의 평범한 마크다운 파일을 실시간으로 함께 고치고, AI가 팀원처럼 읽고 씁니다.",
+  "plugin87/ux-ui-agent-skills": "Claude를 시니어 디자인 설계자로 바꿉니다. DTCG 토큰, 컴포넌트 52개, WCAG 2.2 AA부터 AAA, 디자인 시스템 138개, 프레임워크를 가리지 않는 코드, 성공을 꾸며 내지 않고 빌드를 실패시키는 객관적 관문 50개를 둡니다.",
+  "kuratlielia/arc-library": "차분한 움직임이 있는 무료 오픈소스 React 컴포넌트 모음입니다. 코드를 복사하거나 shadcn CLI로 설치합니다.",
+  "QingYunA/answer-me-with-html": "어려운 질문을 실제로 읽을 수 있는 HTML 한 장으로 답하는 에이전트 스킬입니다. AI 에이전트가 복잡한 질문을 HTML 한 페이지로 답하게 합니다.",
+  "vxcontrol/pentagi": "복잡한 모의 침투 작업을 수행하는 완전 자율 AI 에이전트 시스템입니다.",
+  "Seokwoooo/astra-xray": "Codex가 GPT-6 Astra용으로 불러오는 항목을 살펴보고 맞춥니다.",
+  "Seokwoooo/DELETE-DENIED": "데몬 없이 Codex가 중요한 상위 경로를 지우지 못하게 하는 안전 경계입니다.",
+  "Seokwoooo/lucian-uxui-prompt": "직접 써 볼 수 있는 대화형 UI 요소 200개입니다. AI 프롬프트나 동작하는 코드로 복사합니다. 라이트와 다크가 있고, MIT 라이선스입니다."
 }

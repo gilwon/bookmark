@@ -1341,4 +1341,26 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-14에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["trailhq/Trail-Code", "Turbocharge Claude Code, Cursor, Codex, Gemini & every coding agent: faster, cheaper, with contextual understanding specific to your codebase."],
+      ["Blackman99/deskfolk", "Hand it off. Walk away. Return to results."],
+      ["naveedharri/baalda", "The team second brain. Plain Markdown files on your disk, edited together in real time, and read and written by your AI like a teammate."],
+      ["plugin87/ux-ui-agent-skills", "Turn Claude into a senior design architect: DTCG tokens, 52 components, WCAG 2.2 AA-AAA, 138 design systems, any-framework code, and 50 objective gates that fail the build instead of faking success."],
+      ["kuratlielia/arc-library", "Arc Library: free, open source React components with calm motion. Copy the code or install with the shadcn CLI."],
+      ["QingYunA/answer-me-with-html", "Answer me with HTML — an agent skill that answers hard questions with a one-page HTML you can actually read. 让 AI Agent 用一页 HTML 回答复杂问题。"],
+      ["vxcontrol/pentagi", "Fully autonomous AI Agents system capable of performing complex penetration testing tasks"],
+      ["Seokwoooo/astra-xray", "Audit and tune what Codex loads for GPT-6 Astra."],
+      ["Seokwoooo/DELETE-DENIED", "A zero-daemon safety boundary that prevents Codex from deleting critical parent paths."],
+      ["Seokwoooo/lucian-uxui-prompt", "200 interactive UI elements you can try live, then copy as an AI prompt or working code. Light/dark, MIT."],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
