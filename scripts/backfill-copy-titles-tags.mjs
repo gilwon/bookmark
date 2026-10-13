@@ -526,6 +526,12 @@ export const TARGETS = [
     tags: ["클로드", "설정"],
     phrase: "v2.1.292",
   },
+  {
+    id: "899c4bbe-8346-4e16-b9de-67ee838327bc",
+    title: "가게 사이트 검색을 손보는 클로드 스킬 3개",
+    tags: ["클로드", "SEO"],
+    phrase: "geo-seo-claude",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");

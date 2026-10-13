@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 86건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 86);
+test("대상 87건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 87);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 86);
+  assert.equal(new Set(ids).size, 87);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -671,4 +671,17 @@ test("오늘 추가된 메일·모션·effort 3건의 제목과 태그를 정한
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.notEqual(item.title, expected[item.id].raw);
   }
+});
+
+test("오늘 추가된 가게 검색 스킬 1건의 제목과 태그를 정한다", () => {
+  const item = TARGETS.find(
+    (row) => row.id === "899c4bbe-8346-4e16-b9de-67ee838327bc"
+  );
+  assert.ok(item);
+  assert.equal(item.title, "가게 사이트 검색을 손보는 클로드 스킬 3개");
+  assert.deepEqual(item.tags, ["클로드", "SEO"]);
+  assert.notEqual(
+    item.title,
+    "내 가게 사이트가 검색에 안 걸릴 때 손봐 주는 클로드 코드 스킬 3개를 읽어 봤어요."
+  );
 });
