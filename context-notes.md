@@ -1,3 +1,17 @@
+# 한국 시간 이번 주 Notion REA 가이드 Pages 이관 메모
+
+- 기준은 2026-10-12 00:00 KST부터다. GILWON 최상위 글은 2건이다.
+- `클로드 100개 싸움 붙이는 아레나 스킬`은 이미 `/pages/6118da8d-32ae-4b55-94e0-4fb2ff83b9f5`에 있다. 갱신하지 않았다.
+- 새 글 제목 `소스 코드 없는 앱을 AI가 뜯어 보게 하는 도구, REA 설치·사용 가이드`. pageId `cb3b2568-27ac-82ed-a87e-017afea68201`. 만든 시각은 2026-10-14 07:04 KST다.
+- 주소 `https://app.notion.com/p/cb3b256827ac82eda87e017afea68201`.
+- 이미지 0. 첨부 0. 표 6. 코드 17. 루트 자식 105.
+- 링크. 원문, `https://github.com/morluto/rea`, `https://github.com/morluto/rea/blob/main/docs/installation.md`, `https://github.com/morluto/rea/blob/main/DISCLAIMER.md`, `https://rea.tools/guides/`, `https://x.com/amasad/status/2107671204639465961`.
+- 저장 경로 `/pages/73dad3f3-19e2-4f1b-a9c4-c047c27842d2`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-13T22:51:01.007Z`다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1만 빠졌다. 로컬 `updated_at`은 `2026-10-13T22:55:02.791Z`다. 운영 본문은 그대로다.
+- 이름만 `GILWON YOO님의 워크스페이스`인 공간 세 곳에는 이번 주 글이 없다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-notion-kst-20261014.mjs`. 커밋 `5eb64d1`. 테스트 8개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 리틀리 클로드 자료와 영선 오픈소스 Pages 이관 메모
 
 - 리틀리 제목 `every._ai · 클로드 실전 자료`. 저장 주소 `https://litt.ly/dakjfsdf`. `utm`과 `fbclid`는 뺀다.
