@@ -1,6 +1,12 @@
 // X 북마크 순수 함수
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import translations from "../src/data/x-bookmark-text-ko.json" with { type: "json" };
+import {
+  koreanTweetText,
+  mergeKoreanTweet,
+  presentTweet,
+} from "../src/lib/x-bookmark-ko.ts";
 import {
   buildStatusUrl,
   isMissingXBookmarksTable,
@@ -84,6 +90,43 @@ describe("parseXTokenPayload", () => {
     assert.deepEqual(parseXTokenPayload(serializeXTokenPayload(payload)), payload);
     assert.equal(parseXTokenPayload("{"), null);
     assert.equal(parseXTokenPayload(JSON.stringify({ accessToken: "a" })), null);
+  });
+});
+
+describe("한국어 번역", () => {
+  const tweetId = "2109451106611036457";
+
+  it("한글이 없는 본문에만 표의 번역을 붙인다", () => {
+    assert.equal(Object.keys(translations).length, 52);
+    for (const value of Object.values(translations)) {
+      assert.match(value, /[가-힣]/);
+    }
+    const ko = translations[tweetId];
+    assert.equal(
+      koreanTweetText(tweetId, "Diagram Design hit 50k stars"),
+      ko
+    );
+    assert.equal(koreanTweetText(tweetId, "이미 한글입니다"), "");
+    assert.equal(koreanTweetText("없는-게시", "English only"), "");
+  });
+
+  it("저장과 화면 분리가 한 번만 일어난다", () => {
+    const api = "was out all day";
+    const stored = mergeKoreanTweet(tweetId, api);
+    assert.equal(stored, `${api}\n\n${translations[tweetId]}`);
+    assert.equal(mergeKoreanTweet(tweetId, stored), stored);
+    assert.deepEqual(presentTweet(tweetId, stored), {
+      text: api,
+      textKo: translations[tweetId],
+    });
+    assert.deepEqual(presentTweet(tweetId, api), {
+      text: api,
+      textKo: translations[tweetId],
+    });
+    assert.deepEqual(presentTweet(tweetId, "이미 한글입니다"), {
+      text: "이미 한글입니다",
+      textKo: "",
+    });
   });
 });
 

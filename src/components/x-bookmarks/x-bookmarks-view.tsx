@@ -69,6 +69,7 @@ export function XBookmarksView({
     return items.filter((item) => {
       const hay = [
         item.text,
+        item.textKo,
         item.authorName,
         item.authorUsername,
         item.url,
@@ -260,6 +261,11 @@ export function XBookmarksView({
               <p className="line-clamp-6 whitespace-pre-wrap text-sm leading-6">
                 {item.text || "본문이 없습니다."}
               </p>
+              {item.textKo && (
+                <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+                  {item.textKo}
+                </p>
+              )}
               <a
                 href={item.url}
                 target="_blank"

@@ -85,6 +85,8 @@ export type XBookmarkRow = {
   userId: string;
   tweetId: string;
   text: string;
+  /** 원문에 한글이 없을 때 붙이는 한국어. 없으면 빈 문자열 */
+  textKo: string;
   authorName: string;
   authorUsername: string;
   postedAt: string;

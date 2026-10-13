@@ -53,6 +53,7 @@ import {
   STAR_LIST_SELECT,
 } from "./star-list";
 import { fetchAllPaged } from "./supabase-page";
+import { mergeKoreanTweet, presentTweet } from "@/lib/x-bookmark-ko";
 import {
   isMissingXBookmarksTable,
   X_BOOKMARKS_TABLE_USER_MESSAGE,
@@ -1833,7 +1834,11 @@ export async function listXBookmarks(userId: string): Promise<XBookmarkRow[]> {
       .order("created_at", { ascending: false })
       .range(from, to);
     throwIfXBookmarkTable(error, "listXBookmarks");
-    return (data ?? []).map(mapXBookmark);
+    return (data ?? []).map((row) => {
+      const mapped = mapXBookmark(row);
+      const view = presentTweet(mapped.tweetId, mapped.text);
+      return { ...mapped, text: view.text, textKo: view.textKo };
+    });
   });
 }
 
@@ -1869,7 +1874,7 @@ export async function upsertXBookmarks(
       id: prev?.id ?? uuidv4(),
       user_id: userId,
       tweet_id: item.tweetId,
-      text: item.text,
+      text: mergeKoreanTweet(item.tweetId, item.text),
       author_name: item.authorName,
       author_username: item.authorUsername,
       posted_at: item.postedAt,
