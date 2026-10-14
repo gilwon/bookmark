@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T03:25:15.615Z",
+  "generatedAt": "2026-10-14T02:41:43.020Z",
   "tools": [
     {
       "id": "claude",
@@ -16,8 +16,14 @@
           "name": "apple-design",
           "description": "Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/sheet interactions, momentum and interruptible transitions, translucent materials and depth, typography (optical sizing, tracking, leading), reduced-motion, or the design foundations (feedback, spatial consistency, restraint) behind Apple-style interfaces.",
           "source": "user",
-          "uses": 1,
+          "uses": 0,
           "zipKey": "claude/apple-design.zip"
+        },
+        {
+          "name": "asd-ste100",
+          "description": "주제나 절차를 ASD-STE100 문장 규칙으로 설명하고, 사용자에게 보이는 답은 전부 한글로 쓴다. Use when the user runs /asd-ste100, or says \"ASD-STE100\", \"STE로 설명해줘\", \"간결한 기술 영어로\", or \"Simplified Technical English\".",
+          "source": "user",
+          "uses": 2
         },
         {
           "name": "aside-browser",
@@ -75,7 +81,7 @@
           "installCommands": [
             "npx skills add mattpocock/skills --skill code-review"
           ],
-          "uses": 0
+          "uses": 9
         },
         {
           "name": "codebase-design",
@@ -105,6 +111,16 @@
           "uses": 0
         },
         {
+          "name": "demo-video-creator",
+          "description": "Make a landscape 16:9 (1920×1080) ~60s product demo / launch film for a web app, AI tool or SaaS with the user's approved motion feel (\"감도\") — real product UI captures + real output footage, one continuous emotive English voiceover (ElevenLabs Will, eleven_v4), beat-locked HyperFrames build, fps re-render speed-up, impact FX + layered SFX, one finished mp4 at −14 LUFS. Use this whenever the user asks for a 데모 영상 / 데모 비디오 / 런치 영상 / 런치 필름 / 제품 소개 영상 / 프로모 영상 / \"이 감도로 영상\" / \"가로 데모\" / \"1분짜리 제품 영상\" / keynote- or Linear/Apple-style launch video / demo video / launch film / product promo — for Evals (evals.ag), Skillshop (skills.ag) or any other product, in English or Korean — even if they only paste a product URL and say \"영상 하나 뽑아줘\". Also use it when they hand a reference video and say \"이 느낌으로 우리 제품 영상\". Not for vertical 9:16 Shorts/Reels (use the reels/shorts skills).",
+          "source": "user",
+          "repoUrl": "https://github.com/chacha95/demo-video-creator",
+          "installCommands": [
+            "npx skills add chacha95/demo-video-creator --skill demo-video-creator"
+          ],
+          "uses": 0
+        },
+        {
           "name": "design-an-interface",
           "description": "Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions \"design it twice\".",
           "source": "shared",
@@ -118,7 +134,7 @@
           "name": "design-quality-check",
           "description": "UI·디자인 작업 전후 자가 점검 체크리스트. 시각적 일관성(톤앤매너·모바일웹 동일), 핵심 원칙(데이터 우선·컬러 시스템·타이포그래피·WCAG 대비), 퀄리티 체크포인트(포커스/에러 상태, hover/active, 반응형 480/1024/1440px, 키보드 네비게이션)를 다룬다. 화면·컴포넌트·랜딩페이지·대시보드를 만들거나 스타일을 고칠 때, 디자인 리뷰를 할 때, 반응형·접근성·컬러 대비를 확인할 때 사용.",
           "source": "user",
-          "uses": 10,
+          "uses": 31,
           "zipKey": "claude/design-quality-check.zip"
         },
         {
@@ -155,7 +171,7 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 2,
+          "uses": 31,
           "zipKey": "claude/ego-browser.zip"
         },
         {
@@ -193,7 +209,7 @@
           "name": "g5-admin-ui",
           "description": "그누보드5 관리자 페이지 UI 코드 생성기. 이 스킬은 사용자가 `adm/` 디렉토리에서 관리자 페이지 작업을 수행할 때 자동으로 활성화됩니다. 테이블, 버튼, 폼, 모달, 배지, 필터, 페이징 등 디자인 시스템에 맞는 HTML/CSS/JavaScript 코드를 생성하고, 일관된 UI 패턴을 적용합니다.",
           "source": "user",
-          "uses": 0,
+          "uses": 1,
           "zipKey": "claude/g5-admin-ui.zip"
         },
         {
@@ -224,14 +240,14 @@
           "name": "gnuboard-dev",
           "description": "그누보드5(Gnuboard5)·영카트5(YoungCart5) 기능 추가 및 수정 개발 전용 스킬. 다음 상황에서 반드시 이 스킬을 사용한다: 그누보드/영카트 기능 추가, 기존 동작 수정, 플러그인 제작, 훅(hook/extend) 작업, 게시판 커스터마이징, 스킨·테마 수정, 관리자 페이지 제작, 회원/포인트/쿠폰 기능 변경, 상품·주문·결제 흐름 커스텀, g5_ 테이블 조회·설계. 사용자가 \"그누보드\", \"영카트\", \"gnuboard\", \"youngcart\", \"g5\", \"SIR\"를 언급하거나, 코드에 `_GNUBOARD_` 상수, `g5_` 테이블 접두사, `sql_query()`, `G5_PATH` 같은 그누보드 고유 식별자가 보이면 — 명시적 요청이 없어도 — 이 스킬을 먼저 읽는다. PHP 쇼핑몰/게시판 수정 요청이 그누보드 기반으로 추정되면 역시 이 스킬을 쓴다.",
           "source": "user",
-          "uses": 3,
+          "uses": 1,
           "zipKey": "claude/gnuboard-dev.zip"
         },
         {
           "name": "gnuboard-relearn",
           "description": "그누보드5·Rebuilder 업스트림 재학습 스킬. 그누보드가 버전업됐거나 \"그누보드 재학습\", \"업스트림 업데이트 반영\", \"리빌더 최신 내용 학습\", \"/gnuboard-relearn\"이라고 하면 사용한다. 원격 저장소 최신 태그를 확인해 학습 저장소(upstream.md)와 g5-upstream-expert 에이전트를 갱신한다.",
           "source": "user",
-          "uses": 1,
+          "uses": 2,
           "zipKey": "claude/gnuboard-relearn.zip"
         },
         {
@@ -263,7 +279,7 @@
           "installCommands": [
             "npx skills add mattpocock/skills --skill grill-me"
           ],
-          "uses": 0
+          "uses": 1
         },
         {
           "name": "grill-with-docs",
@@ -283,7 +299,7 @@
           "installCommands": [
             "npx skills add mattpocock/skills --skill grilling"
           ],
-          "uses": 0
+          "uses": 1
         },
         {
           "name": "handoff",
@@ -294,6 +310,18 @@
             "npx skills add mattpocock/skills --skill handoff"
           ],
           "uses": 0
+        },
+        {
+          "name": "herdr-gpui-browser",
+          "description": "Open a browser tab in Herdr GPUI to show the user a web page or an HTML file you wrote, next to the terminal you run in, and get back the notes the user pins on it. Use whenever the user asks to open, start, or show a browser tab, a page, a preview, or a mockup while you run inside Herdr (HERDR_ENV=1 is set in your environment); prefer it there over other browser skills and over opening Safari or another system browser.",
+          "source": "user",
+          "uses": 0
+        },
+        {
+          "name": "herdr-team",
+          "description": "Ghostty·Herdr의 왼쪽 클팀장, 오른쪽 위 Claude Code 클사원, 오른쪽 아래 Codex 코사원이 협업하도록 프로젝트 AGENTS.md와 Claude 연결을 설정한다. 세 에이전트의 대화 규칙이나 팀 구성을 요청할 때 사용하며, 팀 실행은 시작 요청이 있을 때만 수행한다.",
+          "source": "user",
+          "uses": 2
         },
         {
           "name": "higgsfield-generate",
@@ -387,7 +415,7 @@
           "name": "install-anti-slop",
           "description": "Install, configure, update, or upgrade vendored anti-slop Oxlint plugins. Use when adding anti-slop, picking up upstream rules or fixes, or migrating an existing installation while preserving local customizations.",
           "source": "user",
-          "uses": 0,
+          "uses": 1,
           "zipKey": "claude/install-anti-slop.zip"
         },
         {
@@ -450,7 +478,7 @@
         },
         {
           "name": "orca-cli",
-          "description": "Use the public `orca` CLI to operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and the browser embedded inside the Orca app. Use when the user says \"$orca-cli\", \"use orca cli\", \"Orca worktree\", \"child worktree\", \"cardStatus\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"terminal send\", \"full handoff\", \"handover\", \"give this to another agent\", \"another worktree\", \"Orca browser\", \"orca artifacts\", \"share HTML/Markdown\", \"public artifact link\", \"share skills\", or \"control the browser inside Orca\". Prefer this over raw `git worktree`, ad hoc PTYs, Playwright, or Computer Use when the task touches Orca-managed state. Use Computer Use for external browser windows, webviews, or desktop UI only when the task requires OS/window-level control such as focus, menus, dialogs, coordinates, or screenshots. Use `orca-cli` for Orca's embedded pages and a page-automation tool such as Playwright or CDP for external pages.",
+          "description": "Operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and Orca's embedded browser through the `orca` CLI. Use when the user says \"$orca-cli\", \"Orca worktree\", \"child worktree\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"handoff\" / \"handover\" / \"give this to another agent\", \"Orca browser\", \"orca artifacts\", or \"share skills\". Prefer it over raw git worktree, ad hoc PTYs, or Computer Use when Orca state is involved. Use Computer Use only when a visible window needs GUI control that a CLI, filesystem, or API cannot do.",
           "source": "shared",
           "repoUrl": "https://github.com/stablyai/orca",
           "installCommands": [
@@ -466,7 +494,7 @@
           "installCommands": [
             "npx skills add stablyai/orca --skill orchestration"
           ],
-          "uses": 0
+          "uses": 1
         },
         {
           "name": "pick-ui-library",
@@ -540,6 +568,12 @@
           "uses": 0
         },
         {
+          "name": "reverse-engineer-anything",
+          "description": "Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
+          "source": "user",
+          "uses": 0
+        },
+        {
           "name": "review-and-submit",
           "description": "감사를 돌리고 사실을 확인한 뒤 in_review로 올린다. 발행은 하지 않는다.",
           "source": "shared",
@@ -574,7 +608,7 @@
           "name": "sdlc",
           "description": "앤트로픽 AI 네이티브 SDLC 플레이북의 문서 사슬(intent.md → spec.md → plan.md → 리뷰)을 저장소 안 `intent/슬러그/` 폴더에 남기는 스킬. 세 모드가 있다 — `intent`(인터뷰로 무엇을 왜 만들지 다섯 항목 작성), `spec`(intent.md와 CLAUDE.md를 읽고 요구사항·설계 명세 작성), `review`(diff를 intent·spec·plan과 대조해 의도 이탈을 지적). 사용자가 \"sdlc intent\", \"intent.md 써줘\", \"인텐트 만들어줘\", \"뭘 만들지 먼저 정리하자\", \"인터뷰해줘\", \"sdlc spec\", \"spec.md 만들어줘\", \"명세 써줘\", \"sdlc review\", \"의도대로 됐는지 검토\", \"intent랑 대조해줘\"라고 하거나, 새 기능·자동화 아이디어를 설명하며 코드 전에 문서로 남기자고 하면 반드시 이 스킬을 사용하라. Advisor가 구현 전에 intent·spec·plan 유무를 확인하고 없는 것을 만들 때도 이 스킬을 쓴다. ⚠️ plan.md는 이 스킬이 만들지 않는다 — 플랜 모드에서 승인한 계획을 work-artifacts가 `intent/슬러그/plan.md`에 저장한다. 한국형 기획서 문서가 목적이면 planning-doc-kr, 빌더용 HTML 실행 계획서가 목적이면 project-architect가 담당한다. 이 스킬의 산출물은 짧고 열린 질문이 남은 저장소 커밋용 문서다.",
           "source": "user",
-          "uses": 4,
+          "uses": 12,
           "zipKey": "claude/sdlc.zip"
         },
         {
@@ -717,7 +751,7 @@
           "installCommands": [
             "npx skills add typesafe-ai/skills --skill typesafe-ai"
           ],
-          "uses": 0
+          "uses": 1
         },
         {
           "name": "ubiquitous-language",
@@ -754,7 +788,7 @@
           "name": "vibe-check",
           "description": "바이브코딩 산출을 Scale·Failure·Tradeoffs·MVP 네 축으로 판정해 .vibe-check 리포트와 체크리스트를 낸다. 승인 전에는 고치지 않는다. /vibe-check, 바이브 체크, 스케일·장애 시나리오, 커밋·배포 직전 게이트, Worker 산출 검토에 쓴다. 보안 전수 조사나 과설계 삭제 목록은 이 스킬이 아니다.",
           "source": "shared",
-          "uses": 2,
+          "uses": 0,
           "zipKey": "claude/vibe-check.zip"
         },
         {
@@ -798,7 +832,7 @@
           "name": "work-artifacts",
           "description": "비자명한 코딩 작업을 시작하기 전에 계획·체크리스트·컨텍스트 노트 3종 산출물을 만들고 유지하는 절차. 파일 여러 개를 만들거나 설계 결정이 필요한 작업, 여러 세션에 걸쳐 이어질 작업을 시작할 때 반드시 사용한다. 사용자가 계획만 주고 바로 코딩을 요청할 때, \"체크리스트 만들어줘\", \"컨텍스트 노트\", \"작업 기록 남겨줘\"라고 할 때도 트리거된다. 단순 질문·한두 줄 수정에는 사용하지 않는다.",
           "source": "user",
-          "uses": 4,
+          "uses": 5,
           "zipKey": "claude/work-artifacts.zip"
         },
         {
@@ -896,7 +930,7 @@
         {
           "name": "caveman",
           "marketplace": "caveman",
-          "version": "3.1.0",
+          "version": "4.0.1",
           "description": "Ultra-compressed communication mode. Shortens prose while preserving technical terms, code, commands, and exact errors.",
           "skillCount": 22,
           "repoUrl": "https://github.com/JuliusBrussee/caveman",
@@ -922,7 +956,7 @@
         {
           "name": "claude-dashboard",
           "marketplace": "claude-dashboard",
-          "version": "1.34.0",
+          "version": "1.35.1",
           "description": "Unified status line for Claude Code with multi-CLI (Claude, Codex, Gemini, Antigravity, z.ai) usage monitoring, context, rate limits, and cost tracking",
           "skillCount": 0,
           "repoUrl": "https://github.com/uppinote20/claude-dashboard",
@@ -961,7 +995,7 @@
         {
           "name": "context7",
           "marketplace": "claude-plugins-official",
-          "version": "d182ca456ca0",
+          "version": "8d392c816966",
           "description": "Upstash Context7 MCP server for up-to-date documentation lookup. Connects to Context7's hosted remote MCP server (https://mcp.context7.com/mcp) — no local Node.js or npx required — to pull version-specific documentation and code examples directly from source repositories into your LLM context. Authenticate with Context7 when prompted.",
           "skillCount": 0,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -969,7 +1003,7 @@
             "/plugin marketplace add anthropics/claude-plugins-official",
             "/plugin install context7@claude-plugins-official"
           ],
-          "uses": 0
+          "uses": 2
         },
         {
           "name": "data",
@@ -995,12 +1029,12 @@
             "/plugin marketplace add anthropics/claude-plugins-community",
             "/plugin install eli5@claude-community"
           ],
-          "uses": 2
+          "uses": 6
         },
         {
           "name": "hookify",
           "marketplace": "claude-plugins-official",
-          "version": "d182ca456ca0",
+          "version": "8d392c816966",
           "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns",
           "skillCount": 1,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1024,11 +1058,24 @@
           "uses": 0
         },
         {
+          "name": "lucian-uxui",
+          "marketplace": "lucian-uxui",
+          "version": "1.1.0",
+          "description": "Build sites and components with Lucian UX/UI Prompt: search a growing library of interactive UI elements (light/dark, keyboard, touch, reduced motion, no dependencies) and port the ones you pick into your project's framework and theme.",
+          "skillCount": 1,
+          "repoUrl": "https://github.com/Seokwoooo/lucian-uxui",
+          "installCommands": [
+            "/plugin marketplace add Seokwoooo/lucian-uxui",
+            "/plugin install lucian-uxui@lucian-uxui"
+          ],
+          "uses": 3
+        },
+        {
           "name": "oh-my-fable",
           "marketplace": "oh-my-fable",
-          "version": "2.4.0",
-          "description": "Anthropic's prompting-guide rules for Claude Code, always on (Opus 5.5, Fable 5.1; Sonnet 5.5, Opus 5 and Sonnet 5 too): install and forget: the working rules load at every session start and reach subagents, unattended sessions are detected automatically and get the early-stop rules, sessions at xhigh or max effort get the stop-after-checks rule, /fable turns a rough request into a guide-aligned prompt, /fable-status shows what is in effect, /fable-audit finds which guide sections your own rules are missing, /fable-setup moves the rules into a rules file (recommended once).",
-          "skillCount": 5,
+          "version": "2.7.2",
+          "description": "Anthropic's prompting-guide rules for Claude Code, always on (Opus 5.5, Fable 5.1; Sonnet 5.5, Haiku 5.5, Opus 5 and Sonnet 5 too): install and forget: the working rules load at every session start and reach subagents, unattended sessions are detected automatically and get the early-stop rules, sessions at xhigh or max effort get the stop-after-checks rule, /fable turns a rough request into a guide-aligned prompt, /fable-status shows what is in effect, /fable-audit finds which guide sections your own rules are missing, /fable-setup moves the rules into a rules file (recommended once).",
+          "skillCount": 4,
           "repoUrl": "https://github.com/Junhan2/oh-my-fable",
           "installCommands": [
             "/plugin marketplace add Junhan2/oh-my-fable",
@@ -1039,7 +1086,7 @@
         {
           "name": "playwright",
           "marketplace": "claude-plugins-official",
-          "version": "d182ca456ca0",
+          "version": "8d392c816966",
           "description": "Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows.",
           "skillCount": 0,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1047,12 +1094,12 @@
             "/plugin marketplace add anthropics/claude-plugins-official",
             "/plugin install playwright@claude-plugins-official"
           ],
-          "uses": 319
+          "uses": 570
         },
         {
           "name": "ponytail",
           "marketplace": "ponytail",
-          "version": "4.11.0",
+          "version": "5.2.0",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
           "repoUrl": "https://github.com/DietrichGebert/ponytail",
@@ -1065,7 +1112,7 @@
         {
           "name": "session-report",
           "marketplace": "claude-plugins-official",
-          "version": "d182ca456ca0",
+          "version": "8d392c816966",
           "description": "",
           "skillCount": 1,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1091,15 +1138,28 @@
         {
           "name": "taste-skill",
           "marketplace": "taste-skill",
-          "version": "1.0.0",
-          "description": "Frontend design taste skills including brutalist, minimalist, soft, redesign, stitch, and more",
-          "skillCount": 13,
+          "version": "2.0.0",
+          "description": "tasteskill v2: art direction for coding agents, with a library of researched directions, real pictures from open collections and a real-browser inspector. Also image-generation, redesign and style skills.",
+          "skillCount": 14,
           "repoUrl": "https://github.com/leonxlnx/taste-skill",
           "installCommands": [
             "/plugin marketplace add Leonxlnx/taste-skill",
             "/plugin install taste-skill@taste-skill"
           ],
           "uses": 0
+        },
+        {
+          "name": "vercel",
+          "marketplace": "claude-plugins-official",
+          "version": "0.50.0",
+          "description": "Build and deploy web apps and agents",
+          "skillCount": 37,
+          "repoUrl": "https://github.com/vercel/vercel-plugin",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install vercel@claude-plugins-official"
+          ],
+          "uses": 1
         }
       ]
     },
@@ -1311,6 +1371,12 @@
           "zipKey": "codex/drama-shorts-factory.zip"
         },
         {
+          "name": "eli5",
+          "description": "Explain a topic like I'm a 5 year old. Use when the user asks for a dead-simple picture explainer of how something works, or says \"eli5\", \"eli5로 설명해줘\", \"5살한테 설명하듯\", \"그림으로 쉽게 설명해줘\", \"완전 쉽게 설명\".",
+          "source": "user",
+          "uses": 0
+        },
+        {
           "name": "emil-design-eng",
           "description": "This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great.",
           "source": "user",
@@ -1393,6 +1459,12 @@
           "source": "user",
           "uses": 0,
           "zipKey": "codex/hatch-pet.zip"
+        },
+        {
+          "name": "herdr-team",
+          "description": "Ghostty·Herdr의 왼쪽 클팀장, 오른쪽 위 Claude Code 클사원, 오른쪽 아래 Codex 코사원이 협업하도록 프로젝트 AGENTS.md와 Claude 연결을 설정한다. 세 에이전트의 대화 규칙이나 팀 구성을 요청할 때 사용하며, 팀 실행은 시작 요청이 있을 때만 수행한다.",
+          "source": "user",
+          "uses": 0
         },
         {
           "name": "higgsfield-canvas-ad-planner",
@@ -1811,7 +1883,7 @@
       "plugins": [
         {
           "name": "browser",
-          "version": "26.930.51102",
+          "version": "26.1007.30912",
           "marketplace": "openai-bundled",
           "description": "Browser / browser-use plugin\n\nAliases: @browser, @browser-use, browser-use, Browser, in-app browser.\n\nUse Browser, the ChatGPT in-app browser, when the user asks to open, inspect, navigate, test, click, type, or screenshot local web targets such as localhost, 127.0.0.1, ::1, file:// URLs, or the current in-app browser tab.\n\nAfter significant frontend changes to a local app, use Browser to open the relevant local target when it is known or obvious, unless the user asks for another browser tool.\n\nFor requests like \"open localhost:3000\" or \"open to localhost:4000\", navigate the in-app browser to http://localhost:3000 or http://localhost:4000.\n\nDo not satisfy explicit @browser or @browser-use requests with macOS `open`, shell commands, or generic web browsing unless the user asks for another browser tool or approves a fallback.",
           "skillCount": 0,
@@ -1877,7 +1949,7 @@
         },
         {
           "name": "code-review",
-          "version": "26.930.51102",
+          "version": "26.1007.30912",
           "marketplace": "openai-bundled",
           "description": "Review and manage GitHub pull requests from Codex.",
           "skillCount": 0,
@@ -1911,7 +1983,7 @@
         },
         {
           "name": "codex-app-tools",
-          "version": "0.1.5",
+          "version": "0.1.6",
           "marketplace": "openai-bundled",
           "description": "Exposes Codex desktop app tools through one local MCP server.",
           "skillCount": 0,
@@ -1919,7 +1991,7 @@
         },
         {
           "name": "computer-use",
-          "version": "1.0.1001365",
+          "version": "1.0.1001425",
           "marketplace": "openai-bundled",
           "description": "Control desktop apps on macOS from ChatGPT through Computer Use. Prefer purpose-built connectors, APIs, or CLIs.",
           "skillCount": 0,
@@ -1940,7 +2012,7 @@
         },
         {
           "name": "documents",
-          "version": "26.909.12148",
+          "version": "26.1011.11113",
           "marketplace": "openai-primary-runtime",
           "description": "Create and edit document artifacts in Codex, including Word files and Google Docs.",
           "skillCount": 1,
@@ -2026,19 +2098,6 @@
           "uses": 0
         },
         {
-          "name": "knowledge-catalog",
-          "version": "0.5.4",
-          "marketplace": "claude-plugins-official",
-          "description": "Connect to Knowledge Catalog to discover, manage, monitor, and govern data and AI artifacts across your data platform",
-          "skillCount": 0,
-          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
-          "installCommands": [
-            "codex plugin marketplace add anthropics/claude-plugins-official",
-            "codex plugin add knowledge-catalog@claude-plugins-official"
-          ],
-          "uses": 0
-        },
-        {
           "name": "notion",
           "version": "11c74d6b",
           "marketplace": "openai-curated",
@@ -2056,7 +2115,7 @@
         },
         {
           "name": "pdf",
-          "version": "26.909.12148",
+          "version": "26.1011.11113",
           "marketplace": "openai-primary-runtime",
           "description": "Read, create, inspect, render, and verify PDF files in Codex.",
           "skillCount": 1,
@@ -2077,7 +2136,7 @@
         },
         {
           "name": "ponytail",
-          "version": "4.11.0",
+          "version": "5.2.0",
           "marketplace": "ponytail",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
@@ -2090,7 +2149,7 @@
         },
         {
           "name": "presentations",
-          "version": "26.909.12148",
+          "version": "26.1011.11113",
           "marketplace": "openai-primary-runtime",
           "description": "Create, edit, render, verify, and export presentation slide decks. Use when Codex needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
           "skillCount": 1,
@@ -2124,7 +2183,7 @@
         },
         {
           "name": "spreadsheets",
-          "version": "26.909.12148",
+          "version": "26.1011.11113",
           "marketplace": "openai-primary-runtime",
           "description": "Create, edit, analyze, visualize, render, and export spreadsheets, Microsoft Excel or Google Sheets-ready workbooks in Codex.",
           "skillCount": 2,
@@ -2153,7 +2212,7 @@
         },
         {
           "name": "template-creator",
-          "version": "26.909.12148",
+          "version": "26.1011.11113",
           "marketplace": "openai-primary-runtime",
           "description": "Create and update personal templates from files, Google Docs, Slides, and Sheets links, ImageGen or Product Design images, emails, Slack messages, and Site projects.",
           "skillCount": 1,
@@ -2161,7 +2220,7 @@
         },
         {
           "name": "unified-computer-use",
-          "version": "26.930.51102",
+          "version": "26.1007.30912",
           "marketplace": "openai-bundled",
           "description": "App-managed browser automation runtime.",
           "skillCount": 0,
@@ -2169,7 +2228,7 @@
         },
         {
           "name": "visualize",
-          "version": "1.0.46",
+          "version": "1.0.49",
           "marketplace": "openai-bundled",
           "description": "Create interactive charts, maps, diagrams, simulations, 3D models, data explorers, and UI previews directly in Codex.",
           "skillCount": 1,
@@ -2181,6 +2240,12 @@
       "id": "grok",
       "label": "Grok",
       "skills": [
+        {
+          "name": "asd-ste100",
+          "description": "주제나 절차를 ASD-STE100 문장 규칙으로 설명하고, 사용자에게 보이는 답은 전부 한글로 쓴다. Use when the user runs /asd-ste100, or says \"ASD-STE100\", \"STE로 설명해줘\", \"간결한 기술 영어로\", or \"Simplified Technical English\".",
+          "source": "user",
+          "uses": 0
+        },
         {
           "name": "ask-matt",
           "description": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
@@ -2291,7 +2356,7 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 19,
+          "uses": 20,
           "zipKey": "claude/ego-browser.zip"
         },
         {
@@ -2511,7 +2576,7 @@
         },
         {
           "name": "orca-cli",
-          "description": "Use the public `orca` CLI to operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and the browser embedded inside the Orca app. Use when the user says \"$orca-cli\", \"use orca cli\", \"Orca worktree\", \"child worktree\", \"cardStatus\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"terminal send\", \"full handoff\", \"handover\", \"give this to another agent\", \"another worktree\", \"Orca browser\", \"orca artifacts\", \"share HTML/Markdown\", \"public artifact link\", \"share skills\", or \"control the browser inside Orca\". Prefer this over raw `git worktree`, ad hoc PTYs, Playwright, or Computer Use when the task touches Orca-managed state. Use Computer Use for external browser windows, webviews, or desktop UI only when the task requires OS/window-level control such as focus, menus, dialogs, coordinates, or screenshots. Use `orca-cli` for Orca's embedded pages and a page-automation tool such as Playwright or CDP for external pages.",
+          "description": "Operate Orca-managed worktrees, folder contexts, terminals, repos, automations, artifacts, skill sharing, worktree comments, and Orca's embedded browser through the `orca` CLI. Use when the user says \"$orca-cli\", \"Orca worktree\", \"child worktree\", \"spawn codex/claude in a worktree\", \"read/wait/send Orca terminal\", \"handoff\" / \"handover\" / \"give this to another agent\", \"Orca browser\", \"orca artifacts\", or \"share skills\". Prefer it over raw git worktree, ad hoc PTYs, or Computer Use when Orca state is involved. Use Computer Use only when a visible window needs GUI control that a CLI, filesystem, or API cannot do.",
           "source": "shared",
           "repoUrl": "https://github.com/stablyai/orca",
           "installCommands": [
@@ -2814,6 +2879,18 @@
           "marketplace": "xAI Official",
           "description": "Build and deploy web apps and agents",
           "skillCount": 26,
+          "repoUrl": "https://github.com/vercel/vercel-plugin",
+          "installCommands": [
+            "grok plugin install vercel/vercel-plugin"
+          ],
+          "uses": 0
+        },
+        {
+          "name": "vercel",
+          "version": "0.54.1",
+          "marketplace": "",
+          "description": "Build and deploy web apps and agents",
+          "skillCount": 33,
           "repoUrl": "https://github.com/vercel/vercel-plugin",
           "installCommands": [
             "grok plugin install vercel/vercel-plugin"
