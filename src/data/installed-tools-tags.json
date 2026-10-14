@@ -36,6 +36,9 @@
   "claude/plugin/loadout": [
     "에이전트·워크플로"
   ],
+  "claude/plugin/lucian-uxui": [
+    "디자인·UI"
+  ],
   "claude/plugin/oh-my-fable": [
     "에이전트·워크플로"
   ],
@@ -54,11 +57,17 @@
   "claude/plugin/taste-skill": [
     "디자인·UI"
   ],
+  "claude/plugin/vercel": [
+    "클라우드·배포"
+  ],
   "claude/skill/animation-vocabulary": [
     "디자인·UI"
   ],
   "claude/skill/apple-design": [
     "디자인·UI"
+  ],
+  "claude/skill/asd-ste100": [
+    "문서·글쓰기"
   ],
   "claude/skill/aside-browser": [
     "브라우저·자동화"
@@ -89,6 +98,9 @@
   ],
   "claude/skill/computer-use": [
     "브라우저·자동화"
+  ],
+  "claude/skill/demo-video-creator": [
+    "이미지·영상"
   ],
   "claude/skill/design-an-interface": [
     "개발"
@@ -158,6 +170,12 @@
     "에이전트·워크플로"
   ],
   "claude/skill/handoff": [
+    "에이전트·워크플로"
+  ],
+  "claude/skill/herdr-gpui-browser": [
+    "브라우저·자동화"
+  ],
+  "claude/skill/herdr-team": [
     "에이전트·워크플로"
   ],
   "claude/skill/higgsfield-generate": [
@@ -244,6 +262,9 @@
     "문서·글쓰기"
   ],
   "claude/skill/resolving-merge-conflicts": [
+    "개발"
+  ],
+  "claude/skill/reverse-engineer-anything": [
     "개발"
   ],
   "claude/skill/review-and-submit": [
@@ -429,10 +450,6 @@
   "codex/plugin/google-drive": [
     "연동·커넥터"
   ],
-  "codex/plugin/knowledge-catalog": [
-    "데이터·DB",
-    "연동·커넥터"
-  ],
   "codex/plugin/notion": [
     "연동·커넥터"
   ],
@@ -565,6 +582,9 @@
   "codex/skill/drama-shorts-factory": [
     "이미지·영상"
   ],
+  "codex/skill/eli5": [
+    "문서·글쓰기"
+  ],
   "codex/skill/emil-design-eng": [
     "디자인·UI"
   ],
@@ -601,6 +621,9 @@
   ],
   "codex/skill/hatch-pet": [
     "이미지·영상"
+  ],
+  "codex/skill/herdr-team": [
+    "에이전트·워크플로"
   ],
   "codex/skill/higgsfield-canvas-ad-planner": [
     "이미지·영상",
@@ -975,8 +998,14 @@
   "grok/plugin/supabase": [
     "데이터·DB"
   ],
-  "grok/plugin/vercel": [
+  "grok/plugin/vercel/": [
     "클라우드·배포"
+  ],
+  "grok/plugin/vercel/xAI Official": [
+    "클라우드·배포"
+  ],
+  "grok/skill/asd-ste100": [
+    "문서·글쓰기"
   ],
   "grok/skill/ask-matt": [
     "에이전트·워크플로"
