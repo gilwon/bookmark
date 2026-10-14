@@ -1363,4 +1363,22 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-15에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["yuting0624/antigravity-for-claude-code", "Claude Code plugin: run the Antigravity CLI (Gemini) as a collaborating sub-agent with intelligent model routing across the SDLC. Community project; not affiliated with Google/Anthropic."],
+      ["pch/rawmakase", "📸 Free, fast, Lightroom-compatible RAW photo editor for Linux, macOS, and Windows."],
+      ["tracewayapp/traceway", "The only tool you need to know what is happening and how to fix it."],
+      ["Illyism/seo-skills", "SEO skills for Claude Code, Cursor and Codex: SEO autopilot, title tags, blog refreshes, backlinks, customer journeys, video transcripts and copywriting."],
+      ["Shubhamsaboo/awesome-llm-apps", "100+ AI Agents, Agent Skills and RAG Apps - Free and Open Source."],
+      ["Coder-World04/Complete-System-Design", "This repository contains everything you need to become proficient in System Design"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
