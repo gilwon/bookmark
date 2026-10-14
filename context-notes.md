@@ -1,3 +1,16 @@
+# every._ai 얼굴 없는 계정 프롬프트 8가지 Pages 이관 메모
+
+- 제목 `클로드로 얼굴 없는 계정 키우는 프롬프트 8가지`. 공개일은 2026-10-13이다.
+- 저장 주소 `https://every-ai-guides.vercel.app/posts/claude-faceless-account-prompts-8`. 쿼리와 `.html`과 끝 슬래시는 없다.
+- 본문은 `article.post`만 쓴다. 부트캠프, 챌린지 배너, 카카오 CTA, 모집 폼, 메뉴, 푸터, 유튜브, every 인스타는 뺀다.
+- 이미지 0. 첨부 0. 표 3. 코드 8.
+- 링크. 원문, `https://creators.instagram.com/`, `https://help.instagram.com/`, `https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview`.
+- `클로드 코드로 앱 만드는 프롬프트 8가지`와 `클로드로 밤티 없는 화면 만드는 프롬프트 8가지`는 다른 글이다.
+- 저장 경로 `/pages/9c8c9513-2f42-4c16-bcb0-61050fccfb0e`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-14T22:40:02.951Z`다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1만 빠졌다. 보이는 글자는 같다. 로컬 `updated_at`은 `2026-10-14T22:42:06.963Z`다. 운영 본문은 그대로다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-every-ai-faceless-prompts-8.mjs`. 커밋 `ee8cab0`. 테스트 4개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 한국 시간 이번 주 Notion REA 가이드 Pages 이관 메모
 
 - 기준은 2026-10-12 00:00 KST부터다. GILWON 최상위 글은 2건이다.
