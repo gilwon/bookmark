@@ -532,6 +532,42 @@ export const TARGETS = [
     tags: ["클로드", "SEO"],
     phrase: "geo-seo-claude",
   },
+  {
+    id: "0ee45187-c2df-4871-9e01-abded1ce0f37",
+    title: "설계부터 검수까지 맡기는 클로드 스킬 10개",
+    tags: ["클로드", "스킬"],
+    phrase: "verification-before-completion",
+  },
+  {
+    id: "49a539f7-b604-47a0-ae51-c4529487db8b",
+    title: "유휴 클로드 세션을 캐시 만료 전에 압축하는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
+  },
+  {
+    id: "24435ba3-7313-4316-82ff-8f2ffeaf684c",
+    title: "레거시 동작을 증명하며 고치는 클로드 플러그인",
+    tags: ["클로드", "툴"],
+    phrase: "code-modernization@claude-plugins-official",
+  },
+  {
+    id: "d5f0c51b-8e98-4eda-bcb6-a90c0924ec86",
+    title: "웹디자인에 쓰는 레퍼런스 사이트 14곳",
+    tags: ["디자인", "레퍼런스"],
+    phrase: "minimal.gallery",
+  },
+  {
+    id: "9008cacc-3961-4c0a-9f80-d4bfebd3bcb2",
+    title: "클로드 코드 2.1.299와 2.1.300에서 챙길 설정 4가지",
+    tags: ["클로드", "설정"],
+    phrase: "claudeCode.attachSelection",
+  },
+  {
+    id: "131d6913-13e0-46c3-a5cf-43172e63f5fa",
+    title: "GPT 아스트라로 상세페이지를 뽑는 프롬프트 3개",
+    tags: ["아스트라", "프롬프트"],
+    phrase: "ip-as-logo-skill",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
