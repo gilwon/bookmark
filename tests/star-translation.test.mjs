@@ -1403,4 +1403,12 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-16에 이어서 추가된 Star 1개에 한국어 설명을 병기한다", () => {
+    const description = "AI agents running research on single-GPU nanochat training automatically";
+    const result = withKoreanTranslation("karpathy/autoresearch", description, null);
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
+  });
 });

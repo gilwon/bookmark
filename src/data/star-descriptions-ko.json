@@ -640,5 +640,6 @@
   "marvkr/better-design": "오픈소스 디자인 MCP 서버이자 shadcn/ui 레지스트리입니다. Claude Code, Cursor, Codex, GitHub Copilot과 모든 MCP 클라이언트용 AI 디자인 시스템입니다. Linear, Stripe, Vercel, Notion, Apple, Supabase, Figma 같은 브랜드급 테마 31개와 디자인 토큰, UI 원칙, WCAG 규칙을 둡니다. 명령 하나로 컴포넌트를 설치합니다.",
   "superdesigndev/superdesign": "오픈소스 AI 제품 디자인 에이전트입니다.",
   "earthtojake/text-to-cad": "에이전트에게 CAD 능력을 줍니다.",
-  "HKUDS/CLI-Anything": "모든 소프트웨어를 에이전트가 다루게 만드는 CLI-Anything입니다. 허브는 https://clianything.cc/ 입니다."
+  "HKUDS/CLI-Anything": "모든 소프트웨어를 에이전트가 다루게 만드는 CLI-Anything입니다. 허브는 https://clianything.cc/ 입니다.",
+  "karpathy/autoresearch": "단일 GPU nanochat 학습 연구를 자동으로 수행하는 AI 에이전트입니다."
 }
