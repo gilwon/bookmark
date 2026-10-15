@@ -2131,3 +2131,13 @@
 - `pch/rawmakase` About 앞의 카메라 이모지는 그대로 둔다.
 - 정적 번역표는 626개에서 632개로 늘었다.
 - 백필 6건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-16 추가 Star 한글 설명 10건 메모
+
+- 한국 시간 2026-10-15부터 2026-10-16까지 운영 `github_stars`에 들어온 항목은 17건이다. 2026-10-15에 들어온 7건은 이미 한글이 있다.
+- 2026-10-16에 들어온 항목은 10건이다. 한글이 없고 빈 설명은 0건이다.
+- `ui-layouts/uilayouts`와 `ui-layouts/cursify`는 서로 다른 저장소다. `madebymustafa/design-taste`, `marvkr/better-design`, `superdesigndev/superdesign`도 서로 다른 저장소다.
+- `ui-layouts/uilayouts` About의 굽은 아포스트로피는 그대로 둔다. `madebymustafa/design-taste`의 긴 대시도 그대로 둔다.
+- `marvkr/better-design` About의 팔레트 이모지, 긴 대시, 말줄임표는 그대로 둔다.
+- 정적 번역표는 632개에서 642개로 늘었다.
+- `@supabase/supabase-js`가 설치되어 있지 않아 백필 스크립트와 같은 규칙으로 REST에서 10건을 갱신했다. 패키지 파일은 바꾸지 않았다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
