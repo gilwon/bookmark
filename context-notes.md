@@ -1,3 +1,19 @@
+# every._ai 클로드 프롬프트 1,500개 모음 Pages 이관 메모
+
+- 제목 `미친 클로드 프롬프트 1,500개 모음 — 조회 상위 10개와 쓰는 법`. 공개일은 2026-10-14이다.
+- 저장 주소 `https://every-ai-guides.vercel.app/posts/claude-prompt-library-1500`. 쿼리와 `.html`과 끝 슬래시는 없다.
+- 본문은 `article.post`만 쓴다. 부트캠프, 챌린지 배너, 카카오 CTA, 모집 폼, 메뉴, 푸터, 유튜브, every 인스타는 뺀다.
+- 이 글은 프롬프트 본문 1,534개를 담지 않는다. JasonZhu 라이브러리로 가는 안내이고, 조회 상위 10개의 쓰는 법을 적는다.
+- 이미지 0. 첨부 0. 표 1. 코드 2.
+- 링크 25개. 원문, `https://jasonzhu.ai/en/prompts/claude-opus-5-5`, `https://claude.ai/`, X 상태 10개, jasonzhu 상세 10개, `https://every-ai-guides.vercel.app/posts/claude-viral-videos-475`, `https://every-ai-guides.vercel.app/posts/claude-motion-100`.
+- `클로드로 얼굴 없는 계정 키우는 프롬프트 8가지`, `클로드 코드로 앱 만드는 프롬프트 8가지`, `클로드로 밤티 없는 화면 만드는 프롬프트 8가지`는 다른 글이다.
+- 저장 경로 `/pages/f1566ed9-dad5-494d-8f64-f1d3f2cd92e2`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-15T23:32:13.865Z`다.
+- 넣을 때 본문 sha256은 `0ed4f3a0babc08439c742f36c48ea66bdc32c0bd2de5c84f129ff3956a6d839e`이고 길이는 18111이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠지고 맨 끝에 빈 문단이 하나 붙었다. 글자와 링크 25개는 같다. 로컬 `updated_at`은 `2026-10-15T23:33:08.946Z`다. 로컬 sha256은 `b14ba3a9592f19d1a556fe24c9b5d45199d53750218cffebb9c8e4d893295693`이고 길이는 24110이다. 운영 본문과 운영 `updated_at`은 `2026-10-15T23:32:13.865Z` 그대로다.
+- 검색 `1,500개 모음`에서 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 750건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-every-ai-prompt-library-1500.mjs`. 커밋 `a7adcc2`. 테스트 4개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # every._ai 얼굴 없는 계정 프롬프트 8가지 Pages 이관 메모
 
 - 제목 `클로드로 얼굴 없는 계정 키우는 프롬프트 8가지`. 공개일은 2026-10-13이다.
