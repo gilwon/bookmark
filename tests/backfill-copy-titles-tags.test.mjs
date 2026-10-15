@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 87건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 87);
+test("대상 93건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 93);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 87);
+  assert.equal(new Set(ids).size, 93);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -684,4 +684,46 @@ test("오늘 추가된 가게 검색 스킬 1건의 제목과 태그를 정한�
     item.title,
     "내 가게 사이트가 검색에 안 걸릴 때 손봐 주는 클로드 코드 스킬 3개를 읽어 봤어요."
   );
+});
+
+test("어제와 오늘 추가된 카피 6건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "0ee45187-c2df-4871-9e01-abded1ce0f37": {
+      title: "설계부터 검수까지 맡기는 클로드 스킬 10개",
+      tags: ["클로드", "스킬"],
+      raw: "AI만으로도 개발자처럼 코딩하게 도와주는 클로드 스킬 10개",
+    },
+    "49a539f7-b604-47a0-ae51-c4529487db8b": {
+      title: "유휴 클로드 세션을 캐시 만료 전에 압축하는 설정",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code 세션에서 오래 떠난 후 돌아오면 비용이 들곤 했습니다. 이제 그게 바뀌었습니다.",
+    },
+    "24435ba3-7313-4316-82ff-8f2ffeaf684c": {
+      title: "레거시 동작을 증명하며 고치는 클로드 플러그인",
+      tags: ["클로드", "툴"],
+      raw: "Anthropic이 코드 현대화 v1.0.0을 출시했습니다. 이는 레거시 코드베이스를 현대화하기 위한 Claude Code 플러그인입니다.",
+    },
+    "d5f0c51b-8e98-4eda-bcb6-a90c0924ec86": {
+      title: "웹디자인에 쓰는 레퍼런스 사이트 14곳",
+      tags: ["디자인", "레퍼런스"],
+      raw: "🎨 웹디자인 레퍼런스",
+    },
+    "9008cacc-3961-4c0a-9f80-d4bfebd3bcb2": {
+      title: "클로드 코드 2.1.299와 2.1.300에서 챙길 설정 4가지",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code 하루 두 번 업데이트, 278개 항목 중 매일 쓰는 사람이 챙길 건 4가지입니다.",
+    },
+    "131d6913-13e0-46c3-a5cf-43172e63f5fa": {
+      title: "GPT 아스트라로 상세페이지를 뽑는 프롬프트 3개",
+      tags: ["아스트라", "프롬프트"],
+      raw: "미리캔버스/캔바 쓰는 분, 없으시죠?",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 6);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
 });
