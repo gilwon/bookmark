@@ -1381,4 +1381,26 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-16에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["ibelick/motion-primitives", "UI kit to make beautiful, animated interfaces, faster. Customizable. Open Source."],
+      ["madebymustafa/design-taste", "24 open-source agent skills that turn taste into instructions — ten genre identities, each proven by a same-brief before/after demo"],
+      ["ui-layouts/uilayouts", "UI Layouts isn’t just a library. It’s your complete front-end universe with components, effects, design tools, and ready-to-use blocks, everything you need to build modern interfaces, faster."],
+      ["DavidHDev/canvas-ui", "A library of creative canvas components. Real HTML with WebGL effects running over it. React, Vue, Svelte, vanilla."],
+      ["ui-layouts/cursify", "Cursor Animation Library for React & Next.js"],
+      ["paper-design/shaders", "Zero-dependency canvas shaders that can be installed from npm or designed in Paper"],
+      ["marvkr/better-design", "🎨 Open-source design MCP server + shadcn/ui registry — AI design systems for Claude Code, Cursor, Codex, GitHub Copilot & any MCP client. 31 brand-grade themes (Linear, Stripe, Vercel, Notion, Apple, Supabase, Figma…) + design tokens, UI principles & WCAG rules. Install any component with one command."],
+      ["superdesigndev/superdesign", "AI Product Design Agent - Open Source"],
+      ["earthtojake/text-to-cad", "Give your agent CAD superpowers."],
+      ["HKUDS/CLI-Anything", "\"CLI-Anything: Making ALL Software Agent-Native\" -- CLI-Hub: https://clianything.cc/"],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });

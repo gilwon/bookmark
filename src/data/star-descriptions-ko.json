@@ -630,5 +630,15 @@
   "tracewayapp/traceway": "무슨 일이 일어나는지, 어떻게 고치는지 아는 데 필요한 유일한 도구입니다.",
   "Illyism/seo-skills": "Claude Code, Cursor, Codex용 SEO 스킬입니다. SEO 자동 운전, 제목 태그, 블로그 갱신, 백링크, 고객 여정, 영상 받아쓰기, 카피라이팅을 다룹니다.",
   "Shubhamsaboo/awesome-llm-apps": "AI 에이전트, 에이전트 스킬, RAG 앱 100개 이상을 모은 무료 오픈소스입니다.",
-  "Coder-World04/Complete-System-Design": "시스템 설계를 능숙하게 하는 데 필요한 것을 모두 담은 저장소입니다."
+  "Coder-World04/Complete-System-Design": "시스템 설계를 능숙하게 하는 데 필요한 것을 모두 담은 저장소입니다.",
+  "ibelick/motion-primitives": "아름답고 애니메이션이 있는 화면을 더 빨리 만드는 UI 키트입니다. 원하는 대로 고칠 수 있고, 오픈소스입니다.",
+  "madebymustafa/design-taste": "취향을 지시로 바꾸는 오픈소스 에이전트 스킬 24개입니다. 장르 정체성 10개를 두고, 같은 브리프의 전후 데모로 각각 보여 줍니다.",
+  "ui-layouts/uilayouts": "UI Layouts는 라이브러리만이 아닙니다. 컴포넌트, 효과, 디자인 도구, 바로 쓰는 블록을 갖춘 프론트엔드 전체입니다. 현대적인 화면을 더 빨리 만드는 데 필요한 것을 담습니다.",
+  "DavidHDev/canvas-ui": "창의적인 캔버스 컴포넌트 모음입니다. 진짜 HTML 위에 WebGL 효과를 올립니다. React, Vue, Svelte, 바닐라를 다룹니다.",
+  "ui-layouts/cursify": "React와 Next.js용 커서 애니메이션 라이브러리입니다.",
+  "paper-design/shaders": "의존성 없이 쓰는 캔버스 셰이더입니다. npm으로 설치하거나 Paper에서 디자인합니다.",
+  "marvkr/better-design": "오픈소스 디자인 MCP 서버이자 shadcn/ui 레지스트리입니다. Claude Code, Cursor, Codex, GitHub Copilot과 모든 MCP 클라이언트용 AI 디자인 시스템입니다. Linear, Stripe, Vercel, Notion, Apple, Supabase, Figma 같은 브랜드급 테마 31개와 디자인 토큰, UI 원칙, WCAG 규칙을 둡니다. 명령 하나로 컴포넌트를 설치합니다.",
+  "superdesigndev/superdesign": "오픈소스 AI 제품 디자인 에이전트입니다.",
+  "earthtojake/text-to-cad": "에이전트에게 CAD 능력을 줍니다.",
+  "HKUDS/CLI-Anything": "모든 소프트웨어를 에이전트가 다루게 만드는 CLI-Anything입니다. 허브는 https://clianything.cc/ 입니다."
 }
