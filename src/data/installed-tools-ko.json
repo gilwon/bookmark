@@ -15,6 +15,7 @@
   "claude/plugin/oh-my-fable": "Claude Code에 Anthropic 프롬프트 가이드 규칙을 항상 적용한다(Opus 5.5, Fable 5.1, Sonnet 5.5, Opus 5, Sonnet 5). 작업 규칙이 매 세션 시작과 서브에이전트에 적용되고, 무인 세션은 자동 감지된다. /fable, /fable-status 같은 명령을 제공한다.",
   "claude/plugin/playwright": "Microsoft의 브라우저 자동화·E2E 테스트 MCP 서버다. Claude가 웹 페이지를 조작하고, 스크린샷을 찍고, 폼을 채우고, 요소를 클릭하고, 브라우저 테스트를 자동화하게 한다.",
   "claude/plugin/ponytail": "게으른 시니어 개발자 모드다. 실제로 동작하는 가장 단순하고 짧은 해법을 강제한다(YAGNI, 표준 라이브러리 우선, 요청 없는 추상화 금지).",
+  "claude/plugin/pstack": "빨리 가려면 먼저 깊이 들어간다. pstack은 코드는 더 적게, 품질은 더 높게 쓰도록 돕는다. 확신을 갖고 병렬로 돌릴 수 있는 엄격한 에이전트 워크플로다.",
   "claude/plugin/supabase": "Supabase 공식 Claude Code 플러그인이다. 프로젝트 관리, 데이터베이스 작업, 인증, 스토리지, Postgres 모범 사례를 위한 Supabase 스킬과 MCP 접근을 함께 제공한다.",
   "claude/plugin/taste-skill": "brutalist, minimalist, soft, redesign, stitch 등을 포함한 프론트엔드 디자인 취향 스킬 묶음이다.",
   "claude/plugin/vercel": "웹앱과 에이전트를 만들고 배포한다.",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T22:45:25.960Z",
+  "generatedAt": "2026-10-16T23:01:39.273Z",
   "tools": [
     {
       "id": "claude",
@@ -1119,6 +1119,19 @@
           "installCommands": [
             "/plugin marketplace add DietrichGebert/ponytail",
             "/plugin install ponytail@ponytail"
+          ],
+          "uses": 0
+        },
+        {
+          "name": "pstack",
+          "marketplace": "cursor-plugins",
+          "version": "0.15.25",
+          "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
+          "skillCount": 54,
+          "repoUrl": "https://github.com/cursor/plugins",
+          "installCommands": [
+            "/plugin marketplace add cursor/plugins",
+            "/plugin install pstack@cursor-plugins"
           ],
           "uses": 0
         },
