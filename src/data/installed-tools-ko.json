@@ -5,6 +5,7 @@
   "claude/plugin/claude-code-setup": "코드베이스를 분석해 훅, 스킬, MCP 서버, 서브에이전트 같은 맞춤형 Claude Code 자동화를 추천한다.",
   "claude/plugin/claude-dashboard": "여러 CLI(Claude, Codex, Gemini, Antigravity, z.ai) 사용량, 컨텍스트, 사용 한도, 비용을 함께 보여 주는 Claude Code 통합 상태 표시줄이다.",
   "claude/plugin/claude-md-management": "CLAUDE.md 파일을 유지·개선하는 도구다. 품질을 감사하고 세션에서 배운 점을 담아 프로젝트 메모리를 최신으로 유지한다.",
+  "claude/plugin/code-modernization": "어떤 레거시 코드베이스든 안내를 따라 현대화한다. /modernize로 시작해 평가, 인터랙티브 맵, 코드에서 뽑아 낸 비즈니스 규칙, 승인할 계획을 받은 뒤 업그레이드나 재작성, 재구축을 하고, 새 코드가 예전 코드처럼 동작한다는 독립된 증명을 받는다. 보안 강화, 한 장짜리 보고서, 전문 에이전트, 선택할 수 있는 실시간 진행 창(early access)이 들어 있다.",
   "claude/plugin/codex": "Claude Code에서 Codex로 코드 리뷰를 받거나 작업을 맡긴다.",
   "claude/plugin/context7": "최신 문서를 조회하는 Upstash Context7 MCP 서버다. 호스팅된 원격 MCP 서버(https://mcp.context7.com/mcp)에 연결해 로컬 Node.js·npx 없이 버전별 문서와 코드 예제를 원본 저장소에서 바로 가져온다.",
   "claude/plugin/data": "SQL 작성, 데이터셋 탐색, 인사이트 도출을 빠르게 한다. 시각화와 대시보드를 만들고 원시 데이터를 이해관계자에게 전할 명확한 이야기로 바꾼다.",
