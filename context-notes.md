@@ -1,3 +1,20 @@
+# 한국 시간 이번 주 Notion 인솜니아 가이드 Pages 이관 메모
+
+- 기준은 2026-10-12 00:00 KST부터 2026-10-17 07:48 KST까지다. GILWON 최상위 글은 3건이다.
+- `클로드 100개 싸움 붙이는 아레나 스킬`은 이미 `/pages/6118da8d-32ae-4b55-94e0-4fb2ff83b9f5`에 있다. 갱신하지 않았다.
+- `소스 코드 없는 앱을 AI가 뜯어 보게 하는 도구, REA 설치·사용 가이드`는 이미 `/pages/73dad3f3-19e2-4f1b-a9c4-c047c27842d2`에 있다. 갱신하지 않았다.
+- 새 글 제목 `맥북 덮개 닫아도 AI는 계속된다 — 인솜니아(Insomnia) 설치·사용 가이드`. pageId `da7b2568-27ac-8248-ac29-8138648f1b39`. 만든 시각은 2026-10-16 18:26 KST다.
+- 주소 `https://app.notion.com/p/da7b256827ac8248ac298138648f1b39`.
+- 이미지 0. 첨부 0. 표 9. 코드 3. 루트 자식 56.
+- 링크. 원문, `https://github.com/krishhgg/Insomnia`, `https://github.com/krishhgg/Insomnia/releases/tag/v0.1.0`, `https://github.com/krishhgg/Insomnia/blob/main/docs/install.md`, `https://support.apple.com/en-us/102336`.
+- 저장 경로 `/pages/19df8a8a-2ff6-402f-8afa-692aa710bd03`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-16T22:52:28.867Z`다.
+- 넣을 때 본문 sha256은 `a4ff8f0e31d4114b0b46ab639206d4d57f9e4611a9a9920b46e1ee0f7b229fec`이고 길이는 23350이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 보이는 글자와 링크는 같다. 로컬 `updated_at`은 `2026-10-16T22:53:14.928Z`다. 로컬 sha256은 `773a28b5cb665e5474e0140d057aa6975fd48eda722166899ead246e92e4700f`이고 길이는 29563이다. 운영 본문은 그대로다.
+- 검색 `인솜니아`에서 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 752건이다.
+- 이름만 `GILWON YOO님의 워크스페이스`인 공간 세 곳에는 이번 주 글이 없다. GILWON 목록은 space.pages 28, private_pages 305, shared_pages_manual_sort 259, bookmarked_pages 10, 고유 308이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-notion-kst-20261017.mjs`. 커밋 `699b23e`. 테스트 8개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # newvibot 디자인 시스템 글 Pages 이관 메모
 
 - 제목 `AI로 만든 프론트, AI처럼 안 보이게 — 디자인 시스템을 먼저 만든 이유`. 공개일은 2026-10-14이다.
