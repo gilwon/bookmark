@@ -1,3 +1,18 @@
+# newvibot 디자인 시스템 글 Pages 이관 메모
+
+- 제목 `AI로 만든 프론트, AI처럼 안 보이게 — 디자인 시스템을 먼저 만든 이유`. 공개일은 2026-10-14이다.
+- 저장 주소 `https://newvibot.com/ko/blog/ai-frontend-design-system`. 쿼리는 없다.
+- 본문은 `article`만 쓴다. 헤더, 푸터, 로고, 슬랙 아이콘, 개인정보·이용약관·환불 링크, 메일, 광고 스크립트는 뺀다. 작성자 사진 `/logo/hong.jpg`는 남긴다.
+- 이미지 10. jpeg 1, png 9. 첨부 0. 표 3. 코드 블록 0. 인라인 `ADMIN`은 있다.
+- 링크 3개. 원문, Medium 지난 글, `https://newvibot.com/ko/blog/leave-calendar-redesign-2026`.
+- `클로드로 얼굴 없는 계정 키우는 프롬프트 8가지`는 이미 `/pages/9c8c9513-2f42-4c16-bcb0-61050fccfb0e`에 있다. 갱신하지 않았다.
+- 저장 경로 `/pages/f0b6fc36-2a8f-4faa-ad00-c95deadafc7e`. 로컬 `dev`와 운영이 같은 id다. `created_at`과 `updated_at`은 `2026-10-16T00:03:52.368Z`다.
+- 본문 sha256은 `1b9608ab6d5c6f6f3d14839b130e64c2069f9d2741029404ae22154b2b4da826`이고 길이는 3209033이다. 1.5MB를 넘어서 에디터 자동 저장 PATCH는 400이다.
+- 브라우저에서 제목, 이미지 10장, 표 3, 링크 3개, 캡션, 작성자, 날짜를 확인했다. 저장은 실패로 남고 로컬·운영 본문은 그대로다.
+- 검색 `디자인 시스템을 먼저`에서 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 751건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-newvibot-ai-frontend-design-system.mjs`. 커밋 `b61db2f`. 테스트 4개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # every._ai 클로드 프롬프트 1,500개 모음 Pages 이관 메모
 
 - 제목 `미친 클로드 프롬프트 1,500개 모음 — 조회 상위 10개와 쓰는 법`. 공개일은 2026-10-14이다.
