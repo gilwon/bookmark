@@ -1411,4 +1411,20 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("2026-10-17에 추가된 Star 4개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["superdesigndev/treg", "OpenRouter for agent tools. Join community here: https://discord.gg/6mQYYfFMAn"],
+      ["backnotprop/pstack", "Use pstack with claude, codex, pi - Skills and principles for rigorous AI-assisted engineering"],
+      ["gr8rstudio/gr8r-studio", "Gr8r Studio: a calm, structured project management workspace. Vite + plain ES modules."],
+      ["nerin81-netizen/threads-affiliate-automation", "Open-source Threads affiliate marketing & automation toolkit with local dashboard, card studio, and Graph API / Playwright support."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
