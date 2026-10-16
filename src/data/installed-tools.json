@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T02:41:43.020Z",
+  "generatedAt": "2026-10-16T22:45:25.960Z",
   "tools": [
     {
       "id": "claude",
@@ -81,7 +81,7 @@
           "installCommands": [
             "npx skills add mattpocock/skills --skill code-review"
           ],
-          "uses": 9
+          "uses": 16
         },
         {
           "name": "codebase-design",
@@ -134,7 +134,7 @@
           "name": "design-quality-check",
           "description": "UI·디자인 작업 전후 자가 점검 체크리스트. 시각적 일관성(톤앤매너·모바일웹 동일), 핵심 원칙(데이터 우선·컬러 시스템·타이포그래피·WCAG 대비), 퀄리티 체크포인트(포커스/에러 상태, hover/active, 반응형 480/1024/1440px, 키보드 네비게이션)를 다룬다. 화면·컴포넌트·랜딩페이지·대시보드를 만들거나 스타일을 고칠 때, 디자인 리뷰를 할 때, 반응형·접근성·컬러 대비를 확인할 때 사용.",
           "source": "user",
-          "uses": 31,
+          "uses": 42,
           "zipKey": "claude/design-quality-check.zip"
         },
         {
@@ -171,7 +171,7 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 31,
+          "uses": 71,
           "zipKey": "claude/ego-browser.zip"
         },
         {
@@ -571,7 +571,7 @@
           "name": "reverse-engineer-anything",
           "description": "Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
           "source": "user",
-          "uses": 0
+          "uses": 1
         },
         {
           "name": "review-and-submit",
@@ -608,7 +608,7 @@
           "name": "sdlc",
           "description": "앤트로픽 AI 네이티브 SDLC 플레이북의 문서 사슬(intent.md → spec.md → plan.md → 리뷰)을 저장소 안 `intent/슬러그/` 폴더에 남기는 스킬. 세 모드가 있다 — `intent`(인터뷰로 무엇을 왜 만들지 다섯 항목 작성), `spec`(intent.md와 CLAUDE.md를 읽고 요구사항·설계 명세 작성), `review`(diff를 intent·spec·plan과 대조해 의도 이탈을 지적). 사용자가 \"sdlc intent\", \"intent.md 써줘\", \"인텐트 만들어줘\", \"뭘 만들지 먼저 정리하자\", \"인터뷰해줘\", \"sdlc spec\", \"spec.md 만들어줘\", \"명세 써줘\", \"sdlc review\", \"의도대로 됐는지 검토\", \"intent랑 대조해줘\"라고 하거나, 새 기능·자동화 아이디어를 설명하며 코드 전에 문서로 남기자고 하면 반드시 이 스킬을 사용하라. Advisor가 구현 전에 intent·spec·plan 유무를 확인하고 없는 것을 만들 때도 이 스킬을 쓴다. ⚠️ plan.md는 이 스킬이 만들지 않는다 — 플랜 모드에서 승인한 계획을 work-artifacts가 `intent/슬러그/plan.md`에 저장한다. 한국형 기획서 문서가 목적이면 planning-doc-kr, 빌더용 HTML 실행 계획서가 목적이면 project-architect가 담당한다. 이 스킬의 산출물은 짧고 열린 질문이 남은 저장소 커밋용 문서다.",
           "source": "user",
-          "uses": 12,
+          "uses": 16,
           "zipKey": "claude/sdlc.zip"
         },
         {
@@ -832,7 +832,7 @@
           "name": "work-artifacts",
           "description": "비자명한 코딩 작업을 시작하기 전에 계획·체크리스트·컨텍스트 노트 3종 산출물을 만들고 유지하는 절차. 파일 여러 개를 만들거나 설계 결정이 필요한 작업, 여러 세션에 걸쳐 이어질 작업을 시작할 때 반드시 사용한다. 사용자가 계획만 주고 바로 코딩을 요청할 때, \"체크리스트 만들어줘\", \"컨텍스트 노트\", \"작업 기록 남겨줘\"라고 할 때도 트리거된다. 단순 질문·한두 줄 수정에는 사용하지 않는다.",
           "source": "user",
-          "uses": 5,
+          "uses": 7,
           "zipKey": "claude/work-artifacts.zip"
         },
         {
@@ -980,6 +980,19 @@
           "uses": 0
         },
         {
+          "name": "code-modernization",
+          "marketplace": "claude-plugins-official",
+          "version": "1.0.0",
+          "description": "Guided modernization for any legacy codebase: start with /modernize, get an assessment, an interactive map, the business rules mined from the code, and a plan you approve, then an upgrade, a rewrite or a rebuild with independent proof that the new code behaves like the old. Includes security hardening, a one-page report, specialist agents, and an optional live progress pane (early access).",
+          "skillCount": 0,
+          "repoUrl": "https://github.com/anthropics/claude-plugins-official",
+          "installCommands": [
+            "/plugin marketplace add anthropics/claude-plugins-official",
+            "/plugin install code-modernization@claude-plugins-official"
+          ],
+          "uses": 0
+        },
+        {
           "name": "codex",
           "marketplace": "openai-codex",
           "version": "1.0.6",
@@ -995,7 +1008,7 @@
         {
           "name": "context7",
           "marketplace": "claude-plugins-official",
-          "version": "8d392c816966",
+          "version": "ea10b213686c",
           "description": "Upstash Context7 MCP server for up-to-date documentation lookup. Connects to Context7's hosted remote MCP server (https://mcp.context7.com/mcp) — no local Node.js or npx required — to pull version-specific documentation and code examples directly from source repositories into your LLM context. Authenticate with Context7 when prompted.",
           "skillCount": 0,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1003,7 +1016,7 @@
             "/plugin marketplace add anthropics/claude-plugins-official",
             "/plugin install context7@claude-plugins-official"
           ],
-          "uses": 2
+          "uses": 5
         },
         {
           "name": "data",
@@ -1034,7 +1047,7 @@
         {
           "name": "hookify",
           "marketplace": "claude-plugins-official",
-          "version": "8d392c816966",
+          "version": "ea10b213686c",
           "description": "Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns",
           "skillCount": 1,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1068,7 +1081,7 @@
             "/plugin marketplace add Seokwoooo/lucian-uxui",
             "/plugin install lucian-uxui@lucian-uxui"
           ],
-          "uses": 3
+          "uses": 6
         },
         {
           "name": "oh-my-fable",
@@ -1086,7 +1099,7 @@
         {
           "name": "playwright",
           "marketplace": "claude-plugins-official",
-          "version": "8d392c816966",
+          "version": "ea10b213686c",
           "description": "Browser automation and end-to-end testing MCP server by Microsoft. Enables Claude to interact with web pages, take screenshots, fill forms, click elements, and perform automated browser testing workflows.",
           "skillCount": 0,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1112,7 +1125,7 @@
         {
           "name": "session-report",
           "marketplace": "claude-plugins-official",
-          "version": "8d392c816966",
+          "version": "ea10b213686c",
           "description": "",
           "skillCount": 1,
           "repoUrl": "https://github.com/anthropics/claude-plugins-official",
@@ -1125,7 +1138,7 @@
         {
           "name": "supabase",
           "marketplace": "claude-plugins-official",
-          "version": "0.1.15",
+          "version": "0.1.16",
           "description": "Official Supabase plugin for Claude Code with bundled Supabase skills and MCP access for project management, database work, auth, storage, and Postgres best practices.",
           "skillCount": 2,
           "repoUrl": "https://github.com/supabase-community/supabase-plugin",
@@ -1159,7 +1172,7 @@
             "/plugin marketplace add anthropics/claude-plugins-official",
             "/plugin install vercel@claude-plugins-official"
           ],
-          "uses": 1
+          "uses": 43
         }
       ]
     },
@@ -1883,7 +1896,7 @@
       "plugins": [
         {
           "name": "browser",
-          "version": "26.1007.30912",
+          "version": "26.1013.31256",
           "marketplace": "openai-bundled",
           "description": "Browser / browser-use plugin\n\nAliases: @browser, @browser-use, browser-use, Browser, in-app browser.\n\nUse Browser, the ChatGPT in-app browser, when the user asks to open, inspect, navigate, test, click, type, or screenshot local web targets such as localhost, 127.0.0.1, ::1, file:// URLs, or the current in-app browser tab.\n\nAfter significant frontend changes to a local app, use Browser to open the relevant local target when it is known or obvious, unless the user asks for another browser tool.\n\nFor requests like \"open localhost:3000\" or \"open to localhost:4000\", navigate the in-app browser to http://localhost:3000 or http://localhost:4000.\n\nDo not satisfy explicit @browser or @browser-use requests with macOS `open`, shell commands, or generic web browsing unless the user asks for another browser tool or approves a fallback.",
           "skillCount": 0,
@@ -1949,7 +1962,7 @@
         },
         {
           "name": "code-review",
-          "version": "26.1007.30912",
+          "version": "26.1013.31256",
           "marketplace": "openai-bundled",
           "description": "Review and manage GitHub pull requests from Codex.",
           "skillCount": 0,
@@ -1991,7 +2004,7 @@
         },
         {
           "name": "computer-use",
-          "version": "1.0.1001425",
+          "version": "1.0.1001501",
           "marketplace": "openai-bundled",
           "description": "Control desktop apps on macOS from ChatGPT through Computer Use. Prefer purpose-built connectors, APIs, or CLIs.",
           "skillCount": 0,
@@ -2012,7 +2025,7 @@
         },
         {
           "name": "documents",
-          "version": "26.1011.11113",
+          "version": "26.1013.11914",
           "marketplace": "openai-primary-runtime",
           "description": "Create and edit document artifacts in Codex, including Word files and Google Docs.",
           "skillCount": 1,
@@ -2115,7 +2128,7 @@
         },
         {
           "name": "pdf",
-          "version": "26.1011.11113",
+          "version": "26.1013.11914",
           "marketplace": "openai-primary-runtime",
           "description": "Read, create, inspect, render, and verify PDF files in Codex.",
           "skillCount": 1,
@@ -2149,7 +2162,7 @@
         },
         {
           "name": "presentations",
-          "version": "26.1011.11113",
+          "version": "26.1013.11914",
           "marketplace": "openai-primary-runtime",
           "description": "Create, edit, render, verify, and export presentation slide decks. Use when Codex needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
           "skillCount": 1,
@@ -2183,7 +2196,7 @@
         },
         {
           "name": "spreadsheets",
-          "version": "26.1011.11113",
+          "version": "26.1013.11914",
           "marketplace": "openai-primary-runtime",
           "description": "Create, edit, analyze, visualize, render, and export spreadsheets, Microsoft Excel or Google Sheets-ready workbooks in Codex.",
           "skillCount": 2,
@@ -2191,7 +2204,7 @@
         },
         {
           "name": "supabase",
-          "version": "0.1.15",
+          "version": "0.1.16",
           "marketplace": "claude-plugins-official",
           "description": "Official Supabase plugin for Claude Code with bundled Supabase skills and MCP access for project management, database work, auth, storage, and Postgres best practices.",
           "skillCount": 2,
@@ -2212,7 +2225,7 @@
         },
         {
           "name": "template-creator",
-          "version": "26.1011.11113",
+          "version": "26.1013.11914",
           "marketplace": "openai-primary-runtime",
           "description": "Create and update personal templates from files, Google Docs, Slides, and Sheets links, ImageGen or Product Design images, emails, Slack messages, and Site projects.",
           "skillCount": 1,
@@ -2220,7 +2233,7 @@
         },
         {
           "name": "unified-computer-use",
-          "version": "26.1007.30912",
+          "version": "26.1013.31256",
           "marketplace": "openai-bundled",
           "description": "App-managed browser automation runtime.",
           "skillCount": 0,
@@ -2228,7 +2241,7 @@
         },
         {
           "name": "visualize",
-          "version": "1.0.49",
+          "version": "1.0.50",
           "marketplace": "openai-bundled",
           "description": "Create interactive charts, maps, diagrams, simulations, 3D models, data explorers, and UI previews directly in Codex.",
           "skillCount": 1,

@@ -17,6 +17,10 @@
   "claude/plugin/claude-md-management": [
     "에이전트·워크플로"
   ],
+  "claude/plugin/code-modernization": [
+    "개발",
+    "에이전트·워크플로"
+  ],
   "claude/plugin/codex": [
     "에이전트·워크플로",
     "보안·검수"
