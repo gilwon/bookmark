@@ -52,6 +52,10 @@
   "claude/plugin/ponytail": [
     "개발"
   ],
+  "claude/plugin/pstack": [
+    "개발",
+    "에이전트·워크플로"
+  ],
   "claude/plugin/session-report": [
     "에이전트·워크플로"
   ],
