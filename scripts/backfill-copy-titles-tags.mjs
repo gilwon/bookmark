@@ -568,6 +568,66 @@ export const TARGETS = [
     tags: ["아스트라", "프롬프트"],
     phrase: "ip-as-logo-skill",
   },
+  {
+    id: "b03b0a0a-7c56-47c7-a420-ea6a802efda3",
+    title: "better-claude에서 깔 클로드 플러그인 3개",
+    tags: ["클로드", "설정"],
+    phrase: "image-preview@better-claude",
+  },
+  {
+    id: "ebf3318e-07e7-444a-aeb6-0e4ec305ec01",
+    title: "에이전트 작업을 코드부터 검토까지 쌓는 순서",
+    tags: ["에이전트", "설정"],
+    phrase: "create-verification-skill",
+  },
+  {
+    id: "9eab422f-3b2a-480e-9dc7-1993abc8d030",
+    title: "에이전트에게 일을 시키는 말 세 단계",
+    tags: ["프롬프트", "에이전트"],
+    phrase: "네가 시니어 개발자라면",
+  },
+  {
+    id: "cc8e0550-61b6-4da7-ac11-dfb0615328d2",
+    title: "개발자들 사이에 도는 무료 프로그램 10개",
+    tags: ["툴", "학습"],
+    phrase: "MoneyPrinterTurbo",
+  },
+  {
+    id: "a071c2fa-c18d-4953-adeb-881aa7eda606",
+    title: "클로드에 붙이는 플러그인 5개",
+    tags: ["클로드", "툴"],
+    phrase: "AgentBrowser",
+  },
+  {
+    id: "cb9738aa-df8b-4db6-bf2a-e08ef7c420c0",
+    title: "네이버 블로그 수익 글을 뽑는 프롬프트 3개",
+    tags: ["블로그", "프롬프트"],
+    phrase: "브랜드커넥트",
+  },
+  {
+    id: "6daa8e1f-6545-47ce-a7e3-05e584dfc126",
+    title: "클로드 재시도가 사용량 한도에 묶이지 않게 하는 설정",
+    tags: ["클로드", "설정"],
+    phrase: "CLAUDE_CODE_RETRY_WATCHDOG_MAX_USAGE_LIMIT_WAIT_MS",
+  },
+  {
+    id: "14b7a803-39b9-48a4-b915-e7126d43e2b2",
+    title: "서버비 없이 두는 Astro·Cloudflare·EmDash",
+    tags: ["툴", "설정"],
+    phrase: "EmDash CMS",
+  },
+  {
+    id: "c5a30afe-f698-4690-93ed-481d2172d55c",
+    title: "아임웹에 픽셀과 분석을 붙이는 Aside 프롬프트",
+    tags: ["자동화", "SEO"],
+    phrase: "구글 서치콘솔",
+  },
+  {
+    id: "67ba0ea5-1cb9-4496-9110-5b6f01e3bbca",
+    title: "레포 전체를 맵으로 읽는 Graphify",
+    tags: ["툴", "에이전트"],
+    phrase: "GRAPH_REPORT.md",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
