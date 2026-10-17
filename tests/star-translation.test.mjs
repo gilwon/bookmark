@@ -1427,4 +1427,23 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-18에 추가된 Star 7개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Jakeschincariol/replica-skill", "Eleven free Claude skills that clone any app: reverse-engineer it, rebuild it, test it for bugs, then fix what its users hate. Free, MIT."],
+      ["LumaryLabsLLC/muxin", "All your machines, one app. For you and your AI agents: agent sessions, desktops, files, logs and GitHub across your Macs, Linux and Windows machines, with an MCP server."],
+      ["midudev/better-claude", "Small plugins and mods that make your life (and Claude Code) better"],
+      ["apple/container", "A tool for creating and running Linux containers using lightweight virtual machines on a Mac. It is written in Swift, and optimized for Apple silicon. "],
+      ["slopus/happy", "Orchestrate Claude, Codex and Grok in one app. Open-source (MIT), reuses the subscriptions you already pay for."],
+      ["igomumugo/filedesk-downloads", "Official FileDesk installers. Application source and development history are private."],
+      ["anthropics/claude-code-security-review", "An AI-powered security review GitHub Action using Claude to analyze code changes for security vulnerabilities."],
+    ];
+    assert.equal(cases.length, 7);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
 });
