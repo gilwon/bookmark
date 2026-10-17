@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 93건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 93);
+test("대상 103건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 103);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 93);
+  assert.equal(new Set(ids).size, 103);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -721,6 +721,68 @@ test("어제와 오늘 추가된 카피 6건의 제목과 태그를 정한다", 
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 6);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제와 오늘 추가된 카피 10건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "b03b0a0a-7c56-47c7-a420-ea6a802efda3": {
+      title: "better-claude에서 깔 클로드 플러그인 3개",
+      tags: ["클로드", "설정"],
+      raw: "Install these Claude Code plugins from the better-claude marketplace (github.com/midudev/better-claude) by running:",
+    },
+    "ebf3318e-07e7-444a-aeb6-0e4ec305ec01": {
+      title: "에이전트 작업을 코드부터 검토까지 쌓는 순서",
+      tags: ["에이전트", "설정"],
+      raw: "에이전트의 작업을 더 신뢰하려면 어떻게 하시나요? 이 포스트/링크를 복사해서 @bot이나 에이전트에게 주세요!",
+    },
+    "9eab422f-3b2a-480e-9dc7-1993abc8d030": {
+      title: "에이전트에게 일을 시키는 말 세 단계",
+      tags: ["프롬프트", "에이전트"],
+      raw: "나의 AI 에이전트 제자(=말모님...ㅋㅋ)에게 오늘 알려준 스킬",
+    },
+    "cc8e0550-61b6-4da7-ac11-dfb0615328d2": {
+      title: "개발자들 사이에 도는 무료 프로그램 10개",
+      tags: ["툴", "학습"],
+      raw: "수백 시간, 혹은 수천만 원을 아껴줄 수 있는 글입니다.",
+    },
+    "a071c2fa-c18d-4953-adeb-881aa7eda606": {
+      title: "클로드에 붙이는 플러그인 5개",
+      tags: ["클로드", "툴"],
+      raw: "클로드 사기 플러그인 TOP 5",
+    },
+    "cb9738aa-df8b-4db6-bf2a-e08ef7c420c0": {
+      title: "네이버 블로그 수익 글을 뽑는 프롬프트 3개",
+      tags: ["블로그", "프롬프트"],
+      raw: "1. 크리에이터 어드바이저 리서치 및 메뉴얼 세팅",
+    },
+    "6daa8e1f-6545-47ce-a7e3-05e584dfc126": {
+      title: "클로드 재시도가 사용량 한도에 묶이지 않게 하는 설정",
+      tags: ["클로드", "설정"],
+      raw: "먼 사용량 한도에서 무한 대기하지 않게",
+    },
+    "14b7a803-39b9-48a4-b915-e7126d43e2b2": {
+      title: "서버비 없이 두는 Astro·Cloudflare·EmDash",
+      tags: ["툴", "설정"],
+      raw: "월 서버비 0원으로 운영하는 풀스택 CMS 웹사이트 만들기",
+    },
+    "c5a30afe-f698-4690-93ed-481d2172d55c": {
+      title: "아임웹에 픽셀과 분석을 붙이는 Aside 프롬프트",
+      tags: ["자동화", "SEO"],
+      raw: "Aside 브라우저 열고 아래 프롬프트 던짐.",
+    },
+    "67ba0ea5-1cb9-4496-9110-5b6f01e3bbca": {
+      title: "레포 전체를 맵으로 읽는 Graphify",
+      tags: ["툴", "에이전트"],
+      raw: "이제는 존나 위험해지고 있어: 이제 한 명령어만으로 어떤 레포든 역설계할 수 있어 - YC 지원을 받은 도구로, 127k 스타를 받은 이 도구가 전체 코드베이스를 매핑하고, 당신의 에이전트는 파일을 읽는 대신 그 맵을 걷는다",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 10);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
