@@ -120,12 +120,19 @@ export async function listSkills(dir, defaultSource) {
 /** 플러그인 폴더의 매니페스트 설명과 포함 스킬 수. 경로 자체는 결과에 넣지 않는다. */
 export async function readPluginInfo(dir) {
   let description = "";
-  for (const sub of [".claude-plugin", ".codex-plugin", ".plugin"]) {
+  let found = false;
+  // Cursor 마켓 체크아웃은 .cursor-plugin 또는 폴더 루트 plugin.json 에 설명이 있다
+  for (const sub of [".claude-plugin", ".codex-plugin", ".plugin", ".cursor-plugin"]) {
     const manifest = await readJson(join(dir, sub, "plugin.json"));
     if (manifest) {
       description = typeof manifest.description === "string" ? manifest.description : "";
+      found = true;
       break;
     }
+  }
+  if (!found) {
+    const root = await readJson(join(dir, "plugin.json"));
+    if (root) description = typeof root.description === "string" ? root.description : "";
   }
   let skillCount = 0;
   const skillsDir = join(dir, "skills");
@@ -471,6 +478,16 @@ async function scanCodex(home) {
   return { id: "codex", label: "Codex", skills, plugins };
 }
 
+/**
+ * Grok registry 한 플러그인의 폴더.
+ * 플러그인 subdir, kind.subdir, 마켓 plugin_subdir 순이고 없으면 저장소 루트다. path 가 없으면 null.
+ */
+export function grokPluginDir(repo, meta) {
+  if (!repo?.path) return null;
+  const sub = meta?.subdir || repo?.kind?.subdir || repo?.marketplace?.plugin_subdir || "";
+  return sub ? join(repo.path, sub) : repo.path;
+}
+
 /** Grok 사용자·번들 스킬과 registry.json 의 플러그인. */
 async function scanGrok(home) {
   const skills = [
@@ -484,10 +501,8 @@ async function scanGrok(home) {
     for (const [name, meta] of Object.entries(repo?.plugins ?? {})) {
       let info = { description: "", skillCount: 0 };
       if (repo.path) {
-        // 매니페스트는 plugin_subdir 먼저, 없으면 저장소 루트에서 찾는다
-        const sub = repo.marketplace?.plugin_subdir;
-        const subDir = sub ? join(repo.path, sub) : null;
-        info = await readPluginInfo(subDir && (await exists(subDir)) ? subDir : repo.path);
+        const dir = grokPluginDir(repo, meta);
+        info = await readPluginInfo(dir && (await exists(dir)) ? dir : repo.path);
       }
       plugins.push({ name, version: meta?.version ?? "", marketplace, ...info, ...grokPluginSource(repo?.kind) });
     }

@@ -254,6 +254,7 @@
   "gemini/skill/notebook-guidance": "특히 BigQuery와 함께 Jupyter 노트북으로 데이터를 분석·탐색·시각화하는 방법을 안내한다. 노트북 실행·검증, 라이브러리 설치, 구조화 모범 사례와 데이터 정리·시각화·BigQuery SQL 연동 규칙을 다룬다.",
   "gemini/skill/skill-repair": "설치에 실패한 에이전트 스킬을 고쳐 다시 설치할 때 쓴다. 수정 후 `manifest.json`을 국소적으로 갱신하는 데 필요한 맥락과 권한을 제공한다.",
   "gemini/skill/spanner-data": "데이터베이스 구조를 살피고 테이블·그래프 같은 스키마 객체를 찾아내며 사용자 정의 SQL 쿼리를 실행해 데이터를 다뤄야 할 때 이 스킬들을 쓴다.",
+  "grok/plugin/pstack": "빨리 가려면 먼저 깊이 들어간다. pstack은 코드는 더 적게, 품질은 더 높게 쓰도록 돕는다. 확신을 갖고 병렬로 돌릴 수 있는 엄격한 에이전트 워크플로다.",
   "grok/plugin/supabase": "Supabase 공식 Claude Code 플러그인이다. 프로젝트 관리, 데이터베이스 작업, 인증, 스토리지, Postgres 모범 사례를 위한 Supabase 스킬과 MCP 접근을 함께 제공한다.",
   "grok/plugin/vercel": "웹앱과 에이전트를 만들고 배포한다.",
   "grok/skill/ask-matt": "내 상황에 맞는 스킬이나 흐름이 무엇인지 묻는다. 이 저장소의 스킬들을 안내하는 라우터다.",
