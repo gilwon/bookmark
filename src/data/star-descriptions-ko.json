@@ -645,5 +645,12 @@
   "superdesigndev/treg": "에이전트 도구를 위한 OpenRouter입니다. 커뮤니티 참여는 https://discord.gg/6mQYYfFMAn 입니다.",
   "backnotprop/pstack": "claude, codex, pi와 함께 pstack을 씁니다. 엄밀한 AI 보조 엔지니어링을 위한 스킬과 원칙입니다.",
   "gr8rstudio/gr8r-studio": "Gr8r Studio는 차분하고 정돈된 프로젝트 관리 작업 공간입니다. Vite와 순수 ES 모듈로 되어 있습니다.",
-  "nerin81-netizen/threads-affiliate-automation": "오픈소스 Threads 제휴 마케팅과 자동화 도구 모음입니다. 로컬 대시보드와 카드 스튜디오가 있고, Graph API와 Playwright를 지원합니다."
+  "nerin81-netizen/threads-affiliate-automation": "오픈소스 Threads 제휴 마케팅과 자동화 도구 모음입니다. 로컬 대시보드와 카드 스튜디오가 있고, Graph API와 Playwright를 지원합니다.",
+  "Jakeschincariol/replica-skill": "어떤 앱이든 복제하는 무료 Claude 스킬 11개입니다. 앱을 역분석하고, 다시 만들고, 버그를 검사한 뒤 사용자가 싫어하는 점을 고칩니다. 무료이고 MIT입니다.",
+  "LumaryLabsLLC/muxin": "모든 기기를 하나의 앱으로 모읍니다. 사용자와 AI 에이전트를 위해 Mac, Linux, Windows 기기의 에이전트 세션, 데스크톱, 파일, 로그, GitHub를 다루고 MCP 서버를 둡니다.",
+  "midudev/better-claude": "삶과 Claude Code를 더 낫게 하는 작은 플러그인과 모드입니다.",
+  "apple/container": "Mac에서 가벼운 가상 머신으로 Linux 컨테이너를 만들고 실행하는 도구입니다. Swift로 작성되었고 Apple silicon에 최적화되어 있습니다.",
+  "slopus/happy": "Claude, Codex, Grok을 하나의 앱에서 조율합니다. 오픈소스(MIT)이며, 이미 결제 중인 구독을 그대로 씁니다.",
+  "igomumugo/filedesk-downloads": "공식 FileDesk 설치 파일입니다. 애플리케이션 소스와 개발 이력은 비공개입니다.",
+  "anthropics/claude-code-security-review": "Claude로 코드 변경의 보안 취약점을 분석하는 AI 보안 검토 GitHub Action입니다."
 }
