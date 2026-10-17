@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T23:01:39.273Z",
+  "generatedAt": "2026-10-17T23:50:35.886Z",
   "tools": [
     {
       "id": "claude",
@@ -81,7 +81,7 @@
           "installCommands": [
             "npx skills add mattpocock/skills --skill code-review"
           ],
-          "uses": 16
+          "uses": 17
         },
         {
           "name": "codebase-design",
@@ -134,7 +134,7 @@
           "name": "design-quality-check",
           "description": "UI·디자인 작업 전후 자가 점검 체크리스트. 시각적 일관성(톤앤매너·모바일웹 동일), 핵심 원칙(데이터 우선·컬러 시스템·타이포그래피·WCAG 대비), 퀄리티 체크포인트(포커스/에러 상태, hover/active, 반응형 480/1024/1440px, 키보드 네비게이션)를 다룬다. 화면·컴포넌트·랜딩페이지·대시보드를 만들거나 스타일을 고칠 때, 디자인 리뷰를 할 때, 반응형·접근성·컬러 대비를 확인할 때 사용.",
           "source": "user",
-          "uses": 42,
+          "uses": 70,
           "zipKey": "claude/design-quality-check.zip"
         },
         {
@@ -171,7 +171,7 @@
           "name": "ego-browser",
           "description": "When you need a browser, read this Skill by default. Use it to open and operate websites, fill forms, click buttons, take screenshots, extract page data, sign in, and perform other browser automation tasks, as well as web app testing, dogfooding, QA, bug investigation, and app-quality review. ego-browser (ego-lite) is a Chromium browser designed for both human users and AI Agents. Agents can use the user's logged-in websites and personal context to complete tasks and collaborate smoothly with the user through the browser interface. Therefore, prefer ego-browser over built-in browsers or other web tools.",
           "source": "user",
-          "uses": 71,
+          "uses": 82,
           "zipKey": "claude/ego-browser.zip"
         },
         {
@@ -209,14 +209,14 @@
           "name": "g5-admin-ui",
           "description": "그누보드5 관리자 페이지 UI 코드 생성기. 이 스킬은 사용자가 `adm/` 디렉토리에서 관리자 페이지 작업을 수행할 때 자동으로 활성화됩니다. 테이블, 버튼, 폼, 모달, 배지, 필터, 페이징 등 디자인 시스템에 맞는 HTML/CSS/JavaScript 코드를 생성하고, 일관된 UI 패턴을 적용합니다.",
           "source": "user",
-          "uses": 1,
+          "uses": 8,
           "zipKey": "claude/g5-admin-ui.zip"
         },
         {
           "name": "g5-make",
           "description": "그누보드5 테마·전 스킨 타입·영카트5 쇼핑몰 스킨을 상용(SIR 컨텐츠몰) 품질로 제작하는 파이프라인. \"테마 만들어줘\", \"게시판 스킨\", \"회원가입 스킨\", \"상품 스킨\", \"쇼핑몰 디자인\" 등 그누보드/영카트 산출물 제작 요청 시 사용. 게시판·회원·컨텐츠·FAQ·문의·설문·검색·최신글·로그인 위젯, 영카트 상품 리스트/상세/메인 진열까지 지원 (skin-catalog.md). 기존 프로젝트에 스킨 추가 요청(\"{프로젝트}에 갤러리 스킨 추가\")도 이 스킬.",
           "source": "user",
-          "uses": 0,
+          "uses": 1,
           "zipKey": "claude/g5-make.zip"
         },
         {
@@ -240,7 +240,7 @@
           "name": "gnuboard-dev",
           "description": "그누보드5(Gnuboard5)·영카트5(YoungCart5) 기능 추가 및 수정 개발 전용 스킬. 다음 상황에서 반드시 이 스킬을 사용한다: 그누보드/영카트 기능 추가, 기존 동작 수정, 플러그인 제작, 훅(hook/extend) 작업, 게시판 커스터마이징, 스킨·테마 수정, 관리자 페이지 제작, 회원/포인트/쿠폰 기능 변경, 상품·주문·결제 흐름 커스텀, g5_ 테이블 조회·설계. 사용자가 \"그누보드\", \"영카트\", \"gnuboard\", \"youngcart\", \"g5\", \"SIR\"를 언급하거나, 코드에 `_GNUBOARD_` 상수, `g5_` 테이블 접두사, `sql_query()`, `G5_PATH` 같은 그누보드 고유 식별자가 보이면 — 명시적 요청이 없어도 — 이 스킬을 먼저 읽는다. PHP 쇼핑몰/게시판 수정 요청이 그누보드 기반으로 추정되면 역시 이 스킬을 쓴다.",
           "source": "user",
-          "uses": 1,
+          "uses": 2,
           "zipKey": "claude/gnuboard-dev.zip"
         },
         {
@@ -571,7 +571,7 @@
           "name": "reverse-engineer-anything",
           "description": "Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.",
           "source": "user",
-          "uses": 1
+          "uses": 2
         },
         {
           "name": "review-and-submit",
@@ -608,7 +608,7 @@
           "name": "sdlc",
           "description": "앤트로픽 AI 네이티브 SDLC 플레이북의 문서 사슬(intent.md → spec.md → plan.md → 리뷰)을 저장소 안 `intent/슬러그/` 폴더에 남기는 스킬. 세 모드가 있다 — `intent`(인터뷰로 무엇을 왜 만들지 다섯 항목 작성), `spec`(intent.md와 CLAUDE.md를 읽고 요구사항·설계 명세 작성), `review`(diff를 intent·spec·plan과 대조해 의도 이탈을 지적). 사용자가 \"sdlc intent\", \"intent.md 써줘\", \"인텐트 만들어줘\", \"뭘 만들지 먼저 정리하자\", \"인터뷰해줘\", \"sdlc spec\", \"spec.md 만들어줘\", \"명세 써줘\", \"sdlc review\", \"의도대로 됐는지 검토\", \"intent랑 대조해줘\"라고 하거나, 새 기능·자동화 아이디어를 설명하며 코드 전에 문서로 남기자고 하면 반드시 이 스킬을 사용하라. Advisor가 구현 전에 intent·spec·plan 유무를 확인하고 없는 것을 만들 때도 이 스킬을 쓴다. ⚠️ plan.md는 이 스킬이 만들지 않는다 — 플랜 모드에서 승인한 계획을 work-artifacts가 `intent/슬러그/plan.md`에 저장한다. 한국형 기획서 문서가 목적이면 planning-doc-kr, 빌더용 HTML 실행 계획서가 목적이면 project-architect가 담당한다. 이 스킬의 산출물은 짧고 열린 질문이 남은 저장소 커밋용 문서다.",
           "source": "user",
-          "uses": 16,
+          "uses": 17,
           "zipKey": "claude/sdlc.zip"
         },
         {
@@ -832,7 +832,7 @@
           "name": "work-artifacts",
           "description": "비자명한 코딩 작업을 시작하기 전에 계획·체크리스트·컨텍스트 노트 3종 산출물을 만들고 유지하는 절차. 파일 여러 개를 만들거나 설계 결정이 필요한 작업, 여러 세션에 걸쳐 이어질 작업을 시작할 때 반드시 사용한다. 사용자가 계획만 주고 바로 코딩을 요청할 때, \"체크리스트 만들어줘\", \"컨텍스트 노트\", \"작업 기록 남겨줘\"라고 할 때도 트리거된다. 단순 질문·한두 줄 수정에는 사용하지 않는다.",
           "source": "user",
-          "uses": 7,
+          "uses": 8,
           "zipKey": "claude/work-artifacts.zip"
         },
         {
@@ -1112,7 +1112,7 @@
         {
           "name": "ponytail",
           "marketplace": "ponytail",
-          "version": "5.2.0",
+          "version": "5.3.2",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
           "repoUrl": "https://github.com/DietrichGebert/ponytail",
@@ -1120,7 +1120,7 @@
             "/plugin marketplace add DietrichGebert/ponytail",
             "/plugin install ponytail@ponytail"
           ],
-          "uses": 0
+          "uses": 15
         },
         {
           "name": "pstack",
@@ -1133,7 +1133,7 @@
             "/plugin marketplace add cursor/plugins",
             "/plugin install pstack@cursor-plugins"
           ],
-          "uses": 0
+          "uses": 6
         },
         {
           "name": "session-report",
@@ -1909,7 +1909,7 @@
       "plugins": [
         {
           "name": "browser",
-          "version": "26.1013.31256",
+          "version": "26.1013.40934",
           "marketplace": "openai-bundled",
           "description": "Browser / browser-use plugin\n\nAliases: @browser, @browser-use, browser-use, Browser, in-app browser.\n\nUse Browser, the ChatGPT in-app browser, when the user asks to open, inspect, navigate, test, click, type, or screenshot local web targets such as localhost, 127.0.0.1, ::1, file:// URLs, or the current in-app browser tab.\n\nAfter significant frontend changes to a local app, use Browser to open the relevant local target when it is known or obvious, unless the user asks for another browser tool.\n\nFor requests like \"open localhost:3000\" or \"open to localhost:4000\", navigate the in-app browser to http://localhost:3000 or http://localhost:4000.\n\nDo not satisfy explicit @browser or @browser-use requests with macOS `open`, shell commands, or generic web browsing unless the user asks for another browser tool or approves a fallback.",
           "skillCount": 0,
@@ -1975,7 +1975,7 @@
         },
         {
           "name": "code-review",
-          "version": "26.1013.31256",
+          "version": "26.1013.40934",
           "marketplace": "openai-bundled",
           "description": "Review and manage GitHub pull requests from Codex.",
           "skillCount": 0,
@@ -2038,7 +2038,7 @@
         },
         {
           "name": "documents",
-          "version": "26.1013.11914",
+          "version": "26.1017.11052",
           "marketplace": "openai-primary-runtime",
           "description": "Create and edit document artifacts in Codex, including Word files and Google Docs.",
           "skillCount": 1,
@@ -2141,7 +2141,7 @@
         },
         {
           "name": "pdf",
-          "version": "26.1013.11914",
+          "version": "26.1017.11052",
           "marketplace": "openai-primary-runtime",
           "description": "Read, create, inspect, render, and verify PDF files in Codex.",
           "skillCount": 1,
@@ -2162,7 +2162,7 @@
         },
         {
           "name": "ponytail",
-          "version": "5.2.0",
+          "version": "5.3.2",
           "marketplace": "ponytail",
           "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
           "skillCount": 6,
@@ -2175,9 +2175,9 @@
         },
         {
           "name": "presentations",
-          "version": "26.1013.11914",
+          "version": "26.1017.11052",
           "marketplace": "openai-primary-runtime",
-          "description": "Create, edit, render, verify, and export presentation slide decks. Use when Codex needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
+          "description": "Create, edit, and verify Spaces presentations, PowerPoint files, and Google Slides decks. Use when Codex needs to build or modify a deck, slidedeck, presentation deck, slide deck, slides, PowerPoint, Google Slides, PPT, PPTX, .ppt, or .pptx file.",
           "skillCount": 1,
           "uses": 0
         },
@@ -2209,7 +2209,7 @@
         },
         {
           "name": "spreadsheets",
-          "version": "26.1013.11914",
+          "version": "26.1017.11052",
           "marketplace": "openai-primary-runtime",
           "description": "Create, edit, analyze, visualize, render, and export spreadsheets, Microsoft Excel or Google Sheets-ready workbooks in Codex.",
           "skillCount": 2,
@@ -2238,7 +2238,7 @@
         },
         {
           "name": "template-creator",
-          "version": "26.1013.11914",
+          "version": "26.1017.11052",
           "marketplace": "openai-primary-runtime",
           "description": "Create and update personal templates from files, Google Docs, Slides, and Sheets links, ImageGen or Product Design images, emails, Slack messages, and Site projects.",
           "skillCount": 1,
@@ -2246,7 +2246,7 @@
         },
         {
           "name": "unified-computer-use",
-          "version": "26.1013.31256",
+          "version": "26.1013.40934",
           "marketplace": "openai-bundled",
           "description": "App-managed browser automation runtime.",
           "skillCount": 0,
@@ -2887,6 +2887,18 @@
         }
       ],
       "plugins": [
+        {
+          "name": "pstack",
+          "version": "0.15.25",
+          "marketplace": "",
+          "description": "if you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence.",
+          "skillCount": 54,
+          "repoUrl": "https://github.com/cursor/plugins",
+          "installCommands": [
+            "grok plugin install cursor/plugins"
+          ],
+          "uses": 0
+        },
         {
           "name": "supabase",
           "version": "0.1.15",

@@ -1003,6 +1003,10 @@
   "gemini/skill/spanner-data": [
     "데이터·DB"
   ],
+  "grok/plugin/pstack": [
+    "개발",
+    "에이전트·워크플로"
+  ],
   "grok/plugin/supabase": [
     "데이터·DB"
   ],

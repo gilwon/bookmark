@@ -14,8 +14,10 @@ import {
   grokPluginSource,
   inheritZipKeys,
   isExcludedFile,
+  grokPluginDir,
   listSkills,
   lockSkillSource,
+  readPluginInfo,
   missingTags,
   missingTranslations,
   parseCodexMarketplaces,
@@ -58,6 +60,34 @@ test("스킬 폴더에서 SKILL.md 없는 항목과 점 항목을 빼고 공유 
       { name: "b", description: "비 설명", source: "user", dir: join(skills, "b") },
       { name: "c", description: "공유", source: "shared", dir: join(skills, "c") },
     ]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("Grok 플러그인 폴더는 subdir, kind.subdir, plugin_subdir, 루트 순이다", () => {
+  const repo = { path: "/plugins/repo", kind: { subdir: "kind" }, marketplace: { plugin_subdir: "market" } };
+  assert.equal(grokPluginDir(repo, { subdir: "plugin" }), "/plugins/repo/plugin");
+  assert.equal(grokPluginDir(repo, {}), "/plugins/repo/kind");
+  assert.equal(grokPluginDir({ path: "/plugins/repo", marketplace: { plugin_subdir: "market" } }, {}), "/plugins/repo/market");
+  assert.equal(grokPluginDir({ path: "/plugins/repo" }, {}), "/plugins/repo");
+  assert.equal(grokPluginDir({}, { subdir: "plugin" }), null);
+});
+
+test("Cursor 플러그인 매니페스트와 루트 plugin.json 에서 설명과 스킬 수를 읽는다", async () => {
+  const root = await mkdtemp(join(tmpdir(), "scan-plugin-"));
+  try {
+    const cursor = join(root, "cursor");
+    const plain = join(root, "plain");
+    await mkdir(join(cursor, ".cursor-plugin"), { recursive: true });
+    await mkdir(join(cursor, "skills/one"), { recursive: true });
+    await mkdir(join(cursor, "skills/skip"), { recursive: true });
+    await writeFile(join(cursor, ".cursor-plugin/plugin.json"), JSON.stringify({ description: "커서 설명" }));
+    await writeFile(join(cursor, "skills/one/SKILL.md"), "---\ndescription: 원\n---\n");
+    await mkdir(plain, { recursive: true });
+    await writeFile(join(plain, "plugin.json"), JSON.stringify({ description: "루트 설명" }));
+    assert.deepEqual(await readPluginInfo(cursor), { description: "커서 설명", skillCount: 1 });
+    assert.deepEqual(await readPluginInfo(plain), { description: "루트 설명", skillCount: 0 });
   } finally {
     await rm(root, { recursive: true, force: true });
   }
