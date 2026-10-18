@@ -1,3 +1,25 @@
+# 챗GPT 코드 100개와 심팀장 REA 글 Pages 이관 메모
+
+- 코드 100개 제목 `챗GPT 쓸 때 모르면 손해인 코드 100개`. 주소 `https://lazyowen.com/guides/chatgpt-prompt-codes-100`. 공개일은 `2026-10-09`이다.
+- 본문은 `header.article-head`, `div.prose` 세 덩어리, `aside.guide-pdf`다. 이메일 벽, 30일 챌린지, 목차, 복사 버튼, `youtube.com/@lazyowenAI`는 뺐다. `instagram.com/lazy_owen`는 남겼다.
+- 글 안 이미지는 0장이다. PDF는 `/guide-pdf/chatgpt-prompt-codes-100.pdf` 하나이고 앵커가 둘이다. 글자는 `PDF`와 `PDF 내려받기`다. 한 번 받아서 두 링크가 같은 `data:application/pdf`를 쓴다. 바이트 289275, sha256 `7aba87d0c502fcb3c6db598cc014b6015c09b22dd2abf7a6ddea373adc64747d`.
+- 프롬프트는 `div.composer__text`라서 `pre`로 바꿨다. 코드 16. 표 0. 첨부 2.
+- 링크. 원문, `https://chatgpt.com/`, `https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq`, `https://help.openai.com/en/collections/3742473-chatgpt`, `https://www.instagram.com/lazy_owen/`.
+- 저장 경로 `/pages/f51142b1-5433-42dd-8259-ca1a5238a4d2`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-18T23:08:56.275Z`다.
+- 넣을 때 본문 sha256은 `6a9ca9af08d52d2e777c1ccb2f321a47a98c61241e105af1f2c437d0bec10cc1`이고 길이는 806682이다. 1.5MB 안이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. PDF 2개, 코드 16, 이미지 0은 같다. 로컬 `updated_at`은 `2026-10-18T23:11:09.901Z`다. 로컬 sha256은 `0be63821e6d4009bdbab69e0a459fd3fd6160971a9e0b4ad394febbd2840a062`이고 길이는 807352이다. 운영 본문은 그대로다.
+- REA 글 제목 `앱을 AI가 뜯어서 다시 만들어 주는 무료 도구`. 주소 `https://shimteamjjang.vercel.app/reverse`. 화면 제목의 줄바꿈은 붙여 읽었다. 날짜는 `2026-10-13`이다.
+- 본문은 `.wrap`이다. 헤더의 캐릭터 `team.png`는 data URL로 남겼다. alt는 `심팀장님 캐릭터`이고 193x600 PNG다. 바이트 157715, sha256 `16783911aa2134a0d6ba1f02c74eb261fd7bc536fb5eb9bd6b23feae139ddef2`. 소셜 카드 `og-reverse.png`는 본문이 아니라서 넣지 않았다. 복사 버튼은 뺐다. 하단 참고 문장은 남겼다.
+- 이미지 1. 첨부 0. 표 1. 코드 6. 표는 `무엇을 뜯나`다.
+- 링크. 원문, `https://github.com/morluto/rea`, `https://rea.tools/`, `https://rea.tools/showcase/notion/`.
+- 저장 경로 `/pages/849b5fdc-9606-4cee-9b68-0a855bd3c7d1`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-18T23:08:58.957Z`다.
+- 넣을 때 본문 sha256은 `a9075cc5c185886359a1ffda3d29f1193d0439ea6dafd335d637ac93202147e5`이고 길이는 222207이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 이미지, 표, 코드, 링크는 같다. 로컬 `updated_at`은 `2026-10-18T23:11:11.012Z`다. 로컬 sha256은 `892f6727a7a9728ad71ec463ade03f420edbcbfb74cac7ce0e130fe4928f19c3`이고 길이는 223104이다. 운영 본문은 그대로다.
+- 검색 `코드 100개`는 이 글과 형제 글이 같이 나와 전체 3개다. 검색 `다시 만들어 주는`은 전체 1개다. 로컬 `custom_pages`는 756건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 본문을 다시 받지 않고 skip이다. 스크립트는 `scripts/import-lazyowen-codes-reverse.mjs`. 커밋 `861e858`. 테스트 5개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+- `클로드 고수들만 아는 비밀 코드 100개`, `AI 비밀코드 100선`, `ChatGPT 비밀코드 100개 모음집`, `챗GPT 명령어 100개`, reverse-skill GitHub 페이지는 다른 글이다.
+
 # 스케일메이커 에이전트 뷰와 레플리카 복제 글 Pages 이관 메모
 
 - 에이전트 뷰 제목 `클로드코드 에이전트 뷰(claude agents): 클로드 여러 명에게 동시에 일 맡기기`. 주소 `https://scalemaker.co/g/2026-10-15-claude-code-agent-view`.
