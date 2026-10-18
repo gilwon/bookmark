@@ -1,3 +1,23 @@
+# 스케일메이커 에이전트 뷰와 레플리카 복제 글 Pages 이관 메모
+
+- 에이전트 뷰 제목 `클로드코드 에이전트 뷰(claude agents): 클로드 여러 명에게 동시에 일 맡기기`. 주소 `https://scalemaker.co/g/2026-10-15-claude-code-agent-view`.
+- 본문은 `main`만 남겼다. 헤더, 푸터, 로고, 복사 버튼, 카카오, 유튜브는 뺐다. 글 안의 강의 홍보와 `https://www.instagram.com/ai_leeseul/`는 남겼다.
+- 이미지 0. 첨부 0. 표 0. 코드 1. 코드는 `claude agents`다.
+- 링크. 원문, `https://code.claude.com/docs/en/agent-view`, `https://code.claude.com/docs/en/whats-new/2026-w20`, `https://github.com/anthropics/claude-code/releases/tag/v2.1.299`, `https://github.com/anthropics/claude-code/releases/tag/v2.1.300`, `https://scalemaker.co/courses`, `https://www.instagram.com/ai_leeseul/`.
+- 저장 경로 `/pages/8e980682-cbed-424c-9830-541ecfe0fe60`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-18T00:03:35.933Z`다.
+- 넣을 때 본문 sha256은 `0b75b189091f44a7da99a502a5ff530408dc4a8493330247b5a23547349ff27f`이고 길이는 12036이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 보이는 글자와 링크는 같다. 로컬 `updated_at`은 `2026-10-18T00:07:25.862Z`다. 로컬 sha256은 `491d1f1d87bca33c0d5ceca6b3d50d71acf766967840d5ac8ebccaf95f82b440`이고 길이는 12386이다. 운영 본문은 그대로다.
+- 복제 글 제목 `클로드로 돈 내던 앱 복제하기`. 주소 `https://shimteamjjang.vercel.app/clone`. 화면 제목의 줄바꿈은 붙여 읽었다.
+- 본문은 `.wrap`이다. 헤더의 캐릭터 `team.png`는 data URL로 남겼다. 193x600 PNG다. 소셜 카드 `og-clone.png`는 본문이 아니라서 넣지 않았다. 복사 버튼은 뺐다. 하단 참고 문장은 남겼다.
+- 이미지 1. 첨부 0. 표 1. 코드 1. 표는 스킬 11개다. 코드는 저장소 주소와 `install skill`이다.
+- 링크. 원문, `https://github.com/Jakeschincariol/replica-skill`.
+- 저장 경로 `/pages/383873ec-7a63-4abd-9ea6-e691d2317481`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-18T00:03:37.760Z`다.
+- 넣을 때 본문 sha256은 `10bbadbd1764b2734ac56781f3efd4acc06aff6860390b9ab2df9c3f4a7ee334`이고 길이는 217276이다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 이미지, 표, 코드, 링크는 같다. 로컬 `updated_at`은 `2026-10-18T00:07:36.856Z`다. 로컬 sha256은 `c8e48399dba9a2dbaf6841c7502f6dfa8cbb1ddca19c1365460fb695f90b31c1`이고 길이는 218871이다. 운영 본문은 그대로다.
+- 검색 `에이전트 뷰`와 `돈 내던 앱`에서 각각 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 754건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 본문을 다시 받지 않고 skip이다. 스크립트는 `scripts/import-scalemaker-agent-view-replica.mjs`. 커밋 `8c9ae44`. 테스트 5개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 한국 시간 이번 주 Notion 인솜니아 가이드 Pages 이관 메모
 
 - 기준은 2026-10-12 00:00 KST부터 2026-10-17 07:48 KST까지다. GILWON 최상위 글은 3건이다.
