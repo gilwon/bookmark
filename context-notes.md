@@ -2258,3 +2258,14 @@
 - `apple/container` About 끝의 공백은 그대로 둔다. 백필 스크립트는 첫 문단 끝의 공백을 지우므로, 저장 후 그 공백을 다시 넣었다.
 - 정적 번역표는 647개에서 654개로 늘었다.
 - 백필 7건을 갱신했다. 어제와 오늘 추가분 중 한글이 없거나 설명이 비어 있는 항목은 0건이다. 재실행 갱신은 0건이다.
+
+## 2026-10-21 이번 주 Star 한글 설명 22건 메모
+
+- 한국 시간 2026-10-19 00:00부터 2026-10-21까지 운영 `github_stars`에 들어온 항목은 22건이다. 조회 시작은 `created_at >= 2026-10-18T15:00:00Z`다. 22건 모두 한글이 없었다.
+- 2026-10-19에 7건, 2026-10-20에 6건, 2026-10-21에 9건이다. 빈 About는 `yulmucoffee/cstack`와 `Seokwoooo/lucian-icons` 2건이다.
+- `ericlitman/open-pstack`은 `backnotprop/pstack`과 다른 저장소다. `hypercodism/alpine-code`는 `TGoddessana/alpine-code`와 다른 저장소다. `Seokwoooo/lucian-icons`는 `Seokwoooo/lucian-uxui-prompt`와 다른 저장소다.
+- `hypercodism/alpine-code` About 끝의 공백은 그대로 둔다. 백필 스크립트는 첫 문단 끝의 공백을 지우므로, 저장 후 그 공백을 다시 넣었다.
+- `infobyte/faraday` 설명은 About를 옮긴 문장만 둔다. eli5에는 docker-compose 설치와 결과를 모아 보는 문장만 있고, 스캐너 실행 절차는 넣지 않았다.
+- `JoasASantos/REA-Prompts` eli5에는 `npx rea-agents@latest setup`과 프롬프트를 붙여 넣는 방법만 있다. 바이너리, 펌웨어, 복제 절차는 넣지 않았다.
+- 정적 번역표는 654개에서 676개로 늘었다. 백필은 22건을 갱신했고 빈 설명 채움은 2건이다. 재조회 시 이번 주 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 89개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
