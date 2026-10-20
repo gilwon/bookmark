@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 103건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 103);
+test("대상 108건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 108);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 103);
+  assert.equal(new Set(ids).size, 108);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -787,5 +787,44 @@ test("어제와 오늘 추가된 카피 10건의 제목과 태그를 정한다",
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
     assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("이번 주 추가된 카피 5건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "b2905a07-d3ae-4d01-addf-aea82485d3f7": {
+      title: "Graphify로 레포를 역설계하는 설치 7단계",
+      tags: ["툴", "에이전트"],
+      raw: "이제 한 명령어만으로 어떤 레포든 역설계할 수 있어 - YC 지원을 받은 도구로, 127k 스타를 받은 이 도구가 전체 코드베이스를 매핑하고, 당신의 에이전트는 파일을 읽는 대신 그 맵을 걷는다",
+    },
+    "f68f35a2-221a-4781-bbb7-79915d5393ea": {
+      title: "바이브코딩 백엔드를 검사하는 보안 도구 4가지",
+      tags: ["보안", "툴"],
+      raw: "아무리 바이브코딩으로 백엔드를 구성했다고 하더라도.. 할 건 해야지..",
+    },
+    "89db8e30-5595-450d-b8e4-c6248b1d8e20": {
+      title: "컴파일된 앱을 뜯는 REA가 공식 스킬이 됐다",
+      tags: ["MCP", "스킬"],
+      raw: "30만 스타의 리버스엔지니어 MCP,",
+    },
+    "1bc19079-222e-4145-9346-fbc7dce8cc5d": {
+      title: "옵시디언 노트가 클로드의 프로젝트 기억을 맡는다",
+      tags: ["클로드", "툴"],
+      raw: "Claude Code한테 매번 프로젝트 배경부터 다시 설명하느라 답답했다면, 이제 옵시디언 볼트가 대신 기억합니다.",
+    },
+    "6404c944-0531-4fba-b648-dfc586e51ddd": {
+      title: "AI 서비스 기획에 트립와이어를 거는 프롬프트",
+      tags: ["프롬프트", "클로드"],
+      raw: "AI 서비스 기획하면 트립와이어 반드시 써라",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 5);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+    assert.equal(item.title.endsWith(":"), false);
+    assert.match(item.title, /[가-힣]/);
   }
 });

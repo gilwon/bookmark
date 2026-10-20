@@ -628,6 +628,36 @@ export const TARGETS = [
     tags: ["툴", "에이전트"],
     phrase: "GRAPH_REPORT.md",
   },
+  {
+    id: "b2905a07-d3ae-4d01-addf-aea82485d3f7",
+    title: "Graphify로 레포를 역설계하는 설치 7단계",
+    tags: ["툴", "에이전트"],
+    phrase: "uv tool install graphifyy",
+  },
+  {
+    id: "f68f35a2-221a-4781-bbb7-79915d5393ea",
+    title: "바이브코딩 백엔드를 검사하는 보안 도구 4가지",
+    tags: ["보안", "툴"],
+    phrase: "OWASP ZAP Active Scan",
+  },
+  {
+    id: "89db8e30-5595-450d-b8e4-c6248b1d8e20",
+    title: "컴파일된 앱을 뜯는 REA가 공식 스킬이 됐다",
+    tags: ["MCP", "스킬"],
+    phrase: "npx rea-agents setup",
+  },
+  {
+    id: "1bc19079-222e-4145-9346-fbc7dce8cc5d",
+    title: "옵시디언 노트가 클로드의 프로젝트 기억을 맡는다",
+    tags: ["클로드", "툴"],
+    phrase: "breferrari/obsidian-mind",
+  },
+  {
+    id: "6404c944-0531-4fba-b648-dfc586e51ddd",
+    title: "AI 서비스 기획에 트립와이어를 거는 프롬프트",
+    tags: ["프롬프트", "클로드"],
+    phrase: "결정을 다시 검토할 조건",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
