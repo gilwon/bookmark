@@ -1446,4 +1446,74 @@ describe("Star 설명 번역", () => {
       assert.equal(result.includes("\n\n"), true, repo);
     }
   });
+
+  it("2026-10-19에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Hybirdss/Hycli", "Websites, ready for AI. Turn website tasks into verified CLI and MCP actions, with a local dashboard and 20 languages."],
+      ["infobyte/faraday", "Open-source and AI-powered cybersecurity tools for offensive security, vulnerability management, and autonomous pentesting. Built by hackers in Latin America, used worldwide."],
+      ["breferrari/obsidian-mind", "A self-organizing Obsidian vault that gives AI coding agents persistent memory."],
+      ["DevelopersGlobal/ai-agent-skills", "AI agent skills for production grade applications"],
+      ["withastro/astro", "The web framework for content-driven websites."],
+      ["ericlitman/open-pstack", "pstack for Claude Code and Codex, tracking Cursor pstack upstream"],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-19에 About가 비어 있는 cstack는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("yulmucoffee/cstack", null, null),
+      "PR을 리뷰해 달라고 하면, 잔소리 목록이 아니라 근거가 있는 리뷰를 받습니다."
+    );
+  });
+
+  it("2026-10-20에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["MinishLab/semble", "Fast and Accurate Code Search for Agents. Uses 99% fewer tokens than grep+read"],
+      ["imskyleen/animate-ui", "Fully animated, open-source component distribution built with React, TypeScript, Tailwind CSS, Motion, and Shadcn CLI. Browse a list of components you can install, modify, and use in your projects."],
+      ["AppFlowy-IO/AppFlowy", "Bring projects, wikis, and teams together with AI. AppFlowy is the AI collaborative workspace where you achieve more without losing control of your data. The leading open source Notion alternative."],
+      ["usememos/memos", "Memos is an open-source, self-hosted note-taking app that brings your everyday thoughts together in a personal timeline. Your data stays yours, and you choose what to keep private or share."],
+      ["karakeep-app/karakeep", "A self-hostable bookmark-everything app (links, notes and images) with AI-based automatic tagging and full text search"],
+      ["ShareX/ShareX", "ShareX is a free and open-source application that enables users to capture or record any area of their screen with a single keystroke. It also supports uploading images, text, and various file types to a wide range of destinations."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-21에 추가된 Star 8개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["JoasASantos/REA-Prompts", "Prompts for you to use REA (Reverse Engineer Anything), get the most out of it, and clone or break down any program"],
+      ["cmiscm/leonsans", "Leon Sans is a geometric sans-serif typeface made with code in 2019 by Jongmin Kim."],
+      ["hypercodism/alpine-code", "Open-source Desktop coding agent that's friendly to non-developers and puts you in control of everything, down to its tools. "],
+      ["efww/grids", "Grids — fast multi-pane file manager for Windows (Rust, Win32)"],
+      ["Smaug6739/Alexandrie", "📚 The open-source, offline-first Notion, Obsidian & Confluence alternative. Advanced Markdown, multi-tenant teams, OIDC/SSO, and local S3 backups. Deploy in one command."],
+      ["MadsLorentzen/ai-job-search", "The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. Fork it and own it."],
+      ["yetone/magpie", "Every agent's model. One place. Codex on DeepSeek, Claude Code on Kimi, from the menu bar."],
+      ["tangency-labs/solidcraft", "SolidCraft: an open-source parametric 3D CAD application built in pure Rust. Desktop, web, and automation through MCP."],
+    ];
+    assert.equal(cases.length, 8);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-21에 About가 비어 있는 lucian-icons는 한국어만 채운다", () => {
+    assert.equal(
+      withKoreanTranslation("Seokwoooo/lucian-icons", null, null),
+      "색과 호버 효과가 있는 원본 애니메이션 SVG 아이콘 211개입니다. 의존성 없는 웹 컴포넌트이고 MIT이며, Claude Code와 Codex용 에이전트 스킬이 있습니다."
+    );
+  });
 });
