@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 108건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 108);
+test("대상 109건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 109);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 108);
+  assert.equal(new Set(ids).size, 109);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -826,5 +826,22 @@ test("이번 주 추가된 카피 5건의 제목과 태그를 정한다", () => 
     assert.notEqual(item.title, expected[item.id].raw);
     assert.equal(item.title.endsWith(":"), false);
     assert.match(item.title, /[가-힣]/);
+  }
+});
+
+test("어제와 오늘 추가된 카피 1건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "46c8ae4b-18be-4452-925b-a34daa73e0b4": {
+      title: "CPU와 메모리를 잡아먹는 앱을 찾는 프롬프트",
+      tags: ["프롬프트", "클로드", "코덱스"],
+      raw: "오늘은 Claude나 Codex에게 이 프롬프트를 보낸 뒤 일과를 시작해보세요.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
   }
 });
