@@ -2312,3 +2312,14 @@
 - `JoasASantos/REA-Prompts` eli5에는 `npx rea-agents@latest setup`과 프롬프트를 붙여 넣는 방법만 있다. 바이너리, 펌웨어, 복제 절차는 넣지 않았다.
 - 정적 번역표는 654개에서 676개로 늘었다. 백필은 22건을 갱신했고 빈 설명 채움은 2건이다. 재조회 시 이번 주 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 89개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
+
+## 2026-10-22 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-21 00:00부터 2026-10-22까지 운영 `github_stars`에 들어온 항목은 14건이다. 조회 시작은 `created_at >= 2026-10-20T15:00:00Z`다.
+- 어제 8건 중 7건은 이미 한글과 eli5가 있어 설명을 바꾸지 않았다. `JoasASantos/REA-Prompts` About가 `REAP - Prompts for you to use REA (Reverse Engineer Anything), get the most out of it, and clone or break down any program`으로 바뀌며 한글이 빠졌다. 매핑 문장에 REAP를 반영했고, 기존 eli5는 다시 쓰지 않았다.
+- 오늘 6건 중 한글 설명이 없던 5건은 영문 About 뒤에 한국어를 붙였다. `wing0828/ai-job-search-kr` 설명은 이미 한글이라 바꾸지 않았다.
+- `ai-job-search-dev/ai-job-search`는 `MadsLorentzen/ai-job-search`, `wing0828/ai-job-search-kr`과 다른 저장소다. README의 클론 명령은 아직 `MadsLorentzen/ai-job-search`다.
+- `wing0828/ai-job-search-kr` README는 한글이다. `readme_md_ko`에는 짧은 eli5만 두었다. 첫 상세 열람이 한글 README 때문에 eli5를 비우지 않도록 `detail_fetched_at`과 `detail_json`을 함께 저장했다. 라이선스 메타는 MIT다.
+- 오늘 6건의 eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. `CopilotKit/OpenIntelligentUI`의 키 이름은 코드 펜스에 두어 밑줄이 빠지지 않게 했다.
+- 정적 번역표는 676개에서 681개로 늘었다. 백필은 6건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 91개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.

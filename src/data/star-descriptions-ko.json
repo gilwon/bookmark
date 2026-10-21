@@ -666,7 +666,7 @@
   "usememos/memos": "Memos는 오픈소스 자체 호스팅 메모 앱입니다. 일상의 생각을 개인 타임라인에 모읍니다. 데이터는 사용자 것이고, 비공개로 둘지 공유할지를 사용자가 고릅니다.",
   "karakeep-app/karakeep": "링크, 메모, 이미지를 모아 두는 자체 호스팅 북마크 앱입니다. AI가 태그를 자동으로 달고, 전체 텍스트를 검색합니다.",
   "ShareX/ShareX": "ShareX는 무료 오픈소스 앱입니다. 키 한 번으로 화면의 어느 영역이든 캡처하거나 녹화합니다. 이미지, 텍스트, 여러 종류의 파일을 다양한 목적지로 올릴 수도 있습니다.",
-  "JoasASantos/REA-Prompts": "REA(Reverse Engineer Anything)를 쓰고 더 잘 쓰게 하는 프롬프트입니다. 프로그램을 복제하거나 구조를 분해할 때 씁니다.",
+  "JoasASantos/REA-Prompts": "REAP입니다. REA(Reverse Engineer Anything)를 쓰고 더 잘 쓰게 하는 프롬프트입니다. 프로그램을 복제하거나 구조를 분해할 때 씁니다.",
   "cmiscm/leonsans": "Leon Sans는 2019년 김종민이 코드로 만든 기하학적 산세리프 글꼴입니다.",
   "hypercodism/alpine-code": "비개발자에게도 편한 오픈소스 데스크톱 코딩 에이전트입니다. 도구까지 포함해 모든 것을 사용자가 정합니다.",
   "efww/grids": "Grids는 Windows용 빠른 다중 창 파일 관리자입니다. Rust와 Win32로 만들었습니다.",
@@ -674,5 +674,10 @@
   "MadsLorentzen/ai-job-search": "사용자 컴퓨터에서 도는 구직입니다. Claude Code 위의 AI 지원 프레임워크로, 공고를 평가하고 이력서를 맞추고 자기소개서를 쓰고 면접을 준비합니다. 포크해서 직접 소유합니다.",
   "yetone/magpie": "모든 에이전트의 모델을 한곳에 둡니다. 메뉴 막대에서 Codex는 DeepSeek을, Claude Code는 Kimi를 씁니다.",
   "Seokwoooo/lucian-icons": "색과 호버 효과가 있는 원본 애니메이션 SVG 아이콘 211개입니다. 의존성 없는 웹 컴포넌트이고 MIT이며, Claude Code와 Codex용 에이전트 스킬이 있습니다.",
-  "tangency-labs/solidcraft": "SolidCraft는 순수 Rust로 만든 오픈소스 파라메트릭 3D CAD 앱입니다. 데스크톱, 웹, MCP 자동화를 둡니다."
+  "tangency-labs/solidcraft": "SolidCraft는 순수 Rust로 만든 오픈소스 파라메트릭 3D CAD 앱입니다. 데스크톱, 웹, MCP 자동화를 둡니다.",
+  "ai-job-search-dev/ai-job-search": "사용자 컴퓨터에서 도는 구직입니다. Claude Code 위의 AI 지원 프레임워크로, 공고를 평가하고 이력서를 맞추고 자기소개서를 쓰고 면접을 준비합니다. 포크해서 직접 소유합니다.",
+  "onyx-dot-app/onyx": "오픈소스 AI 플랫폼입니다. 고급 기능이 있는 AI 채팅이고, 모든 LLM과 동작합니다.",
+  "organui/organui": "OrganUI 웹사이트와 문서, 컴포넌트 레지스트리입니다.",
+  "CopilotKit/OpenIntelligentUI": "오픈소스 생성형 UI 프레임워크입니다.",
+  "dominikmartn/harp": "Claude Code와 Codex 에이전트를 나란히 여러 개 돌립니다. 어느 쪽이 사용자를 기다리는지 사이드바 하나에서 알려 줍니다. Warp의 비공식 포크입니다."
 }

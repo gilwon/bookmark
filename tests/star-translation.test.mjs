@@ -1492,7 +1492,7 @@ describe("Star 설명 번역", () => {
 
   it("2026-10-21에 추가된 Star 8개에 한국어 설명을 병기한다", () => {
     const cases = [
-      ["JoasASantos/REA-Prompts", "Prompts for you to use REA (Reverse Engineer Anything), get the most out of it, and clone or break down any program"],
+      ["JoasASantos/REA-Prompts", "REAP - Prompts for you to use REA (Reverse Engineer Anything), get the most out of it, and clone or break down any program"],
       ["cmiscm/leonsans", "Leon Sans is a geometric sans-serif typeface made with code in 2019 by Jongmin Kim."],
       ["hypercodism/alpine-code", "Open-source Desktop coding agent that's friendly to non-developers and puts you in control of everything, down to its tools. "],
       ["efww/grids", "Grids — fast multi-pane file manager for Windows (Rust, Win32)"],
@@ -1514,6 +1514,31 @@ describe("Star 설명 번역", () => {
     assert.equal(
       withKoreanTranslation("Seokwoooo/lucian-icons", null, null),
       "색과 호버 효과가 있는 원본 애니메이션 SVG 아이콘 211개입니다. 의존성 없는 웹 컴포넌트이고 MIT이며, Claude Code와 Codex용 에이전트 스킬이 있습니다."
+    );
+  });
+
+  it("2026-10-22에 추가된 Star 5개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["ai-job-search-dev/ai-job-search", "The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. Fork it and own it."],
+      ["onyx-dot-app/onyx", "Open Source AI Platform - AI Chat with advanced features that works with every LLM"],
+      ["organui/organui", "OrganUI website, documentation, and component registry."],
+      ["CopilotKit/OpenIntelligentUI", "Open-Source Generative UI Framework"],
+      ["dominikmartn/harp", "Run many Claude Code and Codex agents side by side, in one sidebar that tells you which one needs you. An unofficial fork of Warp."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("이미 한글인 ai-job-search-kr 설명은 바꾸지 않는다", () => {
+    const description = "한국 채용시장용 AI 구직·지원 스킬 (Claude Code / Codex). MadsLorentzen/ai-job-search 한국판, MIT";
+    assert.equal(
+      withKoreanTranslation("wing0828/ai-job-search-kr", description, null),
+      description
     );
   });
 });
