@@ -658,6 +658,12 @@ export const TARGETS = [
     tags: ["프롬프트", "클로드"],
     phrase: "결정을 다시 검토할 조건",
   },
+  {
+    id: "46c8ae4b-18be-4452-925b-a34daa73e0b4",
+    title: "CPU와 메모리를 잡아먹는 앱을 찾는 프롬프트",
+    tags: ["프롬프트", "클로드", "코덱스"],
+    phrase: "절대 자동 삭제",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
