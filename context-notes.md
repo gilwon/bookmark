@@ -1,3 +1,23 @@
+# every._ai court 스킬과 카운슬 프롬프트 Pages 이관 메모
+
+- 스킬 5개 글 `처음이라면 무조건 클로드 코드 최고의 스킬 5개 설치 가이드`는 이미 `/pages/633c24db-2df6-4365-9793-c8bbd3924a44`에 있다. 갱신하지 않았다.
+- court 제목 `클로드가 구라 쳤는지 배심원 12명이 재판하는 court 스킬 설치·사용 가이드`. 주소 `https://every-ai-guides.vercel.app/posts/claude-court-skill`. 공개일은 `2026-10-20`이다.
+- 본문은 `article.post`만 남겼다. 수익화 배너, 카카오 안내, 복사 버튼, 푸터 인스타그램은 뺐다. 본문 이미지는 없다.
+- 이미지 0. 첨부 0. 표 0. 코드 9. 설치 명령 2개와 재판 프롬프트 7개다.
+- 링크. 원문, `https://github.com/alexyc9381/court-skill`, `https://instagram.com/nocodealex`.
+- 저장 경로 `/pages/d7b47b2d-2109-42f1-99c2-153b8eddaeb9`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-21T23:28:38.789Z`다.
+- 본문 sha256은 `adf50ee3ca28185a14f5faa8eb1ad4afc719a18333e6f6e84d771e005ae878b1`이고 길이는 6947이다. 브라우저를 연 뒤에도 로컬과 운영이 같다.
+- 카운슬 제목 `맞장구만 치는 클로드를 쓴소리 회의로 바꾸는 카운슬 프롬프트`. 주소 `https://every-ai-guides.vercel.app/posts/claude-council-prompt`. 공개일은 `2026-10-20`이다.
+- 본문은 `article.post`만 남겼다. 같은 홍보를 뺐다. 프롬프트는 `## 역할`로 시작하지만 코드 블록 안에 있다.
+- 이미지 0. 첨부 0. 표 0. 코드 3.
+- 링크. 원문, `https://news.stanford.edu/stories/2026/03/ai-advice-sycophantic-models-research`, `https://github.com/karpathy/llm-council`.
+- 저장 경로 `/pages/4cd7bade-a13b-413c-a242-7c8a96bdd373`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-21T23:28:39.759Z`다.
+- 넣을 때 본문 sha256은 `dec9be1746f1abcfc7dc271942108b7f21d4c9267524bcf37274e7d36bb8638f`이고 길이는 6215이다. 운영은 그대로다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 코드 3, 링크 3은 같다. 로컬 `updated_at`은 `2026-10-21T23:29:24.625Z`다. 로컬 sha256은 `14abfac482fa776fa3d8bc0a12f9f380451ea40d3ca6da3a5a20b8c7ca09aee2`이고 길이는 6289이다.
+- 검색 `배심원`과 `쓴소리`에서 각각 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 760건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 본문을 다시 받지 않고 skip이다. 스크립트는 `scripts/import-every-ai-court-council-20261021.mjs`. 커밋 `130577b`. 테스트 4개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 무드모드 토너먼트와 루샨 꿀팁 Pages 이관 메모
 
 - 심팀장 reverse는 이미 `/pages/849b5fdc-9606-4cee-9b68-0a855bd3c7d1`에 있다. every._ai 스킬 5개는 이미 `/pages/633c24db-2df6-4365-9793-c8bbd3924a44`에 있다. 둘 다 갱신하지 않았다.
