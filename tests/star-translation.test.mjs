@@ -1573,4 +1573,26 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-10-24에 추가된 Star 4개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["simstudioai/sim", "Sim is the collaborative workspace to build, deploy, and monitor AI agents and workflows. Used by 100,000+ builders."],
+      ["luongnv89/claude-howto", "A visual, example-driven guide to Claude Code — from basic concepts to advanced agents, with copy-paste templates that bring immediate value."],
+      ["Renhuai123/ziwei-doushu", "紫微斗数开源排盘引擎 — 基于倪海厦《天纪》体系，含完整排盘算法、四化系统、格局知识库、古籍原文数据"],
+      ["shaongitbd/doory", "Open source canva alternative"],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-24에 About가 비어 있는 android/skills는 한국어만 채운다", () => {
+    const korean = "안드로이드 개발 모범 사례를 에이전트가 따르게 하는 모듈 지침 저장소입니다. developer.android.com의 안내를 근거로 합니다.";
+    assert.equal(withKoreanTranslation("android/skills", null, null), korean);
+    assert.equal(withKoreanTranslation("android/skills", "", null), korean);
+  });
 });
