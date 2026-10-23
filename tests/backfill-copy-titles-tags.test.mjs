@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 109건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 109);
+test("대상 113건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 113);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 109);
+  assert.equal(new Set(ids).size, 113);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -839,6 +839,38 @@ test("어제와 오늘 추가된 카피 1건의 제목과 태그를 정한다", 
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제와 오늘 추가된 카피 4건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "f5c22690-a474-4f21-b217-e896c7b9c2a0": {
+      title: "클로드에 깔린 구성을 한눈에 보는 /stack",
+      tags: ["클로드", "설정"],
+      raw: "모든 Claude Code 사용자들은 /stack을 설치해야 합니다... 진심으로요!",
+    },
+    "2383777e-9453-4529-88be-569a0955c027": {
+      title: "검색 노출 5갈래를 점검하는 클로드 스킬",
+      tags: ["클로드", "SEO"],
+      raw: "월 2500달러 SEO 대행사 자르라는 클로드 스킬",
+    },
+    "49b7f689-4c82-4487-b2e2-0f2536a95a21": {
+      title: "앱 기능을 분석해 새로 만드는 Replica Skill",
+      tags: ["클로드", "스킬"],
+      raw: "😡 위험한 스킬이네요.",
+    },
+    "746821e6-b284-451f-96d0-dcd1e3f56657": {
+      title: "캐릭터 직원이 일을 나누는 로컬 오피스",
+      tags: ["클로드", "에이전트"],
+      raw: "[AI 오피스 만들기]",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 4);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
