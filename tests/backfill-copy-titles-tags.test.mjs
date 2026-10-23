@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 113건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 113);
+test("대상 117건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 117);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 113);
+  assert.equal(new Set(ids).size, 117);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -867,6 +867,38 @@ test("어제와 오늘 추가된 카피 4건의 제목과 태그를 정한다", 
       title: "캐릭터 직원이 일을 나누는 로컬 오피스",
       tags: ["클로드", "에이전트"],
       raw: "[AI 오피스 만들기]",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 4);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("오늘 추가된 숏폼·앱·학습·Crashpad 4건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "a520e9d2-e400-4867-b136-19f0b9a4d33d": {
+      title: "쇼핑 숏폼에 넣는 클로드 한 줄 6개",
+      tags: ["프롬프트", "클로드"],
+      raw: "Claude한테 이 한 줄만 추가하면",
+    },
+    "c75a2942-e398-4fbf-af67-9999ab378f2e": {
+      title: "클로드로 앱을 만들고 배포하는 프롬프트 13개",
+      tags: ["클로드", "프롬프트"],
+      raw: "Claude로 앱 만드는 분이라면,",
+    },
+    "e1dde26b-82fe-4371-8d44-cb1fbc2a123c": {
+      title: "엑셀·데이터·보안을 과외처럼 배우는 프롬프트 9개",
+      tags: ["클로드", "프롬프트", "학습"],
+      raw: "엑셀·데이터·보안 공부하려는 분이라면,",
+    },
+    "387934b1-ac7d-4f58-b17d-04d555b2bd3e": {
+      title: "코덱스 Crashpad가 용량을 먹는지 조사하는 프롬프트",
+      tags: ["코덱스", "프롬프트"],
+      raw: "내 Mac에서 Codex/ChatGPT 앱의 Crashpad 진단 파일이 과도하게 쌓여 저장 공간을 차지하고 있는지 조사해줘. 조사 결과를 보고 내가 정리 여부를 결정할 수 있도록 설명해줘.",
     },
   };
   const found = TARGETS.filter((item) => item.id in expected);
