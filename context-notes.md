@@ -2336,3 +2336,16 @@
 - 오늘 6건의 eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. `CopilotKit/OpenIntelligentUI`의 키 이름은 코드 펜스에 두어 밑줄이 빠지지 않게 했다.
 - 정적 번역표는 676개에서 681개로 늘었다. 백필은 6건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 91개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
+
+## 2026-10-23 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-22 00:00부터 2026-10-23까지 운영 `github_stars`에 들어온 항목은 14건이다. 조회 시작은 `created_at >= 2026-10-21T15:00:00Z`다.
+- 어제 6건은 이미 한글과 eli5가 있어 설명과 eli5를 바꾸지 않았다.
+- 오늘 8건은 `created_at`이 `2026-10-22T22:31:33.894Z`다. 한글 설명이 없던 6건은 영문 또는 중영 About 뒤에 한국어를 붙였다. `d-onworks/claude-3d-frog-office`와 `dalsoop/rustdesk-korean` 설명은 이미 한글이라 바꾸지 않았다.
+- `devswha/ovis`는 `devswha/herdr-web-ui`, `herdrdev/herdr`, `penso/herdr-gpui`와 다른 저장소다. `Anil-matcha/open-duet`는 `Anil-matcha/open-dots`, `Anil-matcha/awesome-muse-connectors`와 다른 저장소다. `dalsoop/rustdesk-korean`은 `dalsoop/rustdesk`와 다른 저장소다.
+- `NCSC-NL/php2shell` About 끝의 공백 두 칸은 그대로 둔다. 백필은 첫 문단 끝의 공백을 지우므로, 저장 후 그 공백을 다시 넣었다. eli5에는 패치 버전과 영향 한 문장만 있고, 재현 절차와 임시 완화 파라미터는 넣지 않았다.
+- `huginn/huginn` About 안의 마침표 뒤 공백 두 칸은 백필이 끝만 지우므로 그대로다.
+- `d-onworks/claude-3d-frog-office`와 `dalsoop/rustdesk-korean` README는 한글이 많아 첫 상세 열람이 eli5를 비운다. `readme_md_ko`에는 짧은 eli5만 두고, `detail_fetched_at`과 실제 `detail_json`을 함께 저장했다. 라이선스는 각각 MIT, AGPL-3.0이다.
+- 오늘 8건의 `readme_md`는 비어 있어서 가져온 README를 넣었다. 한글이 아닌 README 6건은 `detail_fetched_at`을 비워 두었다.
+- 정적 번역표는 681개에서 687개로 늘었다. 백필은 6건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 93개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.

@@ -1541,4 +1541,36 @@ describe("Star 설명 번역", () => {
       description
     );
   });
+
+  it("2026-10-23에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["huginn/huginn", "Create agents that monitor and act on your behalf.  Your agents are standing by!"],
+      ["NCSC-NL/php2shell", "Operational information regarding the 2026 php2shell vulnerabilities  "],
+      ["ToolJet/ToolJet", "Open-source foundation of ToolJet AI - the enterprise app generation platform for internal tools, dashboards, business applications, workflows and AI agents. Build visually, from a prompt, or from Claude Code, Codex and Cursor over MCP 🚀"],
+      ["NaiboWang/EasySpider", "A visual no-code/code-free web crawler/spider易采集：一个可视化浏览器自动化测试/数据采集/网页爬虫软件，可以无代码图形化的设计和执行爬虫任务。别名：ServiceWrapper面向Web应用的智能化服务封装系统。"],
+      ["devswha/ovis", "Ovis (formerly herdr web UI): free, open-source browser and phone client for herdr. Chat and live terminal for Claude Code, Codex and every agent pane, remote PCs over SSH, web push alerts"],
+      ["Anil-matcha/open-duet", "Open-source, self-hosted alternative to Claude Duet: AI coworkers (named agents) with instructions, memory, routines, their own isolated computer, and your approval before they act. Also an alternative to OpenAI Dots, Meta Muse, Grok Bot, Manus Cue and ChatGPT agent."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("이미 한글인 frog-office와 rustdesk-korean 설명은 바꾸지 않는다", () => {
+    const cases = [
+      ["d-onworks/claude-3d-frog-office", "Claude Code 세션을 개구리·카피바라 직원으로 보여 주는 3D 사무실 · A view-only 3D office that shows each Claude Code session as a frog or capybara employee. Local only, zero dependencies, macOS & Windows."],
+      ["dalsoop/rustdesk-korean", "RustDesk 1.5.0 fork for Korean users: 한/영 key works across macOS, Windows, Linux and Android, plus Android soft-keyboard Hangul fixes"],
+    ];
+    for (const [repo, description] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        description,
+        repo
+      );
+    }
+  });
 });

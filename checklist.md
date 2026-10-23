@@ -1514,6 +1514,17 @@
 - [x] 한글 README인 ai-job-search-kr은 detail_fetched_at을 함께 저장해 eli5가 지워지지 않게 함
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+<!-- 2026-10-23 어제·오늘 Star 한글 설명 체크리스트 -->
+# 2026-10-23 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-22부터 2026-10-23까지 운영 Star 14건 확인. 한글 없는 설명 6건
+- [x] 오늘 6건 매핑을 추가. 이미 한글인 claude-3d-frog-office와 rustdesk-korean은 그대로 둠
+- [x] 매핑 681개에서 687개. 회귀 테스트 93개 통과
+- [x] 운영 백필 6건, 빈 설명 0건. 재실행 갱신 0건. php2shell About 끝의 공백 두 칸을 백필 뒤 다시 넣음
+- [x] 오늘 8건 README를 읽어 readme_md_ko에 설치, 사용법, 특징을 저장. 취약점 재현과 완화 절차는 넣지 않음
+- [x] 한글 README인 claude-3d-frog-office와 rustdesk-korean은 detail_fetched_at을 함께 저장해 eli5가 지워지지 않게 함
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
