@@ -1,3 +1,16 @@
+# every._ai k-skill 131개 Pages 이관 메모
+
+- 제목 `한국인이면 무조건 쓰게 될 k-skill 131개 설치 가이드`. 주소 `https://every-ai-guides.vercel.app/posts/k-skill-131-korea`. 공개일은 `2026-10-21`이다. `from=dm`과 `fbclid`는 저장하지 않았다.
+- 본문은 `article.post`만 남겼다. 수익화 배너, 카카오 안내, 복사 버튼, 함께 보면 좋은 글, 푸터 인스타그램은 뺐다. 본문 이미지는 없다.
+- 이미지 0. 첨부 0. 표 2. 분야 표는 머리글과 21행, 대표 스킬 표는 머리글과 29행이다. 코드 5. 프롬프트 라벨 5개는 남겼다.
+- 링크. 원문, `https://github.com/NomaDamas/k-skill`, `https://github.com/NomaDamas/k-skill/blob/main/docs/install.md`, `https://github.com/NomaDamas/k-skill/blob/main/docs/setup.md`, `https://code.claude.com/docs/en/plugin-marketplaces`, `https://code.claude.com/docs/en/skills`.
+- 저장 경로 `/pages/faae19b5-6fb6-40e4-a4f0-81be26dd8440`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-23T00:36:03.478Z`다.
+- 넣을 때 본문 sha256은 `404154546ad21fcaf0bfb4c34a819d2a3cb3d60602ec77d1a38ba5e82dfd7120`이고 길이는 26517이다. 운영은 그대로다.
+- 브라우저를 연 뒤 로컬 본문에서 제목과 같은 h1이 빠졌다. 표 2, 코드 5, 링크 6은 같다. 로컬 `updated_at`은 `2026-10-23T00:37:29.618Z`다. 로컬 sha256은 `5a2d76c63a5b069c983f64c8dc8501d72a1d51dc0e128f28c5770c6eed435837`이고 길이는 36539이다.
+- 검색 `무조건 쓰게 될`에서 제목과 링크가 보이고 전체 1개다. 로컬 `custom_pages`는 761건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 본문을 다시 받지 않고 skip이다. 스크립트는 `scripts/import-every-ai-k-skill-131-20261021.mjs`. 커밋 `3217677`. 테스트 1개 통과.
+- 한국인 전용 스킬 125개 글과 agentc 글은 다른 글이라 갱신하지 않았다. Prompts 테이블은 쓰지 않는다. 기존 행은 갱신하지 않는다.
+
 # every._ai court 스킬과 카운슬 프롬프트 Pages 이관 메모
 
 - 스킬 5개 글 `처음이라면 무조건 클로드 코드 최고의 스킬 5개 설치 가이드`는 이미 `/pages/633c24db-2df6-4365-9793-c8bbd3924a44`에 있다. 갱신하지 않았다.
