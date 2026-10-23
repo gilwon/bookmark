@@ -685,5 +685,10 @@
   "ToolJet/ToolJet": "ToolJet AI의 오픈소스 기반입니다. 내부 도구, 대시보드, 업무 앱, 워크플로, AI 에이전트를 만드는 기업용 앱 생성 플랫폼입니다. 화면에서 만들거나, 프롬프트로 만들거나, MCP로 Claude Code, Codex, Cursor에서 만듭니다.",
   "NaiboWang/EasySpider": "코드 없이 화면으로 다루는 웹 크롤러입니다. 브라우저 자동화, 데이터 수집, 웹 크롤링을 그래픽으로 설계하고 실행합니다. 별칭은 ServiceWrapper이고, 웹 앱을 위한 지능형 서비스 포장 시스템입니다.",
   "devswha/ovis": "Ovis입니다. 예전 이름은 herdr 웹 UI입니다. herdr용 무료 오픈소스 브라우저·휴대폰 클라이언트입니다. Claude Code, Codex와 모든 에이전트 창의 채팅과 실시간 터미널, SSH 원격 PC, 웹 푸시 알림이 있습니다.",
-  "Anil-matcha/open-duet": "Claude Duet의 오픈소스 자체 호스팅 대안입니다. 이름 있는 AI 동료에게 지시, 기억, 루틴, 격리된 컴퓨터를 주고, 행동 전에 사용자의 승인을 받습니다. OpenAI Dots, Meta Muse, Grok Bot, Manus Cue, ChatGPT agent의 대안이기도 합니다."
+  "Anil-matcha/open-duet": "Claude Duet의 오픈소스 자체 호스팅 대안입니다. 이름 있는 AI 동료에게 지시, 기억, 루틴, 격리된 컴퓨터를 주고, 행동 전에 사용자의 승인을 받습니다. OpenAI Dots, Meta Muse, Grok Bot, Manus Cue, ChatGPT agent의 대안이기도 합니다.",
+  "simstudioai/sim": "에이전트와 워크플로를 만들고, 배포하고, 감시하는 협업 작업 공간입니다. 빌더 10만 명 이상이 씁니다.",
+  "luongnv89/claude-howto": "Claude Code를 그림과 예제로 보는 안내입니다. 기본 개념부터 고급 에이전트까지 다루고, 바로 붙여 넣는 템플릿이 있습니다.",
+  "Renhuai123/ziwei-doushu": "자미두수 오픈소스 명반 엔진입니다. 예하이샤 《천기》 체계이고, 명반 알고리즘, 사화 체계, 격국 지식 창고, 고서 원문 데이터가 있습니다.",
+  "shaongitbd/doory": "오픈소스 Canva 대안입니다.",
+  "android/skills": "안드로이드 개발 모범 사례를 에이전트가 따르게 하는 모듈 지침 저장소입니다. developer.android.com의 안내를 근거로 합니다."
 }
