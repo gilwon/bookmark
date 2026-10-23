@@ -688,6 +688,30 @@ export const TARGETS = [
     tags: ["클로드", "에이전트"],
     phrase: "AI 캐릭터 직원들이",
   },
+  {
+    id: "a520e9d2-e400-4867-b136-19f0b9a4d33d",
+    title: "쇼핑 숏폼에 넣는 클로드 한 줄 6개",
+    tags: ["프롬프트", "클로드"],
+    phrase: "쇼핑 전환 안 되는 구간",
+  },
+  {
+    id: "c75a2942-e398-4fbf-af67-9999ab378f2e",
+    title: "클로드로 앱을 만들고 배포하는 프롬프트 13개",
+    tags: ["클로드", "프롬프트"],
+    phrase: "아직 배포는 하지 마",
+  },
+  {
+    id: "e1dde26b-82fe-4371-8d44-cb1fbc2a123c",
+    title: "엑셀·데이터·보안을 과외처럼 배우는 프롬프트 9개",
+    tags: ["클로드", "프롬프트", "학습"],
+    phrase: "SUMIFS, XLOOKUP, IFERROR",
+  },
+  {
+    id: "387934b1-ac7d-4f58-b17d-04d555b2bd3e",
+    title: "코덱스 Crashpad가 용량을 먹는지 조사하는 프롬프트",
+    tags: ["코덱스", "프롬프트"],
+    phrase: "com.openai.codex/web/Crashpad",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
