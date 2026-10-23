@@ -664,6 +664,30 @@ export const TARGETS = [
     tags: ["프롬프트", "클로드", "코덱스"],
     phrase: "절대 자동 삭제",
   },
+  {
+    id: "f5c22690-a474-4f21-b217-e896c7b9c2a0",
+    title: "클로드에 깔린 구성을 한눈에 보는 /stack",
+    tags: ["클로드", "설정"],
+    phrase: "ui/stack-viewer",
+  },
+  {
+    id: "2383777e-9453-4529-88be-569a0955c027",
+    title: "검색 노출 5갈래를 점검하는 클로드 스킬",
+    tags: ["클로드", "SEO"],
+    phrase: "fire-your-seo-agency",
+  },
+  {
+    id: "49b7f689-4c82-4487-b2e2-0f2536a95a21",
+    title: "앱 기능을 분석해 새로 만드는 Replica Skill",
+    tags: ["클로드", "스킬"],
+    phrase: "Jakeschincariol/replica-skill",
+  },
+  {
+    id: "746821e6-b284-451f-96d0-dcd1e3f56657",
+    title: "캐릭터 직원이 일을 나누는 로컬 오피스",
+    tags: ["클로드", "에이전트"],
+    phrase: "AI 캐릭터 직원들이",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
