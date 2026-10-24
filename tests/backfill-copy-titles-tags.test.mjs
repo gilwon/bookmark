@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 117건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 117);
+test("대상 119건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 119);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 117);
+  assert.equal(new Set(ids).size, 119);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -903,6 +903,28 @@ test("오늘 추가된 숏폼·앱·학습·Crashpad 4건의 제목과 태그를
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 4);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제와 오늘 추가된 자료·팀 폴더 2건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "90cc95b3-a8c5-4778-8e88-9abb1e46e8ab": {
+      title: "회사 자료를 AI에 넣기 전 체크리스트 5칸",
+      tags: ["보안", "설정"],
+      raw: "회사 자료 그냥 붙이지 마세요.",
+    },
+    "983c7a25-3d45-4a29-95ce-295907c4eacd": {
+      title: "클로드 팀을 역할 폴더로 나누는 my-team",
+      tags: ["클로드", "에이전트"],
+      raw: "my-team/",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 2);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
