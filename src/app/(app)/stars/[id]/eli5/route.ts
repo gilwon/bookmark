@@ -59,7 +59,6 @@ export async function GET(_req: Request, ctx: Ctx) {
   }
   const html = buildStarEli5Html({
     repoFullName: row.repoFullName,
-    description: row.description,
     url: row.url,
     detailPath: `/stars/${id}`,
     ...source,
