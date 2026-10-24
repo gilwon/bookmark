@@ -1,0 +1,23 @@
+/* Lucian UX/UI Prompt #034 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#034 — 검색 자동완성 입력(SearchSuggestInput) 스타일 */
+/* 원본에서 바꾼 점. 고정 크기(340×380)를 부모 너비에 맞추고, 목록을 입력칸 아래 떠 있는 드롭다운으로 옮기고, 긴 값이 넘치지 않게 잘랐다.
+   공항 데모 전용 규칙(라벨·코드 칩·색 배지·소요 시간·결과 없음 문구)은 뺐다. */
+.u034{position:relative;width:100%;max-width:100%}
+.u034-box{position:relative;display:flex;align-items:center;gap:10px;height:60px;padding:0 16px;border-radius:18px;background:var(--ux-surface);box-shadow:0 0 0 1.5px var(--ux-line-2);transition:box-shadow .25s var(--ux-ease)}
+.u034-box:focus-within{box-shadow:0 0 0 2px var(--ux-accent),0 0 0 6px var(--ux-accent-soft)}
+.u034-pl{width:22px;height:22px;flex:none;fill:none;stroke:var(--ux-ink-3);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s,transform .6s var(--ux-spring)}
+.u034.is-set .u034-pl{stroke:var(--ux-accent);transform:translateX(3px) rotate(-12deg)}
+/* 긴 값이 상자 밖으로 넘쳐 가로 스크롤이 생기지 않게 자른다 */
+.u034-wrap{position:relative;flex:1;min-width:0;height:100%;overflow:hidden}
+.u034-ghost,.u034-in{position:absolute;inset:0;width:100%;padding:0;border:0;font:inherit;font-size:17px;font-weight:650;letter-spacing:-.02em;line-height:60px;background:none;white-space:pre}
+.u034-ghost{color:var(--ux-ink-3);pointer-events:none;opacity:.7}
+.u034-ghost b{font-weight:inherit;color:transparent}
+.u034-in{outline:0;color:var(--ux-ink)}
+.u034-in:focus-visible{outline:none}
+.u034-list{position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:50;margin:0;padding:6px;list-style:none;border-radius:20px;background:var(--ux-surface);box-shadow:0 0 0 1px var(--ux-line),0 26px 50px -30px var(--ux-shadow-strong);max-height:268px;overflow-y:auto;overscroll-behavior:contain;transition:opacity .25s var(--ux-ease)}
+.u034-hl{position:absolute;left:6px;right:6px;top:6px;height:64px;border-radius:14px;background:var(--ux-surface-2);transform:translateY(calc(var(--i,0) * 64px));transition:transform .35s var(--ux-spring),opacity .2s;pointer-events:none}
+.u034-o{position:relative;display:flex;align-items:center;gap:12px;height:64px;padding:0 12px;border-radius:14px;cursor:pointer;animation:u034-in .35s var(--ux-spring) backwards}
+@keyframes u034-in{from{opacity:0;transform:translateY(6px)}}
+.u034-o span{min-width:0}
+.u034-o b{display:block;font-size:15px;font-weight:680;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.u034-o b mark{background:none;color:var(--ux-accent)}
+.u034-o small{display:block;margin-top:2px;font-size:12.5px;color:var(--ux-ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
