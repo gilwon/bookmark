@@ -706,7 +706,7 @@
   "Paidax01/web-to-design-md": "공식 웹사이트를 design.md 문서로 바꿉니다.",
   "Amanuel2x/clone-skill": "어떤 웹사이트든 프로덕션에 쓸 Next.js와 Tailwind 프로젝트로 복제하는 Claude Code 스킬입니다.",
   "sevzq/screenshot-to-html": "UI 스크린샷을 충실한 인터랙티브 단일 HTML 페이지로 복제하는 AI 코딩 에이전트 스킬입니다.",
-  "onewave-ai/claude-skills": "영업, 마케팅, 디자인, 엔지니어링, AI 에이전트 구조를 위한 프로덕션용 Claude Code 스킬 200개 이상입니다. OneWave AI가 만들고 유지합니다.",
+  "OneWave-AI/claude-skills": "영업, 마케팅, 디자인, 엔지니어링, AI 에이전트 구조를 위한 프로덕션용 Claude Code 스킬 200개 이상입니다. OneWave AI가 만들고 유지합니다.",
   "glebrati-cloud/screenshot-to-code": "스크린샷, 목업, 디자인을 깔끔한 프로덕션 코드로 바꾸는 Claude 스킬입니다. React, Vue, Svelte, HTML을 픽셀 단위와 반응형으로 만듭니다.",
   "oil-oil/draw-ui": "Claude Code와 Codex용 UI 디자인·목업 스킬입니다. 스크린샷에서 코드까지, 디자인 시안을 내고 페이지로 되돌립니다.",
   "fitoe/DesignToCode": "나뉜 디자인 이미지를 높은 충실도의 UnoCSS 페이지 코드로 바꾸는 Codex 스킬입니다.",
@@ -726,5 +726,6 @@
   "xxmisaoxx/t-rex": "코딩 에이전트가 프로그램 동작을 추적하고, 근거를 남기고, 세션을 이어 가는 역공학 스킬입니다. OpenCode, Claude Code, Codex, Cursor, Antigravity, Pi를 지원합니다.",
   "haikow/claude-reverse-skills": "APK, IDA, radare2, JavaScript 역공학과 IDA MCP 연결을 담은 Claude Code 스킬 모음입니다. 리눅스, 맥, 윈도우에서 씁니다.",
   "Dryxio/reagent": "AI로 컴파일된 프로그램에서 C, C++ 코드를 재구성하고 검증합니다.",
-  "vgrichina/re-skill": "레트로 게임 코드를 분해하고 주석을 달고, 자원을 추출하고, 웹으로 옮기는 Claude Code 스킬입니다."
+  "vgrichina/re-skill": "레트로 게임 코드를 분해하고 주석을 달고, 자원을 추출하고, 웹으로 옮기는 Claude Code 스킬입니다.",
+  "yulmucoffee/artiboard": "사람과 Claude 에이전트가 함께 쓰는 공유 작업 보드입니다. claude.ai 아티팩트 하나로 만들고, 화면은 코드로 그립니다."
 }

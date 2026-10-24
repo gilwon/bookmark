@@ -1577,7 +1577,7 @@ describe("Star 설명 번역", () => {
       ["Paidax01/web-to-design-md", "Convert any official website to design.md document"],
       ["Amanuel2x/clone-skill", "Claude Code skill: clone any website into a production-ready Next.js + Tailwind project"],
       ["sevzq/screenshot-to-html", "Clone any UI screenshot into one faithful, interactive single-file HTML page — an AI coding-agent skill."],
-      ["onewave-ai/claude-skills", "200+ production-ready Claude Code skills for sales, marketing, design, engineering, and AI agent architecture. Built and maintained by OneWave AI."],
+      ["OneWave-AI/claude-skills", "200+ production-ready Claude Code skills for sales, marketing, design, engineering, and AI agent architecture. Built and maintained by OneWave AI."],
       ["glebrati-cloud/screenshot-to-code", "Claude skill that converts any screenshot, mockup, or design into clean, production-ready code. React, Vue, Svelte, HTML — pixel-perfect and responsive."],
       ["oil-oil/draw-ui", "UI design & mockup skill for Claude Code & Codex, from screenshot to code. 帮你出 UI 设计稿并还原成页面。"],
       ["fitoe/DesignToCode", "Codex skill for turning segmented design images into high-fidelity UnoCSS page code."],
@@ -1642,5 +1642,13 @@ describe("Star 설명 번역", () => {
     const korean = "안드로이드 개발 모범 사례를 에이전트가 따르게 하는 모듈 지침 저장소입니다. developer.android.com의 안내를 근거로 합니다.";
     assert.equal(withKoreanTranslation("android/skills", null, null), korean);
     assert.equal(withKoreanTranslation("android/skills", "", null), korean);
+  });
+
+  it("2026-10-25에 추가된 artiboard에 한국어 설명을 병기한다", () => {
+    const description = "A shared task board for people and their Claude agents, built as one claude.ai artifact. Views drawn by code, not tokens.";
+    const result = withKoreanTranslation("yulmucoffee/artiboard", description, null);
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
   });
 });
