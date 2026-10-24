@@ -1,0 +1,24 @@
+/* Lucian UX/UI Prompt #041 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#041 */
+/* 홈 파인 하단 탭 바 — 원본 350px 고정 폭을 모바일 하단 고정(좌우 12px, 안전 영역 위)으로 바꾸고 데모 배지는 뺐다 */
+.u041{--x:34px;position:fixed;left:12px;right:12px;bottom:env(safe-area-inset-bottom,0px);z-index:40;height:170px;display:flex;align-items:flex-end;pointer-events:none}
+/* 데스크톱(lg 이상)은 사이드 레일을 쓰므로 숨긴다 */
+@media (min-width:64rem){.u041{display:none}}
+.u041-bar{position:relative;width:100%;height:84px;border-radius:28px;background:var(--ux-surface);
+  -webkit-mask:radial-gradient(circle 42px at var(--x) -4px,transparent 96%,#000 100%);mask:radial-gradient(circle 42px at var(--x) -4px,transparent 96%,#000 100%);
+  box-shadow:0 0 0 1px var(--ux-line)}
+.u041-shadow{position:absolute;left:0;right:0;bottom:0;height:84px;border-radius:28px;box-shadow:0 24px 40px -24px var(--ux-shadow-strong);pointer-events:none}
+.u041-bub{position:absolute;left:var(--x);top:calc(100% - 84px - 35px);width:62px;height:62px;margin-left:-31px;border-radius:50%;background:var(--ux-grad);box-shadow:0 14px 26px -12px rgba(91,72,255,.7)}
+/* 바 영역만 터치를 받고 원이 솟은 윗부분은 아래 본문으로 통과시킨다 */
+.u041-tabs{position:absolute;left:0;right:0;bottom:0;height:84px;display:flex;margin:0;padding:0 14px;list-style:none;pointer-events:auto}
+.u041-tabs>li{flex:1;display:flex}
+/* 링크(a)는 버튼과 달리 글자를 가운데 두지 않으므로 text-align 을 더한다 */
+.u041-tab{position:relative;flex:1;height:100%;border:0;padding:0;background:none;color:var(--ux-ink-3);text-align:center}
+.u041-tab:hover .u041-ic{color:var(--ux-ink)}
+.u041-tab:focus-visible{outline:2px solid var(--ux-accent);outline-offset:-6px;border-radius:18px}
+.u041-ic{position:absolute;left:50%;top:22px;width:26px;height:26px;margin-left:-13px;transition:transform .55s var(--ux-spring),color .3s}
+.u041-ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.u041-lab{position:absolute;left:0;right:0;bottom:12px;font-size:11.5px;font-weight:700;color:var(--ux-ink);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .45s var(--ux-spring)}
+/* 선택 상태는 원본의 aria-selected 대신 링크의 aria-current 로 표시한다 */
+.u041-tab[aria-current="page"] .u041-ic{transform:translateY(-39px);color:var(--ux-accent-ink)}
+.u041-tab[aria-current="page"] .u041-ic svg{stroke-width:2.2}
+.u041-tab[aria-current="page"] .u041-lab{opacity:1;transform:none}
