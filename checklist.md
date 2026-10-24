@@ -1,3 +1,12 @@
+# 앱 분석·복제 Star 36건 등록
+
+- [x] 요청 40개 중 없는 `minosdevs/copycat-skill`은 404라 등록하지 않는다
+- [x] 새 36개는 GitHub Star로 등록하고 운영 `github_stars`에 넣는다
+- [x] 이미 있던 `morluto/rea`, `Jakeschincariol/replica-skill`, `JCodesMore/ai-website-cloner-template`은 즐겨찾기로 올린다
+- [x] 영문 About는 유지하고 한글이 없으면 한국어 한 문단을 붙인다. 이미 한글인 3건은 설명을 바꾸지 않는다
+- [x] eli5는 설치, 사용, 특징, 한계만 담는다. 익스플로잇, 후킹, 우회 절차는 넣지 않는다
+- [x] 재조회 시 39건 모두 한글과 eli5가 있다. 테스트 96개 통과. 로그인한 Stars 화면은 열지 않았다
+
 # every._ai DM 목록 Pages 이관
 
 - [x] 허브 `https://every-ai-guides.vercel.app/dm` 글 100개 중 74개는 이미 있어서 건너뛴다
