@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/search-suggest-input";
 import { Select } from "@/components/ui/select";
 import { SelectionToolbar } from "@/components/ui/selection-toolbar";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 const ALL = "__all__";
@@ -90,6 +91,7 @@ export function PageList({
   q?: string;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const serverPaged = total != null;
   const nav = useListNav(serverQ, serverPage);
   const [localQ, setLocalQ] = useState("");
@@ -289,7 +291,12 @@ export function PageList({
   async function handleDelete(id: string) {
     if (!confirm("이 페이지를 삭제할까요?")) return;
     const res = await fetch(`/api/pages/${id}`, { method: "DELETE" });
-    if (res.ok) router.refresh();
+    if (res.ok) {
+      toast("페이지를 삭제했습니다", { kind: "success" });
+      router.refresh();
+    } else {
+      toast("삭제하지 못했습니다", { kind: "error" });
+    }
   }
 
   async function deleteSelected() {

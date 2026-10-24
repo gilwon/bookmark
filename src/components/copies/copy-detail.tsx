@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/toast";
 import { parseCopyTags } from "@/lib/thread-copy";
 import type { ThreadCopy } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ const countFormatter = new Intl.NumberFormat("ko-KR");
 /** 등록된 카피를 읽기 전용으로 보여 주고 같은 화면에서 고친다. */
 export function CopyDetail({ copy }: { copy: ThreadCopy }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -45,8 +47,11 @@ export function CopyDetail({ copy }: { copy: ThreadCopy }) {
     try {
       const res = await fetch(`/api/copies/${copy.id}`, { method: "DELETE" });
       if (res.ok) {
+        toast("카피를 삭제했습니다", { kind: "success" });
         router.push("/copies");
         router.refresh();
+      } else {
+        toast("삭제하지 못했습니다", { kind: "error" });
       }
     } finally {
       setDeleting(false);
@@ -88,9 +93,12 @@ export function CopyDetail({ copy }: { copy: ThreadCopy }) {
         );
       }
       setEditing(false);
+      toast("카피를 저장했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setSaving(false);
     }

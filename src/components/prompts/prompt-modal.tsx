@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Prompt } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -25,6 +26,7 @@ function fullCopyText(p: Prompt): string {
 /** 프롬프트 카드를 클릭하면 뜨는 상세 팝업 */
 export function PromptModal({ prompt, onClose, onDeleted }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const { toast } = useToast();
   const [copiedAll, setCopiedAll] = useState(false);
   const [copiedSection, setCopiedSection] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -60,7 +62,12 @@ export function PromptModal({ prompt, onClose, onDeleted }: Props) {
       const res = await fetch(`/api/prompts/${prompt.id}`, {
         method: "DELETE",
       });
-      if (res.ok) onDeleted();
+      if (res.ok) {
+        toast("프롬프트를 삭제했습니다", { kind: "success" });
+        onDeleted();
+      } else {
+        toast("삭제하지 못했습니다", { kind: "error" });
+      }
     } finally {
       setDeleting(false);
     }

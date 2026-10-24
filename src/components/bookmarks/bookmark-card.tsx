@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -39,6 +40,7 @@ export function BookmarkCard({
   tagSuggestions = [],
 }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [deleting, setDeleting] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -169,9 +171,12 @@ export function BookmarkCard({
       setEditing(false);
       setShowCatSuggest(false);
       setShowTagSuggest(false);
+      toast("북마크를 저장했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setSaving(false);
     }
@@ -184,7 +189,12 @@ export function BookmarkCard({
       const res = await fetch(`/api/bookmarks/${bookmark.id}`, {
         method: "DELETE",
       });
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        toast("북마크를 삭제했습니다", { kind: "success" });
+        router.refresh();
+      } else {
+        toast("삭제하지 못했습니다", { kind: "error" });
+      }
     } finally {
       setDeleting(false);
     }
