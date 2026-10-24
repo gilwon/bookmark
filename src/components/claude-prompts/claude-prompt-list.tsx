@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { cn } from "@/lib/utils";
@@ -136,9 +137,7 @@ export function ClaudePromptList({ items }: Props) {
       </div>
 
       {pageItems.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          일치하는 프롬프트가 없습니다.
-        </div>
+        <EmptyState title="일치하는 프롬프트가 없습니다." className="mx-auto my-8" />
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {pageItems.map((p) => {

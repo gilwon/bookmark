@@ -8,6 +8,7 @@ import {
   type HeyjamesSkillItem,
 } from "@/lib/heyjames-skills";
 import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { cn } from "@/lib/utils";
 
 export function HeyjamesSkillList({ items }: { items: HeyjamesSkillItem[] }) {
@@ -47,9 +48,7 @@ export function HeyjamesSkillList({ items }: { items: HeyjamesSkillItem[] }) {
         })}
       </div>
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          일치하는 항목이 없습니다.
-        </div>
+        <EmptyState title="일치하는 항목이 없습니다." className="mx-auto my-8" />
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((item) => (

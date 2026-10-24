@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { GrokBotCard } from "@/components/grok-bots/grok-bot-card";
 import { GrokBotComposer } from "@/components/grok-bots/grok-bot-composer";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -249,9 +250,7 @@ export function GrokBotList({ bots }: { bots: GrokBot[] }) {
               />
 
               {filtered.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">
-                  조건에 맞는 그록봇이 없습니다.
-                </p>
+                <EmptyState title="조건에 맞는 그록봇이 없습니다." className="mx-auto my-8" />
               ) : (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {pageItems.map((bot) => (

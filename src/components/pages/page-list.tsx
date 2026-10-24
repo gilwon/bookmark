@@ -28,6 +28,7 @@ import { PdfImportForm } from "@/components/pages/pdf-import-form";
 import { UrlImportForm } from "@/components/pages/url-import-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -449,9 +450,7 @@ export function PageList({
           />
 
           {filtered.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">
-              검색 조건에 맞는 페이지가 없습니다.
-            </p>
+            <EmptyState title="검색 조건에 맞는 페이지가 없습니다." className="mx-auto my-8" />
           ) : (
               <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((p) => {
@@ -563,9 +562,11 @@ export function PageList({
       ) : null}
 
       {trueEmpty ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          아직 페이지가 없습니다. 새 페이지를 만들어 보세요.
-        </div>
+        <EmptyState
+          title="아직 페이지가 없습니다."
+          description="새 페이지를 만들어 보세요."
+          className="mx-auto my-8"
+        />
       ) : null}
     </div>
   );

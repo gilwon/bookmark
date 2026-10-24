@@ -15,6 +15,7 @@ import { useListNav } from "@/hooks/use-list-nav";
 import { useSelection } from "@/hooks/use-selection";
 import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { DEFAULT_PAGE_SIZE } from "@/lib/list-utils";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -257,9 +258,11 @@ export function BookmarkGrid({
 
   if (!serverPaged && bookmarks.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-        아직 북마크가 없습니다. URL을 추가해 보세요.
-      </div>
+      <EmptyState
+        title="아직 북마크가 없습니다."
+        description="URL을 추가해 보세요."
+        className="mx-auto my-8"
+      />
     );
   }
 
@@ -278,9 +281,11 @@ export function BookmarkGrid({
       </div>
 
       {trueEmpty ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          아직 북마크가 없습니다. URL을 추가해 보세요.
-        </div>
+        <EmptyState
+          title="아직 북마크가 없습니다."
+          description="URL을 추가해 보세요."
+          className="mx-auto my-8"
+        />
       ) : (
         <>
       {/* 그룹 칩 — 480px에서도 flex-wrap으로 줄바꿈 */}
@@ -333,11 +338,14 @@ export function BookmarkGrid({
       />
 
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          {query.trim() || (serverPaged && serverQ)
-            ? "검색 조건에 맞는 북마크가 없습니다."
-            : "이 그룹에 북마크가 없습니다."}
-        </div>
+        <EmptyState
+          title={
+            query.trim() || (serverPaged && serverQ)
+              ? "검색 조건에 맞는 북마크가 없습니다."
+              : "이 그룹에 북마크가 없습니다."
+          }
+          className="mx-auto my-8"
+        />
       ) : groups ? (
         <div className="space-y-8">
           {groups.map((g) => (

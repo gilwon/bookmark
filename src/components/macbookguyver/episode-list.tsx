@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { GuideEpisode } from "@/lib/macbookguyver";
 import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -54,9 +55,7 @@ export function EpisodeList({ episodes }: { episodes: GuideEpisode[] }) {
         {tools.map(([t, n]) => chip(t, t, n))}
       </div>
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          일치하는 회차가 없습니다.
-        </div>
+        <EmptyState title="일치하는 회차가 없습니다." className="mx-auto my-8" />
       ) : (
         <div className="space-y-3">
           {filtered.map((e) => (
