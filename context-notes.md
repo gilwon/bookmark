@@ -2387,6 +2387,15 @@
 - 정적 번역표는 681개에서 687개로 늘었다. 백필은 6건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 93개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
 
+## 2026-10-24 앱 분석·복제 Star 등록 메모
+
+- 요청한 저장소 40개 중 `minosdevs/copycat-skill`은 GitHub에서 404다. 등록하지 않았다.
+- 이미 있던 3건은 `morluto/rea`, `Jakeschincariol/replica-skill`, `JCodesMore/ai-website-cloner-template`이다. 설명의 한글은 바꾸지 않고 `is_favorite`를 1로 두었다. rea는 원래 즐겨찾기였다. replica-skill의 eli5는 그대로 두었다. rea와 ai-website-cloner-template에는 eli5만 추가했다.
+- 새 36개는 gilwon 계정에 Star를 누르고 운영 `github_stars`에 `source=sync`, `change_kind=new`로 넣었다. `yournextstore/yournextstore` About의 Codex와 Cursor 사이 공백 두 칸은 그대로다.
+- 정적 번역표는 692개에서 728개로 늘었다. 새 행 설명은 영문 About 뒤에 한국어를 붙였다. 백필 스크립트는 돌리지 않았다. 이미 한글이 들어간 상태로 저장했기 때문이다.
+- eli5는 README와, 모음 저장소의 해당 스킬 파일에 있는 설치, 사용, 특징, 한계만 담았다. 취약점 재현, 후킹, 인증·페이월 우회 절차는 넣지 않았다. `xintongw431-arch/webgl-runtime-cloner-skill`은 README가 없어 SKILL.md를 eli5 근거로 썼고 `readme_md`는 비웠다.
+- 재조회 시 39건 모두 한글과 eli5가 있다. 즐겨찾기는 중복 3건이다. 테스트는 96개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB와 eli5 문단 파싱으로 확인했다.
+
 ## 2026-10-24 어제·오늘 Star 한글 설명 메모
 
 - 한국 시간 2026-10-23 00:00부터 2026-10-24까지 운영 `github_stars`에 들어온 항목은 13건이다. 조회 시작은 `created_at >= 2026-10-22T15:00:00Z`다.

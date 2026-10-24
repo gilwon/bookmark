@@ -1560,6 +1560,54 @@ describe("Star 설명 번역", () => {
     }
   });
 
+  it("2026-10-24에 등록한 앱 분석·복제 Star 36개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["thenavidm/remaster", "App and website cloner for Claude Code and AI agents. Clone any app, make it better and yours: reverse engineering, competitor research, design tokens, DESIGN.md, clean-room rebuild, site migration."],
+      ["Birkenpapier/ai-app-cloner", "Clone a mobile app into a working Expo / React Native project from screenshots. An open-source Claude Code skill."],
+      ["boyang-hu/website-rebuild-skill", "复刻网站的 Agent Skill：抓只读镜像、从压缩代码逐行还原、自动比对验收。An agent skill that mirrors a website, rebuilds it from the minified code, and verifies the result with automated diffs."],
+      ["santowilem/skills", "Pixel-faithful UI cloning skill for Claude Code, Cursor, Codex CLI, ChatGPT, and Copilot. Anti-hallucination contract + adversarial verification. Built on the SKILL.md open standard."],
+      ["braxtonROSE4/clone-any-website", "This is the skill that allows your AI agent to clone any website, pixel by pixel, 100% the same, including ux and ui"],
+      ["yournextstore/yournextstore", "AI-Native Open-Source Next.js commerce. Powered by Stripe. Ultra fast with typesafe Commerce SDK. Built for AI development (Claude, Codex,   Cursor)."],
+      ["julianromli/ai-skills", "Claude Code, Droid, etc. Skills Ability"],
+      ["ericshang98/perfect-web-clone-skill", "Pixel-perfect webpage cloning playbook. Paste a URL, get a measured Vite + React replica."],
+      ["Core-Mate/Pixel-Perfect-Web-Replica", "AI skill for mirroring public webpages into local pixel-perfect replicas with captured assets, visual QA, and rebranding inventories. 像素级复刻公开网站，内置抓取资源、视觉QA能力和品牌替换清单。"],
+      ["niuniu122/pixel-perfect-website-clone-skill", "Codex skill for pixel-perfect website cloning with OpenCLI, Browser Harness, screenshots, pixel diff, and reviewer-agent QA."],
+      ["KeiaiLab/webEmbedding", "Source-first Skill and MCP workflow for URL-based website cloning, capture, rebuild, and fidelity verification."],
+      ["xintongw431-arch/webgl-runtime-cloner-skill", "Codex Skill for high-fidelity local mirroring and QA of authorized WebGL, Three.js, Rive, and canvas-heavy websites."],
+      ["Paidax01/web-to-design-md", "Convert any official website to design.md document"],
+      ["Amanuel2x/clone-skill", "Claude Code skill: clone any website into a production-ready Next.js + Tailwind project"],
+      ["sevzq/screenshot-to-html", "Clone any UI screenshot into one faithful, interactive single-file HTML page — an AI coding-agent skill."],
+      ["onewave-ai/claude-skills", "200+ production-ready Claude Code skills for sales, marketing, design, engineering, and AI agent architecture. Built and maintained by OneWave AI."],
+      ["glebrati-cloud/screenshot-to-code", "Claude skill that converts any screenshot, mockup, or design into clean, production-ready code. React, Vue, Svelte, HTML — pixel-perfect and responsive."],
+      ["oil-oil/draw-ui", "UI design & mockup skill for Claude Code & Codex, from screenshot to code. 帮你出 UI 设计稿并还原成页面。"],
+      ["fitoe/DesignToCode", "Codex skill for turning segmented design images into high-fidelity UnoCSS page code."],
+      ["ozaysahin/screenshot-to-qml", "Screenshot or HTML → native Qt Quick/QML app, verified pixel by pixel. An agent skill for Claude Code, Codex and others."],
+      ["vishnu-madhavan-git/9designer-skills", "Image-to-website Codex skill pipeline: design prototypes, generated assets, and working frontend builds from one reference image."],
+      ["SimoneAvogadro/android-reverse-engineering-skill", "Claude Code skill to support Android app's reverse engineering"],
+      ["incogbyte/android-reverse-engineering-claude-skill", "Claude Code skill that automates Android application reverse engineering"],
+      ["inliver233/reverse-skills", "reverse skills for apk"],
+      ["incogbyte/iOS-reverse-engineering-claude-skill", "Claude Code skill that enables Claude to extract, analyze, reverse engineer iOS apps"],
+      ["th3vib3coder/RevEng", "Portable Codex and Claude Code plugin for static-first reverse engineering workflows"],
+      ["EncidXVII/claude-reverse-engineering-skill", "Reverse engineering skill for Claude Code and other AI coding agents."],
+      ["zhaoxuya520/reverse-skill", "Reverse Engineering / Authorized Penetration Testing / Security Research Skill Router Pack AI-powered routing + On-demand toolchain bootstrapping + Self-evolving knowledge base  Supports Claude Code, Kiro, Cursor, Cline, and other AI coding clients 逆向/渗透/安全技能路由包 - AI 自动路由 + 按需自举工具链 + 自动进化经验库 | 支持 Claude Code / Kiro / Cursor / Cline 等代码 AI 客户端"],
+      ["P4nda0s/reverse-skills", "Reverse engineering skills for Claude Code | 逆向工程 Claude Code Skills 插件"],
+      ["tihanyin/REx-skill", "REx@Skill - Agentic Reverse Engineering eXecution Skill for binary vulnerability discovery"],
+      ["cellebrite-labs/ghidra-rpc", "A Ghidra agentic reverse engineering skill."],
+      ["GeReV/ghidra-iterative-re", "A Claude Code skill for iterative reverse engineering in Ghidra"],
+      ["xxmisaoxx/t-rex", "Reverse-engineering skill for coding agents: trace program behavior, preserve evidence and resume across sessions. OpenCode, Claude Code, Codex, Cursor, Antigravity and Pi."],
+      ["haikow/claude-reverse-skills", "Claude Code 逆向工程 skill 集合 (apk/ida/radare2/js) + IDA MCP 接入，跨平台 Linux/Mac/Windows"],
+      ["Dryxio/reagent", "Reconstruct and validate C/C++ code from compiled programs with AI."],
+      ["vgrichina/re-skill", "Claude Code skill for reverse engineering retro games — disassemble, annotate, extract assets, web port"],
+    ];
+    assert.equal(cases.length, 36);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
   it("이미 한글인 frog-office와 rustdesk-korean 설명은 바꾸지 않는다", () => {
     const cases = [
       ["d-onworks/claude-3d-frog-office", "Claude Code 세션을 개구리·카피바라 직원으로 보여 주는 3D 사무실 · A view-only 3D office that shows each Claude Code session as a frog or capybara employee. Local only, zero dependencies, macOS & Windows."],
