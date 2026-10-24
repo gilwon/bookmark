@@ -1,3 +1,14 @@
+# Lucian UX/UI 요소 적용
+
+- [ ] 1단계 A. 토큰 교체 (`globals.css`)
+- [ ] 1단계 B. `EmptyState` 생성
+- [ ] 1단계 C. `ListSkeleton` 생성
+- [ ] 1단계 D. `ToastProvider`·`useToast` 생성
+- [ ] 1단계 E. `SearchSuggestInput` 재스타일
+- [ ] 2단계 F. 빈 상태 약 20개를 `EmptyState`로 교체
+- [ ] 2단계 G. `loading.tsx` 추가, 토스트 연결
+- [ ] 480/1024/1440px, 라이트·다크, reduced-motion 확인
+
 # 앱 분석·복제 Star 36건 등록
 
 - [x] 요청 40개 중 없는 `minosdevs/copycat-skill`은 404라 등록하지 않는다
