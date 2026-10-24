@@ -1,3 +1,16 @@
+# every._ai DM 목록 Pages 이관
+
+- [x] 허브 `https://every-ai-guides.vercel.app/dm` 글 100개 중 74개는 이미 있어서 건너뛴다
+- [x] 없는 26개만 로컬과 운영에 넣는다. 재실행은 본문을 다시 받지 않고 skip이다
+- [x] 이미지와 PDF는 data URL이다. ZIP은 https 링크다. 추적 쿼리, 카카오, 함께 보면 좋은 글은 뺐다
+- [x] 모션그래픽 100개는 이미지 13, 표 1, 코드 13이다. `/pages/f5b23bd7-40d5-4ad8-b6cd-e860034b8d8e`
+- [x] 수익화 자료집은 이미지 16, PDF 2, ZIP 링크 1이다. `/pages/bb9d1041-7440-4a13-a6cc-7b0a560d12a8`
+- [x] 인스타 자동화는 이미지 1, 표 2, 코드 6이다. `/pages/cb09ab63-16e8-4822-9a9e-300cece09d9f`
+- [x] 유튜브 프롬프트는 표 1, 코드 9이고 YouTube Creators 링크가 있다. `/pages/66393a6a-bca0-4a8f-92ff-b65c0ee48eb2`
+- [x] 브라우저에서 이미지 디코드, 표, 코드, PDF, ZIP, 검색 전체 1개를 확인한다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `3eb7f7d`다
+
 # every._ai k-skill 131개 Pages 이관
 
 - [x] 제목은 `한국인이면 무조건 쓰게 될 k-skill 131개 설치 가이드`다. `/pages/faae19b5-6fb6-40e4-a4f0-81be26dd8440`
