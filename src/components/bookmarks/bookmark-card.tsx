@@ -14,8 +14,9 @@ import { useEffect, useMemo, useState } from "react";
 import type { Bookmark } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { LucianCard } from "@/components/ui/lucian-card";
 import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
@@ -243,7 +244,8 @@ export function BookmarkCard({
   ) : null;
 
   return (
-    <Card
+    <LucianCard
+      tilt={!editing}
       className={cn(
         "group relative flex flex-col overflow-hidden transition-colors hover:border-border",
         selected && "border-indigo-500 ring-1 ring-indigo-500/40",
@@ -535,6 +537,6 @@ export function BookmarkCard({
           </CardContent>
         </>
       )}
-    </Card>
+    </LucianCard>
   );
 }
