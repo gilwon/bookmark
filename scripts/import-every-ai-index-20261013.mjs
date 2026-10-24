@@ -36,13 +36,22 @@ const EXPIRED_URL_PARTS = [
   "from=dm",
   "from=guide",
 ];
+const FROM_VALUES = new Set([
+  "dm",
+  "dm-hub",
+  "guide",
+  "guide-top",
+  "littly",
+  "column",
+  "money-map",
+]);
 const FORBIDDEN_SNIPPETS = [
   TRACKING_KEY,
   "utm_source",
   "from=dm",
   "from=guide",
+  "from=littly",
   "AI 수익화 챌린지",
-  "youtube.com",
   "instagram.com/every",
   "claude-icon.png",
 ];
@@ -59,7 +68,6 @@ const CHROME_SELECTOR = [
   "style",
   "noscript",
   "img[src*='claude-icon']",
-  "a[href*='youtube.com']",
   "a[href*='instagram.com/every']",
 ].join(", ");
 
@@ -97,7 +105,8 @@ function isTrackingParam(key, value) {
     key === "mcp_token" ||
     (key === "source" && value === "copy_link") ||
     (key === "m" && value === "1") ||
-    (key === "from" && (value === "dm" || value === "guide"))
+    key === "gclid" ||
+    (key === "from" && FROM_VALUES.has(value))
   );
 }
 
@@ -145,7 +154,10 @@ export function stripTracking(url, base) {
       )
       .replace(/[?&]source=copy_link/g, "")
       .replace(/[?&]m=1(?=[&#]|$)/g, "")
-      .replace(/[?&]from=(?:dm|guide)(?=[&#]|$)/g, "")
+      .replace(
+        /[?&]from=(?:dm-hub|guide-top|money-map|littly|column|dm|guide)(?=[&#]|$)/g,
+        ""
+      )
       .replace(/[?&]$/, "")
       .replace(/\?&/, "?");
   }
@@ -437,8 +449,14 @@ function pageTitleOf($) {
   return text;
 }
 
-function stripChrome(root) {
+function stripChrome($, root) {
   root.find(CHROME_SELECTOR).remove();
+  root.find("h2").each((_, heading) => {
+    const node = $(heading);
+    if (node.text().replace(/\s+/g, " ").trim() !== "함께 보면 좋은 글") return;
+    node.next("ul").remove();
+    node.remove();
+  });
 }
 
 function separateStepSpans($, root) {
@@ -462,7 +480,7 @@ function selectContent($) {
     throw new Error("본문 영역 article.post 를 찾지 못했습니다.");
   }
   const content = article.clone();
-  stripChrome(content);
+  stripChrome($, content);
   separateMetaSpans($, content);
   separateStepSpans($, content);
   return content;
@@ -553,7 +571,8 @@ function restoreSlots(markdown, slots, tokenOf, render) {
 }
 
 /** 가이드 HTML을 저장용 마크다운으로 바꾼다. 네트워크는 쓰지 않는다. */
-export function parseEveryAiHtml(html, sourceUrl) {
+export function parseEveryAiHtml(html, sourceUrl, options = {}) {
+  const allowSnippets = new Set(options.allowSnippets ?? []);
   const storedUrl = storedSourceUrl(sourceUrl);
   const base = linkBaseOf(storedUrl);
   const $ = cheerio.load(html);
@@ -593,6 +612,7 @@ export function parseEveryAiHtml(html, sourceUrl) {
     .trim();
   const plain = visibleText(markdown);
   for (const snippet of FORBIDDEN_SNIPPETS) {
+    if (allowSnippets.has(snippet)) continue;
     if (plain.includes(snippet)) {
       throw new Error(`제거 대상이 본문에 남아 있습니다. ${snippet}`);
     }
@@ -628,7 +648,14 @@ function collectPlan($, content, sourceUrl) {
     else if (kind === "zip") zips.push(abs);
     else if (/^https?:\/\//.test(abs)) links.push(abs);
   }
-  return { images, pdfs, zips, links };
+  return {
+    images,
+    pdfs,
+    zips,
+    links,
+    tables: content.find("table").length,
+    codes: content.find("pre").length,
+  };
 }
 
 async function fetchWithRetry(url, referer) {
@@ -701,7 +728,16 @@ async function inlineAttachments($, content, sourceUrl) {
   }
 }
 
-function assertImported({ title, markdown, stats, content, plan, sourceUrl }) {
+export function assertImported({
+  title,
+  markdown,
+  stats,
+  content,
+  plan,
+  sourceUrl,
+  allowSnippets = [],
+}) {
+  const allowed = new Set(allowSnippets);
   const stored = storedSourceUrl(sourceUrl);
   if (!markdown.startsWith(`# ${title}`)) {
     throw new Error("첫 헤딩이 다릅니다.");
@@ -734,6 +770,7 @@ function assertImported({ title, markdown, stats, content, plan, sourceUrl }) {
     }
   }
   for (const snippet of FORBIDDEN_SNIPPETS) {
+    if (allowed.has(snippet)) continue;
     if (plainMarkdown.includes(snippet) || plainContent.includes(snippet)) {
       throw new Error(`제거 대상이 저장 본문에 남아 있습니다. ${snippet}`);
     }
@@ -749,19 +786,21 @@ function assertImported({ title, markdown, stats, content, plan, sourceUrl }) {
   }
 }
 
-async function buildImportedPage(sourceUrl) {
-  const html = await (await fetchWithRetry(storedSourceUrl(sourceUrl), SITE_ORIGIN)).text();
+export async function buildImportedPage(sourceUrl, htmlOverride = "", options = {}) {
+  const html = htmlOverride
+    ? htmlOverride
+    : await (await fetchWithRetry(storedSourceUrl(sourceUrl), SITE_ORIGIN)).text();
   const $ = cheerio.load(html);
   const article = $("article.post").first();
   if (!article.length) throw new Error("본문 영역 article.post 를 찾지 못했습니다.");
-  stripChrome(article);
+  stripChrome($, article);
   separateMetaSpans($, article);
   separateStepSpans($, article);
   const plan = collectPlan($, article, sourceUrl);
   await inlineBodyImages($, article, sourceUrl);
   await inlineAttachments($, article, sourceUrl);
-  const parsed = parseEveryAiHtml($.html(), sourceUrl);
-  return { ...parsed, plan };
+  const parsed = parseEveryAiHtml($.html(), sourceUrl, options);
+  return { ...parsed, plan, allowSnippets: options.allowSnippets ?? [] };
 }
 
 function sqliteHasFindability(db) {
@@ -854,7 +893,7 @@ function importLocal(page, markers, libs) {
   return result;
 }
 
-async function loadProductionRows(supabase) {
+export async function loadProductionRows(supabase) {
   const rows = [];
   const pageSize = 1000;
   for (let from = 0; ; from += pageSize) {
@@ -947,7 +986,7 @@ async function importProduction(page, markers, libs) {
   return result;
 }
 
-async function persist(page, libs, preferredId) {
+export async function persist(page, libs, preferredId) {
   const now = new Date().toISOString();
   const record = {
     id: preferredId || randomUUID(),
@@ -960,7 +999,23 @@ async function persist(page, libs, preferredId) {
   const markers = sourceMarkers(page.sourceUrl);
   const local = importLocal(record, markers, libs);
   record.id = local.pageId;
-  const production = await importProduction(record, markers, libs);
+  let production;
+  try {
+    production = await importProduction(record, markers, libs);
+  } catch (error) {
+    if (local.pages === 1) {
+      const db = new Database(resolve(root, "data/mymark.db"));
+      try {
+        db.prepare("DELETE FROM custom_pages WHERE id = ? AND user_id = ?").run(
+          record.id,
+          LOCAL_USER
+        );
+      } finally {
+        db.close();
+      }
+    }
+    throw error;
+  }
   const pageId = production.pageSkips ? production.pageId : local.pageId;
   return {
     pageId: pageId || local.pageId,
@@ -968,6 +1023,7 @@ async function persist(page, libs, preferredId) {
     localSkips: local.pageSkips,
     prodPages: production.pages,
     prodSkips: production.pageSkips,
+    createdAt: now,
   };
 }
 
