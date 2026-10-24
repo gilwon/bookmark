@@ -20,6 +20,7 @@ import {
 } from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import { PromptModal } from "@/components/prompts/prompt-modal";
 import {
@@ -484,13 +485,13 @@ export function PromptList({
 
       {(!serverPaged && prompts.length === 0) ||
       (serverPaged && total === 0 && !serverQ) ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          등록된 프롬프트가 없습니다. 새 프롬프트를 만들어 보세요.
-        </div>
+        <EmptyState
+          title="등록된 프롬프트가 없습니다."
+          description="새 프롬프트를 만들어 보세요."
+          className="mx-auto my-8"
+        />
       ) : filtered.length === 0 ? (
-        <p className="py-8 text-center text-sm text-muted-foreground">
-          조건에 맞는 프롬프트가 없습니다.
-        </p>
+        <EmptyState title="조건에 맞는 프롬프트가 없습니다." className="mx-auto my-8" />
       ) : (
         <div className="space-y-3">
           <SelectionToolbar

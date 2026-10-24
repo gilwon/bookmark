@@ -23,6 +23,7 @@ import {
   type PromptSearchResult,
 } from "@/components/search/prompt-result-card";
 import { StarCard } from "@/components/stars/star-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { parseBundle } from "@/lib/agent-doc-bundle";
 import { auth } from "@/lib/auth";
 import { parsePromptSections } from "@/lib/prompt-mapper";
@@ -302,13 +303,9 @@ export default async function SearchPage({
       )}
 
       {!hasQuery ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          검색어 또는 필터를 입력하세요.
-        </div>
+        <EmptyState title="검색어 또는 필터를 입력하세요." className="mx-auto my-8" />
       ) : total === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          일치하는 결과가 없습니다.
-        </div>
+        <EmptyState title="일치하는 결과가 없습니다." className="mx-auto my-8" />
       ) : (
         <div className="space-y-8">
           {bookmarkResults.length > 0 && (

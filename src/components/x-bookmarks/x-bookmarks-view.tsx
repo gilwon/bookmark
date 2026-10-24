@@ -5,6 +5,7 @@ import { BookmarkCheck, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import type { XBookmarkRow } from "@/lib/store";
 import { X_BOOKMARKS_TABLE_USER_MESSAGE } from "@/lib/x-bookmarks";
@@ -292,13 +293,19 @@ export function XBookmarksView({
       )}
 
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          {items.length > 0
-            ? "검색과 맞는 북마크가 없습니다."
-            : hasX
-              ? "아직 불러온 북마크가 없습니다. 동기화를 눌러 주세요."
-              : "X를 연결한 뒤 동기화하면 여기에 표시됩니다."}
-        </div>
+        <EmptyState
+          title={
+            items.length > 0
+              ? "검색과 맞는 북마크가 없습니다."
+              : hasX
+                ? "아직 불러온 북마크가 없습니다."
+                : "X를 연결한 뒤 동기화하면 여기에 표시됩니다."
+          }
+          description={
+            items.length === 0 && hasX ? "동기화를 눌러 주세요." : undefined
+          }
+          className="mx-auto my-8"
+        />
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((item) => (

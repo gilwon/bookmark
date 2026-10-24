@@ -55,6 +55,7 @@ import {
 } from "@/lib/list-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -641,11 +642,19 @@ export function AgentDocList({ docs }: { docs: AgentDoc[] }) {
       )}
 
       {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          {docs.length === 0
-            ? "등록된 문서가 없습니다. 템플릿 또는 파일을 추가한 뒤 저장하세요."
-            : "필터 조건에 맞는 문서가 없습니다."}
-        </div>
+        <EmptyState
+          title={
+            docs.length === 0
+              ? "등록된 문서가 없습니다."
+              : "필터 조건에 맞는 문서가 없습니다."
+          }
+          description={
+            docs.length === 0
+              ? "템플릿 또는 파일을 추가한 뒤 저장하세요."
+              : undefined
+          }
+          className="mx-auto my-8"
+        />
       ) : (
         <div className="space-y-3">
           <SelectionToolbar

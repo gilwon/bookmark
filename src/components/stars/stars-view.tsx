@@ -10,6 +10,7 @@ import { bulkDeleteByIds } from "@/lib/bulk-delete";
 import { StarCard } from "@/components/stars/star-card";
 import { SyncButton } from "@/components/stars/sync-button";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
   SearchSuggestInput,
@@ -433,9 +434,7 @@ export function StarsView({
             onDeleteSelected={() => void deleteSelected()}
           />
           {filtered.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">
-              조건에 맞는 Star가 없습니다.
-            </p>
+            <EmptyState title="조건에 맞는 Star가 없습니다." className="mx-auto my-8" />
           ) : (
             <div className="space-y-6">
               {favorites.length > 0 && (

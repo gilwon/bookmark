@@ -8,6 +8,7 @@ import { CopyComposer } from "@/components/copies/copy-composer";
 import { LinkifiedText } from "@/components/copies/linkified-text";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListPagination } from "@/components/ui/list-pagination";
 import {
   SearchSuggestInput,
@@ -300,9 +301,7 @@ export function CopyList({
           />
 
           {filtered.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">
-              조건에 맞는 카피가 없습니다.
-            </p>
+            <EmptyState title="조건에 맞는 카피가 없습니다." className="mx-auto my-8" />
           ) : (
               <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card">
                 {pageItems.map((c) => {
