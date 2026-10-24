@@ -1,4 +1,5 @@
 // 목록 검색 입력 + 자동완성(suggest) 드롭다운
+// Lucian UX/UI Prompt #034 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#034
 "use client";
 
 import { Search } from "lucide-react";
@@ -11,7 +12,7 @@ import {
   useState,
 } from "react";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+import "./lucian-034.css";
 
 export type SearchSuggestItem = {
   /** 선택 시 검색창에 넣을 값 */
@@ -77,9 +78,23 @@ function rankMatch(item: SearchSuggestItem, needle: string): number {
   return 0;
 }
 
+/** 라벨에서 입력한 글자와 맞는 첫 부분을 강조 */
+function highlight(text: string, needle: string) {
+  const at = needle ? text.toLowerCase().indexOf(needle) : -1;
+  if (at < 0) return text;
+  return (
+    <>
+      {text.slice(0, at)}
+      <mark>{text.slice(at, at + needle.length)}</mark>
+      {text.slice(at + needle.length)}
+    </>
+  );
+}
+
 /**
  * 검색 입력 + suggest.
  * 키보드 ↑↓ Enter Esc, 클릭 선택, 바깥 클릭 닫기.
+ * 강조된 후보가 입력값으로 시작하면 남은 글자를 흐리게 잇고, Tab으로 받아들인다.
  */
 export function SearchSuggestInput({
   value,
@@ -97,6 +112,8 @@ export function SearchSuggestInput({
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [hi, setHi] = useState(0);
+  // 목록에서 고른 값. 입력값이 이와 같으면 확정 상태(is-set)로 보인다
+  const [picked, setPicked] = useState<string | null>(null);
 
   const items = useMemo(
     () => normalizeItems(suggestions),
@@ -118,10 +135,28 @@ export function SearchSuggestInput({
   }, [items, value, maxItems, showWhenEmpty]);
 
   const showList = open && filtered.length > 0;
+  const needle = value.trim().toLowerCase();
+  const active = showList ? filtered[hi] : undefined;
+  // 강조된 후보가 입력값으로 시작할 때만 남은 글자를 흐리게 잇는다
+  const ghost =
+    active &&
+    value &&
+    active.value.length > value.length &&
+    active.value.toLowerCase().startsWith(value.toLowerCase())
+      ? active.value.slice(value.length)
+      : "";
 
   useEffect(() => {
     setHi(0);
   }, [value, open]);
+
+  // 방향키로 옮긴 후보가 목록 스크롤 밖이면 보이게 한다
+  useEffect(() => {
+    if (!showList) return;
+    document
+      .getElementById(`${listId}-opt-${hi}`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, [hi, showList, listId]);
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -134,12 +169,15 @@ export function SearchSuggestInput({
   const pick = useCallback(
     (item: SearchSuggestItem) => {
       onChange(item.value);
+      setPicked(item.value);
       setOpen(false);
     },
     [onChange]
   );
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    // 한글 조합 중 Enter·방향키는 조합 확정에 쓰이므로 건너뛴다
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (!showList && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
       if (filtered.length > 0) setOpen(true);
       return;
@@ -148,18 +186,22 @@ export function SearchSuggestInput({
       if (e.key === "Escape") (e.target as HTMLInputElement).blur();
       return;
     }
+    // 034처럼 끝에서 반대쪽 끝으로 돈다
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHi((i) => Math.min(i + 1, filtered.length - 1));
+      setHi((i) => (i + 1) % filtered.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHi((i) => Math.max(i - 1, 0));
+      setHi((i) => (i - 1 + filtered.length) % filtered.length);
     } else if (e.key === "Enter") {
       const item = filtered[hi];
       if (item) {
         e.preventDefault();
         pick(item);
       }
+    } else if (e.key === "Tab" && ghost && !e.shiftKey && active) {
+      e.preventDefault();
+      pick(active);
     } else if (e.key === "Escape") {
       e.preventDefault();
       setOpen(false);
@@ -167,34 +209,60 @@ export function SearchSuggestInput({
   }
 
   return (
-    <div ref={rootRef} className={cn("relative", className)}>
-      <Search className="pointer-events-none absolute left-2.5 top-2.5 z-10 h-4 w-4 text-muted-foreground" />
-      <Input
-        id={id}
-        role="combobox"
-        aria-expanded={showList}
-        aria-controls={listId}
-        aria-autocomplete="list"
-        aria-activedescendant={
-          showList && filtered[hi] ? `${listId}-opt-${hi}` : undefined
-        }
-        className={cn("pl-8", inputClassName)}
-        placeholder={placeholder}
-        value={value}
-        autoComplete="off"
-        onChange={(e) => {
-          onChange(e.target.value);
-          setOpen(true);
-        }}
-        onFocus={() => setOpen(true)}
-        onKeyDown={onKeyDown}
-      />
+    <div
+      ref={rootRef}
+      className={cn(
+        "ux u034",
+        value !== "" && picked === value && "is-set",
+        className
+      )}
+    >
+      <div className="u034-box">
+        <Search className="u034-pl" aria-hidden="true" />
+        <div className="u034-wrap">
+          <span className="u034-ghost" aria-hidden="true">
+            {ghost && (
+              <>
+                <b>{value}</b>
+                {ghost}
+              </>
+            )}
+          </span>
+          <input
+            id={id}
+            type="text"
+            role="combobox"
+            aria-expanded={showList}
+            aria-controls={listId}
+            aria-autocomplete="both"
+            aria-activedescendant={
+              showList && filtered[hi] ? `${listId}-opt-${hi}` : undefined
+            }
+            className={cn("u034-in", inputClassName)}
+            placeholder={placeholder}
+            value={value}
+            autoComplete="off"
+            onChange={(e) => {
+              onChange(e.target.value);
+              setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            onKeyDown={onKeyDown}
+          />
+        </div>
+      </div>
       {showList && (
         <ul
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 max-h-64 overflow-auto rounded-md border border-border bg-card py-1 text-foreground shadow-[var(--shadow-popover)]"
+          aria-label="검색 제안"
+          className="u034-list"
         >
+          <li
+            className="u034-hl"
+            role="presentation"
+            style={{ "--i": hi } as React.CSSProperties}
+          />
           {filtered.map((item, i) => {
             const active = i === hi;
             return (
@@ -203,27 +271,21 @@ export function SearchSuggestInput({
                 id={`${listId}-opt-${i}`}
                 role="option"
                 aria-selected={active}
-                className={cn(
-                  "flex cursor-pointer flex-col gap-0.5 px-3 py-2 text-sm",
-                  active
-                    ? "bg-indigo-600/15 text-foreground"
-                    : "text-foreground hover:bg-muted/70"
-                )}
-                onMouseEnter={() => setHi(i)}
+                className="u034-o"
+                style={{ animationDelay: `${i * 35}ms` }}
+                onPointerMove={() => {
+                  if (!active) setHi(i);
+                }}
                 onMouseDown={(e) => {
                   // blur 전에 선택
                   e.preventDefault();
                   pick(item);
                 }}
               >
-                <span className="truncate font-medium">
-                  {item.label ?? item.value}
+                <span>
+                  <b>{highlight(item.label ?? item.value, needle)}</b>
+                  {item.group && <small>{item.group}</small>}
                 </span>
-                {item.group && (
-                  <span className="truncate text-[11px] text-muted-foreground">
-                    {item.group}
-                  </span>
-                )}
               </li>
             );
           })}
