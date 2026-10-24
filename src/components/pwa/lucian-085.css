@@ -1,5 +1,5 @@
-/* Lucian UX/UI Prompt #085 — 당겨서 새로고침 (화면 상단 고정 표시기만 사용, 프로젝트 테마 변수로 매핑) */
-.u085{--pull:0;--ux-surface:var(--surface);--ux-line:var(--border);--ux-accent:var(--accent);--ux-accent-ink:#fff;--ux-ink-3:var(--muted-foreground);--ux-shadow-strong:rgba(0,0,0,.3);--ux-spring:cubic-bezier(.34,1.45,.64,1);position:fixed;left:0;right:0;top:env(safe-area-inset-top);height:0;z-index:60;pointer-events:none}
+/* Lucian UX/UI Prompt #085 — 당겨서 새로고침 (화면 상단 고정 표시기만 사용, 색은 전역 --ux-* 토큰을 따름) */
+.u085{--pull:0;--ux-ink-3:var(--muted-foreground);position:fixed;left:0;right:0;top:env(safe-area-inset-top);height:0;z-index:60;pointer-events:none}
 .u085-ind{position:absolute;left:50%;top:10px;width:40px;height:40px;margin-left:-20px;border-radius:50%;display:grid;place-items:center;background:var(--ux-surface);box-shadow:0 6px 16px -6px var(--ux-shadow-strong),0 0 0 1px var(--ux-line);opacity:min(1,calc(var(--pull) / 30));transform:translateY(calc(min(var(--pull),90) * 1px - 50px)) rotate(calc(var(--pull) * 3deg))}
 .u085-ind svg{width:24px;height:24px;transform:rotate(-90deg)}
 .u085-ind circle{fill:none;stroke:var(--ux-accent);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:calc(100 - min(1,var(--pull) / 70) * 82)}
