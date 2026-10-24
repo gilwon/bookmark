@@ -3,6 +3,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { PwaInstallToast } from "@/components/pwa/pwa-install-toast";
+import { PullToRefresh } from "@/components/pwa/pull-to-refresh";
 import { PwaRegister } from "@/components/pwa/pwa-register";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -13,6 +14,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider>
         {children}
         <PwaRegister />
+        <PullToRefresh />
         <PwaInstallToast />
       </ThemeProvider>
     </SessionProvider>
