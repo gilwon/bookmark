@@ -31,7 +31,7 @@ import { useTheme } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
 /** 섹션으로 묶은 내비게이션. Linear처럼 라벨은 작고 대문자다. */
-const navSections = [
+export const navSections = [
   {
     label: null,
     items: [
