@@ -712,6 +712,18 @@ export const TARGETS = [
     tags: ["코덱스", "프롬프트"],
     phrase: "com.openai.codex/web/Crashpad",
   },
+  {
+    id: "90cc95b3-a8c5-4778-8e88-9abb1e46e8ab",
+    title: "회사 자료를 AI에 넣기 전 체크리스트 5칸",
+    tags: ["보안", "설정"],
+    phrase: "학습 데이터 활용 끄기",
+  },
+  {
+    id: "983c7a25-3d45-4a29-95ce-295907c4eacd",
+    title: "클로드 팀을 역할 폴더로 나누는 my-team",
+    tags: ["클로드", "에이전트"],
+    phrase: "QUALITY_GATES.md",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
