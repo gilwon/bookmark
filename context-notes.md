@@ -2,6 +2,10 @@
 
 - 범위는 공통 프리미티브와 빈 상태·로딩·알림·검색 입력만이다. 사이드바·대시보드·로그인은 제외했다. 테마는 Lucian 기본 토큰으로 교체한다. 둘 다 사용자 선택이다.
 - Lucian 요소는 완결된 조각이라 `Button` variant에 바로 대응하지 않는다. 프리미티브는 토큰으로 겉모습만 바꾸고 요소는 역할이 맞는 곳에만 넣기로 했다. 코드를 새로 쓰는 안은 props 호환이 깨질 위험이 커서 기각했다.
+- 테마 교체(Worker A). `--ux-*` 를 `html.light`/`html.dark` 에 정의하고 기존 변수가 그것을 가리키게 했다. `--muted-foreground` 는 `ux-ink-3`(대비 2.7~3.7) 대신 `ux-ink-2`(6~8)로, `--muted` 는 `ux-surface-2`(라이트 페이지 배경과 거의 같아 호버가 안 보임) 대신 `ux-surface-3` 로 했다. 다크 Button(흰 글자)을 위해 indigo-500 은 `#6F5DF3` 로 정했다.
+- `.ux` 기반 규칙은 `@layer base` 에 넣었다. 레이어 밖이면 `:where(.ux) :is(button…){color:inherit}` 가 Tailwind 유틸보다 이겨 `.ux` 안 Button 글자색이 덮인다. 대가로 `.ux` 안 포커스 링 간격이 3px 대신 1px 이 된다.
+- 범위 밖으로 남긴 대비 문제. 라이트 액센트가 페이지 배경에서 4.41:1, 다크 `dark:hover:bg-indigo-400` 위 흰 글자 2.94:1, 다크 `text-indigo-500` 9곳 4.32:1.
+- `lucian-085.css` 가 `--ux-*` 를 앱 변수로 다시 정의하던 부분을 걷어냈다. 전역 토큰이 생겼고, 남겨 두면 다크에서 `accent-ink` 가 흰색이라 라벤더 위 흰 체크가 된다.
 - 현재 토스트 시스템(PWA 설치 토스트 제외), `loading.tsx`, 스켈레톤이 없고 빈 상태는 약 20개 파일에 제각각 있다. `SearchSuggestInput`은 8개 컴포넌트가 쓴다.
 
 # every._ai DM 목록 Pages 이관 메모

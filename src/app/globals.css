@@ -11,57 +11,114 @@
  */
 :root,
 html.light {
-  --background: #ffffff;
-  --foreground: #0d0e10;
-  --card: #ffffff;
-  --card-foreground: #0d0e10;
-  --muted: #f4f5f8;
-  --muted-foreground: #6b6f76;
-  --border: #e6e6e6;
-  --input: #ffffff;
-  --secondary: #f9f9fa;
-  --secondary-foreground: #0d0e10;
-  --accent: #5e6ad2;
-  --accent-hover: #545ec8;
-  --sidebar: #f9f9fa;
-  --ring: #5e6ad2;
-  --placeholder: #8a8f98;
-  --code-bg: #f4f5f8;
-  --pre-bg: #f8f8f9;
-  --accent-rgb: 94, 106, 210;
+  /* Lucian UX/UI Prompt 테마 토큰 · MIT License (c) 2026 Seokwoooo — 라이트 값 */
+  color-scheme: light;
+  --ux-page: #f4f2ee;
+  --ux-surface: #ffffff;
+  --ux-surface-2: #f5f3ef;
+  --ux-surface-3: #eae7e1;
+  --ux-ink: #16151b;
+  --ux-ink-2: #57535f;
+  --ux-ink-3: #8e8a97;
+  --ux-line: rgba(22, 21, 27, 0.09);
+  --ux-line-2: rgba(22, 21, 27, 0.17);
+  --ux-accent: #6a57f2;
+  --ux-accent-2: #2f8fe0;
+  --ux-accent-soft: rgba(106, 87, 242, 0.12);
+  --ux-accent-ink: #ffffff;
+  --ux-mint: #119c72;
+  --ux-warn: #d6731e;
+  --ux-danger: #d93a55;
+  --ux-glass: rgba(255, 255, 255, 0.58);
+  --ux-glass-line: rgba(255, 255, 255, 0.85);
+  --ux-shadow: rgba(40, 30, 80, 0.14);
+  --ux-shadow-strong: rgba(40, 30, 80, 0.3);
+  --ux-grad: linear-gradient(120deg, #7b61ff, #3d8bff 55%, #1fb89a);
+  --ux-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ux-spring: cubic-bezier(0.34, 1.45, 0.64, 1);
+
+  /* 기존 앱 변수는 위 Lucian 토큰을 가리킨다 */
+  --background: var(--ux-page);
+  --foreground: var(--ux-ink);
+  --card: var(--ux-surface);
+  --card-foreground: var(--ux-ink);
+  /* surface-2는 페이지 배경과 거의 같아 호버가 안 보이므로 surface-3을 쓴다 */
+  --muted: var(--ux-surface-3);
+  /* ink-3은 흰 배경에서 3.4:1이라 본문 보조 글자로 쓰기 어렵다. ink-2는 6.1~7.5:1 */
+  --muted-foreground: var(--ux-ink-2);
+  --border: var(--ux-line);
+  --input: var(--ux-surface);
+  --secondary: var(--ux-surface-2);
+  --secondary-foreground: var(--ux-ink);
+  --accent: var(--ux-accent);
+  /* 라이트에서는 잉크 쪽으로 섞어 조금 어둡게 만든다 */
+  --accent-hover: color-mix(in srgb, var(--ux-accent) 88%, var(--ux-ink));
+  --sidebar: var(--ux-surface);
+  --ring: var(--ux-accent);
+  --placeholder: var(--ux-ink-3);
+  --code-bg: var(--ux-surface-3);
+  --pre-bg: var(--ux-surface-2);
+  /* rgba(var(--accent-rgb), a) 형태로 쓰는 값이라 숫자로 둔다. --ux-accent와 같은 색 */
+  --accent-rgb: 106, 87, 242;
   /* 평면 표면 토큰 — 라이트 (유리 효과 없음) */
-  --surface: #ffffff;
-  --surface-strong: #ffffff;
-  --surface-subtle: #f4f5f8;
-  --surface-border: #e6e6e6;
+  --surface: var(--ux-surface);
+  --surface-strong: var(--ux-surface);
+  --surface-subtle: var(--ux-surface-2);
+  --surface-border: var(--ux-line);
   --shadow-low: 0 1px 2px rgba(13, 14, 16, 0.06);
   --shadow-popover: 0 8px 24px rgba(13, 14, 16, 0.12), 0 1px 2px rgba(13, 14, 16, 0.08);
 }
 
 html.dark {
-  --background: #08090a;
-  --foreground: #f7f8f8;
-  --card: #0f1011;
-  --card-foreground: #f7f8f8;
-  --muted: #1c1d1f;
-  --muted-foreground: #8a8f98;
-  --border: #23252a;
-  --input: #0f1011;
-  --secondary: #16171a;
-  --secondary-foreground: #f7f8f8;
-  --accent: #7170ff;
-  --accent-hover: #8382ff;
-  --sidebar: #0b0c0d;
-  --ring: #7170ff;
-  --placeholder: #62666d;
-  --code-bg: #16171a;
-  --pre-bg: #131415;
-  --accent-rgb: 113, 112, 255;
+  /* Lucian UX/UI Prompt 테마 토큰 — 다크 값. 원본의 prefers-color-scheme 대신 html.dark 클래스를 따른다 */
+  color-scheme: dark;
+  --ux-page: #07080d;
+  --ux-surface: #13141c;
+  --ux-surface-2: #1a1b25;
+  --ux-surface-3: #252632;
+  --ux-ink: #f4f0e8;
+  --ux-ink-2: rgba(244, 240, 232, 0.68);
+  --ux-ink-3: rgba(244, 240, 232, 0.42);
+  --ux-line: rgba(255, 255, 255, 0.08);
+  --ux-line-2: rgba(255, 255, 255, 0.16);
+  --ux-accent: #b7a4ff;
+  --ux-accent-2: #7db4ff;
+  --ux-accent-soft: rgba(183, 164, 255, 0.15);
+  --ux-accent-ink: #0b0c12;
+  --ux-mint: #7ee8c0;
+  --ux-warn: #ffb26b;
+  --ux-danger: #ff7d8c;
+  --ux-glass: rgba(255, 255, 255, 0.07);
+  --ux-glass-line: rgba(255, 255, 255, 0.18);
+  --ux-shadow: rgba(0, 0, 0, 0.45);
+  --ux-shadow-strong: rgba(0, 0, 0, 0.72);
+  --ux-grad: linear-gradient(120deg, #b7a4ff, #7db4ff 55%, #a5f2d3);
+
+  --background: var(--ux-page);
+  --foreground: var(--ux-ink);
+  --card: var(--ux-surface);
+  --card-foreground: var(--ux-ink);
+  --muted: var(--ux-surface-3);
+  /* ink-3은 다크 배경에서 3.6~3.7:1이라 ink-2(6.9~8.2:1)를 쓴다 */
+  --muted-foreground: var(--ux-ink-2);
+  --border: var(--ux-line);
+  --input: var(--ux-surface);
+  --secondary: var(--ux-surface-2);
+  --secondary-foreground: var(--ux-ink);
+  --accent: var(--ux-accent);
+  /* 다크에서는 잉크가 밝으므로 같은 식이 조금 밝은 색을 만든다 */
+  --accent-hover: color-mix(in srgb, var(--ux-accent) 88%, var(--ux-ink));
+  --sidebar: var(--ux-surface);
+  --ring: var(--ux-accent);
+  --placeholder: var(--ux-ink-3);
+  --code-bg: var(--ux-surface-3);
+  --pre-bg: var(--ux-surface-2);
+  --accent-rgb: 183, 164, 255;
   /* 평면 표면 토큰 — 다크 */
-  --surface: #0f1011;
-  --surface-strong: #131415;
-  --surface-subtle: #16171a;
-  --surface-border: #23252a;
+  --surface: var(--ux-surface);
+  --surface-strong: var(--ux-surface-2);
+  --surface-subtle: var(--ux-surface-2);
+  --surface-border: var(--ux-line);
   --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-popover: 0 12px 32px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -83,16 +140,20 @@ html.dark {
   --font-sans: "Pretendard Variable", Pretendard, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Berkeley Mono", "SFMono-Regular", ui-monospace, Consolas, "Liberation Mono", monospace;
   /* 기존 indigo-* 클래스가 그대로 Linear 보라 계열을 가리키게 재매핑한다 */
-  --color-indigo-50: #f1f1fd;
-  --color-indigo-100: #e2e3fb;
-  --color-indigo-200: #c3c6f5;
-  --color-indigo-300: #a5a8f0;
-  --color-indigo-400: #8382ff;
-  --color-indigo-500: #7170ff;
-  --color-indigo-600: #5e6ad2;
-  --color-indigo-700: #545ec8;
-  --color-indigo-800: #464fae;
-  --color-indigo-900: #363c85;
+  /*
+   * Lucian 액센트 기준으로 다시 잡는다. 600은 라이트 액센트, 300은 다크 액센트와 같다.
+   * 500은 다크 Button 배경(흰 글자)이라 흰 글자 대비 4.5:1을 넘는 중간 톤으로 둔다.
+   */
+  --color-indigo-50: #f1eefe;
+  --color-indigo-100: #e4dffd;
+  --color-indigo-200: #cfc4ff;
+  --color-indigo-300: #b7a4ff;
+  --color-indigo-400: #9a86f9;
+  --color-indigo-500: #6f5df3;
+  --color-indigo-600: #6a57f2;
+  --color-indigo-700: #5a46dc;
+  --color-indigo-800: #4a38b8;
+  --color-indigo-900: #3a2c8f;
   /* Linear 반경 — 4/6/8/12px. 유틸 전역에 적용된다 */
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -193,6 +254,60 @@ input,
 textarea,
 select {
   font-family: inherit;
+}
+
+/*
+ * Lucian 요소 공통 기반 규칙 (.ux). 원본 그대로 한 번만 둔다.
+ * 레이어 밖에 두면 Tailwind 유틸보다 항상 이겨 .ux 안의 Button 글자색까지 덮으므로 base 레이어에 넣는다.
+ * 요소별 lucian-NNN.css는 레이어 밖이라 이 규칙보다 우선한다.
+ */
+@layer base {
+  .ux,
+  .ux *,
+  .ux *::before,
+  .ux *::after {
+    box-sizing: border-box;
+  }
+
+  .ux {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    color: var(--ux-ink);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+    -webkit-tap-highlight-color: transparent;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  :where(.ux) :is(button, input, textarea, select) {
+    font: inherit;
+    color: inherit;
+  }
+
+  :where(.ux) button {
+    cursor: pointer;
+  }
+
+  .ux :focus-visible {
+    outline: 2px solid var(--ux-accent);
+    outline-offset: 3px;
+  }
+
+  .ux [hidden] {
+    display: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ux,
+    .ux *,
+    .ux *::before,
+    .ux *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 /* Tiptap / 노션형 에디터 */
