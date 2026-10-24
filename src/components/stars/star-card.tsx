@@ -8,7 +8,8 @@ import { useState } from "react";
 import type { GithubStar } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LucianCard } from "@/components/ui/lucian-card";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -48,7 +49,7 @@ export function StarCard({
   }
 
   return (
-    <Card
+    <LucianCard
       className={cn(
         "relative flex flex-col transition-colors hover:border-border",
         isNew && "border-emerald-500/50",
@@ -163,6 +164,6 @@ export function StarCard({
           ))}
         </div>
       </CardContent>
-    </Card>
+    </LucianCard>
   );
 }
