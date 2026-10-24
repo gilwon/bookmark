@@ -16,11 +16,13 @@ import { useState } from "react";
 import type { Prompt } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 /** 등록된 프롬프트를 상세 레이아웃으로 표시한다. */
 export function PromptDetail({ prompt }: { prompt: Prompt }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -42,8 +44,11 @@ export function PromptDetail({ prompt }: { prompt: Prompt }) {
         method: "DELETE",
       });
       if (res.ok) {
+        toast("프롬프트를 삭제했습니다", { kind: "success" });
         router.push("/prompts");
         router.refresh();
+      } else {
+        toast("삭제하지 못했습니다", { kind: "error" });
       }
     } finally {
       setDeleting(false);

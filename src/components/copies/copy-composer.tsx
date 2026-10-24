@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/toast";
 import { parseCopyTags } from "@/lib/thread-copy";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ const countFormatter = new Intl.NumberFormat("ko-KR");
 /** 목록 상단에서 카피 본문을 붙여 넣는다. */
 export function CopyComposer() {
   const router = useRouter();
+  const { toast } = useToast();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
@@ -52,9 +54,12 @@ export function CopyComposer() {
       setTitle("");
       setSourceUrl("");
       setTags("");
+      toast("카피를 등록했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setLoading(false);
     }

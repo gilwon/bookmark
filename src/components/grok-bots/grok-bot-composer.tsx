@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/toast";
 import { GROK_BOT_CATEGORY_ORDER } from "@/lib/grok-bot";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ export function GrokBotComposer({
   existingCategories?: string[];
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [name, setName] = useState("");
   const [nameEn, setNameEn] = useState("");
   const [creator, setCreator] = useState("");
@@ -85,9 +87,12 @@ export function GrokBotComposer({
       setTemplateUrl("");
       setSourceUrl("");
       setOfficialMarketplace(false);
+      toast("그록봇을 등록했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setLoading(false);
     }

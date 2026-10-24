@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/toast";
 
 type Props = {
   /** 기존 카테고리 이름 목록 */
@@ -18,6 +19,7 @@ const selectClass =
 /** URL을 받아 메타 추출 후 북마크를 생성한다. */
 export function AddBookmarkForm({ categories = [] }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [url, setUrl] = useState("");
   const [tags, setTags] = useState("");
   /** "" = 자동(URL 기반), "__new__" = 직접 입력 */
@@ -71,9 +73,12 @@ export function AddBookmarkForm({ categories = [] }: Props) {
       setTags("");
       setCategoryMode("");
       setNewCategory("");
+      toast("북마크를 추가했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setLoading(false);
     }

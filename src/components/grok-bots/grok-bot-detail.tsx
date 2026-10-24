@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/toast";
 import {
   GROK_BOT_CATEGORY_ORDER,
   normalizeTemplateUrl,
@@ -40,6 +41,7 @@ function linesToEntries(text: string): GrokBotEntry[] {
 /** 등록된 그록봇을 읽고 같은 화면에서 고친다. */
 export function GrokBotDetail({ bot }: { bot: GrokBot }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -122,8 +124,11 @@ export function GrokBotDetail({ bot }: { bot: GrokBot }) {
     try {
       const res = await fetch(`/api/grok-bots/${bot.id}`, { method: "DELETE" });
       if (res.ok) {
+        toast("그록봇을 삭제했습니다", { kind: "success" });
         router.push("/grok-bots");
         router.refresh();
+      } else {
+        toast("삭제하지 못했습니다", { kind: "error" });
       }
     } finally {
       setDeleting(false);
@@ -169,9 +174,12 @@ export function GrokBotDetail({ bot }: { bot: GrokBot }) {
         );
       }
       setEditing(false);
+      toast("그록봇을 저장했습니다", { kind: "success" });
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "오류가 발생했습니다.");
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다.";
+      setError(msg);
+      toast(msg, { kind: "error" });
     } finally {
       setSaving(false);
     }
