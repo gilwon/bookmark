@@ -2420,3 +2420,15 @@
 - eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. Sim과 Doory의 비밀 키 이름과 생성 명령은 넣지 않았다. claude-howto의 보안 점검 절차도 넣지 않았다.
 - 정적 번역표는 687개에서 692개로 늘었다. 백필은 5건을 갱신했고 빈 설명 채움은 1건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 95개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
+
+## 2026-10-25 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-24 00:00부터 2026-10-25까지 운영 `github_stars`에 들어온 항목은 42건이다. 조회 시작은 `created_at >= 2026-10-23T15:00:00Z`다. 오늘 2026-10-25에 새로 들어온 항목은 0건이다.
+- 이미 한글과 eli5가 있는 40건은 설명과 eli5를 바꾸지 않았다. `xintongw431-arch/webgl-runtime-cloner-skill`은 README가 없어 `readme_md`가 비어 있고, 기존 eli5는 그대로 두었다.
+- 한글이 없던 2건은 `created_at`이 `2026-10-24T10:59:17.185Z`다. `yulmucoffee/artiboard`와 `OneWave-AI/claude-skills`다.
+- `yulmucoffee/artiboard`는 `yulmucoffee/cstack`와 다른 저장소다. `OneWave-AI/claude-skills`는 `anthropics/skills`, `android/skills`, `BuilderIO/skills`, `santowilem/skills`, `julianromli/ai-skills`와 다른 저장소다.
+- 매핑 키가 `onewave-ai/claude-skills`로 소문자여서 운영 행 `OneWave-AI/claude-skills`에 한국어가 붙지 않았다. 키를 저장소 이름과 같게 고쳤다.
+- 두 건의 `readme_md`는 비어 있어서 가져온 README를 넣었다. README는 한글이 적어 `detail_fetched_at`을 비워 두었다. artiboard README의 한글은 22자다.
+- eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. artiboard의 비밀 키 이름과 claude-skills의 침투 계획 절차는 넣지 않았다.
+- 정적 번역표는 728개에서 729개로 늘었다. 백필은 2건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 97개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
