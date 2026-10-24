@@ -1,3 +1,24 @@
+# 한국 시간 이번 주 Notion Pages 이관 메모
+
+- 기준은 2026-10-19 00:00 KST, UTC `2026-10-18T15:00:00.000Z`부터 2026-10-25 아침까지다. 워크스페이스 `GILWON` `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`.
+- 목록은 space.pages 28, private_pages 308, shared_pages_manual_sort 261, bookmarked_pages 10, 고유 311이다. 이름만 `GILWON YOO님의 워크스페이스`인 공간 세 곳에는 이번 주 글이 없다.
+- 죽은 빈 페이지 `402b2568-27ac-807f-b9d5-e33318bd72c3`는 넣지 않았다. 달력 행도 넣지 않았다.
+- 하비 가이드 제목 `손님 데려오는 클로드 영업 에이전트 하비, 설치·설정·실행 가이드`. pageId `c0db2568-27ac-82a2-a864-0165e0c59acf`. 만든 시각은 2026-10-21 07:09 KST다.
+- 주소 `https://app.notion.com/p/c0db256827ac82a2a8640165e0c59acf`.
+- 이미지 0. 첨부 0. 표 14. 코드 15. 루트 자식 129. 링크 5.
+- 링크. 원문, `https://github.com/ethanplusai/harvey`, `https://github.com/ethanplusai/harvey/blob/main/docs/microsoft365.md`, `https://github.com/ethanplusai/harvey/blob/main/CHANGELOG.md`, `https://developers.openai.com/codex`.
+- 본문에는 `http://localhost:5555`, `https://github.com/ethanplusai/harvey.git`, `https://your-company.com`도 있다. localhost는 http 그대로다.
+- 저장 경로 `/pages/51ef863d-b3bb-4e11-a79b-74cf4996c171`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-24T23:53:11.149Z`다.
+- 본문 sha256은 `703c470365c074530ca7141f084e63cce09b595e3b29641fe68fe84e3c3036d1`이고 길이는 52481이다. 브라우저를 연 뒤에도 로컬 본문 해시는 같다.
+- 제품 광고 프롬프트. pageId `c0db2568-27ac-82fd-8d09-0143cbea4ed3`. 만든 시각은 2026-10-25 08:39 KST다.
+- 주소 `https://app.notion.com/p/c0db256827ac82fd8d090143cbea4ed3`.
+- 이미지 0. 첨부 0. 표 0. 코드 0. 구분선 1. 루트 자식 72. 본문 밖 링크는 원문뿐이다.
+- 저장 경로 `/pages/fbd96838-7d88-4ca5-90f0-8107aa284f78`. `created_at`은 `2026-10-24T23:53:12.808Z`다.
+- 본문 sha256은 `8244364a4c416162078b3c4b262645414b0ab77d1fbc025a5d78f3cb1690da86`이고 길이는 23161이다. 에디터를 연 뒤 로컬 `updated_at`만 `2026-10-24T23:55:32.191Z`로 바뀌었고 본문 해시는 같다. 운영 본문은 그대로다.
+- 검색 `하비`와 `제품 광고 프롬프트`에서 각각 제목과 전체 1개가 보인다. 로컬 `custom_pages`는 789건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-notion-kst-20261025.mjs`. 커밋 `af97e8c`. 테스트 8개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # Lucian UX/UI 요소 적용 메모
 
 - 범위는 공통 프리미티브와 빈 상태·로딩·알림·검색 입력만이다. 사이드바·대시보드·로그인은 제외했다. 테마는 Lucian 기본 토큰으로 교체한다. 둘 다 사용자 선택이다.
