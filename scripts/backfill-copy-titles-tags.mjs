@@ -724,6 +724,18 @@ export const TARGETS = [
     tags: ["클로드", "에이전트"],
     phrase: "QUALITY_GATES.md",
   },
+  {
+    id: "6a5fc9bc-5d11-4043-af70-a24a2b0fda17",
+    title: "맥북 단축키와 창 정리에 쓰는 무료 앱 6개",
+    tags: ["툴", "설정"],
+    phrase: "RunCat Neo",
+  },
+  {
+    id: "8548a99d-d875-4b04-a10f-b4e9e2e27e88",
+    title: "대본·논문·로컬 모델을 맡기는 오픈소스 9개",
+    tags: ["툴", "에이전트"],
+    phrase: "Pixelle-video",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
