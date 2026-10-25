@@ -1592,6 +1592,17 @@
 - [x] 두 건 README는 한글이 적어 detail_fetched_at을 비워 둠
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+<!-- 2026-10-26 어제·오늘 Star 한글 설명 체크리스트 -->
+# 2026-10-26 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-25부터 2026-10-26까지 운영 Star 2건 확인. 한글 없는 설명 2건
+- [x] cafe-inventory는 About가 비어 한국어만 채움. BeautifulRust는 영문 뒤에 한글을 붙임
+- [x] 매핑 729개에서 731개. 회귀 테스트 99개 통과
+- [x] 운영 백필 2건, 빈 설명 1건. 재실행 갱신 0건
+- [x] 두 건 README를 읽어 readme_md_ko에 설치, 사용법, 특징을 저장. BeautifulRust만 한계를 저장. 비밀 키 이름과 침투 절차는 넣지 않음
+- [x] cafe-inventory README는 한글이라 detail_fetched_at과 detail_json을 채움. BeautifulRust는 영문이라 detail_fetched_at을 비워 둠
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
