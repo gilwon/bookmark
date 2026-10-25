@@ -727,5 +727,7 @@
   "haikow/claude-reverse-skills": "APK, IDA, radare2, JavaScript 역공학과 IDA MCP 연결을 담은 Claude Code 스킬 모음입니다. 리눅스, 맥, 윈도우에서 씁니다.",
   "Dryxio/reagent": "AI로 컴파일된 프로그램에서 C, C++ 코드를 재구성하고 검증합니다.",
   "vgrichina/re-skill": "레트로 게임 코드를 분해하고 주석을 달고, 자원을 추출하고, 웹으로 옮기는 Claude Code 스킬입니다.",
-  "yulmucoffee/artiboard": "사람과 Claude 에이전트가 함께 쓰는 공유 작업 보드입니다. claude.ai 아티팩트 하나로 만들고, 화면은 코드로 그립니다."
+  "yulmucoffee/artiboard": "사람과 Claude 에이전트가 함께 쓰는 공유 작업 보드입니다. claude.ai 아티팩트 하나로 만들고, 화면은 코드로 그립니다.",
+  "forexms78/cafe-inventory": "디저트 카페 신사역점의 재고를 관리하는 시스템입니다. 현장에서 쓰이고 있습니다.",
+  "morganlinton/BeautifulRust": "Claude가 관용적이고 견고한 Rust를 쓰도록 가르치는 Claude Code 플러그인입니다."
 }

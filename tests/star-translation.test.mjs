@@ -1651,4 +1651,18 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("2026-10-26에 추가된 BeautifulRust에 한국어 설명을 병기한다", () => {
+    const description = "A Claude Code plugin that teaches Claude to write idiomatic, robust Rust";
+    const result = withKoreanTranslation("morganlinton/BeautifulRust", description, null);
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
+  });
+
+  it("2026-10-26에 About가 비어 있는 cafe-inventory는 한국어만 채운다", () => {
+    const korean = "디저트 카페 신사역점의 재고를 관리하는 시스템입니다. 현장에서 쓰이고 있습니다.";
+    assert.equal(withKoreanTranslation("forexms78/cafe-inventory", null, null), korean);
+    assert.equal(withKoreanTranslation("forexms78/cafe-inventory", "", null), korean);
+  });
 });
