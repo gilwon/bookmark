@@ -736,6 +736,42 @@ export const TARGETS = [
     tags: ["툴", "에이전트"],
     phrase: "Pixelle-video",
   },
+  {
+    id: "f6093da9-dc3d-4235-a613-71ec202fad6c",
+    title: "사무직 일을 글로 적은 앤트로픽 플러그인 123개",
+    tags: ["클로드", "스킬"],
+    phrase: "invoice-chase",
+  },
+  {
+    id: "5557da5f-17e8-4e9c-9670-0218701cdd57",
+    title: "클로드 프롬프트를 깊게 고치는 네 줄",
+    tags: ["클로드", "프롬프트"],
+    phrase: "여기서 전문가가 할 일",
+  },
+  {
+    id: "515e4a4e-e4ea-4aca-924a-cafb22042f6a",
+    title: "문서와 코드가 다를 때 코드를 따르게 하는 한 문장",
+    tags: ["클로드", "설정"],
+    phrase: "follow the conventions used in the existing code",
+  },
+  {
+    id: "7b96cf36-92b7-41a2-bd31-4a3a91389830",
+    title: "유튜브 요약부터 코드 통째 넣기까지 무료 프로그램 5개",
+    tags: ["툴", "에이전트"],
+    phrase: "MoneyPrinterV2",
+  },
+  {
+    id: "7a2271a9-5e35-44aa-aaaa-dbcf3d73bb63",
+    title: "내 서버에 직접 두는 오픈소스 10개",
+    tags: ["툴", "에이전트"],
+    phrase: "Stirling PDF",
+  },
+  {
+    id: "a9b3347a-4214-4bc4-8ca3-1eb21bc33ce1",
+    title: "설계서를 금붕어 AI가 검토하는 EGM",
+    tags: ["에이전트", "설정"],
+    phrase: "/egm-brainstorm",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
