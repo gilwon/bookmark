@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 121건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 121);
+test("대상 127건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 127);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 121);
+  assert.equal(new Set(ids).size, 127);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -947,6 +947,48 @@ test("어제 추가된 맥 앱·오픈소스 2건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 2);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제 추가된 플러그인·프롬프트·오픈소스 6건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "f6093da9-dc3d-4235-a613-71ec202fad6c": {
+      title: "사무직 일을 글로 적은 앤트로픽 플러그인 123개",
+      tags: ["클로드", "스킬"],
+      raw: "앤트로픽이 사무직 AI 비서를 통째로 공개했어요. 처음엔 11 개였는데, 지금 공식 목록엔 123개.",
+    },
+    "5557da5f-17e8-4e9c-9670-0218701cdd57": {
+      title: "클로드 프롬프트를 깊게 고치는 네 줄",
+      tags: ["클로드", "프롬프트"],
+      raw: "ANTHROPIC의 엔지니어가 CLAUDE를 훨씬 더 깊이 있게 만드는 4줄을 공유했습니다",
+    },
+    "515e4a4e-e4ea-4aca-924a-cafb22042f6a": {
+      title: "문서와 코드가 다를 때 코드를 따르게 하는 한 문장",
+      tags: ["클로드", "설정"],
+      raw: "연구자들에 따르면, CLAUDE.md나 AGENTS.md에 미리 다음 한 문장을 추가하는 것이 권장됩니다.",
+    },
+    "7b96cf36-92b7-41a2-bd31-4a3a91389830": {
+      title: "유튜브 요약부터 코드 통째 넣기까지 무료 프로그램 5개",
+      tags: ["툴", "에이전트"],
+      raw: "개발자들이 쉬쉬하던 깃허브 무료 프로그램 5가지 ( 3번은 반칙 같아요....) 전부 무료, 오픈소스예요",
+    },
+    "7a2271a9-5e35-44aa-aaaa-dbcf3d73bb63": {
+      title: "내 서버에 직접 두는 오픈소스 10개",
+      tags: ["툴", "에이전트"],
+      raw: "전부 오픈소스예요. 저장해두고 필요할 때 꺼내 쓰세요",
+    },
+    "a9b3347a-4214-4bc4-8ca3-1eb21bc33ce1": {
+      title: "설계서를 금붕어 AI가 검토하는 EGM",
+      tags: ["에이전트", "설정"],
+      raw: "AI한테 코딩을 시키면 보통 바로 코드부터 짜게 합니다. 그런데 구글이 공개한 방법은 반대입니다. 코드 전에 설계서부터 쓰고, 그걸 맥락 없는 AI들한테 먼저 두들겨 맞게 합니다.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 6);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
