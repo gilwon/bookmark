@@ -729,5 +729,15 @@
   "vgrichina/re-skill": "레트로 게임 코드를 분해하고 주석을 달고, 자원을 추출하고, 웹으로 옮기는 Claude Code 스킬입니다.",
   "yulmucoffee/artiboard": "사람과 Claude 에이전트가 함께 쓰는 공유 작업 보드입니다. claude.ai 아티팩트 하나로 만들고, 화면은 코드로 그립니다.",
   "forexms78/cafe-inventory": "디저트 카페 신사역점의 재고를 관리하는 시스템입니다. 현장에서 쓰이고 있습니다.",
-  "morganlinton/BeautifulRust": "Claude가 관용적이고 견고한 Rust를 쓰도록 가르치는 Claude Code 플러그인입니다."
+  "morganlinton/BeautifulRust": "코딩 에이전트에게 관용적인 Rust를 작성하고 검토하고 옮기도록 가르치는 에이전트 스킬입니다. 검증된 clippy 설정이 있고 Claude Code, Codex, Copilot, Cursor, Gemini CLI에서 씁니다.",
+  "JetBrains/thinkrail": "pi로 바이브 코딩하는 가벼운 IDE입니다. 일하는 방식에 맞춰 스스로 바뀌고, 표어는 The Vibe You Need입니다.",
+  "makecindy/cindy": "생각하면 끝난다는 오픈소스 AI 에이전트입니다. 받아서 바로 씁니다.",
+  "google/elephant-goldfish-model": "LLM으로 명세를 먼저 정하고 개발하도록 Google에서 만든 오픈소스 방법과 스킬 모음입니다.",
+  "ShayanAbbas1/dbdelve": "Rust와 GPUI로 만든 빠르고 가벼운 데이터베이스 클라이언트입니다.",
+  "nightly-labs/openbot": "꺼지지 않는 AI 팀원을 두는 로컬 우선 데스크톱 작업 공간입니다. Codex, Claude, Grok을 각자 작업 공간과 작업 대기열, 파일 공유, 브라우저 조작, 에이전트끼리의 협업으로 돌립니다.",
+  "hevnsnt/CVEngine": "내가 가진 자산의 공격 표면을 AI로 계속 찾고, 근거로 취약점을 가리며, 개발 에이전트 MCP와 연결하는 도구입니다.",
+  "withastro/flue": "샌드박스에서 에이전트를 돌리는 프레임워크입니다.",
+  "NVIDIA/OpenShell": "자율 AI 에이전트를 위한 안전하고 비공개로 도는 실행 환경입니다.",
+  "odoo/odoo": "사업을 키우는 오픈소스 업무 앱 모음입니다.",
+  "ParadevAI/Paradev": "코딩 에이전트 100개 이상을 병렬로 부리는 에이전트 IDE입니다. 예전 이름은 Superset이고, 에이전트는 자신의 구독으로 돌립니다."
 }

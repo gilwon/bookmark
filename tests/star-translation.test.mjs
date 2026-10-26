@@ -1652,12 +1652,44 @@ describe("Star 설명 번역", () => {
     assert.equal(result.includes("\n\n"), true);
   });
 
-  it("2026-10-26에 추가된 BeautifulRust에 한국어 설명을 병기한다", () => {
-    const description = "A Claude Code plugin that teaches Claude to write idiomatic, robust Rust";
+  it("2026-10-27에 About가 바뀐 BeautifulRust에 한국어 설명을 다시 병기한다", () => {
+    const description = "Agent Skills that teach coding agents to write, review, and port idiomatic Rust, plus a tested clippy config. Works with Claude Code, Codex, Copilot, Cursor, and Gemini CLI.";
     const result = withKoreanTranslation("morganlinton/BeautifulRust", description, null);
     assert.equal(result.startsWith(description), true);
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
+  });
+
+  it("2026-10-27에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["JetBrains/thinkrail", "Vibe code with pi in a lightweight, real IDE that customises itself around the way you work — The Vibe You Need"],
+      ["makecindy/cindy", "Consider it done. The open-source AI agent that works out of the box · 想到，就能做到。开源、开箱即用的 AI Agent。"],
+      ["google/elephant-goldfish-model", "An open-source method and skill set created at Google for spec-driven development with LLMs"],
+      ["ShayanAbbas1/dbdelve", "Fast and lightweight DB Client made in Rust and GPUI."],
+      ["nightly-labs/openbot", "A local-first desktop workspace for persistent AI teammates. Run Codex, Claude, and Grok with dedicated workspaces, task queues, file sharing, browser control, and agent-to-agent collaboration."],
+      ["hevnsnt/CVEngine", "AI-first external attack surface assessment with continuous discovery, evidence-based vulnerability validation, and developer-agent MCP integration."],
+      ["withastro/flue", "The sandbox agent framework."],
+      ["NVIDIA/OpenShell", "OpenShell is the safe, private runtime for autonomous AI agents."],
+      ["odoo/odoo", "Odoo. Open Source Apps To Grow Your Business."],
+      ["ParadevAI/Paradev", "Paradev (formerly Superset) is an agentic IDE to orchestrate 100+ coding agents in parallel. Run any agent with your own subscription."],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-27에 이미 한글인 iron-laws와 openoffice 설명은 바꾸지 않는다", () => {
+    const cases = [
+      ["JinHo-von-Choi/iron-laws", "오철칙(Iron Laws) - AI가 만든 코드의 보안·구조·유지보수 문제를 짚어 주는 소스코드 점검 CLI"],
+      ["pblsketch/openoffice", "이음오피스(IeumOffice): 워드·엑셀·파워포인트·PDF·한글(HWP)·마크다운·HTML·마인드맵 파일을 한 창에서 열고 고치는 무료 오픈소스 데스크톱 오피스. AI는 쓰는 사람의 Claude·Codex 구독으로 돌아갑니다. GenOffice(Apache-2.0)를 바탕으로 만들었습니다."],
+    ];
+    for (const [repo, description] of cases) {
+      assert.equal(withKoreanTranslation(repo, description, null), description, repo);
+    }
   });
 
   it("2026-10-26에 About가 비어 있는 cafe-inventory는 한국어만 채운다", () => {
