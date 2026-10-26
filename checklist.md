@@ -1614,6 +1614,18 @@
 - [x] cafe-inventory README는 한글이라 detail_fetched_at과 detail_json을 채움. BeautifulRust는 영문이라 detail_fetched_at을 비워 둠
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+<!-- 2026-10-27 어제·오늘 Star 한글 설명 체크리스트 -->
+# 2026-10-27 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-26부터 2026-10-27까지 운영 Star 13건 확인. 한글 없는 설명 11건, eli5 없는 항목 12건
+- [x] BeautifulRust는 동기화로 About가 바뀌어 한글이 빠졌으므로 새 영문 뒤에 한글을 다시 붙임. 기존 eli5와 readme_md는 유지
+- [x] iron-laws와 openoffice는 이미 한글이라 설명을 유지하고 eli5만 추가
+- [x] 매핑 731개에서 741개. 회귀 테스트 101개 통과
+- [x] 운영 백필 11건, 빈 설명 0건. 재실행 갱신 0건
+- [x] 오늘 12건 README를 읽어 readme_md_ko에 설치, 사용법, 특징을 저장. flue는 설치 명령이 없어 설치 절을 만들지 않음. CVEngine의 스캔과 재현 절차는 넣지 않음
+- [x] iron-laws와 openoffice README는 한글이라 detail_fetched_at과 detail_json을 채움. 나머지 영문 README는 detail_fetched_at을 비워 둠
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 

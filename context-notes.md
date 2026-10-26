@@ -2477,3 +2477,14 @@
 - eli5는 README에 있는 설치, 사용, 특징만 담았다. cafe-inventory에는 한계 절이 없어 한계를 만들지 않았다. BeautifulRust만 한계를 담았다. unsafe FFI 절차와 전후 코드 예는 넣지 않았다.
 - 정적 번역표는 729개에서 731개로 늘었다. 백필은 2건을 갱신했고 빈 설명 채움은 1건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 99개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
+
+## 2026-10-27 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-26 00:00부터 2026-10-27 아침까지 운영 `github_stars`에 있는 항목은 13건이다. 조회 시작은 `created_at >= 2026-10-25T15:00:00Z`다.
+- 어제 행 `morganlinton/BeautifulRust`는 동기화가 GitHub About를 긴 문장으로 바꿔 붙였던 한글을 지웠다. 새 영문 뒤에 한글을 다시 붙였다. 기존 `readme_md`와 eli5는 바꾸지 않았다.
+- 오늘 `created_at`이 `2026-10-26T23:09:51.937Z`인 12건이 들어왔다. 영문 10건은 한글을 뒤에 붙였다. `JinHo-von-Choi/iron-laws`와 `pblsketch/openoffice`는 이미 한글이라 설명을 유지했다.
+- 12건의 `readme_md`는 비어 있어서 가져온 README를 넣었다. iron-laws와 openoffice README는 한글이라 `detail_fetched_at`과 실제 `detail_json`을 채웠다. iron-laws는 MIT, 기본 브랜치 main, 포크 24, 이슈 0, 워처 169, 푸시 시각 `2026-10-25T23:05:33Z`다. openoffice는 Apache-2.0, 홈페이지 `https://ieumoffice.com`, 포크 90, 이슈 17, 워처 487, 푸시 시각 `2026-10-26T23:05:20Z`다.
+- 나머지 10건 README는 영문이라 `detail_fetched_at`을 비워 두었다. `withastro/flue` README에는 설치 명령이 없어 설치 절을 만들지 않았다. `odoo/odoo` 설치는 공식 문서 안내만 담았다.
+- eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. `hevnsnt/CVEngine`의 스캔 검색식과 재현 절차는 넣지 않았다.
+- 정적 번역표는 731개에서 741개로 늘었다. 백필은 11건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 101개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
