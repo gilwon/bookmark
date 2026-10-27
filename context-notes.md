@@ -1,3 +1,18 @@
+# tuemarz LLM 카운슬 설치 가이드 Pages 이관 메모
+
+- 제목은 `카파시의 자문단(LLM 카운슬) 설치 가이드`다. 공개 Notion 페이지 `400137c9-26d5-81cf-b48d-fa836bf7a8dd`, space `44b9d169-a795-4d3d-a9a9-bf9ab8070759`. GILWON 워크스페이스가 아니다.
+- 주소 `https://tuemarz.notion.site/LLM-400137c926d581cfb48dfa836bf7a8dd`. 쿠키 없이 블록을 받고, 이미지는 `notion.so/image` 래퍼에 블록 id와 space id를 붙여 jpeg로 받았다.
+- 이미지 6. 첨부 0. 표 2. 코드 3. 구분선 7. 루트 자식 59. 링크 16.
+- 그림 순서와 바이트, sha256. `01_karpathy.jpg` 127233 `3afa381837f9dcb7ccb52748b85492f37bd7c0238d2da61a5b2f9eae376e9963` 1600x746. `02_llm_council.jpg` 123834 `0ef8b8ad97063dad1121328296cca4c0f1070ff3e075c82b611fa81141f7d873` 1600x534. `03_skill_repo.jpg` 103567 `283b1e6323946e4ee49b20712bdeb5eff74ca00638b6229f6a2a7f71ca27cb26` 1600x722. `04_five_advisors.jpg` 247942 `8bce08502612410c613b7b55c1cfaee7af254ab3744a2d55acb9164f938a1c05` 1600x1458. `06_skill_upload.jpg` 63791 `4096f72ae9ec2164d94d6809ee93730424322ecef9d87d8ea163a647a0a62559` 1600x984. `05_result.jpg` 170464 `0310c2d69e1ee539f72ae6e9aef272fc7165a21c81d3cb8c55f05ccab380dc95` 1100x1272.
+- `04_five_advisors.jpg` 캡션에 `[SKILL.md](https://skill.md)`가 들어 그림 줄이 깨졌다. alt는 `SKILL.md에 적힌 다섯 자문`으로 두고, 링크는 그림 다음 문단에 남겼다.
+- 본문 링크. 원문, `https://www.youtube.com/@builderjoshkim?sub_confirmation=1`, `https://maily.so/josh`, `https://joshua.site/contact`, `https://www.solopreneur.co.kr/`, `https://skill.md`, `https://github.com/aiwithremy/claude-skills-llm-council/blob/main/SKILL.md`, `https://claude.ai/new#customize/skills`, `https://github.com/aiwithremy/claude-skills-llm-council`, `https://github.com/karpathy/llm-council`, `https://youtube.com/shorts/wS9rrwRImTg`, `https://www.instagram.com/reel/Dewga9usbsU`. 유튜브와 메일리, 연락처, 솔로프리너는 본문에 두 번씩 있다.
+- 저장 경로 `/pages/5cf92e93-68c9-4fb7-8149-1d2fbec1398a`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-27T03:54:17.327Z`다.
+- 넣었을 때 본문 sha256은 `b6641e5f4f1d17441dee836266f4ddcdb91d4cb5d4cc1b67266abb1fe5b9e73d`이고 길이는 1129756이다.
+- 에디터를 연 뒤 로컬에서 제목과 같은 h1이 빠지고 표 칸에 `align`, `colspan`, `colwidth`, `rowspan`이 붙었다. 로컬 `updated_at`은 `2026-10-27T03:57:34.928Z`, 로컬 해시 `05c21e9e57d5e8a6a51bd951758580261aa03349c3c50464f098e032a62d9e83`, 길이 1132642이다. 그림과 링크는 같다. 운영 본문은 그대로다.
+- 검색 `카파시의 자문단(LLM 카운슬) 설치 가이드`에서 제목과 전체 1개가 보인다. 로컬 `custom_pages`는 791건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-tuemarz-llm-council.mjs`. 커밋 `bd746a1`. 테스트 7개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 심팀장 주말 클로드 5개 Pages 이관 메모
 
 - 제목은 화면 h1을 한 줄로 붙인 `주말에 클로드로 만들어 볼 다섯 개`다. 문서 제목의 `5개`는 쓰지 않았다.
