@@ -732,7 +732,7 @@
   "morganlinton/BeautifulRust": "코딩 에이전트에게 관용적인 Rust를 작성하고 검토하고 옮기도록 가르치는 에이전트 스킬입니다. 검증된 clippy 설정이 있고 Claude Code, Codex, Copilot, Cursor, Gemini CLI에서 씁니다.",
   "JetBrains/thinkrail": "pi로 바이브 코딩하는 가벼운 IDE입니다. 일하는 방식에 맞춰 스스로 바뀌고, 표어는 The Vibe You Need입니다.",
   "makecindy/cindy": "생각하면 끝난다는 오픈소스 AI 에이전트입니다. 받아서 바로 씁니다.",
-  "google/elephant-goldfish-model": "LLM으로 명세를 먼저 정하고 개발하도록 Google에서 만든 오픈소스 방법과 스킬 모음입니다.",
+  "google/elephant-goldfish-model": "AI 에이전트로 소프트웨어를 설계하고 검토하는 오픈소스 스킬 모음입니다.",
   "ShayanAbbas1/dbdelve": "Rust와 GPUI로 만든 빠르고 가벼운 데이터베이스 클라이언트입니다.",
   "nightly-labs/openbot": "꺼지지 않는 AI 팀원을 두는 로컬 우선 데스크톱 작업 공간입니다. Codex, Claude, Grok을 각자 작업 공간과 작업 대기열, 파일 공유, 브라우저 조작, 에이전트끼리의 협업으로 돌립니다.",
   "hevnsnt/CVEngine": "내가 가진 자산의 공격 표면을 AI로 계속 찾고, 근거로 취약점을 가리며, 개발 에이전트 MCP와 연결하는 도구입니다.",
@@ -743,5 +743,6 @@
   "kargulstudio/calender-app-design": "피그마의 달력 대시보드를 옮긴 Kargul Workspace 인사 업무 화면 프로토타입입니다. 백엔드 없이 브라우저의 localStorage에만 저장합니다.",
   "AgentSystemLabs/agent-office": "팀이 Claude Code 직원을 책상에 두고, 라이브 터미널을 같이 보고, 음성으로 말하고, GitHub 이슈와 PR을 따라가는 만화풍 3D 사무실입니다.",
   "pixel-agents-hq/pixel-agents": "픽셀 사무실입니다.",
-  "disler/claude-code-hooks-multi-agent-observability": "Claude Code 에이전트를 단순한 훅 이벤트 추적으로 실시간으로 지켜봅니다."
+  "disler/claude-code-hooks-multi-agent-observability": "Claude Code 에이전트를 단순한 훅 이벤트 추적으로 실시간으로 지켜봅니다.",
+  "CopilotKit/OpenDuet": "일을 해내고 진행을 알려 주는 능동형 AI 에이전트의 오픈소스 템플릿입니다."
 }

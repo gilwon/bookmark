@@ -1664,7 +1664,7 @@ describe("Star 설명 번역", () => {
     const cases = [
       ["JetBrains/thinkrail", "Vibe code with pi in a lightweight, real IDE that customises itself around the way you work — The Vibe You Need"],
       ["makecindy/cindy", "Consider it done. The open-source AI agent that works out of the box · 想到，就能做到。开源、开箱即用的 AI Agent。"],
-      ["google/elephant-goldfish-model", "An open-source method and skill set created at Google for spec-driven development with LLMs"],
+      ["google/elephant-goldfish-model", "Open-source skills for designing and reviewing software with AI agents"],
       ["ShayanAbbas1/dbdelve", "Fast and lightweight DB Client made in Rust and GPUI."],
       ["nightly-labs/openbot", "A local-first desktop workspace for persistent AI teammates. Run Codex, Claude, and Grok with dedicated workspaces, task queues, file sharing, browser control, and agent-to-agent collaboration."],
       ["hevnsnt/CVEngine", "AI-first external attack surface assessment with continuous discovery, evidence-based vulnerability validation, and developer-agent MCP integration."],
@@ -1717,5 +1717,22 @@ describe("Star 설명 번역", () => {
     const korean = "피그마의 달력 대시보드를 옮긴 Kargul Workspace 인사 업무 화면 프로토타입입니다. 백엔드 없이 브라우저의 localStorage에만 저장합니다.";
     assert.equal(withKoreanTranslation("kargulstudio/calender-app-design", null, null), korean);
     assert.equal(withKoreanTranslation("kargulstudio/calender-app-design", "", null), korean);
+  });
+
+  it("2026-10-28에 About가 바뀐 elephant-goldfish-model에 한국어 설명을 다시 병기한다", () => {
+    const description = "Open-source skills for designing and reviewing software with AI agents";
+    const korean = "AI 에이전트로 소프트웨어를 설계하고 검토하는 오픈소스 스킬 모음입니다.";
+    assert.equal(
+      withKoreanTranslation("google/elephant-goldfish-model", description, null),
+      `${description}\n\n${korean}`
+    );
+  });
+
+  it("2026-10-28에 추가된 OpenDuet에 한국어 설명을 병기한다", () => {
+    const description = "An Open Source template for a proactive AI agent that gets your work done and keeps you in the loop.";
+    const result = withKoreanTranslation("CopilotKit/OpenDuet", description, null);
+    assert.equal(result.startsWith(description), true);
+    assert.equal(hasKorean(result), true);
+    assert.equal(result.includes("\n\n"), true);
   });
 });
