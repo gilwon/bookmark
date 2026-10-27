@@ -1648,6 +1648,17 @@
 - [x] README 4건은 영문이라 detail_fetched_at을 비워 둠
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-10-28 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-27부터 2026-10-28 아침까지 운영 Star 17건 확인. 한글 없는 항목 2건
+- [x] elephant-goldfish-model은 About가 바뀌어 한글이 빠졌으므로 새 영문 뒤에 한글을 다시 붙임. 기존 eli5와 readme_md는 유지
+- [x] CopilotKit/OpenDuet는 오늘 들어온 항목이라 한글 설명과 eli5를 추가. Anil-matcha/open-duet, nightly-labs/openbot과 다름
+- [x] 매핑 745개에서 746개. elephant 문장은 새 About에 맞게 고침. 회귀 테스트 105개 통과
+- [x] 운영 반영 2건, 빈 설명 0건, README 저장 1건, 한글 README 캐시 0건. 재실행 갱신 0건
+- [x] OpenDuet eli5는 설치, 사용법, 특징, 한계를 저장. 키 이름과 가짜 Google 절차는 넣지 않음
+- [x] OpenDuet README는 영문이라 detail_fetched_at을 비워 둠
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 

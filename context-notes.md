@@ -2517,3 +2517,13 @@
 - disler의 훅 설정 명령과 테스트 이벤트 본문은 넣지 않았다. pixel-agents에서 권한 확인을 건너뛰는 설정은 보안 결과를 받아들일 때만 켠다는 문장만 남겼다. agent-office의 전체 공개 주소는 팀 공유가 아니라는 한계 한 줄만 남겼다.
 - 정적 번역표는 741개에서 745개로 늘었다. 반영은 4건, 빈 설명 1건, README 저장 4건, 한글 README 캐시 0건이다. 재실행 갱신은 0건이다. 재조회 시 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 103개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
+## 2026-10-28 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-28 08시 47분 기준 어제·오늘 창은 `created_at >= 2026-10-26T15:00:00Z`다. 운영 행은 17건이고, 15건은 한글 설명과 eli5가 있어 유지했다.
+- `google/elephant-goldfish-model` About가 "Open-source skills for designing and reviewing software with AI agents"로 바뀌면서 붙였던 한글이 지워졌다. 새 영문 뒤에 한글을 다시 붙였다. 기존 `readme_md` 4732자와 eli5 742자는 바꾸지 않았다. 라이선스 Apache-2.0, 홈페이지 `https://egm.dev`, 기본 브랜치 main, 포크 213, 이슈 46, 워처 3216, 푸시 시각 `2026-10-27T21:19:47Z`다. README는 영문이라 `detail_fetched_at`은 비어 있다.
+- `CopilotKit/OpenDuet`는 `created_at` `2026-10-27T22:43:02.922Z`에 들어왔다. GitHub 별표 시각은 `2026-10-27T21:48:03Z`다. `Anil-matcha/open-duet`, `nightly-labs/openbot`, `CopilotKit/openbot`과 다른 저장소다. About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `copilotkit.ai/openduet`, 기본 브랜치 main, 포크 62, 이슈 3, 워처 441, 푸시 시각 `2026-10-27T20:13:15Z`다.
+- OpenDuet README는 영문이라 `detail_fetched_at`과 `detail_json`을 비워 두었다. 가져온 README는 `readme_md`에 넣었다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 환경 변수 이름과 가짜 Google 연결 절차는 넣지 않았다.
+- 이 창의 GitHub 별표 중 앱에 없는 저장소는 없었다.
+- 정적 번역표는 745개에서 746개로 늘었다. elephant 키는 새 About 문장으로 고쳤다. 반영은 2건, 빈 설명 0건, README 저장 1건, 한글 README 캐시 0건이다. 재실행 갱신은 0건이다. 재조회 시 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 105개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
