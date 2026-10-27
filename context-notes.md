@@ -2488,3 +2488,17 @@
 - eli5는 README에 있는 설치, 사용, 특징, 한계만 담았다. `hevnsnt/CVEngine`의 스캔 검색식과 재현 절차는 넣지 않았다.
 - 정적 번역표는 731개에서 741개로 늘었다. 백필은 11건을 갱신했고 빈 설명 채움은 0건이다. 재실행 갱신은 0건이다. 재조회 시 어제·오늘 추가분 중 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 101개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다.
+
+## 2026-10-27 11시 32분 어제·오늘 Star 한글 설명 메모
+
+- 같은 요청을 한국 시간 11시 32분에 다시 받았다. 창은 그대로 `created_at >= 2026-10-25T15:00:00Z`이고 운영 행은 17건이다. 오전 13건은 한글 설명과 eli5가 있어 바꾸지 않았다.
+- 오늘 11시 30분 `created_at` `2026-10-27T02:30:34.318Z`에 4건이 들어왔다. 넷 다 `readme_md`와 `readme_md_ko`가 비어 있었다. 끝 공백은 없다.
+- `kargulstudio/calender-app-design` About는 비어 한국어만 채웠다. 저장소 철자 calender는 그대로 둔다. `kargulstudio/kanban`, `workflow-editor`, `sales-crm`과 다른 저장소다. 라이선스 MIT, 홈페이지 `https://calender-app-design.vercel.app`, 기본 브랜치 main, 포크 6, 이슈 0, 워처 18, 푸시 시각 `2026-10-26T20:34:05Z`다.
+- `AgentSystemLabs/agent-office` 영문 About 뒤에 한글을 붙였다. 픽셀 사무실이나 다른 에이전트 사무실 저장소와 다르다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 235, 이슈 53, 워처 816, 푸시 시각 `2026-10-09T02:30:26Z`다.
+- `pixel-agents-hq/pixel-agents` About는 "Pixel office."이고 뒤에 "픽셀 사무실입니다."를 붙였다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 1675, 이슈 107, 워처 9914, 푸시 시각 `2026-10-26T22:33:47Z`다.
+- `disler/claude-code-hooks-multi-agent-observability` 영문 About 뒤에 한글을 붙였다. 라이선스 없음, 홈페이지 없음, 기본 브랜치 main, 포크 387, 이슈 31, 워처 1556, 푸시 시각 `2026-02-08T23:59:13Z`다.
+- 4건 README는 영문이라 `detail_fetched_at`과 `detail_json`을 비워 두었다. 가져온 README는 `readme_md`에 넣었다.
+- eli5 파싱은 agent-office가 설치 5, 사용 4, 특징 4, 한계 3이다. pixel-agents는 설치 5, 사용 4, 특징 4, 한계 4다. calender-app-design은 설치 3, 사용 4, 특징 4, 한계 0이다. disler는 설치 5, 사용 4, 특징 4, 한계 0이다.
+- disler의 훅 설정 명령과 테스트 이벤트 본문은 넣지 않았다. pixel-agents에서 권한 확인을 건너뛰는 설정은 보안 결과를 받아들일 때만 켠다는 문장만 남겼다. agent-office의 전체 공개 주소는 팀 공유가 아니라는 한계 한 줄만 남겼다.
+- 정적 번역표는 741개에서 745개로 늘었다. 반영은 4건, 빈 설명 1건, README 저장 4건, 한글 README 캐시 0건이다. 재실행 갱신은 0건이다. 재조회 시 한글이 없거나 eli5가 없는 항목은 0건이다.
+- 테스트는 103개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.

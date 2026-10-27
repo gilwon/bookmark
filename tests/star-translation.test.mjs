@@ -1697,4 +1697,25 @@ describe("Star 설명 번역", () => {
     assert.equal(withKoreanTranslation("forexms78/cafe-inventory", null, null), korean);
     assert.equal(withKoreanTranslation("forexms78/cafe-inventory", "", null), korean);
   });
+
+  it("2026-10-27 오후에 추가된 Star 3개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["AgentSystemLabs/agent-office", "A cartoon 3D office where your team hires Claude Code workers at desks, shares live terminals, talks over voice, and tracks GitHub issues and PRs."],
+      ["pixel-agents-hq/pixel-agents", "Pixel office."],
+      ["disler/claude-code-hooks-multi-agent-observability", "Real-time monitoring for Claude Code agents through simple hook event tracking."],
+    ];
+    assert.equal(cases.length, 3);
+    for (const [repo, description] of cases) {
+      const result = withKoreanTranslation(repo, description, null);
+      assert.equal(result.startsWith(description), true, repo);
+      assert.equal(hasKorean(result), true, repo);
+      assert.equal(result.includes("\n\n"), true, repo);
+    }
+  });
+
+  it("2026-10-27 오후에 About가 비어 있는 calender-app-design은 한국어만 채운다", () => {
+    const korean = "피그마의 달력 대시보드를 옮긴 Kargul Workspace 인사 업무 화면 프로토타입입니다. 백엔드 없이 브라우저의 localStorage에만 저장합니다.";
+    assert.equal(withKoreanTranslation("kargulstudio/calender-app-design", null, null), korean);
+    assert.equal(withKoreanTranslation("kargulstudio/calender-app-design", "", null), korean);
+  });
 });
