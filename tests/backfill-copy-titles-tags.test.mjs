@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 127건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 127);
+test("대상 130건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 130);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 127);
+  assert.equal(new Set(ids).size, 130);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -989,6 +989,33 @@ test("어제 추가된 플러그인·프롬프트·오픈소스 6건의 제목�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 6);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("오늘 추가된 레포·유튜브·UI 3건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "4e19f295-e1eb-4c85-ba40-f1a05abe6376": {
+      title: "에이전트 기억과 PDF 변환을 맡기는 레포 8개",
+      tags: ["툴", "에이전트"],
+      raw: "깃허브에 숨어 있는 레포 8개",
+    },
+    "629c34cd-2bbc-4c62-a3d4-870351b74055": {
+      title: "조회수보다 공유를 보는 유튜브 기획 7가지",
+      tags: ["콘텐츠", "학습"],
+      raw: "[콘텐츠편]",
+    },
+    "7207fcb0-2a7d-4d6d-9830-753643c2b591": {
+      title: "처음부터 안 만들어도 되는 UI 라이브러리 10곳",
+      tags: ["디자인", "툴"],
+      raw: "모든 UI 컴포넌트를 처음부터 구축하는 것을 멈추세요. 이 10개의 라이브러리가 시간을 절약해 줄 것입니다.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 3);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
