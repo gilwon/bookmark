@@ -772,6 +772,24 @@ export const TARGETS = [
     tags: ["에이전트", "설정"],
     phrase: "/egm-brainstorm",
   },
+  {
+    id: "4e19f295-e1eb-4c85-ba40-f1a05abe6376",
+    title: "에이전트 기억과 PDF 변환을 맡기는 레포 8개",
+    tags: ["툴", "에이전트"],
+    phrase: "Open Glean",
+  },
+  {
+    id: "629c34cd-2bbc-4c62-a3d4-870351b74055",
+    title: "조회수보다 공유를 보는 유튜브 기획 7가지",
+    tags: ["콘텐츠", "학습"],
+    phrase: "이거 누가 누구한테 보낼 것 같아",
+  },
+  {
+    id: "7207fcb0-2a7d-4d6d-9830-753643c2b591",
+    title: "처음부터 안 만들어도 되는 UI 라이브러리 10곳",
+    tags: ["디자인", "툴"],
+    phrase: "evilcharts.com",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
