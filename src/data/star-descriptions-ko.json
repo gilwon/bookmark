@@ -739,5 +739,9 @@
   "withastro/flue": "샌드박스에서 에이전트를 돌리는 프레임워크입니다.",
   "NVIDIA/OpenShell": "자율 AI 에이전트를 위한 안전하고 비공개로 도는 실행 환경입니다.",
   "odoo/odoo": "사업을 키우는 오픈소스 업무 앱 모음입니다.",
-  "ParadevAI/Paradev": "코딩 에이전트 100개 이상을 병렬로 부리는 에이전트 IDE입니다. 예전 이름은 Superset이고, 에이전트는 자신의 구독으로 돌립니다."
+  "ParadevAI/Paradev": "코딩 에이전트 100개 이상을 병렬로 부리는 에이전트 IDE입니다. 예전 이름은 Superset이고, 에이전트는 자신의 구독으로 돌립니다.",
+  "kargulstudio/calender-app-design": "피그마의 달력 대시보드를 옮긴 Kargul Workspace 인사 업무 화면 프로토타입입니다. 백엔드 없이 브라우저의 localStorage에만 저장합니다.",
+  "AgentSystemLabs/agent-office": "팀이 Claude Code 직원을 책상에 두고, 라이브 터미널을 같이 보고, 음성으로 말하고, GitHub 이슈와 PR을 따라가는 만화풍 3D 사무실입니다.",
+  "pixel-agents-hq/pixel-agents": "픽셀 사무실입니다.",
+  "disler/claude-code-hooks-multi-agent-observability": "Claude Code 에이전트를 단순한 훅 이벤트 추적으로 실시간으로 지켜봅니다."
 }

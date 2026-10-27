@@ -1626,6 +1626,17 @@
 - [x] iron-laws와 openoffice README는 한글이라 detail_fetched_at과 detail_json을 채움. 나머지 영문 README는 detail_fetched_at을 비워 둠
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-10-27 11시 32분 어제·오늘 Star 한글 설명
+
+- [x] 같은 창을 다시 조회. 운영 Star 17건. 오전 13건은 한글과 eli5가 있어 유지
+- [x] 11시 30분에 들어온 4건만 한글 설명을 붙임. calender-app-design은 About가 비어 한국어만
+- [x] 매핑 741개에서 745개. 회귀 테스트 103개 통과
+- [x] 운영 반영 4건, 빈 설명 1건, README 저장 4건, 한글 README 캐시 0건. 재실행 갱신 0건
+- [x] eli5는 설치, 사용법, 특징을 저장. agent-office와 pixel-agents만 한계를 둠
+- [x] disler의 훅 명령 블록과 테스트 이벤트는 넣지 않음. pixel-agents의 권한 건너뛰기는 주의 문장만
+- [x] README 4건은 영문이라 detail_fetched_at을 비워 둠
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
