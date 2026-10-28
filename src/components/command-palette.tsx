@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  BookOpen,
   Bot,
   BotMessageSquare,
   FilePlus,
@@ -211,6 +212,13 @@ export function CommandPalette() {
         keywords: "agent docs 문서",
         icon: <Bot className="h-4 w-4" />,
         run: go("/agent-docs"),
+      },
+      {
+        id: "nav-sdk-guides",
+        label: "김스듴 가이드",
+        keywords: "sdk kim guides 낭만빌더 김스듴 가이드",
+        icon: <BookOpen className="h-4 w-4" />,
+        run: go("/sdk-guides"),
       },
       {
         id: "nav-search",

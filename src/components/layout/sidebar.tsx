@@ -4,6 +4,7 @@
 import {
   Bookmark,
   BookmarkCheck,
+  BookOpen,
   Bot,
   BotMessageSquare,
   Boxes,
@@ -69,6 +70,7 @@ export const navSections = [
       { href: "/claude-prompts", label: "Claude", icon: Sparkles },
       { href: "/agent-docs", label: "문서", icon: Bot },
       { href: "/macbookguyver", label: "맥북가이버", icon: Laptop },
+      { href: "/sdk-guides", label: "김스듴 가이드", icon: BookOpen },
     ],
   },
 ] as const;
