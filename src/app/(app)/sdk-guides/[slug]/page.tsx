@@ -1,8 +1,10 @@
-// 김스듴 가이드의 분류 정보와 원문 읽기 링크를 보여준다.
+// 김스듴 가이드의 본문과 원문 링크를 보여준다.
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GuideBody } from "@/components/sdk-guides/guide-body";
 import { buttonVariants } from "@/components/ui/button";
+import { getSdkGuideBody } from "@/lib/sdk-guide-body";
 import { getSdkGuide } from "@/lib/sdk-guides";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +12,7 @@ export default async function SdkGuidePage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const guide = getSdkGuide(slug);
   if (!guide) notFound();
+  const body = getSdkGuideBody(slug);
 
   return (
     <div className="max-w-3xl space-y-6">
@@ -26,10 +29,9 @@ export default async function SdkGuidePage({ params }: { params: Promise<{ slug:
           </div>
           {guide.tags.length > 0 && <ul className="flex flex-wrap gap-2" aria-label="태그">{guide.tags.map((tag) => <li key={tag} className="rounded bg-muted px-2 py-1 text-xs text-muted-foreground">{tag}</li>)}</ul>}
         </header>
-        <div className="space-y-3 border-t border-border pt-6">
-          <h2 className="text-base font-medium">본문과 프롬프트</h2>
-          <p className="text-sm leading-relaxed text-muted-foreground">낭만빌더 김스듴 원문에서 가이드 전체 내용과 프롬프트를 확인할 수 있습니다.</p>
-          <a href={guide.sourceUrl} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: "default" }), "h-11 whitespace-normal")}>
+        <div className="space-y-6 border-t border-border pt-6">
+          {body ? <GuideBody markdown={body} /> : null}
+          <a href={guide.sourceUrl} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: "outline" }), "min-h-11 h-auto whitespace-normal")}>
             원문에서 가이드 읽기<ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="sr-only">새 탭에서 열기</span>
           </a>

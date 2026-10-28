@@ -2579,3 +2579,12 @@
 - 독립 검토는 현재 메타데이터·탐색 범위에서 필수 수정 없음. 전체 본문·프롬프트 동일 제공 원요청은 미완료다.
 - 렌더 증거는 .impeccable/review/sdk-guides-*.png와 sdk-guide-detail-*.png다. 기존 디자인 토큰을 그대로 썼고 시스템 규칙은 바꾸지 않았다.
 - 기존 3000 서버가 종료되어 npm run dev -- --port 3000을 새로 실행했다. 로그는 /tmp/bookmark-sdk-guides-dev-20261028.log다. 배포·푸시·커밋은 하지 않았다.
+
+## 김스듴 가이드 본문 (2026-10-28)
+
+- 목록 71건의 슬러그는 원본 `/guides/`, `/guides/2/`, `/guides/3/`과 같다. 새 글은 더하지 않았다.
+- 본문은 `div.guide-detail-body`만 `src/data/sdk-guide-bodies.json`에 둔다. 메일 받기, 대기자 카드, 도입 문의, 다음 글, 목차는 빼었다.
+- 가장 짧은 본문은 `chatgpt-funny-questions-10` 475자다. 코드 펜스가 있는 글은 52건이다. 이미지가 있는 글은 5건이고 주소는 https다. data URL은 쓰지 않았다.
+- `ai-assistant-dots-muse-grok-compare`의 Manus·Genspark·Claude 개인정보 링크는 본문이라 남겼다. `https://sdk-kim-builds.com/privacy`만 장식으로 막는다.
+- MCP 가이드 상세는 표 2개, 코드 블록 3개, `7.4배`, `claude mcp list`, 앤트로픽 연구 글 링크가 보인다. 480·1024·1440에서 가로 넘침은 없었다.
+- 테스트는 추출 5개와 목록·본문 6개가 통과했다. Pages와 Prompts는 쓰지 않았다.
