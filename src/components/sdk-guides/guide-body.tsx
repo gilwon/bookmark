@@ -17,9 +17,9 @@ const guideBodyClass = cn(
   "[&_p]:my-2",
   "[&_a]:text-indigo-600 [&_a]:underline-offset-2 hover:[&_a]:underline dark:[&_a]:text-indigo-400",
   "[&_img]:my-3 [&_img]:max-w-full [&_img]:rounded-lg",
-  "[&_pre]:my-3 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-muted [&_pre]:p-3",
+  "[&_pre]:my-3 [&_pre]:max-w-full [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:wrap-anywhere [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-muted [&_pre]:p-3",
   "[&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-[13px]",
-  "[&_pre_code]:bg-transparent [&_pre_code]:p-0",
+  "[&_pre_code]:whitespace-pre-wrap [&_pre_code]:wrap-anywhere [&_pre_code]:bg-transparent [&_pre_code]:p-0",
   "[&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5",
   "[&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5",
   "[&_li]:my-0.5",
@@ -53,14 +53,14 @@ export function GuideBody({ markdown }: { markdown: string }) {
 
   if (!html) {
     return (
-      <pre className="overflow-x-auto whitespace-pre-wrap break-words text-sm text-foreground">
+      <pre className="max-w-full overflow-x-hidden whitespace-pre-wrap wrap-anywhere text-sm text-foreground">
         {markdown}
       </pre>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="min-w-0 max-w-full">
       <div className={guideBodyClass} dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
