@@ -1,3 +1,17 @@
+# 공개 Notion 스킬 정리와 매일 프롬프트 Pages 이관
+
+- [x] 인스타 자동화 글은 양쪽 모두 있어서 건너뛴다. `/pages/cb09ab63-16e8-4822-9a9e-300cece09d9f`. 주소는 `https://every-ai-guides.vercel.app/posts/insta-automation-free-prompts`다
+- [x] 스킬 정리 가이드는 이미지 3, 첨부 0, 표 2, 코드 1, 구분선 3이다. `/pages/f59fa901-89ef-49d9-9d9a-c991ead8c580`
+- [x] 표지는 PNG data URL이다. 브라우저 alt는 `Notion 커버`다. 서명 URL과 `pvs`는 없다
+- [x] 매일 프롬프트는 이미지 2, 첨부 2, 표 2, 코드 2, 구분선 7이다. `/pages/27f245c1-24b9-4e7b-bb27-82f77e21ffbe`
+- [x] 영상 두 개는 `wm_demo_log.mp4`, `wm_demo_daily.mp4` data URL이다. 아이콘과 소셜 미리보기는 저장하지 않았다
+- [x] 로컬과 운영에 넣는다. 재실행은 본문을 다시 받지 않고 skip이다
+- [x] 브라우저에서 그림 크기, 표, 코드, 첨부, 링크, 검색 전체 1개를 확인한다
+- [x] 에디터는 수정됨으로 보였으나 이번 방문은 저장하지 않았다. 두 글의 로컬과 운영 해시가 같다
+- [x] 매일 프롬프트 본문은 1.5MB를 넘는다. 에디터 저장은 400이 날 수 있다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `5a70ad9`다
+
 # 낭만빌더 김스듴 MCP와 API 문서 Pages 이관
 
 - [x] 제목은 `MCP는 이제 구닥다리: 코드 짜는 AI에는 API 문서를 주세요`다. 주소는 `https://sdk-kim-builds.com/guides/mcp-vs-api-docs-claude-code`다

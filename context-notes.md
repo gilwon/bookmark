@@ -1,3 +1,26 @@
+# 공개 Notion 스킬 정리와 매일 프롬프트 Pages 이관 메모
+
+- 인스타 자동화 글 `팔로워 24,000명 모은 인스타 자동화 노하우`는 양쪽 모두 `/pages/cb09ab63-16e8-4822-9a9e-300cece09d9f`에 있다. 주소 `https://every-ai-guides.vercel.app/posts/insta-automation-free-prompts`. `from=dm`, `post=c25`, `fbclid`는 저장 주소에 없다. 기존 행은 갱신하지 않았다. 로컬 해시 `3ae39aa8af6f3687304ba461d08ab2853e4c16734eadeb66f30dfbd9ddfdef30`, 운영 해시 `a31b8d226f118917bdacda23c0f5e19f70f641d2c21e8894af6e1ebc6bef9693`. 이 차이는 이번 요청 전에 있던 로컬 에디터 수정이다.
+- 스킬 정리 가이드 제목은 `[가이드] 공유받은 클로드 스킬 정리 - 안 쓰는 스킬 찾기`다. 공개 페이지 `4c8e43a1-6720-82e1-956f-010642073465`, space `272e43a1-6720-8186-b1fa-0003a4e86a82`. GILWON 워크스페이스가 아니다. 쿠키 없이 `loadPageChunk`로 받았다.
+- 주소 `https://app.notion.com/p/4c8e43a1672082e1956f010642073465`. `pvs`는 없다.
+- 저장 경로 `/pages/f59fa901-89ef-49d9-9d9a-c991ead8c580`. 로컬 `dev`와 운영이 같은 id다. `created_at`과 `updated_at`은 `2026-10-28T23:13:51.590Z`다.
+- 이미지 3. 첨부 0. 표 2. 코드 1. 구분선 3. 링크 6. 루트 자식 37. 본문 sha256 `63530d240da4927de4e989fe8af52641acf84e64945eec213c84651d4eb62bc0`, 길이 1105647.
+- 표지는 PNG 100271바이트, sha256 `bcea1abc69d2be1cac713aa9a44b7171e32ed7477bb421429d7998bd3cff3115`. 브라우저에서 2048x1152, alt `Notion 커버`. 본문 그림 `08_skills_menu.png` 332949 `6b543ad1dc2aaf1a24a7b73ac0ac4c33b43fd7a8c9ad122812ecfdd0802ab150` 2048x1104. `09_skills_search.png` 387951 `b014e04c86dcfbd6bb252cd24bfe092cf3810939a9b5fe3ab1b878bbfc336b62` 2048x1104.
+- 유일한 코드 블록은 빈 제목 콜아웃 안에 있었다. TipTap 콜아웃이 펜스를 지우므로 코드를 콜아웃 밖으로 꺼냈다. 그래서 루트 자식이 37이다.
+- 토글 `커넥터는요?`를 포함했다. 다른 페이지 `자료 공유`는 펼치지 않았다.
+- 링크는 원문, `https://www.instagram.com/beucheo.ai`, `https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview`, `https://claude.md/`, `https://open.kakao.com/o/g8oGrusi`, `https://beucheo.ai/`다.
+- 매일 프롬프트 제목은 `매일 발전하는 클로드 프롬프트 두 줄`이다. 공개 페이지 `407fd99f-0e5f-81b1-a0cf-ed104394aff6`, space `b97fd99f-0e5f-81d6-b46e-0003ed3b57b7`. 쿠키 없이 받았다.
+- 주소 `https://app.notion.com/p/407fd99f0e5f81b1a0cfed104394aff6`. `pvs`는 없다.
+- 저장 경로 `/pages/27f245c1-24b9-4e7b-bb27-82f77e21ffbe`. `created_at`과 `updated_at`은 `2026-10-28T23:14:04.340Z`다.
+- 이미지 2. 첨부 2. 표 2. 코드 2. 구분선 7. 링크 마크 12. 루트 자식 57. 본문 sha256 `5cd15e67af8f1d93fb9047e0879d8ce26dcef0a617b32b03999046d963ceb63b`, 길이 4968143. 1.5MB를 넘으므로 에디터 PATCH는 400이 날 수 있다. 이번 방문은 저장하지 않아 로컬과 운영 해시가 같다.
+- 표지는 없다. 페이지 아이콘과 소셜 미리보기는 저장하지 않았다. 본문 그림 `xcard.png` 92737 `af4f2fd1fcb1db3515505c4e22ffb5fda1c037a49bdacf0f7f4068cadbb49f17` 1200x630. `cta.png` 492239 `168c6ac6da26180616df6ae0e4aba70843768c1914ab347663e5fa724bc521e8` 2048x546.
+- 영상은 유튜브가 아니다. `getSignedFileUrls`로 받은 뒤 data URL만 저장했다. `wm_demo_log.mp4` 1278801 `c9071a8d07c4935fee2492c6f780541dcf1931b6f3096ff2b46d8a23e9974b59`. `wm_demo_daily.mp4` 1851839 `a288f278dae258ea7465782c7bf41ee25870effe309fa1f84ad027eb5595cbaf`. 형식은 `application/mp4`다.
+- 토글 `데스크톱 예약 작업 만드는 순서`와 `막힐 때 먼저 볼 것`을 포함했다. 다른 페이지 `프롬왓 | Prompt What`는 펼치지 않았다.
+- 링크는 원문, `https://x.com/kunchenguid/status/2114772499686998221`, `https://code.claude.com/docs/en/desktop-scheduled-tasks`, `https://code.claude.com/docs/en/routines`, `https://code.claude.com/docs/en/scheduled-tasks`, `https://www.instagram.com/prompt_what`다.
+- 브라우저에서 스킬 정리는 그림 3장, 표 2, 코드 1, 첨부 0, 카카오와 클로드 스킬 문서 링크가 보였다. 매일 프롬프트는 그림 2장, 표 2, 코드 2, mp4 첨부 2, X 글 링크가 보였다. 검색 세 건 모두 전체 1개다. 에디터 상태는 수정됨이었고 행은 바뀌지 않았다.
+- 로컬 `custom_pages`는 795건이다. 첫 실행은 두 글 insert, 재실행은 skip이다. 스크립트는 `scripts/import-notion-skill-cleanup-daily-prompt.mjs`. 커밋 `5a70ad9`. 테스트 6개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 낭만빌더 김스듴 MCP와 API 문서 Pages 이관 메모
 
 - 제목은 `MCP는 이제 구닥다리: 코드 짜는 AI에는 API 문서를 주세요`다. 주소 `https://sdk-kim-builds.com/guides/mcp-vs-api-docs-claude-code`. 끝 슬래시와 추적 쿼리는 없다.
