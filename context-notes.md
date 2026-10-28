@@ -1,3 +1,18 @@
+# 낭만빌더 김스듴 MCP와 API 문서 Pages 이관 메모
+
+- 제목은 `MCP는 이제 구닥다리: 코드 짜는 AI에는 API 문서를 주세요`다. 주소 `https://sdk-kim-builds.com/guides/mcp-vs-api-docs-claude-code`. 끝 슬래시와 추적 쿼리는 없다.
+- 본문은 `article.guide-detail`이다. 본문 img는 0장이다. 표지는 `https://sdk-kim-builds.com/og/guides/mcp-vs-api-docs-claude-code.png` PNG data URL이다. 30405바이트, sha256 `d915e73269cf773c30983a4fab2bd5c5c814ef56a1763319b80acaee561fb0fa`. 브라우저에서 1200x630으로 보였고 alt는 `표지`다. 공통 `og/default.png`가 아니다.
+- 이미지 1. 첨부 0. 표 2. 코드 3. 링크 2. 구분선은 세지 않았다. 넣었을 때 헤딩 8.
+- 링크는 원문과 `https://www.anthropic.com/research/code-execution-with-mcp`다.
+- 카테고리 `개발`. 날짜 줄 `2026. 10. 27.`은 폭 없는 문자를 앞에 붙여 연도가 남는다. 문장 안의 `2026-10-21`은 그대로다.
+- `details.guide-mail`, `details.guide-toc`, `section.guide-inquiry-block`, `nav.guide-next`, `.guide-waitlist`, 카카오 링크는 뺐다. 30일 카드는 `aside.guide-mid-cta`가 아니라 `.guide-waitlist`다. 다음 글 `android-tv-ads-cleanup-claude`는 넣지 않았다.
+- 저장 경로 `/pages/59fc6586-3bd5-4e1a-97d2-1abc6b80a10a`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-28T04:59:50.264Z`다.
+- 넣었을 때 본문 sha256은 `e7bf9f27da692abdce073199ead0c011b3e05197a76f57755fa1a36905d0140d`이고 길이는 50228이다.
+- 에디터를 연 뒤 로컬에서 제목과 같은 h1이 빠졌다. 헤딩 8에서 7, 텍스트 노드 80에서 79. 로컬 `updated_at`은 `2026-10-28T05:02:30.680Z`, 로컬 해시 `726ff907c9e3a9267fb4bed3752ebfa381a2ca7313639bf43e5407eeeab7f058`, 길이 51948이다. 그림 1, 표 2, 코드 3, 링크 2는 같다. 운영 본문은 그대로다.
+- 검색 `MCP는 이제 구닥다리: 코드 짜는 AI에는 API 문서를 주세요`에서 제목과 전체 1개가 보인다. 로컬 `custom_pages`는 793건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-sdk-kim-mcp-vs-api-docs.mjs`. 커밋 `a2cc5d9`. 테스트 6개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # 짐코딩 텐센트·클라우드플레어 오픈소스 AI 도구 Pages 이관 메모
 
 - 제목은 `무료 AI 오픈소스 3종: security-audit-skill·BrowserSkill·WeKnora 설치·사용법`이다. 주소 `https://www.gymcoding.co/articles/tencent-cloudflare-open-source-ai-tools-guide`.
@@ -2544,3 +2559,14 @@
 - 이 창의 GitHub 별표 중 앱에 없는 저장소는 없었다.
 - 정적 번역표는 745개에서 746개로 늘었다. elephant 키는 새 About 문장으로 고쳤다. 반영은 2건, 빈 설명 0건, README 저장 1건, 한글 README 캐시 0건이다. 재실행 갱신은 0건이다. 재조회 시 한글이 없거나 eli5가 없는 항목은 0건이다.
 - 테스트는 105개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
+
+## 김스듴 가이드 메뉴 추가 (2026-10-28)
+
+- 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.
+- 필터는 카테고리·AI 도구, 정렬은 최신·오래된 순이다. 상세는 article.guide-detail, 복사 버튼은 pre 내 code-copy다.
+- src/components/layout/sidebar.tsx navSections를 데스크톱·모바일 드로어·하단 탭이 공유한다. 커맨드 팔레트는 별도 고정 항목이다.
+- src/app/(app) 인증 레이아웃과 src/components/macbookguyver의 목록·상세 패턴을 참고한다. Next 16.2.10 로컬 페이지 가이드를 읽었다.
+- 전체 원문 복제 이용 권한을 비동기 질문으로 확인 중이다. 확인 전에는 제목·분류·출처만 저장한다.
+- visualize 독립 스킬은 제공 목록과 설치 경로에서 찾지 못했다.
+- git 작업 트리에 기존 미추적 파일이 많다. 이번 파일만 검증한다. DB 변경·배포·기존 데이터 변경은 하지 않는다.
