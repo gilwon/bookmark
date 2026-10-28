@@ -1,3 +1,15 @@
+# 짐코딩 텐센트·클라우드플레어 오픈소스 AI 도구 Pages 이관
+
+- [x] 제목은 `무료 AI 오픈소스 3종: security-audit-skill·BrowserSkill·WeKnora 설치·사용법`이다. 주소는 `https://www.gymcoding.co/articles/tencent-cloudflare-open-source-ai-tools-guide`다
+- [x] 표지 1, 첨부 0, 표 6, 코드 19, 링크 72, FAQ 6이다. `/pages/ad85c898-d723-4e14-bc93-06bc29ae624e`
+- [x] 표지는 PNG data URL이다. 로고, 인프런 강의 영상, 뉴스레터, 추적 쿼리는 넣지 않는다
+- [x] `http://localhost:8088/`는 http로 남는다
+- [x] 로컬과 운영에 넣는다. 재실행은 본문을 다시 받지 않고 skip이다
+- [x] 브라우저에서 표지 1200x630, 표 6, 코드 19, 링크 72, 검색 전체 1개를 확인한다
+- [x] 에디터를 연 뒤 로컬에서 제목과 같은 h1이 빠지고 표 칸에 빈 속성이 붙는다. 운영 본문은 그대로다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `6877eb6`다
+
 # tuemarz LLM 카운슬 설치 가이드 Pages 이관
 
 - [x] 제목은 `카파시의 자문단(LLM 카운슬) 설치 가이드`다. 주소는 `https://tuemarz.notion.site/LLM-400137c926d581cfb48dfa836bf7a8dd`다

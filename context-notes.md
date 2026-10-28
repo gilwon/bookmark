@@ -1,3 +1,20 @@
+# 짐코딩 텐센트·클라우드플레어 오픈소스 AI 도구 Pages 이관 메모
+
+- 제목은 `무료 AI 오픈소스 3종: security-audit-skill·BrowserSkill·WeKnora 설치·사용법`이다. 주소 `https://www.gymcoding.co/articles/tencent-cloudflare-open-source-ai-tools-guide`.
+- 본문은 `article.py-page-y`다. 본문 img는 0장이고 표지만 `og:image` PNG data URL이다. 96043바이트, sha256 `3e86cec8d156b2149dd32f17b31993fcf5dbf8b342c5680dd47538b22263b1a8`. 브라우저에서 1200x630으로 보였다.
+- 이미지 1. 첨부 0. 표 6. 코드 19. 링크 72. FAQ 6. 구분선 0. 넣었을 때 루트 자식 153.
+- FAQ 영역 HTML은 비어 있고, 답은 RSC 페이로드에서 채웠다. 답 여섯 개 모두 비어 있지 않다.
+- macOS 설치 명령과 Windows `install.ps1`은 탭 패널 둘 다 DOM에 있어서 코드로 남았다. 비활성 패널은 숨김이 아니었다.
+- 인프런 카드와 `cdn.techboost.dev` 강의 영상, 뉴스레터, `inf.run`, 로고는 넣지 않았다. 유튜브 임베드는 없었다.
+- `http://localhost:8088/`와 코드 안의 `http://localhost:3000/admin/courses`, `http://host.docker.internal:11434`는 http 그대로다.
+- 본문 링크에는 세 저장소, Cloudflare 블로그, OWASP, Node.js, Chrome·Edge 확장, Docker, Git, WeKnora `v0.8.2` 문서가 있다. 글 하단의 짐코딩 관련 글 두 개도 남겼다.
+- 저장 경로 `/pages/ad85c898-d723-4e14-bc93-06bc29ae624e`. 로컬 `dev`와 운영이 같은 id다. `created_at`은 `2026-10-27T23:57:54.948Z`다.
+- 넣었을 때 본문 sha256은 `5c90fa556651cc45a24f08ae5aba5a02c06d695d30415c82b4934885cee071b1`이고 길이는 187468이다.
+- 에디터를 연 뒤 로컬에서 제목과 같은 h1이 빠지고 표 칸과 표 머리에 `align`, `colspan`, `colwidth`, `rowspan`이 붙었다. 로컬 `updated_at`은 `2026-10-28T00:00:01.807Z`, 로컬 해시 `1e67a41d561781f7a17a68c517ce8492a19d350567d292e54e1e515ce1d841e9`, 길이 197149이다. 그림 1, 표 6, 코드 19, 링크 72는 같다. 운영 본문은 그대로다.
+- 검색 `무료 AI 오픈소스 3종: security-audit-skill·BrowserSkill·WeKnora 설치·사용법`에서 제목과 전체 1개가 보인다. 로컬 `custom_pages`는 792건이다.
+- 첫 실행은 로컬·운영 insert, 재실행은 skip이다. 스크립트는 `scripts/import-gymcoding-tencent-cloudflare-ai-tools.mjs`. 커밋 `6877eb6`. 테스트 8개 통과.
+- Prompts 테이블은 쓰지 않는다. 중복은 제목 또는 `source_url`만 보고 스킵한다. 기존 행은 갱신하지 않는다.
+
 # tuemarz LLM 카운슬 설치 가이드 Pages 이관 메모
 
 - 제목은 `카파시의 자문단(LLM 카운슬) 설치 가이드`다. 공개 Notion 페이지 `400137c9-26d5-81cf-b48d-fa836bf7a8dd`, space `44b9d169-a795-4d3d-a9a9-bf9ab8070759`. GILWON 워크스페이스가 아니다.
