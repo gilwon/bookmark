@@ -1,10 +1,36 @@
 "use client";
 // 김스듴 가이드 본문 마크다운을 정화해 HTML로 렌더한다.
 
+import { Check, Copy } from "lucide-react";
 import { marked } from "marked";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import { cn } from "@/lib/utils";
+
+type GuideBlock =
+  | { kind: "md"; text: string }
+  | { kind: "code"; text: string };
+
+/** 펜스 코드 블록을 프롬프트로 분리한다. 짝이 없는 펜스는 본문으로 남긴다. */
+function splitGuideBlocks(markdown: string): GuideBlock[] {
+  const blocks: GuideBlock[] = [];
+  const fence = /^```[^\n]*\n([\s\S]*?)^```[ \t]*$/gm;
+  let lastIndex = 0;
+  for (const match of markdown.matchAll(fence)) {
+    const start = match.index ?? 0;
+    if (start > lastIndex) {
+      blocks.push({ kind: "md", text: markdown.slice(lastIndex, start) });
+    }
+    blocks.push({ kind: "code", text: match[1].replace(/\n$/, "") });
+    lastIndex = start + match[0].length;
+  }
+  if (lastIndex < markdown.length) {
+    blocks.push({ kind: "md", text: markdown.slice(lastIndex) });
+  }
+  if (blocks.length === 0) blocks.push({ kind: "md", text: markdown });
+  return blocks;
+}
 
 const guideBodyClass = cn(
   "text-sm leading-relaxed break-words text-foreground",
@@ -30,38 +56,90 @@ const guideBodyClass = cn(
   "[&_hr]:my-4 [&_hr]:border-border"
 );
 
+/** 프롬프트 상자. 복사 버튼은 본문과 따로 두고, 펜스 안 글만 클립보드에 넣는다. */
+function PromptBlock({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopied(false), 1200);
+    return () => window.clearTimeout(timer);
+  }, [copied]);
+
+  async function onCopy() {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch {
+      alert("복사에 실패했습니다.");
+    }
+  }
+
+  return (
+    <div className="my-3 rounded-lg border border-border bg-muted">
+      <div className="flex justify-end px-2 pt-2">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 bg-background px-3 text-xs"
+          onClick={() => void onCopy()}
+          aria-label={copied ? "프롬프트가 복사됨" : "프롬프트 복사"}
+        >
+          {copied ? (
+            <Check className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+          ) : (
+            <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+          )}
+          <span aria-live="polite">{copied ? "복사됨" : "복사"}</span>
+        </Button>
+      </div>
+      <pre className="max-w-full overflow-x-hidden whitespace-pre-wrap wrap-anywhere px-3 pb-3 text-[13px] leading-relaxed text-foreground">
+        {text}
+      </pre>
+    </div>
+  );
+}
+
 /** 가이드 마크다운을 클라이언트에서만 HTML로 변환한다. */
 export function GuideBody({ markdown }: { markdown: string }) {
-  const [html, setHtml] = useState<string | null>(null);
+  const blocks = useMemo(() => splitGuideBlocks(markdown), [markdown]);
+  const [htmlByIndex, setHtmlByIndex] = useState<Record<number, string> | null>(null);
 
   useEffect(() => {
     try {
-      const raw = marked.parse(markdown, {
-        gfm: true,
-        breaks: false,
-        async: false,
-      }) as string;
-      setHtml(sanitizeHtml(raw));
+      const next: Record<number, string> = {};
+      for (const [index, block] of blocks.entries()) {
+        if (block.kind !== "md") continue;
+        const raw = marked.parse(block.text, {
+          gfm: true,
+          breaks: false,
+          async: false,
+        }) as string;
+        next[index] = sanitizeHtml(raw);
+      }
+      setHtmlByIndex(next);
     } catch {
-      setHtml("");
+      setHtmlByIndex({});
     }
-  }, [markdown]);
+  }, [blocks]);
 
-  if (html === null) {
+  if (htmlByIndex === null) {
     return <p className="text-sm text-muted-foreground">렌더 중…</p>;
   }
 
-  if (!html) {
-    return (
-      <pre className="max-w-full overflow-x-hidden whitespace-pre-wrap wrap-anywhere text-sm text-foreground">
-        {markdown}
-      </pre>
-    );
+  const proseFailed = Object.keys(htmlByIndex).length === 0 && blocks.every((block) => block.kind === "md");
+  if (proseFailed) {
+    return <PromptBlock text={markdown} />;
   }
 
   return (
     <div className="min-w-0 max-w-full">
-      <div className={guideBodyClass} dangerouslySetInnerHTML={{ __html: html }} />
+      {blocks.map((block, index) => {
+        if (block.kind === "code") return <PromptBlock key={index} text={block.text} />;
+        const html = htmlByIndex[index];
+        if (!html) return null;
+        return <div key={index} className={guideBodyClass} dangerouslySetInnerHTML={{ __html: html }} />;
+      })}
     </div>
   );
 }
