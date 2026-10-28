@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 130건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 130);
+test("대상 131건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 131);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 130);
+  assert.equal(new Set(ids).size, 131);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1016,6 +1016,23 @@ test("오늘 추가된 레포·유튜브·UI 3건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 3);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제 추가된 맥 온디바이스 fm 1건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "ddefedfd-b9b3-46d9-a08a-c30f7f3456b3": {
+      title: "구독 없이 터미널에서 쓰는 맥 온디바이스 fm",
+      tags: ["툴", "설정"],
+      raw: "애플 맥에서 무료로 쓰는 오프라인 Al, 구독료도 인 터넷도 필요 없다",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 1);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);

@@ -790,6 +790,12 @@ export const TARGETS = [
     tags: ["디자인", "툴"],
     phrase: "evilcharts.com",
   },
+  {
+    id: "ddefedfd-b9b3-46d9-a08a-c30f7f3456b3",
+    title: "구독 없이 터미널에서 쓰는 맥 온디바이스 fm",
+    tags: ["툴", "설정"],
+    phrase: "Foundation Models",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
