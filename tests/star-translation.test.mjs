@@ -1735,4 +1735,23 @@ describe("Star 설명 번역", () => {
     assert.equal(hasKorean(result), true);
     assert.equal(result.includes("\n\n"), true);
   });
+
+  it("2026-10-29에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["rlaope/oh-my-hermes", "⚚ The coding harness with Hermes Agent, Just type 'dag-ulw'", "Hermes Agent 위에서 쓰는 코딩 하네스입니다. dag-ulw만 입력하면 됩니다."],
+      ["l0ng-ai/openidea", "The IDE you know, rebuilt in Rust. IntelliJ IDEA–style keymap, tool windows and search-everywhere in a fast native app: editor, code insight, debugger, Git, terminal, database and HTTP clients for 60+ languages.", "익숙한 IDE를 Rust로 다시 만든 네이티브 앱입니다. IntelliJ IDEA식 키맵과 도구 창, 전체 검색이 있고 에디터, 코드 인사이트, 디버거, Git, 터미널, 데이터베이스와 HTTP 클라이언트가 60개 넘는 언어를 다룹니다."],
+      ["x18n-dev/x18n", "Universal toolkits for linting, viewing and managing i18n for any frameworks.", "프레임워크에 상관없이 국제화 문구를 검사하고 보고 관리하는 도구 모음입니다."],
+      ["opum-ai/proof-skills", "Formal verification for real codebases with Claude Code: TLA+ and Lean 4 skills that find, reproduce, fix and prove concurrency and state bugs. MIT, by Opum AI.", "Claude Code에서 실제 코드의 동시성과 상태 버그를 TLA+와 Lean 4로 찾아 고치고 증명하는 형식 검증 스킬입니다. MIT이며 Opum AI가 만듭니다."],
+      ["meta/astryx", "An open source design system that's fully customizable and agent ready", "마음대로 고칠 수 있고 에이전트와 같이 쓰는 오픈소스 디자인 시스템입니다."],
+      ["michael-denyer/agent-formal-verify", "TLA+ model checking and Lean proofs for coding agents, with explicit tool setup.", "코딩 에이전트가 TLA+로 모델을 검사하고 Lean으로 증명하도록 도구 설치까지 적어 둔 스킬입니다."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });
