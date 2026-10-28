@@ -744,5 +744,11 @@
   "AgentSystemLabs/agent-office": "팀이 Claude Code 직원을 책상에 두고, 라이브 터미널을 같이 보고, 음성으로 말하고, GitHub 이슈와 PR을 따라가는 만화풍 3D 사무실입니다.",
   "pixel-agents-hq/pixel-agents": "픽셀 사무실입니다.",
   "disler/claude-code-hooks-multi-agent-observability": "Claude Code 에이전트를 단순한 훅 이벤트 추적으로 실시간으로 지켜봅니다.",
-  "CopilotKit/OpenDuet": "일을 해내고 진행을 알려 주는 능동형 AI 에이전트의 오픈소스 템플릿입니다."
+  "CopilotKit/OpenDuet": "일을 해내고 진행을 알려 주는 능동형 AI 에이전트의 오픈소스 템플릿입니다.",
+  "rlaope/oh-my-hermes": "Hermes Agent 위에서 쓰는 코딩 하네스입니다. dag-ulw만 입력하면 됩니다.",
+  "l0ng-ai/openidea": "익숙한 IDE를 Rust로 다시 만든 네이티브 앱입니다. IntelliJ IDEA식 키맵과 도구 창, 전체 검색이 있고 에디터, 코드 인사이트, 디버거, Git, 터미널, 데이터베이스와 HTTP 클라이언트가 60개 넘는 언어를 다룹니다.",
+  "x18n-dev/x18n": "프레임워크에 상관없이 국제화 문구를 검사하고 보고 관리하는 도구 모음입니다.",
+  "opum-ai/proof-skills": "Claude Code에서 실제 코드의 동시성과 상태 버그를 TLA+와 Lean 4로 찾아 고치고 증명하는 형식 검증 스킬입니다. MIT이며 Opum AI가 만듭니다.",
+  "meta/astryx": "마음대로 고칠 수 있고 에이전트와 같이 쓰는 오픈소스 디자인 시스템입니다.",
+  "michael-denyer/agent-formal-verify": "코딩 에이전트가 TLA+로 모델을 검사하고 Lean으로 증명하도록 도구 설치까지 적어 둔 스킬입니다."
 }
