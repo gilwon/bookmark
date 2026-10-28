@@ -2,7 +2,7 @@
 // 김스듴 가이드를 검색·분류·정렬하고 페이지별로 보여준다.
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -85,22 +85,36 @@ export function GuideList({ guides }: { guides: SdkGuide[] }) {
           className="my-8"
         />
       ) : (
-        <ul className="space-y-3" aria-label="가이드 목록">
+        <ul className="grid list-none gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="가이드 목록">
           {visible.map((guide) => (
-            <li key={guide.slug}>
-              <Card>
-                <CardContent className="p-0">
-                  <Link href={`/sdk-guides/${guide.slug}`} className="group block rounded-lg p-4 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                      <span className="font-medium text-indigo-600 dark:text-indigo-400">{guide.category}</span>
-                      {guide.tool && <span>{guide.tool}</span>}
-                      <time dateTime={guide.publishedAt}>{guide.publishedAt.slice(0, 10)}</time>
+            <li key={guide.slug} className="min-w-0">
+              <Link
+                href={`/sdk-guides/${guide.slug}`}
+                className="block h-full rounded-doc-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <Card className="h-full transition-colors hover:border-indigo-500/40 active:border-indigo-500/60">
+                  <CardContent className="flex h-full flex-col gap-3 p-4">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Badge>{guide.category}</Badge>
+                      {guide.tool ? <Badge variant="secondary">{guide.tool}</Badge> : null}
+                      <time dateTime={guide.publishedAt} className="text-[11px] leading-5 text-muted-foreground">
+                        {guide.publishedAt.slice(0, 10)}
+                      </time>
                     </div>
-                    <h2 className="mt-2 break-words text-base font-medium leading-relaxed group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{guide.title}</h2>
-                    <span className="mt-3 inline-flex items-center gap-1 text-xs text-muted-foreground">가이드 보기<ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
-                  </Link>
-                </CardContent>
-              </Card>
+                    <h2 className="break-words text-sm font-semibold leading-snug">{guide.title}</h2>
+                    {guide.tags.length > 0 && (
+                      <ul className="flex flex-wrap gap-1" aria-label="태그">
+                        {guide.tags.map((tag) => (
+                          <li key={tag}>
+                            <Badge variant="outline">{tag}</Badge>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <span className="mt-auto break-all text-xs text-accent">{guide.sourceUrl} ↗</span>
+                  </CardContent>
+                </Card>
+              </Link>
             </li>
           ))}
         </ul>
