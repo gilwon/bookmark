@@ -2570,3 +2570,12 @@
 - 전체 원문 복제 이용 권한을 비동기 질문으로 확인 중이다. 확인 전에는 제목·분류·출처만 저장한다.
 - visualize 독립 스킬은 제공 목록과 설치 경로에서 찾지 못했다.
 - git 작업 트리에 기존 미추적 파일이 많다. 이번 파일만 검증한다. DB 변경·배포·기존 데이터 변경은 하지 않는다.
+
+- 구현 파일은 src/data/sdk-guides.json, src/lib/sdk-guides.ts, components/sdk-guides/guide-list.tsx, app/(app)/sdk-guides 목록·상세, sidebar·command-palette 항목이다.
+- 메타데이터는 30+30+11=71건, agent-github-repos-7의 빈 tool도 보존했다. 본문·설명·프롬프트는 아직 없다.
+- 전체 테스트 1074개, 새 대상·커맨드 테스트 10개 통과. 기본 build는 AUTH_SECRET 누락으로 실패했으나 프로세스에만 임시 랜덤 키를 전달한 재빌드는 통과했다. 키는 저장·출력하지 않았다.
+- ESLint는 es-abstract/2024/AddEntriesFromIterable 누락으로 실행되지 않았다. 의존성은 변경하지 않았다.
+- 브라우저에서 30/30/11 페이지, 생산성+ChatGPT4건, 공백 무시 MCP검색3건, 빈 결과 초기화·오래된 순·상세 원문 링크·모바일 메뉴·키보드 focus·커맨드 항목을 확인했다. 480/1024/1440px 가로넘침 없고 새 컨트롤44px다. 다크·라이트 확인.
+- 독립 검토는 현재 메타데이터·탐색 범위에서 필수 수정 없음. 전체 본문·프롬프트 동일 제공 원요청은 미완료다.
+- 렌더 증거는 .impeccable/review/sdk-guides-*.png와 sdk-guide-detail-*.png다. 기존 디자인 토큰을 그대로 썼고 시스템 규칙은 바꾸지 않았다.
+- 기존 3000 서버가 종료되어 npm run dev -- --port 3000을 새로 실행했다. 로그는 /tmp/bookmark-sdk-guides-dev-20261028.log다. 배포·푸시·커밋은 하지 않았다.
