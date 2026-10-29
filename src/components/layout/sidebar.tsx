@@ -14,6 +14,7 @@ import {
   GitGraph as Github,
   Laptop,
   LayoutDashboard,
+  Library,
   LogOut,
   Menu,
   MessageSquareText,
@@ -71,6 +72,7 @@ export const navSections = [
       { href: "/agent-docs", label: "문서", icon: Bot },
       { href: "/macbookguyver", label: "맥북가이버", icon: Laptop },
       { href: "/sdk-guides", label: "김스듴 가이드", icon: BookOpen },
+      { href: "/shim-guides", label: "심팀장 자료실", icon: Library },
     ],
   },
 ] as const;
