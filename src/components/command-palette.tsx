@@ -9,6 +9,7 @@ import {
   FileText,
   GitFork,
   LayoutDashboard,
+  Library,
   Bookmark,
   BookmarkCheck,
   MessageSquareText,
@@ -219,6 +220,13 @@ export function CommandPalette() {
         keywords: "sdk kim guides 낭만빌더 김스듴 가이드",
         icon: <BookOpen className="h-4 w-4" />,
         run: go("/sdk-guides"),
+      },
+      {
+        id: "nav-shim-guides",
+        label: "심팀장 자료실",
+        keywords: "shim team jjang 심팀장 자료실 shimteamjjang",
+        icon: <Library className="h-4 w-4" />,
+        run: go("/shim-guides"),
       },
       {
         id: "nav-search",
