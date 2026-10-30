@@ -1,3 +1,19 @@
+# 이번 주 Notion과 Crawl4AI Pages 이관 메모
+
+- 주간 창은 2026-10-26 00:00 KST부터다. 2026-10-31 아침 재조회에서 GILWON 기본 공간 목록은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 310, shared_pages_manual_sort 263, 고유 343이었다. 이번 주 최상위 글은 하나다.
+- 제목은 `Claude Code 코드로만 되는 일 7가지`다. 페이지 `edab2568-27ac-8312-8b57-8171564aeef9`, 생성 2026-10-31 07:27:16 KST, parent_table=space, GILWON 공간 `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`. 비공개라 쿠키로 `loadPageChunk`를 받았다. 아이콘은 저장하지 않았다. 표지는 없다.
+- 주소 `https://app.notion.com/p/edab256827ac83128b578171564aeef9`.
+- 저장 경로 `/pages/15125cc3-ddf0-4878-a222-0a537ab40b89`. 로컬 `dev`와 운영이 같은 id다. 넣을 때 `created_at`과 `updated_at`은 `2026-10-30T23:36:22.241Z`다.
+- 이미지 0. 첨부 0. 표 4. 코드 7. 구분선 6. 링크 5. 운영 sha256 `ac922c1af3b1ecef9874111b243e8c89f9b6f95fca9f9e18750876bb9aa7db92`, 길이 19784.
+- 링크는 원문, `https://claude.ai/`, `https://claude.md/`, `https://www.instagram.com/godseng.mom` 두 번이다. `http://CLAUDE.md`는 호스트가 소문자인 `https://claude.md/`가 됐다. 빈 제목 북마크는 그 주소의 링크 문단이다. 인스타그램 끝 슬래시는 없다. 코드 언어는 javascript 7개다.
+- 일요일 글 서비스 소개·광고영상 프롬프트 `764b2568-27ac-8368-929d-01d674cd854b`는 2026-10-25 14:46 KST라 넣지 않았다.
+- 붙여 넣은 Gmail Dashboard 공개 페이지 `3c0c680c-75f0-80dc-adc0-fb3b0f069912`는 제목 `Gmail Dashboard 프롬프트`가 이미 있다. 로컬 `/pages/3b798279-4ff2-46ac-9020-d3aa8db0aedf`, 운영 `/pages/996c199b-ff5b-4eae-8634-3160edf1d395`. 둘의 id는 다르고 원문은 `https://app.notion.com/p/0b0b256827ac830bad78016540bff1f7`다. 갱신하지 않았다. 새 공개 글의 이미지 2장과 인스타그램 북마크는 합치지 않았다. `fbclid`는 저장하지 않았다.
+- Crawl4AI 제목은 `웹을 AI가 읽기 좋은 마크다운으로 — Crawl4AI 안내`다. 주소 `https://rebornlabs.kr/crawl4`. 저장 경로 `/pages/2a3b5ff1-56d1-4a33-8805-83cdf5374a0a`. 넣을 때 `created_at`과 `updated_at`은 `2026-10-30T23:26:00.161Z`다.
+- 이미지 0. 첨부 0. 표 0. 코드 3. 링크 3. 운영 sha256 `ef29c5aff9be086f5ab0b3236a6b0b32bb9b1cc3b3a3ede34fa44f2bd7026046`, 길이 4174. 링크는 원문, `https://github.com/unclecode/crawl4ai`, `https://rebornlabs.kr/skillpack`이다. 상단 `리본랩스 스킬팩`과 utm은 없다. 코드 안의 `http://localhost:11235/mcp/sse`는 http다.
+- 브라우저 검색은 세 제목 모두 전체 1개였다. Crawl4AI 에디터는 코드 3, 이미지 0, 링크 3이었다. 7가지 에디터는 코드 7, 표 4, 구분선 6, 이미지 0, 링크 5였다.
+- 에디터가 로컬에서 제목과 같은 h1만 뺐다. Crawl4AI 로컬 해시는 `8611b0c1a7fed4bc62d1eec5319b273d37acb9e7437d9f0e75cefef7fef45e67`, 길이 4268, `updated_at` `2026-10-30T23:39:03.928Z`다. 7가지 로컬 해시는 `87163e21d3eac9133d67066b188bc618ac3c3cc593eeb278490f1f78e4acdecb`, 길이 25327, `updated_at` `2026-10-30T23:39:05.347Z`다. 코드, 표, 구분선, 링크 수는 운영과 같다. 운영 본문은 복사하지 않았다.
+- 재실행은 두 글 모두 skip이다. Prompts 테이블은 쓰지 않는다. 스크립트는 `a139b81`, `de5bf24`다.
+
 # 공개 Notion 스킬 정리와 매일 프롬프트 Pages 이관 메모
 
 - 인스타 자동화 글 `팔로워 24,000명 모은 인스타 자동화 노하우`는 양쪽 모두 `/pages/cb09ab63-16e8-4822-9a9e-300cece09d9f`에 있다. 주소 `https://every-ai-guides.vercel.app/posts/insta-automation-free-prompts`. `from=dm`, `post=c25`, `fbclid`는 저장 주소에 없다. 기존 행은 갱신하지 않았다. 로컬 해시 `3ae39aa8af6f3687304ba461d08ab2853e4c16734eadeb66f30dfbd9ddfdef30`, 운영 해시 `a31b8d226f118917bdacda23c0f5e19f70f641d2c21e8894af6e1ebc6bef9693`. 이 차이는 이번 요청 전에 있던 로컬 에디터 수정이다.
