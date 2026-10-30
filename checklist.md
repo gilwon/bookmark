@@ -1709,6 +1709,22 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음. astryx 별표 시각은 창보다 이르지만 앱에는 오늘 들어옴
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-10-30 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-29부터 2026-10-30 아침까지 운영 Star 19건 확인. 한글 또는 eli5가 없는 항목 13건
+- [x] 2026-10-29에 반영한 6건은 한글 설명, eli5, README가 있어 유지
+- [x] 3x-haust/Orbit은 설명에 한글이 있어 설명을 유지하고 eli5와 README만 추가. 매핑 키는 넣지 않음
+- [x] 빈 About 3건은 한국어만 채움. anthropics/single-agent-loop-kit, elayadesign/ai-design-skills, unovue/vue-charts
+- [x] 나머지 9건은 영문 About 뒤에 한글을 붙임
+- [x] desloppify의 에이전트 붙여넣기 블록, grim-prompter의 방법 표와 런북 추종 블록, trading의 예시 프롬프트는 넣지 않음
+- [x] prism과 Orbit의 격리 해제 클릭 경로는 넣지 않음. 서명 없음 또는 공증 없음만 적음
+- [x] single-agent-loop-kit 상대 링크는 기본 브랜치 release로 고침
+- [x] 매핑 752개에서 764개. 회귀 테스트 109개 통과
+- [x] 운영 반영 13건, 빈 설명 3건, README 저장 13건, 한글 README 캐시 0건
+- [x] README 13건은 영문이라 detail_fetched_at을 비워 둠
+- [x] 이 창의 GitHub 별표 13건은 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
