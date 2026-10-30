@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 131건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 131);
+test("대상 133건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 133);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 131);
+  assert.equal(new Set(ids).size, 133);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1033,6 +1033,28 @@ test("어제 추가된 맥 온디바이스 fm 1건의 제목과 태그를 정한
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제 추가된 컴퓨터 점검·한도 플러그인 2건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "901e24ab-26a1-4e01-9918-721145f5e29f": {
+      title: "느린 컴퓨터를 진단하는 클로드 프롬프트 7개",
+      tags: ["클로드", "프롬프트"],
+      raw: "클로드(Claude), 이제 시간당 약 16만 원 받는 IT",
+    },
+    "d310b887-b677-4a60-8e4a-1d20a59d34fa": {
+      title: "클로드 코드 한도를 아껴 주는 오픈소스 4개",
+      tags: ["클로드", "툴"],
+      raw: "클로드 코드 한도 안 터지게 하는 플러그인 4개, 받 는 곳과 설치 명령은 댓글에 '한도방어' 남겨주시면 보내드릴게요.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 2);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);

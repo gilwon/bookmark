@@ -796,6 +796,18 @@ export const TARGETS = [
     tags: ["툴", "설정"],
     phrase: "Foundation Models",
   },
+  {
+    id: "901e24ab-26a1-4e01-9918-721145f5e29f",
+    title: "느린 컴퓨터를 진단하는 클로드 프롬프트 7개",
+    tags: ["클로드", "프롬프트"],
+    phrase: "백그라운드 프로세스",
+  },
+  {
+    id: "d310b887-b677-4a60-8e4a-1d20a59d34fa",
+    title: "클로드 코드 한도를 아껴 주는 오픈소스 4개",
+    tags: ["클로드", "툴"],
+    phrase: "OmniRoute",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
