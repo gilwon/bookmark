@@ -1739,6 +1739,25 @@
 - [x] 이 창의 GitHub 별표 13건은 앱에 모두 있어 새 행을 넣지 않음
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-10-31 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-30부터 2026-10-31 아침까지 운영 Star 20건 확인. 한글 또는 eli5가 없는 항목 7건
+- [x] 2026-10-30에 반영한 13건은 한글 설명, eli5, README가 있어 유지. Orbit 설명 길이 51자 유지
+- [x] 빈 About 1건은 한국어만 채움. jkf87/claw-office
+- [x] 나머지 6건은 영문 About 뒤에 한글을 붙임
+- [x] beszel은 설치 명령이 없어 설치 칸을 만들지 않음. 한계 절도 없음
+- [x] herdr-atuin-threads는 설치 헤딩이 없어 본문 설치 문장으로 설치 칸을 채움. 한계 절은 없음
+- [x] Game Studios About의 스킬 72개를 유지. README 본문의 74개는 eli5 특징에만 적음
+- [x] agentaps 릴리스 주소는 README대로 domenkozar/agentaps. cachix로 바꾸지 않음
+- [x] TokenEconomizer 실험 재현 파라미터는 넣지 않음
+- [x] agent-desktop의 에이전트 지시 붙여넣기 블록은 넣지 않음
+- [x] claw-office의 꺾쇠 자리표시는 넣지 않음. 모두 허용은 한 문장만 적음
+- [x] claw-office README만 한글이라 detail_fetched_at과 detail_json을 채움
+- [x] 매핑 764개에서 771개. 회귀 테스트 111개 통과
+- [x] 운영 반영 7건, 빈 설명 1건, README 저장 7건, 한글 README 캐시 1건
+- [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음. agent-desktop은 별표 시각이 창 밖이고 앱에는 이 동기화로 들어옴
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
