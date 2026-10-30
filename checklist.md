@@ -1,3 +1,17 @@
+# 이번 주 Notion과 Crawl4AI Pages 이관
+
+- [x] 2026-10-26 00:00 KST 이후 GILWON 최상위 글은 `Claude Code 코드로만 되는 일 7가지` 하나다. 2026-10-31 07:27 KST에 생겼다
+- [x] 일요일 글 서비스 소개·광고영상 프롬프트는 월요일 이전이라 넣지 않았다
+- [x] `Gmail Dashboard 프롬프트`는 제목이 같아서 건너뛴다. 로컬 `/pages/3b798279-4ff2-46ac-9020-d3aa8db0aedf`, 운영 `/pages/996c199b-ff5b-4eae-8634-3160edf1d395`. 붙여 넣은 공개 페이지는 다른 주소라 갱신하지 않았다
+- [x] Crawl4AI는 이미지 0, 첨부 0, 코드 3, 링크 3이다. `/pages/2a3b5ff1-56d1-4a33-8805-83cdf5374a0a`
+- [x] 코드로만 되는 일 7가지는 이미지 0, 첨부 0, 표 4, 코드 7, 구분선 6, 링크 5다. `/pages/15125cc3-ddf0-4878-a222-0a537ab40b89`
+- [x] 인스타그램 끝 슬래시와 `fbclid`는 없다. `http://CLAUDE.md`는 `https://claude.md/`다. localhost는 http로 남았다
+- [x] 로컬과 운영에 넣는다. 재실행은 skip이다
+- [x] 검색은 세 제목 모두 전체 1개다. 에디터에서 코드, 표, 구분선, 링크를 확인했다
+- [x] 에디터가 로컬에서 제목과 같은 h1만 뺐다. 운영 해시는 그대로다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] Crawl4AI 스크립트는 `a139b81`이다. Notion 스크립트는 `de5bf24`다
+
 # 공개 Notion 스킬 정리와 매일 프롬프트 Pages 이관
 
 - [x] 인스타 자동화 글은 양쪽 모두 있어서 건너뛴다. `/pages/cb09ab63-16e8-4822-9a9e-300cece09d9f`. 주소는 `https://every-ai-guides.vercel.app/posts/insta-automation-free-prompts`다
