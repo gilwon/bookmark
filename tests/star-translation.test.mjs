@@ -1794,4 +1794,29 @@ describe("Star 설명 번역", () => {
     const description = "Every Mac utility, in one orbit. 맥의 모든 유틸리티 앱을 한 번에";
     assert.equal(withKoreanTranslation("3x-haust/Orbit", description, null), description);
   });
+
+  it("2026-10-31에 추가된 Star 6개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["henrygd/beszel", "Lightweight server monitoring with historical data, docker stats, and alerts.", "기록과 Docker 통계, 알림이 있는 가벼운 서버 모니터링입니다."],
+      ["Donchitos/Claude-Code-Game-Studios", "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a complete coordination system mirroring real studio hierarchy.", "Claude Code를 게임 개발 스튜디오로 바꿉니다. AI 에이전트 49개, 워크플로 스킬 72개, 실제 스튜디오 체계를 닮은 조율 시스템이 있습니다."],
+      ["microsoft/TokenEconomizer", "Experience-Driven Black-Box Cost Control for Coding Agents", "코딩 에이전트의 비용을 경험으로 줄이는 블랙박스 제어입니다."],
+      ["cachix/agentaps", "A universal GUI for coding harnesses.", "코딩 하네스를 위한 범용 GUI입니다."],
+      ["vercel-labs/agent-desktop", "Agent Desktop gives any agent reliable computer use on the desktop. Built with Rust, it sees any app's real UI structure through OS accessibility trees and operates it — refs stay stable and actions stay safe to retry, instead of guessing from pixels.", "어떤 에이전트든 데스크톱을 안정적으로 쓰게 합니다. Rust로 만들었고, 픽셀 추측 대신 운영체제 접근성 트리로 앱의 실제 화면을 보고 조작합니다. 참조는 유지되고 동작은 다시 시도해도 안전합니다."],
+      ["atuinsh/herdr-atuin-threads", "Herdr mod: Atuin threads for the shown space, resumed in a new tab on click", "Herdr 모드입니다. 보이는 공간의 Atuin 스레드를 보여주고, 클릭하면 새 탭에서 이어 갑니다."],
+    ];
+    assert.equal(cases.length, 6);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
+
+  it("2026-10-31에 About가 비어 있는 claw-office는 한국어만 채운다", () => {
+    const korean = "OpenClaw Control UI 안에서 에이전트를 3D 사무실의 직원으로 보고 일을 맡기는 화면입니다.";
+    assert.equal(withKoreanTranslation("jkf87/claw-office", null, null), korean);
+    assert.equal(withKoreanTranslation("jkf87/claw-office", "", null), korean);
+  });
 });

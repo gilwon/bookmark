@@ -2634,6 +2634,21 @@
 - 정적 번역표는 752개에서 764개로 늘었다. 반영은 13건, 빈 설명 3건, README 저장 13건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 19건을 다시 읽어 공백 0과 어제 6건 불변을 확인했다. 같은 스크립트를 바로 다시 돌리려다 GitHub가 403을 반환해 두 번째 PATCH는 나가지 않았다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 109개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-10-31 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-10-31 기준 어제·오늘 창은 `created_at >= 2026-10-29T15:00:00Z`다. 운영 행은 20건이다. 2026-10-30에 반영한 13건은 한글 설명, eli5, README가 있어 유지했다. `3x-haust/Orbit` 설명 길이는 51자다.
+- 7건은 `created_at` `2026-10-30T23:34:39.513Z`에 들어왔다. 영문 About 6건은 뒤에 한글을 붙였다. About가 비어 있던 `jkf87/claw-office`는 한국어만 채웠다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. claw-office README만 한글이라 `detail_fetched_at`과 `detail_json`을 채웠다. 나머지 6건은 영문 README라 캐시를 비웠다. 끝 공백은 없었다.
+- `henrygd/beszel` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://beszel.dev`, 기본 브랜치 main, 포크 1134, 이슈 367, 워처 62, 푸시 시각 `2026-10-30T23:02:08Z`다. eli5 파싱은 설치 0, 사용 2, 특징 4, 한계 0이다. README에 설치 명령과 한계 절이 없어 그 칸은 만들지 않았다. 시작 안내는 beszel.dev 링크만 남겼다.
+- `Donchitos/Claude-Code-Game-Studios` About 뒤에 한글을 붙였다. About는 스킬 72개, README 본문은 스킬 74개, 훅 15개, 규칙 14개, 템플릿 62개다. 한글 설명은 About의 72를 유지하고 eli5 특징은 README 개수를 적었다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 4168, 이슈 71, 워처 207, 푸시 시각 `2026-10-19T02:43:42Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 측정용 게임은 저장소에 없다는 문장을 남겼다.
+- `microsoft/TokenEconomizer` About 뒤에 한글을 붙였다. 라이선스 Apache-2.0, 홈페이지 없음, 기본 브랜치 main, 포크 116, 이슈 4, 워처 5, 푸시 시각 `2026-10-30T23:30:10Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 실험 재현 절의 파라미터는 넣지 않았다. 루프 가드가 턴을 멈추지 않는다는 문장만 남겼다.
+- `cachix/agentaps` About 뒤에 한글을 붙였다. 라이선스 Apache-2.0, 홈페이지 `https://agentaps.dev`, 기본 브랜치 main, 포크 6, 이슈 3, 워처 0, 푸시 시각 `2026-10-29T18:01:32Z`다. README의 릴리스 주소와 클론 주소는 `github.com/domenkozar/agentaps`다. eli5 설치는 그 릴리스 주소와 `cargo install agentaps --locked`만 남기고 클론 주소를 cachix로 바꾸지 않았다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다.
+- `jkf87/claw-office` About는 비어 한국어만 채웠다. `AgentSystemLabs/agent-office`를 vendor로 쓰지만 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 2, 이슈 0, 워처 0, 푸시 시각 `2026-10-28T22:21:38Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. paseo 예시의 꺾쇠 자리표시는 넣지 않았다. 모두 허용은 믿는 폴더에서만 쓴다는 한 문장이다.
+- `vercel-labs/agent-desktop` About 뒤에 한글을 붙였다. `vercel-labs/agent-browser`와 다른 저장소다. 라이선스 Apache-2.0, 홈페이지 `https://agent-browser.dev/desktop`, 기본 브랜치 main, 포크 129, 이슈 11, 워처 7, 푸시 시각 `2026-10-30T23:33:43Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 에이전트에게 저장소 스킬을 통째로 따르라는 붙여넣기 블록은 넣지 않았다. 스냅샷과 클립보드에 개인 화면이 들어갈 수 있다는 문장은 남겼다. Homebrew와 Scoop은 아직 기본 카탈로그에 없다.
+- `atuinsh/herdr-atuin-threads` About 뒤에 한글을 붙였다. `herdrdev/herdr`, `devswha/herdr-web-ui`, `penso/herdr-gpui`와 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 0, 이슈 0, 워처 0, 푸시 시각 `2026-10-30T00:20:10Z`다. eli5 파싱은 설치 5, 사용 3, 특징 3, 한계 0이다. README에 설치 헤딩이 없어 복사와 `atuin config enable threads`를 설치 칸에 적었다.
+- 이 창의 GitHub 별표는 모두 앱에 있었다. 새 행은 넣지 않았다. `vercel-labs/agent-desktop`은 별표 시각이 창보다 이르고, 앱 행은 나머지 6건과 같은 시각에 들어왔다.
+- 정적 번역표는 764개에서 771개로 늘었다. 반영은 7건, 빈 설명 1건, README 저장 7건, 한글 README 캐시 1건이다. 적용 함수가 쓴 뒤 20건을 다시 읽어 공백 0과 어제 13건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 111개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.
