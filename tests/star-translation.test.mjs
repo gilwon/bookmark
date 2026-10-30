@@ -1754,4 +1754,44 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-10-30에 추가된 Star 9개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["Soda-null/multi-agent-repo-protocol", "Rules, git hooks and scripts that let several AI coding agents (Claude Code, Codex, DeepSeek) share one git repo without overwriting each other, with every commit attributed", "여러 AI 코딩 에이전트가 한 git 저장소를 서로 덮어쓰지 않고 쓰게 하는 규칙, git 훅, 스크립트입니다. 커밋마다 누가 했는지 남깁니다."],
+      ["uigraph-oss/uigraph", "Open-source local viewer for software architecture. Use the UIGraph skill with your coding agent to generate service maps, API specs, dependency graphs, and diagrams.", "소프트웨어 구조를 보는 오픈소스 로컬 뷰어입니다. 코딩 에이전트의 UIGraph 스킬로 서비스 지도, API 명세, 의존 그래프, 다이어그램을 만듭니다."],
+      ["fatihaydost/brand-identity-skill", "A Claude Code skill that designs a brand identity as one system: logo, typography and colour palette built together from one brief, measured, compared as identity cards, and delivered as a brand guidelines kit.", "하나의 브리프에서 로고, 글꼴, 색을 함께 만드는 Claude Code 스킬입니다. 측정하고 정체성 카드로 비교한 뒤 브랜드 가이드 키트로 넘깁니다."],
+      ["peteromallet/desloppify", "Agent harness to make your slop code well-engineered and beautiful.", "에이전트가 엉성한 코드를 잘 짜인 보기 좋은 코드로 고치게 하는 하네스입니다."],
+      ["jmanico/grim-prompter", "Threat modeling for AI coding agents: point Claude Code, Codex or any agent at your repo and get an evidence-traced threat model. 36 architectures, 29 methods, MIT.", "AI 코딩 에이전트용 위협 모델링입니다. Claude Code, Codex 등 에이전트를 저장소에 두면 근거가 남는 위협 모델을 만듭니다. 아키텍처 36개, 방법 29개, MIT입니다."],
+      ["agiprolabs/claude-trading-skills", "68 trading, DeFi, and quantitative finance Agent Skills. Works with Claude Code, Cursor, Codex, Gemini CLI, and 30+ other tools.", "거래, 디파이, 계량 금융 에이전트 스킬 68개입니다. Claude Code, Cursor, Codex, Gemini CLI 등 30개가 넘는 도구에서 씁니다."],
+      ["DeepanshuMishraa/sheet", "A local-first infinite canvas for UI design — one your agent can edit. Desktop app, MCP-native.", "UI 디자인을 위한 로컬 우선 무한 캔버스입니다. 에이전트가 고칠 수 있는 데스크톱 앱이고 MCP로 붙습니다."],
+      ["FortoGraphy/prism-download-manager", "The fast, beautiful, open-source download manager for Windows, macOS and Linux — up to 32 connections, browser integration, video & MP3 downloads, crash-safe resume.", "윈도우, 맥, 리눅스용으로 빠르고 보기 좋은 오픈소스 다운로드 관리자입니다. 연결은 32개까지, 브라우저 연동, 영상과 MP3, 끊겨도 이어받기입니다."],
+      ["Devsethi3/notch-toast", "React toast library for smooth morphing notch or floating surface.", "부드러운 노치나 떠 있는 표면으로 바뀌는 React 토스트 라이브러리입니다."],
+    ];
+    assert.equal(cases.length, 9);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
+
+  it("2026-10-30에 About가 비어 있는 Star 3개는 한국어만 채운다", () => {
+    const cases = [
+      ["anthropics/single-agent-loop-kit", "여러 전문 서브에이전트를 앞에 둔 시스템을, 필요할 때 스킬과 도구를 불러 쓰는 하나의 에이전트 루프로 옮기는 시작 키트입니다. 참고 구현이며 유지보수와 기여를 받지 않습니다."],
+      ["elayadesign/ai-design-skills", "AI 코딩 도구가 읽는 마크다운 규칙으로 된 디자인 스킬 모음입니다. 필요한 스킬만 설치합니다."],
+      ["unovue/vue-charts", "Vue 3에서 컴포넌트로 조립하는 차트입니다. Recharts를 Vue로 옮긴 비공식 포트이고 패키지 이름은 vccs입니다."],
+    ];
+    assert.equal(cases.length, 3);
+    for (const [repo, korean] of cases) {
+      assert.equal(withKoreanTranslation(repo, null, null), korean, repo);
+      assert.equal(withKoreanTranslation(repo, "", null), korean, repo);
+    }
+  });
+
+  it("2026-10-30 Orbit 설명은 한글이 있어 그대로 둔다", () => {
+    const description = "Every Mac utility, in one orbit. 맥의 모든 유틸리티 앱을 한 번에";
+    assert.equal(withKoreanTranslation("3x-haust/Orbit", description, null), description);
+  });
 });
