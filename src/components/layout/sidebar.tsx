@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  Archive,
   Bookmark,
   BookmarkCheck,
   BookOpen,
@@ -73,6 +74,7 @@ export const navSections = [
       { href: "/macbookguyver", label: "맥북가이버", icon: Laptop },
       { href: "/sdk-guides", label: "김스듴 가이드", icon: BookOpen },
       { href: "/shim-guides", label: "심팀장 자료실", icon: Library },
+      { href: "/yeongseon-archive", label: "신영선 자료실", icon: Archive },
     ],
   },
 ] as const;

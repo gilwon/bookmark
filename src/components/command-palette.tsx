@@ -2,6 +2,7 @@
 "use client";
 
 import {
+  Archive,
   BookOpen,
   Bot,
   BotMessageSquare,
@@ -227,6 +228,13 @@ export function CommandPalette() {
         keywords: "shim team jjang 심팀장 자료실 shimteamjjang",
         icon: <Library className="h-4 w-4" />,
         run: go("/shim-guides"),
+      },
+      {
+        id: "nav-yeongseon-archive",
+        label: "신영선 자료실",
+        keywords: "yeongseon archive 신영선 자료실 영선 아카이브",
+        icon: <Archive className="h-4 w-4" />,
+        run: go("/yeongseon-archive"),
       },
       {
         id: "nav-search",
