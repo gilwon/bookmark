@@ -1,6 +1,7 @@
 "use client";
 // 신영선 자료 아카이브를 검색하고 출처·주제로 걸러 카드로 보여 준다.
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,6 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import {
   YEONGSEON_PAGE_SIZE,
-  articleUrl,
   filterYeongseonArchive,
   listYeongseonArchive,
   sourceOptions,
@@ -59,6 +59,13 @@ export function ArchiveList({ items }: { items?: YeongseonArchiveItem[] }) {
   const sources = useMemo(() => sourceOptions(catalog), [catalog]);
   const topics = useMemo(() => topicOptions(catalog, source, topic), [catalog, source, topic]);
   const hasFilter = Boolean(qParam.trim() || source || topic || draft.trim());
+  const cardQuery = new URLSearchParams();
+  if (qParam) cardQuery.set("q", qParam);
+  if (source) cardQuery.set("source", source);
+  if (topic) cardQuery.set("topic", topic);
+  const shownValue = searchParams.get("shown");
+  if (shownValue) cardQuery.set("shown", shownValue);
+  const cardQs = cardQuery.toString();
 
   useEffect(() => {
     const index = focusIndex.current;
@@ -196,10 +203,8 @@ export function ArchiveList({ items }: { items?: YeongseonArchiveItem[] }) {
         <ul ref={listRef} className="grid list-none gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="자료 목록">
           {visible.map((item) => (
             <li key={item.id} className="min-w-0">
-              <a
-                href={articleUrl(item.id)}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={`/yeongseon-archive/${item.id}${cardQs ? `?${cardQs}` : ""}`}
                 className="block h-full rounded-doc-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <Card className="h-full transition-colors hover:border-indigo-500/40 active:border-indigo-500/60">
@@ -210,7 +215,7 @@ export function ArchiveList({ items }: { items?: YeongseonArchiveItem[] }) {
                     <p className="text-xs text-muted-foreground">{item.tags.join(" · ")}</p>
                   </CardContent>
                 </Card>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
