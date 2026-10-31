@@ -37,6 +37,11 @@ export function listYeongseonArchive(): YeongseonArchiveItem[] {
   return [...catalog];
 }
 
+/** id에 해당하는 자료를 반환한다. 없으면 undefined다. */
+export function getYeongseonArchiveItem(id: string): YeongseonArchiveItem | undefined {
+  return catalog.find((item) => item.id === id);
+}
+
 export function sourceOptions(items: YeongseonArchiveItem[]): YeongseonOption[] {
   const counts = new Map<string, number>();
   for (const item of items) {

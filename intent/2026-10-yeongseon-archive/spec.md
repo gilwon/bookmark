@@ -30,6 +30,20 @@
 - 설명 `다른 검색어를 입력하거나 검색·필터를 초기화해 주세요.`
 - 초기화 버튼이 있다.
 
+## 본문
+- 카드 링크는 `/yeongseon-archive/{id}`다. 목록의 `q`, `source`, `topic`, `shown`이 있으면 그대로 붙인다. 새 탭으로 원문 사이트를 열지 않는다.
+- 본문 화면은 같은 쿼리로 목록에 돌아간다. 없는 id는 404다.
+- 화면에는 목록으로 돌아가는 링크, `공개일 · 출처 · 과정`, 제목, 요약, 주제, 본문, `원문에서 읽기`가 있다. `원문에서 읽기`만 원문 사이트를 새 탭으로 연다.
+- 본문 HTML은 `https://yeongseon.kr/archive/{id}.html`의 `article`에서 가져온다. 412편 모두 비어 있지 않다.
+- 본문에 남기지 않는 것. 목록으로 돌아가기, 칩, 제목, 요약, 날짜, `10배 더 빠르게 흡수하는 방법`과 그 아래 `릴스 영상을 저장` 단계, `이 글을 보는 분들께`로 시작하는 안내, `aside.promo`, 뉴스레터·카카오 신청 영역.
+- 표, 코드, 인용, 본문 이미지는 남긴다. `favicon.ico` 이미지는 뺀다.
+- 상대 이미지 `img/...`는 `https://yeongseon.kr/archive/` 기준 절대 주소로 둔다. 이미지 바이트는 넣지 않는다.
+- `youtube.com/embed/{id}`와 `youtube-nocookie.com/embed/{id}`는 `https://www.youtube.com/watch?v={id}` 링크와 `https://img.youtube.com/vi/{id}/hqdefault.jpg` 썸네일로 바꾼다. iframe은 남기지 않는다.
+- `{32자리 hex}.html` 링크는 `/yeongseon-archive/{id}`로 바꾼다. `이어서 볼 것`은 이 앱 링크로 남긴다.
+- 바깥 링크는 `target="_blank"`와 `rel="noopener noreferrer"`를 붙인다.
+- 저장 HTML은 정화기가 허용하는 태그만 쓴다. `div`로 표를 감싸지 않는다. `script`, 이벤트 속성, `javascript:`는 없다.
+- 알려진 본문. 첫 글에는 `/clear`와 `table`이 있고 `open.kakao.com`과 `10배 더 빠르게`는 없다. `지금이 역사상 가장 좋은 때입니다`에는 `watch?v=ZIaOBAjvc38`과 `https://yeongseon.kr/archive/img/`가 있고 `iframe`은 없다.
+
 ## 완료
-- 단위 테스트가 412건, 첫·끝 항목, 출처 수, 검색·출처·주제 거르기, 24편 단위를 확인한다.
-- 화면에서 첫 카드와 더 보기, 출처 필터가 동작한다.
+- 단위 테스트가 412건, 첫·끝 항목, 출처 수, 검색·출처·주제 거르기, 24편 단위, 본문 정화 규칙을 확인한다.
+- 화면에서 첫 카드를 누르면 앱 안 본문이 보이고, 목록으로 돌아오면 목록이 유지된다.

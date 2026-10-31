@@ -3,10 +3,13 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
+import { extractYeongseonArticleBody } from "../scripts/fetch-yeongseon-archive-bodies.mjs";
+import { getYeongseonArchiveBody } from "../src/lib/yeongseon-archive-body";
 import {
   YEONGSEON_PAGE_SIZE,
   articleUrl,
   filterYeongseonArchive,
+  getYeongseonArchiveItem,
   listYeongseonArchive,
   sourceOptions,
   topicOptions,
@@ -122,4 +125,111 @@ test("사이드바에는 신영선 자료실이 있고 하단 탭 섹션은 5개
     .map((name) => name.trim())
     .filter(Boolean).length;
   assert.equal(iconCount, 5);
+});
+
+test("본문 정화는 표·코드·영상만 남기고 안내와 홍보를 뺀다", () => {
+  const html = `<!doctype html><html><body><article>
+    <a class="reading-back" href="/archive.html">목록</a>
+    <ul class="chips"><li>칩</li></ul>
+    <h1>목록 제목 빼기</h1>
+    <p class="sum">요약 빼기</p>
+    <p class="meta">날짜 빼기</p>
+    <h2>본문 소제목</h2>
+    <aside class="note">10배 더 빠르게 흡수하는 방법</aside>
+    <ol class="steps"><li>릴스 영상을 저장 또는 공유하기로 기록 해놓습니다.</li></ol>
+    <div class="tw"><table><tr><td><code>/clear</code></td></tr></table></div>
+    <pre><code>그대로</code></pre>
+    <figure><img src="img/abc.png" alt="그림"></figure>
+    <iframe src="https://www.youtube-nocookie.com/embed/ZIaOBAjvc38"></iframe>
+    <a href="405d86104de280f59105df276560229a.html">다음 글</a>
+    <aside class="note">이 글을 보는 분들께. 안내</aside>
+    <aside class="promo"><a href="https://open.kakao.com/o/gooW0TBi">오픈채팅</a></aside>
+    <div class="cta">무료 강의와 뉴스레터</div>
+    <img src="https://example.com/a.png" onerror="alert(1)">
+    <a href="javascript:alert(1)">실행</a>
+  </article></body></html>`;
+  const body = extractYeongseonArticleBody(html);
+  for (const piece of [
+    "/clear",
+    "<table",
+    "<pre",
+    "https://yeongseon.kr/archive/img/abc.png",
+    "https://www.youtube.com/watch?v=ZIaOBAjvc38",
+    "https://img.youtube.com/vi/ZIaOBAjvc38/hqdefault.jpg",
+    "/yeongseon-archive/405d86104de280f59105df276560229a",
+    'alt="유튜브 영상"',
+    "본문 소제목",
+  ]) {
+    assert.equal(body.includes(piece), true, piece);
+  }
+  for (const piece of [
+    "10배 더 빠르게",
+    "릴스 영상",
+    "open.kakao.com",
+    "뉴스레터",
+    "<iframe",
+    "<div",
+    "onerror",
+    "javascript:",
+    "목록 제목 빼기",
+  ]) {
+    assert.equal(body.includes(piece), false, piece);
+  }
+});
+
+test("저장된 본문 412편은 목록 순서와 같고 금지 조각이 없다", () => {
+  const items = listYeongseonArchive();
+  const raw = fs.readFileSync(path.join(process.cwd(), "src/data/yeongseon-archive-bodies.json"), "utf8");
+  const bodies = JSON.parse(raw) as Record<string, string>;
+  const keys = Object.keys(bodies);
+  assert.deepEqual(
+    keys,
+    items.map((item) => item.id)
+  );
+  for (const key of keys) {
+    assert.equal(typeof bodies[key], "string");
+    assert.notEqual(bodies[key].trim(), "");
+  }
+
+  const first = bodies[items[0].id];
+  assert.equal(first.includes("/clear"), true);
+  assert.equal(first.includes("<table"), true);
+  assert.equal(first.includes("open.kakao.com"), false);
+  assert.equal(first.includes("10배 더 빠르게"), false);
+  assert.equal(first.includes("iframe"), false);
+
+  const yt = items.find((item) => item.title === "지금이 역사상 가장 좋은 때입니다");
+  assert.ok(yt);
+  const ytBody = bodies[yt.id];
+  assert.equal(ytBody.includes("watch?v=ZIaOBAjvc38"), true);
+  assert.equal(ytBody.includes("https://yeongseon.kr/archive/img/"), true);
+  assert.equal(ytBody.includes("iframe"), false);
+
+  for (const body of Object.values(bodies)) {
+    assert.equal(body.includes("<script"), false);
+    assert.equal(body.includes("onerror="), false);
+    assert.equal(body.includes("javascript:"), false);
+    assert.equal(body.includes("btn-kakao"), false);
+    assert.equal(body.includes("learning-actions"), false);
+    assert.equal(body.includes("10배 더 빠르게 흡수하는 방법"), false);
+  }
+});
+
+test("카드는 앱 안 글 주소로 가고 본문은 id로 읽는다", () => {
+  const rootDir = process.cwd();
+  const list = fs.readFileSync(path.join(rootDir, "src/components/yeongseon-archive/archive-list.tsx"), "utf8");
+  assert.equal(list.includes("/yeongseon-archive/${item.id}"), true);
+  assert.equal(list.includes('target="_blank"'), false);
+  assert.equal(list.includes("yeongseon-archive-body"), false);
+
+  const items = listYeongseonArchive();
+  const found = getYeongseonArchiveItem(items[0].id);
+  assert.equal(found?.id, items[0].id);
+  assert.equal(found?.title, items[0].title);
+  assert.equal(getYeongseonArchiveItem("없는-id"), undefined);
+
+  const body = getYeongseonArchiveBody(items[0].id);
+  assert.equal(typeof body, "string");
+  assert.notEqual(body?.trim(), "");
+  assert.equal(getYeongseonArchiveBody("없는-id"), undefined);
 });
