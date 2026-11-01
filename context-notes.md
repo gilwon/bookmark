@@ -1,3 +1,12 @@
+# 2026-11-02 주간 Notion Pages 이관 메모
+
+- 주간 창은 2026-11-02 00:00 KST부터다. 2026-11-02 07:46 KST에 조회했다. GILWON 기본 공간은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 311, shared_pages_manual_sort 264다. 고유 344개다. sidebar_section은 없다.
+- getSpaces에 없던 목록 id 72개를 syncRecordValues로 받았다. 72개 모두 응답이 있고, 이번 주 글은 없다. 그 묶음에서 가장 최근 생성은 2026-10-23 09:09 KST다.
+- 기본 공간에서 가져온 페이지 중 가장 최근은 `클로드 마케팅 스킬 52개 한글 가이드 (설치 명령어 + 바로 쓰는 프롬프트)`다. 생성 2026-10-31 21:20:09 KST, `/pages/6ed578c0-6d07-4355-8ec2-75a6c0bd6636`. 그다음은 `Claude Code 코드로만 되는 일 7가지`, 2026-10-31 07:27:16 KST다. 둘 다 지난주라 다시 넣지 않았다.
+- 다른 GILWON YOO 공간 세 곳은 고유 5, 4, 4개이고 이번 주 글이 없다.
+- 일요일 글 서비스 소개·광고영상 프롬프트 `764b2568-27ac-8368-929d-01d674cd854b`는 2026-10-25 14:46 KST라 넣지 않았다.
+- 새로 저장한 행은 없다. Prompts 테이블은 쓰지 않는다.
+
 # 이번 주 마케팅 스킬 52개 Pages 이관 메모
 
 - 주간 창은 2026-10-26 00:00 KST부터다. 2026-11-01 09:10 KST 재조회에서 GILWON 기본 공간은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 311, shared_pages_manual_sort 264다. 템플릿 고유 30개 중 이번 주 글은 없다. 다른 GILWON YOO 공간에도 이번 주 글이 없다.

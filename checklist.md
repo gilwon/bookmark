@@ -1,3 +1,13 @@
+# 2026-11-02 주간 Notion Pages 이관
+
+- [x] 2026-11-02 07:46 KST 조회에서 2026-11-02 00:00 KST 이후 GILWON 최상위 글은 없다
+- [x] pages 28, private_pages 311, shared_pages_manual_sort 264, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6이다. 어제와 같다
+- [x] 목록에만 있던 72개도 이번 주 글이 아니다. 그중 가장 최근은 2026-10-23이다
+- [x] 다른 GILWON YOO 공간에도 이번 주 글이 없다
+- [x] 가장 최근 최상위 글은 2026-10-31의 마케팅 스킬 52개와 코드로만 되는 일 7가지라 지난주다. 다시 넣지 않았다
+- [x] 일요일 글 서비스 소개·광고영상 프롬프트는 이번 주가 아니라 넣지 않았다
+- [x] Prompts 테이블은 쓰지 않는다
+
 # 이번 주 마케팅 스킬 52개 Pages 이관
 
 - [x] 2026-11-01 09:10 KST 재조회에서 2026-10-26 00:00 KST 이후 GILWON 최상위 글은 두 개다. 이미 넣은 7가지는 건너뛴다
