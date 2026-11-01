@@ -30,6 +30,36 @@
     "sourceUrl": "https://sdk-kim-builds.com/guides/remm-meeting-todos-to-notion/"
   },
   {
+    "slug": "ppt-master-editable-ppt-from-documents",
+    "title": "문서 넣으면 고칠 수 있는 PPT가 나온다 — 무료 도구 PPT Master",
+    "category": "업무 자동화",
+    "tool": "Claude",
+    "tags": [
+      "PPT",
+      "파워포인트",
+      "클로드코드",
+      "문서자동화",
+      "직장인"
+    ],
+    "publishedAt": "2026-10-30T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/ppt-master-editable-ppt-from-documents/"
+  },
+  {
+    "slug": "vibe-coding-app-security-audit",
+    "title": "바이브코딩으로 만든 앱, 출시 전에 보안 점검하는 법 — 클라우드플레어 무료 스킬",
+    "category": "AI 코딩",
+    "tool": "Claude",
+    "tags": [
+      "보안",
+      "클로드코드",
+      "바이브코딩",
+      "클라우드플레어",
+      "스킬"
+    ],
+    "publishedAt": "2026-10-30T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/vibe-coding-app-security-audit/"
+  },
+  {
     "slug": "ai-autopilot-services-autohunt",
     "title": "자동사냥: AI 툴 말고 결과를 파는 법 (세쿼이아 「Services: The New Software」 정리 + 실제 사례 2개)",
     "category": "업무 자동화",
