@@ -1,3 +1,19 @@
+# 이번 주 마케팅 스킬 52개 Pages 이관 메모
+
+- 주간 창은 2026-10-26 00:00 KST부터다. 2026-11-01 09:10 KST 재조회에서 GILWON 기본 공간은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 311, shared_pages_manual_sort 264다. 템플릿 고유 30개 중 이번 주 글은 없다. 다른 GILWON YOO 공간에도 이번 주 글이 없다.
+- 이번 주 최상위 글은 두 개다. `Claude Code 코드로만 되는 일 7가지`는 이미 `/pages/15125cc3-ddf0-4878-a222-0a537ab40b89`에 있어 다시 넣지 않았다.
+- 새 글 제목은 `클로드 마케팅 스킬 52개 한글 가이드 (설치 명령어 + 바로 쓰는 프롬프트)`다. 페이지 `5b2b2568-27ac-83e2-95c0-011b5b846eca`, 생성 2026-10-31 21:20:09 KST, parent_table=space, GILWON 공간 `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`. 비공개라 쿠키로 `loadPageChunk`를 받았다. 청크 2개와 부모 재조회로 서브트리 139, 빠진 자식 0이다. 아이콘은 저장하지 않았다. 표지는 없다.
+- 주소 `https://app.notion.com/p/5b2b256827ac83e295c0011b5b846eca`.
+- 저장 경로 `/pages/6ed578c0-6d07-4355-8ec2-75a6c0bd6636`. 로컬 `dev`와 운영이 같은 id다. 넣을 때 `created_at`과 `updated_at`은 `2026-11-01T00:22:38.383Z`다.
+- 이미지 4. 첨부 0. 표 8. 코드 3. 구분선 10. 링크 12. 운영 sha256 `f65b1a41ad70200e269cf9798540f5735a2edd2083526dcf885e6126c752aeef`, 길이 860386.
+- 그림은 모두 jpeg data URL이다. `repo.jpg` 105585 `e4f605ae38b7c5678d64258667625c8d8e3577046d0a259a6faf2dcc0f9f405b` 1280x650, alt 깃허브 저장소. `install.jpg` 46110 `3abe134f40f3863c1416c3d1417141c7ca1e5c0ae8e4a96ad2f917c5a5447471` 1280x600, alt 설치 결과. `diagram.jpg` 189402 `72c3ed81f926be860535b2aa184b3764a6213a962ecb7948b4dc9c4756375cad` 1740x1200, alt 스킬끼리 연결된 구조. `cro.jpg` 272463 `a518bb3fd4bd2de18f3b02974408be486ad0032e434a0f71abbe84780e5813be` 1280x1740, alt 실제 /cro 결과.
+- 코드는 bash 1개, text 2개다. 빈 제목 콜아웃 안에 안내 문장과 번호 목록 4개가 있었다. TipTap 콜아웃이 목록을 한 문단으로 합치므로 자식 블록을 밖으로 꺼냈다.
+- 링크는 원문, `https://www.youtube.com/@builderjoshkim?sub_confirmation=1`, `https://maily.so/josh`, `https://github.com/coreyhaines31/marketingskills`, `https://youtube.com/shorts/1z-owuX4TGU`, `https://product-marketing.md/`다. `http://maily.so/josh)%EB%A1%9C`는 경로의 `)`에서 잘라 `https://maily.so/josh`로 고쳤고, 보이는 글자 `)로`는 링크 밖에 뒀다. `sub_confirmation=1`은 남겼다. `http://product-marketing.md`는 `https://product-marketing.md/`가 됐다.
+- 일요일 글 서비스 소개·광고영상 프롬프트 `764b2568-27ac-8368-929d-01d674cd854b`는 2026-10-25 14:46 KST라 넣지 않았다.
+- 브라우저 검색 `마케팅 스킬 52개`는 전체 1개였다. 에디터는 이미지 4장, 코드 3, 표 8, 구분선 10, 링크 12, 번호 목록의 `폴더가 달라요`를 보였다. 상태는 저장됨이었다.
+- 에디터가 로컬에서 제목과 같은 h1만 뺐다. 로컬 해시는 `23ab96f959f19b33ed1e59bb0781cefa3785d1fbe2de02055fd44febb25011e6`, 길이 876826, `updated_at` `2026-11-01T00:26:24.773Z`다. 이미지, 코드, 표, 구분선, 링크 수는 운영과 같다. 운영 본문은 복사하지 않았다.
+- 재실행은 skip이다. 로컬 `custom_pages`는 798건이다. Prompts 테이블은 쓰지 않는다. 스크립트는 `scripts/import-notion-marketing-skills-52.mjs`. 커밋 `f93163b`. 테스트 6개 통과.
+
 # 이번 주 Notion과 Crawl4AI Pages 이관 메모
 
 - 주간 창은 2026-10-26 00:00 KST부터다. 2026-10-31 아침 재조회에서 GILWON 기본 공간 목록은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 310, shared_pages_manual_sort 263, 고유 343이었다. 이번 주 최상위 글은 하나다.
