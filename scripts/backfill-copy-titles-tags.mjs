@@ -808,6 +808,18 @@ export const TARGETS = [
     tags: ["클로드", "툴"],
     phrase: "OmniRoute",
   },
+  {
+    id: "30d89a51-ae03-4098-80dc-334e322c3bfd",
+    title: "랜딩페이지만 맡아 수주하는 1인 에이전시 3원칙",
+    tags: ["클로드", "세일즈"],
+    phrase: "인바운드 수주",
+  },
+  {
+    id: "12bb27e4-0f8c-45f8-ace2-d3795bef02d2",
+    title: "디자인을 찾고 코드로 옮기는 레퍼런스 10곳",
+    tags: ["디자인", "레퍼런스", "프롬프트"],
+    phrase: "onepagelove.com",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");

@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 133건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 133);
+test("대상 135건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 135);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 133);
+  assert.equal(new Set(ids).size, 135);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1051,6 +1051,28 @@ test("어제 추가된 컴퓨터 점검·한도 플러그인 2건의 제목과 �
       title: "클로드 코드 한도를 아껴 주는 오픈소스 4개",
       tags: ["클로드", "툴"],
       raw: "클로드 코드 한도 안 터지게 하는 플러그인 4개, 받 는 곳과 설치 명령은 댓글에 '한도방어' 남겨주시면 보내드릴게요.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 2);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제 추가된 에이전시·레퍼런스 2건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "30d89a51-ae03-4098-80dc-334e322c3bfd": {
+      title: "랜딩페이지만 맡아 수주하는 1인 에이전시 3원칙",
+      tags: ["클로드", "세일즈"],
+      raw: "AI를 단순 코딩 장난감이 아니라 '월 수천 찍는 1인 웹 에이전시'로 바꾸는 3원칙:",
+    },
+    "12bb27e4-0f8c-45f8-ace2-d3795bef02d2": {
+      title: "디자인을 찾고 코드로 옮기는 레퍼런스 10곳",
+      tags: ["디자인", "레퍼런스", "프롬프트"],
+      raw: "1. Awwwards",
     },
   };
   const found = TARGETS.filter((item) => item.id in expected);
