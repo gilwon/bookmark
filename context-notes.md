@@ -2686,6 +2686,19 @@
 - 정적 번역표는 771개에서 775개로 늘었다. 반영은 4건, 빈 설명 0건, README 저장 4건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 11건을 다시 읽어 공백 0과 유지 7건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다. 쓰기 전에 `Donchitos/Claude-Code-Game-Studios`의 `detail_fetched_at`이 이미 채워져 있었다. 그 행은 바꾸지 않았다.
 - 테스트는 112개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-02 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-11-02 기준 어제·오늘 창은 `created_at >= 2026-10-31T15:00:00Z`다. 운영 행은 7건이다. 2026-11-01에 반영한 `lightpanda-io/browser`와 `heydamir/unslop`은 한글 설명, eli5, README가 있어 유지했다. 설명 길이는 105자와 132자다.
+- 5건은 영문 About 뒤에 한글을 붙였다. 빈 About는 없었다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 5건 모두 영문 README라 `detail_fetched_at`과 `detail_json`은 비웠다. 끝 공백은 없었다.
+- `bregman-arie/devops-exercises` About 뒤에 한글을 붙였다. GitHub 라이선스 SPDX는 NOASSERTION이라 캐시를 비웠고 README 배지는 CC BY-NC-ND 3.0이다. 홈페이지 없음, 기본 브랜치 master, 포크 20576, 이슈 57, 워처 1329, 푸시 시각 `2025-12-27T14:22:30Z`다. eli5 파싱은 설치 0, 사용 4, 특징 4, 한계 4다. README에 설치 명령이 없어 설치 칸은 만들지 않았다. 현재 문제는 2624개다. 문제 본문과 답은 넣지 않았다.
+- `THU-MAIC/OpenMAIC` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 6528, 이슈 222, 워처 175, 푸시 시각 `2026-11-01T18:15:36Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 클론과 `pnpm install`이다. 키 예시, 데이터베이스 접속 문자열, 꺾쇠 스위치는 넣지 않았다.
+- `Orkas-AI/Orkas` About 뒤에 한글을 붙였다. OpenClaw를 CLI 에이전트로 부르지만 다른 저장소다. 라이선스 MIT, 홈페이지 `https://orkas.ai?source=gh-orkas`, 기본 브랜치 main, 포크 468, 이슈 9, 워처 177, 푸시 시각 `2026-11-01T01:24:48Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 소스의 `./run.sh`와 `run.cmd`다. 패키지 앱은 macOS 12 이상, Windows 10 이상이다.
+- `HKUDS/AgentPilot` About 뒤에 한글을 붙였다. `HKUDS/OpenHarness`, `HKUDS/OpenSpace`, `HKUDS/CLI-Anything`과 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 925, 이슈 54, 워처 46, 푸시 시각 `2026-11-01T18:05:12Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 에이전트에게 설치를 맡기라는 붙여넣기 블록은 넣지 않았다. 수동 클론과 예제 환경 파일 복사만 펜스에 남겼다.
+- `skeeto/prospero` About 뒤에 한글을 붙였다. 라이선스 Unlicense, 홈페이지 `https://skeeto.itch.io/prospero`, 기본 브랜치 master, 포크 7, 이슈 3, 워처 3, 푸시 시각 `2026-11-01T22:49:04Z`다. eli5 파싱은 설치 4, 사용 4, 특징 4, 한계 4다. README에 설치 명령이 없어 설치 칸은 `docs/building.md` 안내만 남겼다. `prospero .` 는 사용법이다.
+- 이 창의 GitHub 별표는 Orkas `2026-11-01T07:28:06Z`, prospero `2026-11-01T07:24:28Z` 둘이고 둘 다 앱에 있었다. 나머지 3건은 앱 `created_at`이 창 안이다. 새 행은 넣지 않았다.
+- 정적 번역표는 775개에서 780개로 늘었다. 반영은 5건, 빈 설명 0건, README 저장 5건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 7건을 다시 읽어 공백 0과 유지 2건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 113개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.

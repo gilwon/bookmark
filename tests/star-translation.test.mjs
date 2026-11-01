@@ -1836,4 +1836,22 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-11-02에 추가된 Star 5개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["bregman-arie/devops-exercises", "Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview Questions", "Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, 네트워크, 가상화. DevOps 면접 질문입니다."],
+      ["THU-MAIC/OpenMAIC", "Open Multi-Agent Interactive Classroom — Get an immersive, multi-agent learning experience in just one click", "한 번의 클릭으로 몰입형 멀티 에이전트 학습을 여는 열린 멀티 에이전트 대화형 교실입니다."],
+      ["Orkas-AI/Orkas", "Orkas is an open-source (MIT), local-first AI team for your desktop: a Commander turns your goal into to-dos and coordinates 16 built-in specialist agents plus Claude Code, Codex, OpenCode, OpenClaw and Hermes, with projects, scheduled automations and connectors. Free app for macOS & Windows; built-in models or your own keys.", "Orkas는 MIT로 열린 로컬 우선 데스크톱 AI 팀입니다. 지휘자가 목표를 할 일로 바꾸고, 내장 전문 에이전트 16개와 Claude Code, Codex, OpenCode, OpenClaw, Hermes를 조율합니다. 프로젝트, 예약 자동화, 커넥터가 있습니다. macOS와 Windows용 무료 앱이며, 내장 모델이나 자기 키를 씁니다."],
+      ["HKUDS/AgentPilot", "AgentPilot: Better Next Moves for Your Agent. Get Things Done Faster.", "에이전트의 다음 수를 더 잘 골라 일을 더 빨리 끝내게 합니다."],
+      ["skeeto/prospero", "Prospero coding harness", "Prospero 코딩 하네스입니다."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });
