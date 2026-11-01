@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 135건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 135);
+test("대상 136건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 136);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 135);
+  assert.equal(new Set(ids).size, 136);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1077,6 +1077,23 @@ test("어제 추가된 에이전시·레퍼런스 2건의 제목과 태그를 �
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 2);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제 추가된 CLAUDE.md 관리 스킬 1건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "2e517909-a6c7-49b7-aba0-fbd5d142b301": {
+      title: "오래된 CLAUDE.md를 대화 끝에 고치는 공식 스킬",
+      tags: ["클로드", "스킬"],
+      raw: "Claude Code의 CLAUDE.md가 작성된 후 오래되어가는 것을, Anthropic 공식 스킬이 점검해서 최신 상태로 유지해준다고😳",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 1);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);

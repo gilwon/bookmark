@@ -820,6 +820,12 @@ export const TARGETS = [
     tags: ["디자인", "레퍼런스", "프롬프트"],
     phrase: "onepagelove.com",
   },
+  {
+    id: "2e517909-a6c7-49b7-aba0-fbd5d142b301",
+    title: "오래된 CLAUDE.md를 대화 끝에 고치는 공식 스킬",
+    tags: ["클로드", "스킬"],
+    phrase: "/revise-claude-md",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
