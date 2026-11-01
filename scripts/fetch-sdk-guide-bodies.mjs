@@ -193,8 +193,8 @@ async function fetchHtml(url) {
 
 async function main() {
   const guides = JSON.parse(readFileSync(guidesPath, "utf8"));
-  if (!Array.isArray(guides) || guides.length !== 71) {
-    throw new Error(`가이드 목록이 71건이 아닙니다.`);
+  if (!Array.isArray(guides) || guides.length !== 73) {
+    throw new Error(`가이드 목록이 73건이 아닙니다.`);
   }
   const bodies = {};
   const failures = [];
