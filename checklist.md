@@ -1758,6 +1758,22 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음. agent-desktop은 별표 시각이 창 밖이고 앱에는 이 동기화로 들어옴
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-11-01 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-10-31부터 2026-11-01 아침까지 운영 Star 11건 확인. 한글 또는 eli5가 없는 항목 4건
+- [x] 2026-10-31에 반영한 7건은 한글 설명, eli5, README가 있어 유지
+- [x] 영문 About 4건 뒤에 한글을 붙임. 빈 About는 없음
+- [x] dify 빠른 시작 명령은 한국어 설치 칸에 둠. README의 Quick start는 사용법으로 잡힘
+- [x] markitdown 설치 첫 펜스는 pip. 소스 클론 펜스는 넣지 않음
+- [x] lightpanda 설치 첫 펜스는 Homebrew. curl 다운로드와 glibc 베이스 이미지 경로는 넣지 않음
+- [x] unslop 설치 첫 펜스는 Claude Code 복사. skill-installer 명령은 넣지 않음
+- [x] markitdown 주소 차단 목록과 docker 꺾쇠, lightpanda API 키와 환경 변수 이름은 넣지 않음
+- [x] 4건 README는 영문이라 detail_fetched_at과 detail_json을 비움
+- [x] 매핑 771개에서 775개. 회귀 테스트 112개 통과
+- [x] 운영 반영 4건, 빈 설명 0건, README 저장 4건, 한글 README 캐시 0건
+- [x] 이 창의 GitHub 별표 4건은 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 

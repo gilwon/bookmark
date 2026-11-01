@@ -2649,6 +2649,18 @@
 - 정적 번역표는 764개에서 771개로 늘었다. 반영은 7건, 빈 설명 1건, README 저장 7건, 한글 README 캐시 1건이다. 적용 함수가 쓴 뒤 20건을 다시 읽어 공백 0과 어제 13건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 111개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-01 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-11-01 기준 어제·오늘 창은 `created_at >= 2026-10-30T15:00:00Z`다. 운영 행은 11건이다. 2026-10-31에 반영한 7건은 한글 설명, eli5, README가 있어 유지했다.
+- 4건은 영문 About 뒤에 한글을 붙였다. 빈 About는 없었다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 4건 모두 영문 README라 `detail_fetched_at`과 `detail_json`은 비웠다. 끝 공백은 없었다.
+- `langgenius/dify` About 뒤에 한글을 붙였다. GitHub 라이선스 SPDX는 NOASSERTION이라 캐시를 비웠고 README는 Apache 2.0에 추가 조건이 있는 Dify Open Source License라고 적는다. 홈페이지 `https://dify.ai`, 기본 브랜치 main, 포크 25303, 이슈 1166, 워처 839, 푸시 시각 `2026-10-31T19:49:43Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. README의 Quick start는 사용법으로 잡혀 설치 명령이 빠지므로, 한국어 설치 칸에 `docker compose up -d`까지 적었다. README 배지에 한글 3자가 있으나 대부분 한글은 아니다.
+- `microsoft/markitdown` About 뒤에 한글을 붙였다. `microsoft/TokenEconomizer`, `microsoft/SkillOpt`와 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 14473, 이슈 775, 워처 589, 푸시 시각 `2026-10-28T15:33:14Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 안내는 pip라 첫 펜스는 `pip install 'markitdown[all]'`다. 주소 종류 목록과 docker 예시의 꺾쇠는 넣지 않았다.
+- `lightpanda-io/browser` About 뒤에 한글을 붙였다. `vercel-labs/agent-browser`, `vercel-labs/agent-desktop`과 다른 저장소다. 라이선스 AGPL-3.0, 홈페이지 `https://lightpanda.io`, 기본 브랜치 main, 포크 1907, 이슈 93, 워처 97, 푸시 시각 `2026-10-31T23:42:27Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 Homebrew다. curl 다운로드와 glibc 베이스 이미지 경로는 넣지 않았다. 사용 통계와 코어 덤프를 끄는 환경 변수 이름, API 키 예시는 넣지 않았다.
+- `heydamir/unslop` About 뒤에 한글을 붙였다. `peteromallet/desloppify`와 다른 저장소다. 라이선스 CC-BY-4.0, 홈페이지 없음, 기본 브랜치 main, 포크 171, 이슈 1, 워처 3, 푸시 시각 `2026-11-01T00:06:01Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 0이다. README에 한계 절이 없어 한계는 만들지 않았다. 설치 첫 펜스는 Claude Code용 클론과 복사다. Codex의 skill-installer 명령은 넣지 않았다.
+- 이 창의 GitHub 별표 4건은 모두 앱에 있었다. 별표 시각은 unslop `2026-10-31T09:17:43Z`, lightpanda `2026-10-31T07:40:05Z`, dify `2026-10-30T23:49:59Z`, markitdown `2026-10-30T23:46:07Z`다. 새 행은 넣지 않았다. 유지 7건의 GitHub 별표 시각은 창 밖이고 앱 `created_at`만 창 안이다.
+- 정적 번역표는 771개에서 775개로 늘었다. 반영은 4건, 빈 설명 0건, README 저장 4건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 11건을 다시 읽어 공백 0과 유지 7건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다. 쓰기 전에 `Donchitos/Claude-Code-Game-Studios`의 `detail_fetched_at`이 이미 채워져 있었다. 그 행은 바꾸지 않았다.
+- 테스트는 112개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.

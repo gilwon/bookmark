@@ -769,5 +769,9 @@
   "cachix/agentaps": "코딩 하네스를 위한 범용 GUI입니다.",
   "jkf87/claw-office": "OpenClaw Control UI 안에서 에이전트를 3D 사무실의 직원으로 보고 일을 맡기는 화면입니다.",
   "vercel-labs/agent-desktop": "어떤 에이전트든 데스크톱을 안정적으로 쓰게 합니다. Rust로 만들었고, 픽셀 추측 대신 운영체제 접근성 트리로 앱의 실제 화면을 보고 조작합니다. 참조는 유지되고 동작은 다시 시도해도 안전합니다.",
-  "atuinsh/herdr-atuin-threads": "Herdr 모드입니다. 보이는 공간의 Atuin 스레드를 보여주고, 클릭하면 새 탭에서 이어 갑니다."
+  "atuinsh/herdr-atuin-threads": "Herdr 모드입니다. 보이는 공간의 Atuin 스레드를 보여주고, 클릭하면 새 탭에서 이어 갑니다.",
+  "langgenius/dify": "에이전트 워크플로와 RAG 파이프라인을, 많은 모델과 도구가 있는 하나의 협업 작업 공간에서 만듭니다. 클라우드, VPC, 자체 호스팅으로 올려 시제품에서 운영까지 스택을 다시 짜지 않습니다.",
+  "microsoft/markitdown": "파일과 오피스 문서를 마크다운으로 바꾸는 파이썬 도구입니다.",
+  "lightpanda-io/browser": "Lightpanda는 AI와 자동화용으로 설계한 헤드리스 브라우저입니다.",
+  "heydamir/unslop": "바이브코딩으로 만든, AI처럼 보이는 화면을 디자인된 인터페이스로 바꾸는 Claude 스킬입니다."
 }
