@@ -1819,4 +1819,21 @@ describe("Star 설명 번역", () => {
     assert.equal(withKoreanTranslation("jkf87/claw-office", null, null), korean);
     assert.equal(withKoreanTranslation("jkf87/claw-office", "", null), korean);
   });
+
+  it("2026-11-01에 추가된 Star 4개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["langgenius/dify", "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.", "에이전트 워크플로와 RAG 파이프라인을, 많은 모델과 도구가 있는 하나의 협업 작업 공간에서 만듭니다. 클라우드, VPC, 자체 호스팅으로 올려 시제품에서 운영까지 스택을 다시 짜지 않습니다."],
+      ["microsoft/markitdown", "Python tool for converting files and office documents to Markdown.", "파일과 오피스 문서를 마크다운으로 바꾸는 파이썬 도구입니다."],
+      ["lightpanda-io/browser", "Lightpanda: the headless browser designed for AI and automation", "Lightpanda는 AI와 자동화용으로 설계한 헤드리스 브라우저입니다."],
+      ["heydamir/unslop", "A Claude skill that turns vibecoded, AI-looking UI into a designed interface", "바이브코딩으로 만든, AI처럼 보이는 화면을 디자인된 인터페이스로 바꾸는 Claude 스킬입니다."],
+    ];
+    assert.equal(cases.length, 4);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });
