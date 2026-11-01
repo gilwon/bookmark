@@ -773,5 +773,10 @@
   "langgenius/dify": "에이전트 워크플로와 RAG 파이프라인을, 많은 모델과 도구가 있는 하나의 협업 작업 공간에서 만듭니다. 클라우드, VPC, 자체 호스팅으로 올려 시제품에서 운영까지 스택을 다시 짜지 않습니다.",
   "microsoft/markitdown": "파일과 오피스 문서를 마크다운으로 바꾸는 파이썬 도구입니다.",
   "lightpanda-io/browser": "Lightpanda는 AI와 자동화용으로 설계한 헤드리스 브라우저입니다.",
-  "heydamir/unslop": "바이브코딩으로 만든, AI처럼 보이는 화면을 디자인된 인터페이스로 바꾸는 Claude 스킬입니다."
+  "heydamir/unslop": "바이브코딩으로 만든, AI처럼 보이는 화면을 디자인된 인터페이스로 바꾸는 Claude 스킬입니다.",
+  "bregman-arie/devops-exercises": "Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, 네트워크, 가상화. DevOps 면접 질문입니다.",
+  "THU-MAIC/OpenMAIC": "한 번의 클릭으로 몰입형 멀티 에이전트 학습을 여는 열린 멀티 에이전트 대화형 교실입니다.",
+  "Orkas-AI/Orkas": "Orkas는 MIT로 열린 로컬 우선 데스크톱 AI 팀입니다. 지휘자가 목표를 할 일로 바꾸고, 내장 전문 에이전트 16개와 Claude Code, Codex, OpenCode, OpenClaw, Hermes를 조율합니다. 프로젝트, 예약 자동화, 커넥터가 있습니다. macOS와 Windows용 무료 앱이며, 내장 모델이나 자기 키를 씁니다.",
+  "HKUDS/AgentPilot": "에이전트의 다음 수를 더 잘 골라 일을 더 빨리 끝내게 합니다.",
+  "skeeto/prospero": "Prospero 코딩 하네스입니다."
 }
