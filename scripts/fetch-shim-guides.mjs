@@ -1,5 +1,5 @@
 // 심팀장 자료실 홈 카드와 글 본문을 마크다운 JSON으로 추출한다.
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as cheerio from "cheerio";
@@ -235,24 +235,87 @@ function forbiddenHit(markdown) {
   return null;
 }
 
+function readSavedJson(path) {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
+// 이미 받은 본문은 다시 받지 않는다. 홈 카드 요약이 달라도 저장한 제목과 요약을 덮지 않는다.
 async function main() {
-  const guides = parseShimIndex(await fetchHtml(HOME_URL));
-  if (guides.length !== 52) {
-    throw new Error(`카드가 52건이 아닙니다. 받은 카드는 ${guides.length}건입니다.`);
+  const savedGuides = readSavedJson(guidesPath);
+  const savedBodies = readSavedJson(bodiesPath);
+  const previousBySlug = new Map();
+  if (Array.isArray(savedGuides)) {
+    for (const guide of savedGuides) {
+      if (guide && typeof guide.slug === "string") previousBySlug.set(guide.slug, guide);
+    }
   }
+  const previousBodies =
+    savedBodies && typeof savedBodies === "object" && !Array.isArray(savedBodies) ? savedBodies : {};
+
+  const homeGuides = parseShimIndex(await fetchHtml(HOME_URL));
+  if (homeGuides.length === 0) {
+    throw new Error("홈 카드가 없습니다.");
+  }
+
+  const homeSlugs = new Set(homeGuides.map((guide) => guide.slug));
+  const guides = homeGuides.map((home, index) => {
+    const previous = previousBySlug.get(home.slug);
+    const savedBody = previousBodies[home.slug];
+    if (previous && typeof savedBody === "string" && savedBody !== "") {
+      return {
+        slug: previous.slug,
+        title: previous.title,
+        episode: previous.episode,
+        summary: previous.summary,
+        order: index,
+        sourceUrl: previous.sourceUrl,
+      };
+    }
+    return { ...home, order: index };
+  });
+  if (Array.isArray(savedGuides)) {
+    for (const guide of savedGuides) {
+      if (!guide || typeof guide.slug !== "string" || homeSlugs.has(guide.slug)) continue;
+      guides.push({
+        slug: guide.slug,
+        title: guide.title,
+        episode: guide.episode,
+        summary: guide.summary,
+        order: guides.length,
+        sourceUrl: guide.sourceUrl,
+      });
+    }
+  }
+
   const bodies = {};
-  for (let index = 0; index < guides.length; index += 1) {
+  const pending = [];
+  for (const guide of guides) {
+    const savedBody = previousBodies[guide.slug];
+    if (typeof savedBody === "string" && savedBody !== "") {
+      bodies[guide.slug] = savedBody;
+      continue;
+    }
+    pending.push(guide);
+  }
+  for (let index = 0; index < pending.length; index += 1) {
     if (index > 0) await pause(200);
-    const guide = guides[index];
-    console.error(`${index + 1}/52 ${guide.slug}`);
+    const guide = pending[index];
+    console.error(`${index + 1}/${pending.length} ${guide.slug}`);
     const markdown = extractShimMarkdown(await fetchHtml(guide.sourceUrl), guide.sourceUrl).trim();
     if (!markdown) throw new Error(`${guide.slug} 본문이 비어 있습니다.`);
     const hit = forbiddenHit(markdown);
     if (hit) throw new Error(`${guide.slug} 본문에 금지 구절이 있습니다. ${hit}`);
     bodies[guide.slug] = markdown;
   }
+
   const ordered = {};
-  for (const guide of guides) ordered[guide.slug] = bodies[guide.slug];
+  for (const guide of guides) {
+    if (typeof bodies[guide.slug] !== "string" || bodies[guide.slug] === "") {
+      throw new Error(`${guide.slug} 본문이 없습니다.`);
+    }
+    ordered[guide.slug] = bodies[guide.slug];
+  }
   writeFileSync(guidesPath, `${JSON.stringify(guides, null, 2)}\n`);
   writeFileSync(bodiesPath, `${JSON.stringify(ordered, null, 2)}\n`);
 }
