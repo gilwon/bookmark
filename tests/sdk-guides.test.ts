@@ -16,11 +16,11 @@ const FORBIDDEN_BODY_SNIPPETS = [
   "fbclid",
 ];
 
-test("원본 3페이지의 가이드 73건은 고유한 출처와 유효한 메타데이터를 가진다", () => {
+test("원본 3페이지의 가이드 81건은 고유한 출처와 유효한 메타데이터를 가진다", () => {
   const guides = listSdkGuides();
-  assert.equal(guides.length, 73);
-  assert.equal(new Set(guides.map((guide) => guide.slug)).size, 73);
-  assert.equal(new Set(guides.map((guide) => guide.sourceUrl)).size, 73);
+  assert.equal(guides.length, 81);
+  assert.equal(new Set(guides.map((guide) => guide.slug)).size, 81);
+  assert.equal(new Set(guides.map((guide) => guide.sourceUrl)).size, 81);
   for (const guide of guides) {
     assert.ok(guide.title && guide.category);
     assert.equal(typeof guide.tool, "string");
@@ -38,7 +38,7 @@ test("제목과 태그는 대소문자·공백을 무시해 검색하고 빈 검
   const guide = guides[0];
   assert.ok(filterSdkGuides(guides, { query: guide.title.toUpperCase().replace(/\s/gu, "   ") }).some((item) => item.slug === guide.slug));
   assert.ok(filterSdkGuides(guides, { query: guide.tags[0].toUpperCase() }).some((item) => item.slug === guide.slug));
-  assert.equal(filterSdkGuides(guides, { query: "   " }).length, 73);
+  assert.equal(filterSdkGuides(guides, { query: "   " }).length, 81);
   assert.equal(filterSdkGuides(guides, { query: "존재하지않는가이드제목123456789" }).length, 0);
 });
 
@@ -66,9 +66,9 @@ test("최신순과 오래된순은 발행일을 기준으로 전체 목록을 �
   assert.notEqual(listSdkGuides(), listSdkGuides());
 });
 
-test("73개 가이드 본문은 200자 이상이고 장식 문구가 없다", () => {
+test("81개 가이드 본문은 200자 이상이고 장식 문구가 없다", () => {
   const guides = listSdkGuides();
-  assert.equal(guides.length, 73);
+  assert.equal(guides.length, 81);
   for (const guide of guides) {
     const body = getSdkGuideBody(guide.slug);
     assert.equal(typeof body, "string", guide.slug);
@@ -90,8 +90,11 @@ test("새로 들어온 두 가이드는 원문 제목과 본문 문장을 가진
   );
   assert.equal(getSdkGuideBody("ppt-master-editable-ppt-from-documents")?.includes("PPT Master"), true);
   assert.equal(getSdkGuideBody("vibe-coding-app-security-audit")?.includes("45%"), true);
-  assert.equal(listSdkGuides()[2]?.slug, "ppt-master-editable-ppt-from-documents");
-  assert.equal(listSdkGuides()[3]?.slug, "vibe-coding-app-security-audit");
+  assert.equal(listSdkGuides()[0]?.slug, "chatgpt-free-scheduled-tasks-morning-briefing");
+  assert.equal(getSdkGuide("chatgpt-free-scheduled-tasks-morning-briefing")?.title, "무료 ChatGPT에 매일 시킬 자동화 3개: 아침 브리핑 복붙 문장과 알림 끄는 법");
+  assert.equal(getSdkGuide("naver-news-api-claude-morning-briefing")?.title, "네이버 뉴스 검색 API + 클로드로 매일 아침 세 줄 뉴스 브리핑 만들기");
+  assert.equal(getSdkGuide("ai-engineering-from-scratch-claude-tutor")?.publishedAt, "2026-11-03T00:00:00.000Z");
+  assert.equal(getSdkGuideBody("ai-engineering-from-scratch-claude-tutor")?.includes("76,179"), true);
 });
 
 test("MCP 가이드 본문은 핵심 문구와 코드 펜스 3개를 가지고 없는 슬러그는 undefined다", () => {
