@@ -785,5 +785,15 @@
   "linkwarden/linkwarden": "직접 호스팅하는 협업 북마크 관리자입니다. 중요한 것을 한곳에서 모으고, 읽고, 주석을 달고, 그대로 보존합니다.",
   "data-goblin/claude-code-filetree": "Claude가 무엇을 하는지, 파일의 어디를 다루는지 보여주는 Claude Code용 IDE 스타일 파일 트리입니다.",
   "wheresryan22/anatomy": "실제 기계와 복잡한 시스템을 자세하고 상호작용하는 등각 그림으로 만드는 에이전트 스킬입니다. 다듬은 SVG와, 선택하면 WebGL 셰이더와 3D 효과를 만듭니다.",
-  "hugohe3/ppt-master": "AI가 문서나 주제를 진짜 네이티브 파워포인트로 바꿉니다. 네이티브 도형, 전환, 애니메이션, 필요할 때의 데이터 차트와 표, 발표자 노트 음성 내레이션, 자기 .pptx 템플릿을 지원합니다. Hugo He가 만들었습니다."
+  "hugohe3/ppt-master": "AI가 문서나 주제를 진짜 네이티브 파워포인트로 바꿉니다. 네이티브 도형, 전환, 애니메이션, 필요할 때의 데이터 차트와 표, 발표자 노트 음성 내레이션, 자기 .pptx 템플릿을 지원합니다. Hugo He가 만들었습니다.",
+  "AKamaly/CludeGods": "Claude Code 안에서 일하고 말로 부를 수 있는 항상 켜진 AI입니다. 먼저 움직이는 워커, 브라우저와 터미널과 파일, 자비스 같은 실시간 음성, 자기 목소리로 통화에 들어오는 워커, Slack, 프로젝트용 Spaces가 있습니다.",
+  "assistant-ui/assistant-ui": "AI 채팅을 만드는 TypeScript와 React 라이브러리입니다.",
+  "caru-ini/stack-diagram": "한 문장으로 스택을 적으면 공식 로고가 붙은 구조도를 받는 에이전트 스킬입니다.",
+  "deepseek-ai/dsh-superagent-prototype": "더 자율적인 에이전트 시스템을 향합니다.",
+  "JinJieBeWater/herdr-t3": "Herdr 앱용 T3 Code 스타일 레이아웃입니다. Spaces와 Agents, 또는 T3식 Settle이 있는 Focus 사이드바를 씁니다.",
+  "maillab/cloud-mail": "Cloudflare로 돌리는 올인원 이메일 서비스입니다.",
+  "miurla/morphic": "생성형 화면이 있는 AI 검색 엔진입니다.",
+  "OpnForm/OpnForm": "보기 좋은 오픈소스 폼 빌더입니다.",
+  "puckeditor/puck": "React용 비주얼 편집기입니다.",
+  "vercel/next-forge": "Next.js 앱을 위한 운영 수준 Turborepo 템플릿입니다."
 }

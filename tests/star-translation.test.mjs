@@ -1884,4 +1884,27 @@ describe("Star 설명 번역", () => {
       assert.equal(withKoreanTranslation(repo, "", null), korean, repo);
     }
   });
+
+  it("2026-11-03에 추가된 Star 10개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["AKamaly/CludeGods", "Always-on AI Gods that work inside Claude Code, and you can talk to them. Proactive workers, computer use (browser, terminal & files), real-time voice like Jarvis, workers on a call in their own voice, Slack, and Spaces for your projects.", "Claude Code 안에서 일하고 말로 부를 수 있는 항상 켜진 AI입니다. 먼저 움직이는 워커, 브라우저와 터미널과 파일, 자비스 같은 실시간 음성, 자기 목소리로 통화에 들어오는 워커, Slack, 프로젝트용 Spaces가 있습니다."],
+      ["assistant-ui/assistant-ui", "Typescript/React Library for AI Chat 💬🚀", "AI 채팅을 만드는 TypeScript와 React 라이브러리입니다."],
+      ["caru-ini/stack-diagram", "Agent skill: describe your stack in a sentence, get an architecture diagram with official logos", "한 문장으로 스택을 적으면 공식 로고가 붙은 구조도를 받는 에이전트 스킬입니다."],
+      ["deepseek-ai/dsh-superagent-prototype", "Towards a More Autonomous Agent System", "더 자율적인 에이전트 시스템을 향합니다."],
+      ["JinJieBeWater/herdr-t3", "T3 Code-like layout for Herdr App: Spaces/Agents or a Focus sidebar with T3-style Settle", "Herdr 앱용 T3 Code 스타일 레이아웃입니다. Spaces와 Agents, 또는 T3식 Settle이 있는 Focus 사이드바를 씁니다."],
+      ["maillab/cloud-mail", "An all-in-one email service platform powered by Cloudflare  | 基于 Cloudflare 的一站式邮箱服务平台  | Cloudflare Email 邮箱 Mail", "Cloudflare로 돌리는 올인원 이메일 서비스입니다."],
+      ["miurla/morphic", "An AI-powered search engine with a generative UI", "생성형 화면이 있는 AI 검색 엔진입니다."],
+      ["OpnForm/OpnForm", "Beautiful Open-Source Form Builder", "보기 좋은 오픈소스 폼 빌더입니다."],
+      ["puckeditor/puck", "The visual editor for React.", "React용 비주얼 편집기입니다."],
+      ["vercel/next-forge", "Production-grade Turborepo template for Next.js apps.", "Next.js 앱을 위한 운영 수준 Turborepo 템플릿입니다."],
+    ];
+    assert.equal(cases.length, 10);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });

@@ -2714,6 +2714,24 @@
 - 정적 번역표는 780개에서 787개로 늘었다. 반영은 7건, 빈 설명 2건, README 저장 7건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 14건을 다시 읽어 공백 0과 유지 7건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 115개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-03 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-11-03 기준 어제·오늘 창은 `created_at >= 2026-11-01T15:00:00Z`다. 운영 행은 22건이다. 2026-11-02에 반영한 12건은 한글 설명, eli5, README가 있어 유지했다. 설명 길이는 devops-exercises 360, OpenMAIC 160, Orkas 521, prospero 44, AgentPilot 106, playground 53, linkwarden 193, anatomy 277, ppt-master 369, filetree 65, atticus 315, Trilium 85다. `lightpanda-io/browser`와 `heydamir/unslop`은 이 창 밖이다.
+- 새로 들어온 10건은 `created_at`이 `2026-11-02T23:07:57.790Z`다. 영문 또는 중문 About 10건 뒤에 한글을 붙였다. 빈 About는 없었다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 10건 모두 영문 또는 중문 README라 `detail_fetched_at`과 `detail_json`은 비웠다. 끝 공백은 없었다.
+- `assistant-ui/assistant-ui` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://www.assistant-ui.com`, 기본 브랜치 main, 포크 1305, 이슈 50, 워처 81, 푸시 시각 `2026-11-02T23:14:47Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 0이다. 설치 첫 펜스는 `npx assistant-ui@latest create`, `init`, `npm install`이다. 한계 절은 없다.
+- `puckeditor/puck` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://puckeditor.com`, 기본 브랜치 main, 포크 1028, 이슈 204, 워처 61, 푸시 시각 `2026-10-29T09:37:02Z`다. eli5 파싱은 설치 3, 사용 4, 특징 3, 한계 0이다. 설치 첫 펜스는 `npm i @puckeditor/core --save`와 `npx create-puck-app my-app`이다. 한계 절은 없다.
+- `miurla/morphic` About 뒤에 한글을 붙였다. 라이선스 Apache-2.0, 홈페이지 `https://chat.morphic.sh`, 기본 브랜치 main, 포크 2363, 이슈 53, 워처 64, 푸시 시각 `2026-11-01T03:33:45Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 0이다. 설치 첫 펜스는 `docker pull`, clone, env 복사, `docker compose up -d`다. 키 예시 값은 넣지 않았다. 한계 절은 없다.
+- `vercel/next-forge` About 뒤에 한글을 붙였다. 다른 Vercel 템플릿과 다른 저장소다. 라이선스 MIT, 홈페이지 `https://www.next-forge.com/`, 기본 브랜치 main, 포크 727, 이슈 34, 워처 24, 푸시 시각 `2026-05-28T14:33:12Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 0이다. 설치 첫 펜스는 `npx next-forge@latest init`이다. 필요 조건은 Node.js 20 이상, Bun 또는 npm, yarn, pnpm, Stripe CLI다. 한계 절은 없다.
+- `caru-ini/stack-diagram` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지는 스킴 없는 `stacks.caru.moe`, 기본 브랜치 main, 포크 51, 이슈 0, 워처 2, 푸시 시각 `2026-11-02T09:50:24Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 3이다. 설치 첫 펜스는 `npx skills add caru-ini/stack-diagram`이다. Claude 앱은 Releases의 zip이다. 갤러리는 두 번 동의한 뒤에만 게시한다.
+- `maillab/cloud-mail` About의 영문과 중문을 유지하고 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://docs.skymail.ink`, 기본 브랜치 main, 포크 23057, 이슈 95, 워처 33, 푸시 시각 `2026-10-25T18:37:03Z`다. eli5 파싱은 설치 2, 사용 4, 특징 4, 한계 1이다. README에 설치 명령이 없어 배포 문서만 적었다.
+- `deepseek-ai/dsh-superagent-prototype` About 뒤에 한글을 붙였다. 공식 DeepSeek 제품이 아닌 연구 프로토타입이라고 README가 적는다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 1351, 이슈 0, 워처 79, 푸시 시각 `2026-10-31T12:05:51Z`다. eli5 파싱은 설치 2, 사용 4, 특징 4, 한계 4이다. 설치는 SETUP.md와 docs/006-deployment.md다. 에이전트에게 저장소 설치를 통째로 맡기는 인용은 넣지 않았다.
+- `JinJieBeWater/herdr-t3` About 뒤에 한글을 붙였다. `herdrdev/herdr`, `devswha/herdr-web-ui`, `penso/herdr-gpui`, `atuinsh/herdr-atuin-threads`와 다른 저장소다. 라이선스 Apache-2.0, 홈페이지 없음, 기본 브랜치 main, 포크 4, 이슈 1, 워처 0, 푸시 시각 `2026-11-02T17:27:21Z`다. eli5 파싱은 설치 2, 사용 4, 특징 4, 한계 4이다. 설치는 레이아웃과 모드 파일을 복사하고 keys.json을 합치는 문장과 RECIPE.md다. 에이전트에게 맡기는 문장은 넣지 않았다.
+- `AKamaly/CludeGods` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 7, 이슈 0, 워처 1, 푸시 시각 `2026-11-02T15:10:51Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4이다. 설치 첫 펜스는 공식 curl이다. 에이전트 붙여넣기, 화면 조작 절차, 음성 모델 설치와 블루투스 패치는 넣지 않았다.
+- `OpnForm/OpnForm` About 뒤에 한글을 붙였다. GitHub SPDX는 NOASSERTION이고 README는 이중 라이선스다. 홈페이지 `https://opnform.com`, 기본 브랜치 main, 포크 574, 이슈 22, 워처 24, 푸시 시각 `2026-11-02T16:58:28Z`다. eli5 파싱은 설치 2, 사용 4, 특징 4, 한계 4이다. 설치는 클라우드와 배포 문서다. 로컬 관리자 비밀번호는 넣지 않았다.
+- 이 창의 GitHub 별표는 앱에 모두 있었다. 새 행은 넣지 않았다.
+- 정적 번역표는 787개에서 797개로 늘었다. 반영은 10건, 빈 설명 0건, README 저장 10건, 한글 README 캐시 0건이다. 적용 뒤 22건을 다시 읽어 공백 0과 유지 12건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 116개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.
