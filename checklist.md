@@ -1834,6 +1834,27 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-11-03 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-11-02부터 2026-11-03 아침까지 운영 Star 22건 확인. 한글 또는 eli5가 없는 항목 10건
+- [x] 2026-11-02에 반영한 12건은 한글 설명, eli5, README가 있어 유지
+- [x] 영문 또는 중문 About 10건 뒤에 한글을 붙임. 빈 About는 없음
+- [x] assistant-ui 설치 첫 펜스는 create, init, npm install. 한계 절은 없음
+- [x] puck 설치 첫 펜스는 npm i와 create-puck-app. 한계 절은 없음
+- [x] morphic 설치 첫 펜스는 docker pull, clone, env 복사, compose. 키 예시 값은 넣지 않음
+- [x] next-forge 설치 첫 펜스는 npx next-forge init. 한계 절은 없음
+- [x] stack-diagram 설치 첫 펜스는 npx skills add. 갤러리는 두 번 동의한 뒤에만
+- [x] cloud-mail README에는 설치 명령이 없어 배포 문서만 적음. 중문 About는 유지
+- [x] dsh 설치는 SETUP.md와 배포 문서. 에이전트에게 맡기는 인용은 넣지 않음
+- [x] herdr-t3 설치는 파일 복사와 RECIPE.md. 에이전트에게 맡기는 문장은 넣지 않음
+- [x] CludeGods 설치 첫 펜스는 공식 curl. 에이전트 붙여넣기, 화면 조작 절차, 음성 모델 설치는 넣지 않음
+- [x] OpnForm 설치는 클라우드와 배포 문서. 로컬 관리자 비밀번호는 넣지 않음
+- [x] 10건 README는 영문 또는 중문이라 detail_fetched_at과 detail_json을 비움
+- [x] 매핑 787개에서 797개. 회귀 테스트 116개 통과
+- [x] 운영 반영 10건, 빈 설명 0건, README 저장 10건, 한글 README 캐시 0건
+- [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
