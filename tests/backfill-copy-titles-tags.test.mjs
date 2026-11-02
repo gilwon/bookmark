@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 136건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 136);
+test("대상 143건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 143);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 136);
+  assert.equal(new Set(ids).size, 143);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1094,6 +1094,53 @@ test("어제 추가된 CLAUDE.md 관리 스킬 1건의 제목과 태그를 정�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제와 오늘 추가된 모드·데스크톱·트렌딩 7건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "dd8803fb-d027-49f7-9655-6a409cfedea1": {
+      title: "진행 막대·파일 트리·재생을 붙이는 클로드 모드 3개",
+      tags: ["클로드", "툴"],
+      raw: "mods 3종 설치 방법",
+    },
+    "e08adc38-0f46-4327-bd2d-b6fddaeb7697": {
+      title: "내 마우스를 안 건드리는 에이전트 데스크톱",
+      tags: ["툴", "에이전트"],
+      raw: "AI 커서 3개가 내 화면을 동시에 돌아다니는데, 내 마우스는 꼼짝도 안 해요",
+    },
+    "7d225287-55ba-4bc4-a649-60cd1066d57f": {
+      title: "한 줄로 기계를 뜯어 보게 그리는 anatomy",
+      tags: ["클로드", "스킬"],
+      raw: "클로드 스킬 하나면, 설명이 달라져요 anatomy는 무료 클로드 스킬이에요. 설명하고 싶은 걸 한 줄로 던지면, 클 로드가 그 기계를 부품 하나하나 쌓아서 직접 돌려 보고 뜯어 볼 수 있는 그 림으로 만들어 줘요.",
+    },
+    "c6cc32c0-b863-4e17-99ba-209a7e48f579": {
+      title: "웹 빌더부터 폼까지 아이디어가 붙은 오픈소스 10곳",
+      tags: ["툴", "에이전트"],
+      raw: "아이디어까지 붙어 있는 오픈소스 10곳을 정리했습니다.",
+    },
+    "2de8ac61-df80-43f8-9e7b-f543d76cb900": {
+      title: "숲에서 일어나는 거대 로봇을 지브리풍으로 그리는 프롬프트",
+      tags: ["프롬프트", "디자인"],
+      raw: "프롬프트: 웹용 2D 애니메이션 장면을 제작하세요. 완성된 극장용 애니메이션 영화에서 직접 추출된 것처럼 완벽하게 실제 일본 애니메이션처럼 보이게 해야 합니다. 이는 전통적인 손으로 그린 2D 애니메이션으로, 3D 애니메이션이나 움직이는 일러스트, 스타일화된 웹 그래픽이 아닙니다.",
+    },
+    "2e14eab5-7437-403f-b179-5ef92fb56a09": {
+      title: "코드를 쓰기 전에 질문으로 요구를 다듬는 스킬",
+      tags: ["클로드", "스킬"],
+      raw: "코딩 전에 설계부터 잡아 주는",
+    },
+    "f6379550-b7e0-4814-ab83-18fb2de10935": {
+      title: "세션 기억부터 오프라인 음성까지 트렌딩 10곳",
+      tags: ["툴", "에이전트"],
+      raw: "오늘의 GitHub 트렌딩 Top 10 — 2026-11-02",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 7);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
