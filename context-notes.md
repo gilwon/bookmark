@@ -1,3 +1,19 @@
+# 2026-11-03 주간 Notion Pages 이관 메모
+
+- 주간 창은 2026-11-02 00:00 KST부터다. 2026-11-03 08:24 KST에 조회했다. GILWON 기본 공간은 bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 312, shared_pages_manual_sort 265다. 고유 345개다. sidebar_section은 없다. getSpaces에 없던 목록 id 72개를 syncRecordValues로 받았고, 그 72개에는 이번 주 글이 없다.
+- 이번 주 최상위 글은 하나다. 제목은 `Claude SEO 설치·첫 점검 정리본 — 댓글 트리거 'SEO' DM본 (2026-10-29)`다. 페이지 `f94b2568-27ac-8321-a4cd-016dff13ec55`, 생성 2026-11-02 08:50:17 KST, parent_table=space, GILWON 공간 `c9f63792-cf01-4ae9-982a-b4c0bb0f97a7`. 비공개라 쿠키로 `loadPageChunk`를 받았다. 청크 1개, 블록 51, 빠진 자식 0이다. 아이콘과 표지는 없다.
+- 주소 `https://app.notion.com/p/f94b256827ac8321a4cd016dff13ec55`.
+- 저장 경로 `/pages/8a241f7d-fce0-46b4-a5a3-53a3b7666feb`. 로컬 `dev`와 운영이 같은 id다. 넣을 때 `created_at`과 `updated_at`은 `2026-11-02T23:33:47.817Z`다.
+- 이미지 2. 첨부 0. 표 0. 코드 3. 구분선 1. 링크 6. 운영 sha256 `db2e9c8a9f9c612455b571b989980d925c42c60f0c03acc5044a5fb7e9e2ebac`, 길이 715010.
+- 그림은 모두 jpeg data URL이고 1600x520이다. `aiinsight_home_banner.jpg` 317972 `9f08e46de4b7049c9a04a4ba404fcdaca166c27e30f0fefb2fa9f37555badbea`, alt AI인사이트 홈페이지. `aiinsight_kakao_banner.jpg` 213218 `7f28091c89edea30383f14e1a707a0eeab7d54b71e88b5c57c8dcc46958c4fb1`, alt AI인사이트 카카오톡 단톡방.
+- 코드 울타리는 노션 코드 블록이 아니라 이어진 텍스트라, 합친 뒤 코드 3개가 됐다. 설치, 점검, 삭제 명령이 들어 있다. `https://내사이트주소`는 울타리와 인라인 코드 안에 그대로 있다.
+- 링크는 원문, `https://aiinsight.kr/`, `https://open.kakao.com/o/gjYQmOLh`, `https://github.com/AgriciDaniel/claude-seo`, `https://www.youtube.com/watch?v=COMnNlUakQk`, `https://agricidaniel.com/about`다. 경로 없는 `https://aiinsight.kr`은 URL 파서가 `https://aiinsight.kr/`로 만든다. 유튜브 `v=`는 남겼다.
+- 지난주 글은 다시 넣지 않았다. 마케팅 스킬 52개는 `/pages/6ed578c0-6d07-4355-8ec2-75a6c0bd6636`, 코드로만 되는 일 7가지는 `/pages/15125cc3-ddf0-4878-a222-0a537ab40b89`다.
+- 일요일 글 서비스 소개·광고영상 프롬프트 `764b2568-27ac-8368-929d-01d674cd854b`는 2026-10-25 14:46 KST라 넣지 않았다. 다른 GILWON YOO 공간 세 곳은 이번 주 글이 없다.
+- 브라우저 검색 `댓글 트리거`는 전체 3개였다. 이 글 링크가 있고 그 페이지를 열었다. 에디터는 이미지 2장, 자연 크기 1600x520, 코드 3, 구분선 1, 링크 6을 보였다. 상태는 저장됨이었다. `내사이트주소`는 링크가 아니다.
+- 에디터가 로컬 본문만 바꿨다. 로컬 해시는 `419d464f734d9a42f490749972b20061bb6f8b73e3879644a5c233667c38f107`, 길이 715388, `updated_at` `2026-11-02T23:36:35.882Z`다. 운영 해시는 그대로다. 운영 본문은 복사하지 않았다.
+- 재실행은 skip이다. 로컬 `custom_pages`는 799건이다. Prompts 테이블은 쓰지 않는다. 스크립트는 `scripts/import-notion-claude-seo.mjs`. 커밋 `8e7678b`. 테스트 5개 통과.
+
 # 2026-11-02 주간 Notion Pages 이관 메모
 
 - 주간 창은 2026-11-02 00:00 KST부터다. 2026-11-02 07:46 KST에 조회했다. GILWON 기본 공간은 pages 28, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, private_pages 311, shared_pages_manual_sort 264다. 고유 344개다. sidebar_section은 없다.
