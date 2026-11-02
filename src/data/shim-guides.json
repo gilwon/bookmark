@@ -1,10 +1,138 @@
 [
   {
+    "slug": "ruflo",
+    "title": "클로드 코드에 AI 개발팀 붙이는 루플로",
+    "episode": "80편",
+    "summary": "루플로(Ruflo). 클로드 코드 설치 명령 · 처음 써 볼 명령어 · 꼭 알아둘 것(저장소 README 2026-11-01).",
+    "order": 0,
+    "sourceUrl": "https://shimteamjjang.vercel.app/ruflo"
+  },
+  {
+    "slug": "arena",
+    "title": "클로드 100개를 싸움 붙이는 아레나 스킬",
+    "episode": "79편",
+    "summary": "아레나 스킬. 설치 · /arena 쓰는 법 · 몇 개 돌릴지(사용량 표)(저장소 README 2026-11-01).",
+    "order": 1,
+    "sourceUrl": "https://shimteamjjang.vercel.app/arena"
+  },
+  {
+    "slug": "timemachine",
+    "title": "사기 전에 1만 번 돌려 보는 클로드 주식 스킬",
+    "episode": "78편",
+    "summary": "day-trader-skill 11개 중 타임머신 · 국회의원 공시 읽기. 설치 · 테슬라 예시 · 꼭 알아둘 것(저장소 README 2026-11-01).",
+    "order": 2,
+    "sourceUrl": "https://shimteamjjang.vercel.app/timemachine"
+  },
+  {
+    "slug": "craftapps",
+    "title": "포토샵·프리미어 대신 쓰는 무료 크래프트 앱",
+    "episode": "77편",
+    "summary": "포토크래프트 · 필름크래프트 등 13개 앱. 어도비 대응표 · 설치 · 클로드 연결(MCP) · 사진 일괄 보정(저장소 README 2026-11-01).",
+    "order": 3,
+    "sourceUrl": "https://shimteamjjang.vercel.app/craftapps"
+  },
+  {
+    "slug": "hiddenskills",
+    "title": "남들 잘 모르는 클로드 스킬 5개",
+    "episode": "76편",
+    "summary": "비서실장 · 아나토미 · 티치 · 마케팅 심리학 · 최근 30일. 설치 명령 · 부르는 법 · 꼭 알아둘 것(저장소 2026-11-01).",
+    "order": 4,
+    "sourceUrl": "https://shimteamjjang.vercel.app/hiddenskills"
+  },
+  {
+    "slug": "headroom",
+    "title": "클로드 토큰 최대 20분의 1로 줄이기",
+    "episode": "75편",
+    "summary": "헤드룸 + 태스크 옵저버. 설치 명령 · 클로드 코드 감싸 열기 · 태스크 옵저버 켜기(저장소 README 2026-11-01).",
+    "order": 5,
+    "sourceUrl": "https://shimteamjjang.vercel.app/headroom"
+  },
+  {
+    "slug": "bigtech3",
+    "title": "클로드에 붙여 쓰는 대기업 무료 도구 3개",
+    "episode": "74편",
+    "summary": "시큐리티 오딧 스킬 · 브라우저 스킬 · 위크노라. 설치 · 쓰는 법 · 안전하게 세팅하는 순서(저장소 README 2026-11-01).",
+    "order": 6,
+    "sourceUrl": "https://shimteamjjang.vercel.app/bigtech3"
+  },
+  {
+    "slug": "fivecodes",
+    "title": "질문 앞에 붙이는 코드 다섯 개",
+    "episode": "73편",
+    "summary": "BLUF · MECE · PREMORTEM · RUBRIC · FACTCHECK 뜻과 바로 쓰는 예시 문장 · 직접 넣어 받은 답(2026-11-01).",
+    "order": 7,
+    "sourceUrl": "https://shimteamjjang.vercel.app/fivecodes"
+  },
+  {
+    "slug": "opendesign",
+    "title": "클로드 디자인 대신 쓰는 오픈 디자인",
+    "episode": "72편",
+    "summary": "무료 오픈소스(Apache-2.0). 설치 · 클로드 코드 연결 명령 · 한 줄로 만들기 · 디자인 시스템(저장소 README 2026-11-01).",
+    "order": 8,
+    "sourceUrl": "https://shimteamjjang.vercel.app/opendesign"
+  },
+  {
+    "slug": "stockai",
+    "title": "클로드에 붙이는 무료 주식 도구 3개",
+    "episode": "71편",
+    "summary": "트레이딩뷰 MCP · 잭슨 · 클로드 트레이딩 스킬. 설치 문장 · 모닝 브리핑 · 매매 기록과 복기(저장소 README 2026-11-01).",
+    "order": 9,
+    "sourceUrl": "https://shimteamjjang.vercel.app/stockai"
+  },
+  {
+    "slug": "freetoken",
+    "title": "클로드 코드에 무료 토큰 74억 붙이기",
+    "episode": "70편",
+    "summary": "FreeLLMAPI. 설치 · 무료 키 넣기 · 클로드 코드 연결 명령 · 대화 넘기기 켜기(저장소 README 2026-11-01).",
+    "order": 10,
+    "sourceUrl": "https://shimteamjjang.vercel.app/freetoken"
+  },
+  {
+    "slug": "tvad",
+    "title": "클로드 코드로 TV 광고 지우기",
+    "episode": "69편",
+    "summary": "안드로이드 TV · 구글 TV. 준비물 · TV 개발자 모드 켜기 · 붙여넣을 문장(PROMPT.md 원문) · 되돌리는 명령 · 되는 TV(저장소 README 2026-11-01).",
+    "order": 11,
+    "sourceUrl": "https://shimteamjjang.vercel.app/tvad"
+  },
+  {
+    "slug": "appsecurity",
+    "title": "클로드로 만든 앱, 해커 막는 27줄",
+    "episode": "68편",
+    "summary": "로그인 · API 키 · 결제 금액 · 비밀번호 · 관리자 페이지. 한 번에 붙여넣는 점검 요청 27줄 · 마지막 보고서 요청.",
+    "order": 12,
+    "sourceUrl": "https://shimteamjjang.vercel.app/appsecurity"
+  },
+  {
+    "slug": "employees",
+    "title": "클로드한테 직원 8명 붙이기",
+    "episode": "67편",
+    "summary": "비서실장 · 마케팅책임자 · 광고 · 영업 · 고객응대 · SNS · SEO · 웹사이트관리. 직원별 역할 · 준비물 · 설치 두 가지 · 기본으로 막힌 것(저장소 README 2026-10-31).",
+    "order": 13,
+    "sourceUrl": "https://shimteamjjang.vercel.app/employees"
+  },
+  {
+    "slug": "watermark",
+    "title": "워터마크 리무버 · 클로드 글에 붙는 표시 지우는 스킬",
+    "episode": "66편",
+    "summary": "하는 일 3가지 · 설치 · 쓰는 법 · 문장 다시 쓰기 설정 · 직접 돌려 본 결과(안 보이는 글자·PNG 표시는 직접 돌려 확인, 실제 C2PA·PDF).",
+    "order": 14,
+    "sourceUrl": "https://shimteamjjang.vercel.app/watermark"
+  },
+  {
+    "slug": "playbook",
+    "title": "클로드 에이전트 그만 만들고 설명서 하나만",
+    "episode": "65편",
+    "summary": "일하는 방법을 적어 주는 3단계와 그대로 붙여 넣는 문장 3개(영상 소스의 설명을 바탕으로 문장은 새로 썼고, 직접 돌려 효과를 재 보지는 않음).",
+    "order": 15,
+    "sourceUrl": "https://shimteamjjang.vercel.app/playbook"
+  },
+  {
     "slug": "rea",
     "title": "REA · 앱을 AI가 뜯어서 다시 만드는 무료 도구",
     "episode": "64편",
     "summary": "영상 속 말의 출처 · 설치 3단계 · 상황별 복붙 문장 7개 · 책임 있게 쓰기(2026-10-25 저장소 README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 0,
+    "order": 16,
     "sourceUrl": "https://shimteamjjang.vercel.app/rea"
   },
   {
@@ -12,7 +140,7 @@
     "title": "주말에 진행할 가이드북",
     "episode": "61편",
     "summary": "토 오전 · 토 오후 · 일 오전 · 일 오후 · 월요일 체크리스트(영상 두 편 내용은 직접 보지 못함).",
-    "order": 1,
+    "order": 17,
     "sourceUrl": "https://shimteamjjang.vercel.app/weekendguide"
   },
   {
@@ -20,7 +148,7 @@
     "title": "클로드가 일하고 코덱스가 감독하는 법",
     "episode": "62편",
     "summary": "준비물 · 설치 방법 · 시작할 때 적을 것 · 꼭 알아둘 것(2026-10-25 저장소 README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 2,
+    "order": 18,
     "sourceUrl": "https://shimteamjjang.vercel.app/watcher"
   },
   {
@@ -28,7 +156,7 @@
     "title": "주말에 클로드로 만들어 볼 프로젝트 5개",
     "episode": "60편",
     "summary": "시킬 문장 예시 · 꼭 알아둘 것(해외 크리에이터 영상 소개 내용 기준, 직접 실행해 확인하지는 않음).",
-    "order": 3,
+    "order": 19,
     "sourceUrl": "https://shimteamjjang.vercel.app/weekend"
   },
   {
@@ -36,7 +164,7 @@
     "title": "클로드에 장기 기억 달기",
     "episode": "46편",
     "summary": "TencentDB Agent Memory 받는 곳 · OpenClaw 설치 명령 · 꼭 알아둘 것(2026-10-19 공식 저장소 README 기준, 직접 설치해 돌려 보지는 않음, 클로드 코드 연결 순서는 README 에 없어 적지 않음).",
-    "order": 4,
+    "order": 20,
     "sourceUrl": "https://shimteamjjang.vercel.app/memory"
   },
   {
@@ -44,7 +172,7 @@
     "title": "같은 클로드로 영상 다르게 뽑는 스킬 5개",
     "episode": "47편",
     "summary": "스킬 5개의 깃허브 주소 · 설치 명령 · 라이선스 · 꼭 알아둘 것(5개 중 2개만 주소 확인, 원테이크는 후보, 2개는 못 찾음 · 2026-10-19 저장소 정보 기준, 직접 영상을 만들어 보지는 않음).",
-    "order": 5,
+    "order": 21,
     "sourceUrl": "https://shimteamjjang.vercel.app/vstyle"
   },
   {
@@ -52,7 +180,7 @@
     "title": "클로드 처음이면 이 5단계부터",
     "episode": "45편",
     "summary": "설치 · 메모리 가져오기 · 프로젝트 만들기 · 코워크 시작하기 순서와 꼭 알아둘 것(2026-10-19 Anthropic 공식 도움말 기준, 직접 따라 해 보지는 않음).",
-    "order": 6,
+    "order": 22,
     "sourceUrl": "https://shimteamjjang.vercel.app/starter"
   },
   {
@@ -60,7 +188,7 @@
     "title": "클로드로 오피스 무료로 쓰는 법",
     "episode": "44편",
     "summary": "워드·엑셀·파워포인트를 본뜬 무료 앱 3개 받는 곳 · 클로드 코드 연결 순서 · 꼭 알아둘 것(알파 단계 · 2026-10-18 앱과 클로드 코드 연결은 직접 돌려 봄, 진짜 워드의 PDF 저장과 파워포인트 슬라이드쇼는 못 해 봄).",
-    "order": 7,
+    "order": 23,
     "sourceUrl": "https://shimteamjjang.vercel.app/office"
   },
   {
@@ -68,7 +196,7 @@
     "title": "클로드 코드 스킬 파일 쓰는 법",
     "episode": "57편",
     "summary": "스킬 파일이 뭔지 · 어디에 두는지 · 가장 작은 예 · 꼭 알아둘 것(공식 문서 기준, 영상 속 광고 스킬은 만든 사람의 파일이라 드리지 못하고 직접 돌려 보지도 않음).",
-    "order": 8,
+    "order": 24,
     "sourceUrl": "https://shimteamjjang.vercel.app/adskill"
   },
   {
@@ -76,7 +204,7 @@
     "title": "클로드 인스타 전용 무료 스킬 13개",
     "episode": "56편",
     "summary": "13개 이름 · 설치 3가지 · 꼭 알아둘 것(2026-10-24 저장소 README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 9,
+    "order": 25,
     "sourceUrl": "https://shimteamjjang.vercel.app/igskill"
   },
   {
@@ -84,7 +212,7 @@
     "title": "개발자들이 몰래 쓰는 깃허브 도구 8개",
     "episode": "52편",
     "summary": "8개 저장소 · 설치 명령 · 꼭 알아둘 것(README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 10,
+    "order": 26,
     "sourceUrl": "https://shimteamjjang.vercel.app/ghtools"
   },
   {
@@ -92,7 +220,7 @@
     "title": "해외에서만 유명한 클로드 코드 플러그인 6개",
     "episode": "51편",
     "summary": "6개 받는 곳 · 설치 명령 · 꼭 알아둘 것(README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 11,
+    "order": 27,
     "sourceUrl": "https://shimteamjjang.vercel.app/devteam"
   },
   {
@@ -100,7 +228,7 @@
     "title": "클로드 코드 한도가 맨날 터질 때 깔 플러그인 하나",
     "episode": "54편",
     "summary": "claude-mem 설치 한 줄 · 꼭 알아둘 것(README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 12,
+    "order": 28,
     "sourceUrl": "https://shimteamjjang.vercel.app/record"
   },
   {
@@ -108,7 +236,7 @@
     "title": "클로드 코드 한도 안 터지게 하는 플러그인 4개",
     "episode": "53편",
     "summary": "그래피파이 · 에이전트 스킬즈 · 포니테일 · 옴니루트 설치 · 꼭 알아둘 것(README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 13,
+    "order": 29,
     "sourceUrl": "https://shimteamjjang.vercel.app/guard"
   },
   {
@@ -116,7 +244,7 @@
     "title": "노트북 닫아도 클로드 코드 계속 돌리는 법",
     "episode": "49편",
     "summary": "Insomnia 설치 3단계 · 쓰는 법 · 꼭 알아둘 것(2026-10-18 공식 저장소 README 기준, macOS 26 이상 필요해서 직접 설치해 돌려 보지는 않음).",
-    "order": 14,
+    "order": 30,
     "sourceUrl": "https://shimteamjjang.vercel.app/lid"
   },
   {
@@ -124,7 +252,7 @@
     "title": "클로드에 PDF 그냥 올리면 토큰이 두 번 샌다",
     "episode": "50편",
     "summary": "마크잇다운으로 PDF를 마크다운(.md)으로 바꿔 사진 몫 토큰 빼기. 설치 · 명령어 · 안 맞는 PDF 가르는 법(2026-10-18 직접 변환해 확인 · 토큰은 직접 못 쟀어요).",
-    "order": 15,
+    "order": 31,
     "sourceUrl": "https://shimteamjjang.vercel.app/markdown"
   },
   {
@@ -132,7 +260,7 @@
     "title": "돈 내는 AI툴 네 개 쓰는 법",
     "episode": "48편",
     "summary": "힉스필드 · 캡컷 · 클로드 코워크 · 캔바+지피티, 영상에서 말한 쓰는 법과 꼭 알아둘 것(영상 속 말 기준, 네 도구를 직접 실행해 보지는 않았고 가격은 바뀔 수 있음).",
-    "order": 16,
+    "order": 32,
     "sourceUrl": "https://shimteamjjang.vercel.app/aitools"
   },
   {
@@ -140,7 +268,7 @@
     "title": "클로드로 유료앱 복제하기 — 노션 실험 결과",
     "episode": "41편",
     "summary": "레플리카 스킬로 노션을 직접 돌려 본 결과(기능 59개 · 필수 23개 · 사용자 불만) · 설치 한 줄 · 쓰는 법 · 꼭 알아둘 것.",
-    "order": 17,
+    "order": 33,
     "sourceUrl": "https://shimteamjjang.vercel.app/replica"
   },
   {
@@ -148,7 +276,7 @@
     "title": "클로드로 영업 에이전트 Harvey 쓰는 법",
     "episode": "43편",
     "summary": "Harvey 설치 순서 · 쓰는 법 · 꼭 알아둘 것(2026-10-19 설치와 대시보드까지 확인, 고객 찾기는 서버 오류로 못 돌려 봄).",
-    "order": 18,
+    "order": 34,
     "sourceUrl": "https://shimteamjjang.vercel.app/harvey"
   },
   {
@@ -156,7 +284,7 @@
     "title": "깃허브 링크 하나로 「헤이 자비스」 내 컴퓨터 비서",
     "episode": "31편",
     "summary": "시작 전 확인 4가지 · 설치 · 일레븐랩스 · 일정·메일 연결 · 꼭 알아둘 것(2026-10-14 저장소 README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 19,
+    "order": 35,
     "sourceUrl": "https://shimteamjjang.vercel.app/jarvis"
   },
   {
@@ -164,7 +292,7 @@
     "title": "클로드로 블로그 쓰고 발행까지",
     "episode": "33편",
     "summary": "업리카를 클로드에 연결하는 4단계 · 키워드 조사 · 글 쓰기와 사진 올리기 복붙 프롬프트 · 꼭 알아둘 것(2026-10-17 업리카 가입·네이버 블로그 연결·키워드 조사·임시저장 전송은 직접 해 봄, 클로드 커넥터 연결은 공식 문서 기준).",
-    "order": 20,
+    "order": 36,
     "sourceUrl": "https://shimteamjjang.vercel.app/blog"
   },
   {
@@ -172,7 +300,7 @@
     "title": "클로드가 자는 동안 같은 실수 고치는 법",
     "episode": "40편",
     "summary": "스킬옵트 슬립 쓰는 법 3단계 · 명령어 · 꼭 알아둘 것(2026-10-18 마이크로소프트 저장소 README 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 21,
+    "order": 37,
     "sourceUrl": "https://shimteamjjang.vercel.app/sleep"
   },
   {
@@ -180,7 +308,7 @@
     "title": "클로드 깔고 바꿀 설정 5개",
     "episode": "35편",
     "summary": "하는 일 · 메모리 가져오기 · 지침 한 줄 · 휴머나이저 · AI 모델 개선 끄기의 메뉴 위치 · 복붙 지침 예시 3개 · 꼭 알아둘 것(2026-10-17 호준 계정 설정 화면에서 확인, 답 변화는 직접 비교 안 함).",
-    "order": 22,
+    "order": 38,
     "sourceUrl": "https://shimteamjjang.vercel.app/setting"
   },
   {
@@ -188,7 +316,7 @@
     "title": "책 한 권을 그림 한 장으로",
     "episode": "36편",
     "summary": "챗GPT에 책 이름과 한 문장 · 복붙 문장 4개 · 꼭 알아둘 것(2026-10-17 챗GPT 무료 계정에서 직접 돌려 확인).",
-    "order": 23,
+    "order": 39,
     "sourceUrl": "https://shimteamjjang.vercel.app/book"
   },
   {
@@ -196,7 +324,7 @@
     "title": "클로드로 마케팅할 때 연결할 도구 5개",
     "episode": "34편",
     "summary": "Bright Data · Meta Ads · Firecrawl · PostHog · Upload-Post의 연결 방법 · 바로 쓰는 요청문 · 꼭 알아둘 것(2026-10-17 공식 문서·소개 페이지 기준, 직접 연결해 돌려 보지는 않음).",
-    "order": 24,
+    "order": 40,
     "sourceUrl": "https://shimteamjjang.vercel.app/mktg"
   },
   {
@@ -204,7 +332,7 @@
     "title": "앱을 AI가 뜯어서 다시 만들어 주는 무료 도구",
     "episode": "29편",
     "summary": "설치 3단계 · 복붙 사용 문장 · 노션 사례 · 꼭 알아둘 것(2026-10-13 저장소 README·공식 사례 페이지 기준, 직접 설치해 돌려 보지는 않음).",
-    "order": 25,
+    "order": 41,
     "sourceUrl": "https://shimteamjjang.vercel.app/reverse"
   },
   {
@@ -212,7 +340,7 @@
     "title": "바탕화면 러그 앱 받는 법",
     "episode": "27편",
     "summary": "어떤 이미지든 넣으면 내 바탕화면 러그가 돼요. 구기고 접고 더블클릭으로 펴는 앱의 내려받는 곳과 설치 순서(맥 · 윈도우는 베타, 윈도우 PC에서는 아직 시험 못 함).",
-    "order": 26,
+    "order": 42,
     "sourceUrl": "https://shimteamjjang.vercel.app/rug"
   },
   {
@@ -220,7 +348,7 @@
     "title": "클로드로 만든 부캉이 영상 만드는 법",
     "episode": "24편",
     "summary": "영상 링크 주고 · 캐릭터와 배경을 말로 설명하고 · 말로 고치는 순서와 실제로 한 말(2026-10-09 직접 만들며 확인).",
-    "order": 27,
+    "order": 43,
     "sourceUrl": "https://shimteamjjang.vercel.app/bukangi"
   },
   {
@@ -228,7 +356,7 @@
     "title": "클로드 상위 1% 되는 유튜브 영상 3개",
     "episode": "23편",
     "summary": "카파시 · 맷 포칵 · 보리스 체르니 영상 링크 3개와 영상별 핵심 요약본 · 누구에게 맞는지 · 합쳐서 1시간 26분(2026-10-09 영상을 직접 받아 적어 확인).",
-    "order": 28,
+    "order": 44,
     "sourceUrl": "https://shimteamjjang.vercel.app/videos"
   },
   {
@@ -236,7 +364,7 @@
     "title": "클로드로 돈 내던 앱 복제하기",
     "episode": "22편",
     "summary": "무료 클로드 스킬 11개(레플리카) 설치 한 줄과 쓰는 순서 · 클로드 유료 요금제 필요(2026-10-09 설치까지 직접 확인).",
-    "order": 29,
+    "order": 45,
     "sourceUrl": "https://shimteamjjang.vercel.app/clone"
   },
   {
@@ -244,7 +372,7 @@
     "title": "클로드 10명이 내 아이디어를 재판하게 하기",
     "episode": "21편",
     "summary": "검사 · 변호사 · 배심원 7 · 판사가 서로 모르게 판단하는 재판 스킬 파일과 쓰는 순서(2026-10-08 클로드 코드에서 시험, 다른 컴퓨터에서는 미확인).",
-    "order": 30,
+    "order": 46,
     "sourceUrl": "https://shimteamjjang.vercel.app/court"
   },
   {
@@ -252,7 +380,7 @@
     "title": "클로드에 PDF 올리기 전에 구글 문서로 한 번",
     "episode": "20편",
     "summary": "설치 없이 구글 문서 → 마크다운(.md)으로 바꿔 사진 몫 토큰 빼기. 바꾸는 순서와 안 맞는 PDF 가르는 법(2026-10-07 메뉴 화면 확인).",
-    "order": 31,
+    "order": 47,
     "sourceUrl": "https://shimteamjjang.vercel.app/pdf"
   },
   {
@@ -260,7 +388,7 @@
     "title": "자는 동안 노션에 업계 뉴스 정리하기",
     "episode": "19편",
     "summary": "클로드 예약된 작업으로 매일 새벽 새 기사를 찾아 노션 표에 쌓기. 세팅 세 단계와 예약 지침 복붙 문장(2026-10-05 화면 확인).",
-    "order": 32,
+    "order": 48,
     "sourceUrl": "https://shimteamjjang.vercel.app/news"
   },
   {
@@ -268,7 +396,7 @@
     "title": "노션에 클로드 연결하고 말로 페이지 만들기",
     "episode": "18편",
     "summary": "출장 준비 · 주간 업무 보고 · 프로젝트 일정표 · 경비 정리표 · 인수인계 문서. 연결 3단계와 복붙 요청 문장 다섯 개(2026-10-05 직접 해 봄).",
-    "order": 33,
+    "order": 49,
     "sourceUrl": "https://shimteamjjang.vercel.app/notion"
   },
   {
@@ -276,7 +404,7 @@
     "title": "클로드로 유튜브 영상 쉽게, 무료 스킬 열한 개",
     "episode": "17편",
     "summary": "대본 · 제목·썸네일 · 편집점 · 답글 · 주간 일정 · 바이럴 · 시청 이탈 · 쇼츠 · 설명·태그 · 챕터 · 채널 진단. 열한 개 기능 정리와 설치 방법(2026-10-05 확인).",
-    "order": 34,
+    "order": 50,
     "sourceUrl": "https://shimteamjjang.vercel.app/youtube"
   },
   {
@@ -284,7 +412,7 @@
     "title": "공짜로 쓰는 구글 AI 6개",
     "episode": "16편",
     "summary": "플로우 · 제미나이 노트북 · 스티치 · 나노바나나 · AI 스튜디오 · 안티그래비티. 공식 링크 6개와 무료 한도 메모(2026-10-03 확인).",
-    "order": 35,
+    "order": 51,
     "sourceUrl": "https://shimteamjjang.vercel.app/google"
   },
   {
@@ -292,7 +420,7 @@
     "title": "내 개인정보 삭제 요청문, AI한테 맡기세요",
     "episode": "미게시",
     "summary": "내 정보가 떠 있을 만한 곳을 표로 찾고 · 삭제 요청문까지 쓰게 하는 복붙 프롬프트 두 개. 클로드로 직접 돌려 본 결과 · 제출은 내가 · 다 지워진다는 보장은 없다는 점까지.",
-    "order": 36,
+    "order": 52,
     "sourceUrl": "https://shimteamjjang.vercel.app/erase"
   },
   {
@@ -300,7 +428,7 @@
     "title": "클로드 코드 4개, 풀어쓴 문장",
     "episode": "15편",
     "summary": "/autoprompt · /honest · /blind · /viral. 공식 기능은 아니에요. 말로 풀어쓴 복붙 문장 4개와 코드 없이 물은 것과 비교한 결과.",
-    "order": 37,
+    "order": 53,
     "sourceUrl": "https://shimteamjjang.vercel.app/code"
   },
   {
@@ -308,7 +436,7 @@
     "title": "시키는 말 세 가지만 바꿔 보세요",
     "episode": "14편",
     "summary": "대충 시키면 대충 나와요. 설명 · 아이디어 · 요약 세 가지를 구체적으로 바꾸는 복붙 문장 3개와 직접 돌린 결과.",
-    "order": 38,
+    "order": 54,
     "sourceUrl": "https://shimteamjjang.vercel.app/cond"
   },
   {
@@ -316,7 +444,7 @@
     "title": "클로드 한도 아끼는 케이브맨 스킬",
     "episode": "13편",
     "summary": "답이 길어서 한도가 닳는다면 짧게 답하게 만드세요. 무료 스킬 파일 · 올리는 순서 · 「케이브맨」 한마디. 영상 속 별 10만 개·65%의 출처와 한계까지.",
-    "order": 39,
+    "order": 55,
     "sourceUrl": "https://shimteamjjang.vercel.app/caveman"
   },
   {
@@ -324,7 +452,7 @@
     "title": "AI 냄새 나는 PPT, 지시 세 가지로 잡기",
     "episode": "12편",
     "summary": "냄새는 디자인이 아니라 시키는 말에서 나요. HTML로 만들기 · 색·폰트 규칙 파일 · 내 템플릿. 바로 붙여 넣는 지시문 세 개.",
-    "order": 40,
+    "order": 56,
     "sourceUrl": "https://shimteamjjang.vercel.app/ppt"
   },
   {
@@ -332,7 +460,7 @@
     "title": "클로드 모델 고르는 법",
     "episode": "11편",
     "summary": "평소엔 소넷, 막히면 한 단계씩. 하이쿠·페이블은 언제 쓰는지까지. 모델별 공식 설명 · 요금제별로 되는 모델 · 영상 속 71 대 66의 출처.",
-    "order": 41,
+    "order": 57,
     "sourceUrl": "https://shimteamjjang.vercel.app/model"
   },
   {
@@ -340,7 +468,7 @@
     "title": "해외에서 유명한 클로드 코드 플러그인 4개",
     "episode": "9편",
     "summary": "플러그인 몇 개만 깔아도 일하는 순서부터 달라져요. 슈퍼파워즈·프론트엔드 디자인·클로드 멤·지스택 설치 명령어와 제대로 깔렸는지 확인하는 법.",
-    "order": 42,
+    "order": 58,
     "sourceUrl": "https://shimteamjjang.vercel.app/plugin"
   },
   {
@@ -348,7 +476,7 @@
     "title": "AI 티 안 나게 쓰는 프롬프트",
     "episode": "10편",
     "summary": "글 부탁할 때 세 줄만 같이 붙이면 돼요. 챗GPT·클로드·제미나이 어디서든. 복붙할 세 줄 · 한 줄씩 무슨 뜻인지 · 영상 속 93%·77%의 출처까지.",
-    "order": 43,
+    "order": 59,
     "sourceUrl": "https://shimteamjjang.vercel.app/tone"
   },
   {
@@ -356,7 +484,7 @@
     "title": "클로드 「맞아요」 버릇, 세 줄로 끄기",
     "episode": "8편",
     "summary": "틀린 말에도 「맞아요」부터 하는 버릇, 설정 칸에 세 줄만 넣으면 새 대화에도 계속 적용돼요. 복붙할 세 줄 · 넣는 곳 · 48%의 출처까지.",
-    "order": 44,
+    "order": 60,
     "sourceUrl": "https://shimteamjjang.vercel.app/lie"
   },
   {
@@ -364,7 +492,7 @@
     "title": "클로드 코드 토큰, 새는 구멍 3개 막기",
     "episode": "7편",
     "summary": "한도가 금방 차는 건 모르는 사이에 새고 있어서예요. 포니테일·그래피파이·옴니루트 설치부터 제대로 켜졌는지 확인까지. 옴니루트 외부 와이파이 주의점 포함.",
-    "order": 45,
+    "order": 61,
     "sourceUrl": "https://shimteamjjang.vercel.app/token"
   },
   {
@@ -372,7 +500,7 @@
     "title": "클로드야, 애플처럼 디자인해줘",
     "episode": "6편",
     "summary": "AI 티 나는 화면은 색·간격 취향을 안 알려줘서 그래요. 있으면 getdesign.md에서 받고, 없으면 크롬 확장으로 직접 뽑는 법. 클로드·애플·에어비앤비 실제 링크까지.",
-    "order": 46,
+    "order": 62,
     "sourceUrl": "https://shimteamjjang.vercel.app/design"
   },
   {
@@ -380,7 +508,7 @@
     "title": "AI 거짓말, 3초 설정으로 막기",
     "episode": "5편",
     "summary": "AI가 거짓말한 게 아니라, 모른다고 말할 줄 몰라서 그런 겁니다. 엔트로픽 공식 문서 프롬프트 원문 그대로. Claude 지침에 한 번만 넣으면 끝.",
-    "order": 47,
+    "order": 63,
     "sourceUrl": "https://shimteamjjang.vercel.app/verify"
   },
   {
@@ -388,7 +516,7 @@
     "title": "클로드 한도, 새는 곳 막기",
     "episode": "4편",
     "summary": "한도는 많이 써서 차는 게 아니라 몰라서 새는 겁니다. 클로드는 한 번 물을 때마다 앞 대화를 통째로 다시 읽어요. 공식 안내에 있는 여덟 가지를 전부 한글로.",
-    "order": 48,
+    "order": 64,
     "sourceUrl": "https://shimteamjjang.vercel.app/limit"
   },
   {
@@ -396,7 +524,7 @@
     "title": "GPT가 기억하는 나, 클로드로 옮기기",
     "episode": "3편",
     "summary": "계정을 연결하는 게 아니에요. 클로드가 시킬 말을 만들어 줍니다. 1~2년 쌓인 기억을 5분이면 옮겨요. 더 많이 뽑아내는 프롬프트 2개까지.",
-    "order": 49,
+    "order": 65,
     "sourceUrl": "https://shimteamjjang.vercel.app/move"
   },
   {
@@ -404,7 +532,7 @@
     "title": "PDF 올리기 전에 한 줄",
     "episode": "2편",
     "summary": "클로드는 PDF를 글로 한 번, 사진으로 또 한 번 읽어요. 30페이지면 사진 몫만 5만~14만 토큰입니다. 올리기 전에 텍스트로 바꿔 통째로 없애는 법.",
-    "order": 50,
+    "order": 66,
     "sourceUrl": "https://shimteamjjang.vercel.app/convert"
   },
   {
@@ -412,7 +540,7 @@
     "title": "야근 줄이는 AI 치트키 3개",
     "episode": "1편",
     "summary": "/eli5 · /what am i missing? · Ouroboros 이해 못 한 것 · 놓친 것 · 덜 정한 것을 드러내는 3개예요. 1·2번은 채팅창에서 설치 없이 바로 됩니다.",
-    "order": 51,
+    "order": 67,
     "sourceUrl": "https://shimteamjjang.vercel.app/aicheatkey"
   }
 ]
