@@ -1816,6 +1816,24 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-11-02 오후 어제·오늘 Star 한글 설명
+
+- [x] 같은 창을 오후에 다시 보니 운영 Star 14건. 한글 또는 eli5가 없는 항목 7건
+- [x] 오전에 반영한 7건은 한글 설명, eli5, README가 있어 유지
+- [x] 영문 About 5건 뒤에 한글을 붙임. 빈 About 2건은 한국어만 채움
+- [x] atticus 설치 첫 펜스는 공식 curl. 화면 조작 절차와 통계 토큰은 넣지 않음
+- [x] claude-code-playground는 루트 설치가 없어 설치 칸을 만들지 않음
+- [x] filetree 설치 첫 펜스는 claude plugin marketplace add 와 install
+- [x] Trilium 설치는 릴리스 바이너리와 서버 문서. 기여용 pnpm은 넣지 않음
+- [x] linkwarden README에는 설치 명령이 없어 클라우드와 설치 문서만 적음
+- [x] anatomy 설치 첫 펜스는 npx skills add. 샌드박스 해제 설정은 넣지 않음
+- [x] ppt-master 설치 첫 펜스는 클론과 pip install. 키 이름과 프로모션 코드는 넣지 않음
+- [x] 7건 README는 영문이라 detail_fetched_at과 detail_json을 비움
+- [x] 매핑 780개에서 787개. 회귀 테스트 115개 통과
+- [x] 운영 반영 7건, 빈 설명 2건, README 저장 7건, 한글 README 캐시 0건
+- [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
