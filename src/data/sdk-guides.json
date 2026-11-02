@@ -1,5 +1,124 @@
 [
   {
+    "slug": "chatgpt-free-scheduled-tasks-morning-briefing",
+    "title": "무료 ChatGPT에 매일 시킬 자동화 3개: 아침 브리핑 복붙 문장과 알림 끄는 법",
+    "category": "생산성",
+    "tool": "ChatGPT",
+    "tags": [
+      "아침 브리핑",
+      "ChatGPT",
+      "예약 작업",
+      "무료",
+      "자동화",
+      "알림"
+    ],
+    "publishedAt": "2026-11-11T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/chatgpt-free-scheduled-tasks-morning-briefing/"
+  },
+  {
+    "slug": "claude-code-voice-alert-fish-audio-hook",
+    "title": "클로드 코드 작업이 끝나면 내 목소리로 알려주게 하기 — 훅 파일과 설정 한 줄",
+    "category": "개발",
+    "tool": "Claude Code",
+    "tags": [
+      "클로드코드",
+      "목소리",
+      "목소리알림",
+      "훅",
+      "FishAudio",
+      "Drama3",
+      "알림"
+    ],
+    "publishedAt": "2026-11-09T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/claude-code-voice-alert-fish-audio-hook/"
+  },
+  {
+    "slug": "marketing-ai-manual-example",
+    "title": "마케팅 자동화 툴 사기 전에: 실제로 쓰는 마케팅 설명서 예시",
+    "category": "생산성",
+    "tool": "ChatGPT",
+    "tags": [
+      "마케팅 설명서",
+      "마케팅",
+      "카드뉴스",
+      "마케팅 자동화",
+      "SNS 운영",
+      "프롬프트",
+      "ChatGPT",
+      "소상공인"
+    ],
+    "publishedAt": "2026-11-06T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/marketing-ai-manual-example/"
+  },
+  {
+    "slug": "chatgpt-find-lost-item-photo",
+    "title": "잃어버린 물건, 지피티로 사진 찍어 찾는 법 — 복붙 프롬프트",
+    "category": "개발",
+    "tool": "Claude",
+    "tags": [
+      "AI"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/chatgpt-find-lost-item-photo/"
+  },
+  {
+    "slug": "chatgpt-google-flow-photo-to-video",
+    "title": "셀카 한 장으로 영상 만들기 — 지피티 콘티 + 구글 Flow 복붙 프롬프트",
+    "category": "개발",
+    "tool": "Claude",
+    "tags": [
+      "AI"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/chatgpt-google-flow-photo-to-video/"
+  },
+  {
+    "slug": "claude-ai-video-editor-setup",
+    "title": "클로드 코드로 나만의 AI 영상 편집자 만들기 — 폴더 구조, 도구 5개, 프롬프트 3개",
+    "category": "AI 활용",
+    "tool": "Claude",
+    "tags": [
+      "AI 편집자",
+      "AI영상편집",
+      "클로드코드",
+      "영상편집",
+      "숏폼편집",
+      "프롬프트"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/"
+  },
+  {
+    "slug": "claude-marketing-psychology-skill",
+    "title": "마케팅 심리 효과 70개, 클로드 스킬 하나로 무료로 쓰는 법",
+    "category": "AI 활용",
+    "tool": "Claude",
+    "tags": [
+      "클로드",
+      "마케팅",
+      "스킬",
+      "상세페이지",
+      "가격전략"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/claude-marketing-psychology-skill/"
+  },
+  {
+    "slug": "naver-news-api-claude-morning-briefing",
+    "title": "네이버 뉴스 검색 API + 클로드로 매일 아침 세 줄 뉴스 브리핑 만들기",
+    "category": "업무 자동화",
+    "tool": "Claude",
+    "tags": [
+      "클로드",
+      "네이버API",
+      "뉴스브리핑",
+      "업무자동화",
+      "노션"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://sdk-kim-builds.com/guides/naver-news-api-claude-morning-briefing/"
+  },
+  {
     "slug": "claude-skill-audit-prompt-7-rules",
     "title": "클로드 스킬 점검 프롬프트 — 앤트로픽 공식 규칙 7가지로 내 스킬 고치기",
     "category": "생산성",
@@ -473,7 +592,7 @@
       "과외",
       "스킬"
     ],
-    "publishedAt": "2026-10-06T00:00:00.000Z",
+    "publishedAt": "2026-11-03T00:00:00.000Z",
     "sourceUrl": "https://sdk-kim-builds.com/guides/ai-engineering-from-scratch-claude-tutor/"
   },
   {
