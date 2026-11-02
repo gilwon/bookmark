@@ -1,3 +1,20 @@
+# 2026-11-03 주간 Notion Pages 이관
+
+- [x] 2026-11-03 08:24 KST 조회에서 2026-11-02 00:00 KST 이후 GILWON 최상위 글은 하나다
+- [x] 새 글은 `Claude SEO 설치·첫 점검 정리본 — 댓글 트리거 'SEO' DM본 (2026-10-29)`다. 2026-11-02 08:50 KST에 생겼다
+- [x] private_pages 312, shared_pages_manual_sort 265, bookmarked_pages 10, visited_templates 30, sidebar_hidden_templates 6, 고유 345다
+- [x] 목록에만 있던 72개도 이번 주 글이 아니다
+- [x] 지난주 마케팅 스킬 52개와 코드로만 되는 일 7가지는 다시 넣지 않았다
+- [x] 일요일 글 서비스 소개·광고영상 프롬프트는 이번 주가 아니라 넣지 않았다
+- [x] 이미지 2, 첨부 0, 표 0, 코드 3, 구분선 1, 링크 6이다. `/pages/8a241f7d-fce0-46b4-a5a3-53a3b7666feb`
+- [x] 그림은 `aiinsight_home_banner.jpg`, `aiinsight_kakao_banner.jpg`다. 캡션은 AI인사이트 홈페이지, AI인사이트 카카오톡 단톡방이다
+- [x] `https://내사이트주소`는 코드 안에 그대로 뒀다. `https://aiinsight.kr`은 `https://aiinsight.kr/`다
+- [x] 로컬과 운영에 넣는다. 재실행은 skip이다
+- [x] 검색 `댓글 트리거`는 전체 3개이고 이 글이 있다. 에디터에서 이미지 2장, 코드 3, 구분선 1, 링크 6을 확인했다
+- [x] 에디터가 로컬 본문만 바꿨다. 운영 해시는 그대로다
+- [x] Prompts 테이블은 쓰지 않는다
+- [x] 스크립트는 `8e7678b`다
+
 # 2026-11-02 주간 Notion Pages 이관
 
 - [x] 2026-11-02 07:46 KST 조회에서 2026-11-02 00:00 KST 이후 GILWON 최상위 글은 없다
