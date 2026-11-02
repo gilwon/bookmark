@@ -826,6 +826,48 @@ export const TARGETS = [
     tags: ["클로드", "스킬"],
     phrase: "/revise-claude-md",
   },
+  {
+    id: "dd8803fb-d027-49f7-9655-6a409cfedea1",
+    title: "진행 막대·파일 트리·재생을 붙이는 클로드 모드 3개",
+    tags: ["클로드", "툴"],
+    phrase: "replay-theater",
+  },
+  {
+    id: "e08adc38-0f46-4327-bd2d-b6fddaeb7697",
+    title: "내 마우스를 안 건드리는 에이전트 데스크톱",
+    tags: ["툴", "에이전트"],
+    phrase: "vercel-labs/agent-desktop",
+  },
+  {
+    id: "7d225287-55ba-4bc4-a649-60cd1066d57f",
+    title: "한 줄로 기계를 뜯어 보게 그리는 anatomy",
+    tags: ["클로드", "스킬"],
+    phrase: "wheresryan22/anatomy",
+  },
+  {
+    id: "c6cc32c0-b863-4e17-99ba-209a7e48f579",
+    title: "웹 빌더부터 폼까지 아이디어가 붙은 오픈소스 10곳",
+    tags: ["툴", "에이전트"],
+    phrase: "OpnForm",
+  },
+  {
+    id: "2de8ac61-df80-43f8-9e7b-f543d76cb900",
+    title: "숲에서 일어나는 거대 로봇을 지브리풍으로 그리는 프롬프트",
+    tags: ["프롬프트", "디자인"],
+    phrase: "스튜디오 지브리",
+  },
+  {
+    id: "2e14eab5-7437-403f-b179-5ef92fb56a09",
+    title: "코드를 쓰기 전에 질문으로 요구를 다듬는 스킬",
+    tags: ["클로드", "스킬"],
+    phrase: "development/brainstorming",
+  },
+  {
+    id: "f6379550-b7e0-4814-ab83-18fb2de10935",
+    title: "세션 기억부터 오프라인 음성까지 트렌딩 10곳",
+    tags: ["툴", "에이전트"],
+    phrase: "OpenMausBot",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
