@@ -2699,6 +2699,21 @@
 - 정적 번역표는 775개에서 780개로 늘었다. 반영은 5건, 빈 설명 0건, README 저장 5건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 7건을 다시 읽어 공백 0과 유지 2건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 113개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-02 오후 어제·오늘 Star 한글 설명 메모
+
+- 같은 창 `created_at >= 2026-10-31T15:00:00Z`를 한국 시간 2026-11-02 오후에 다시 조회했다. 운영 행은 14건이다. 오전에 반영한 7건은 한글 설명, eli5, README가 있어 유지했다. 설명 길이는 lightpanda 105, unslop 132, devops-exercises 360, OpenMAIC 160, Orkas 521, prospero 44, AgentPilot 106이다.
+- 새로 들어온 7건은 `created_at`이 `2026-11-02T04:11:28.880Z`다. 영문 About 5건 뒤에 한글을 붙였고, 빈 About 2건은 한국어만 채웠다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 7건 모두 영문 README라 `detail_fetched_at`과 `detail_json`은 비웠다. 끝 공백은 없었다.
+- `SaarthurR/atticus-mac` About 뒤에 한글을 붙였다. `FindlayHi/atticus-windows`와 다른 저장소다. 라이선스 MIT, 홈페이지 `https://saarthurr.github.io/atticus-mac/`, 기본 브랜치 main, 포크 47, 이슈 1, 워처 2, 푸시 시각 `2026-11-02T00:34:52Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 공식 curl이다. 화면 조작 절차와 통계 토큰은 넣지 않았다.
+- `anthropics/claude-code-playground` About는 비어 한국어만 채웠다. `anthropics/skills`, `anthropics/claude-quickstarts`, `anthropics/claude-agent-sdk-demos`, `anthropics/claude-cookbooks`, `anthropics/claude-plugins-official`과 다른 저장소다. 라이선스 Apache-2.0, 홈페이지 없음, 기본 브랜치 main, 포크 44, 이슈 16, 워처 11, 푸시 시각 `2026-10-14T07:53:11Z`다. eli5 파싱은 설치 0, 사용 2, 특징 4, 한계 4다. 루트에는 설치가 없어 설치 칸을 만들지 않았다.
+- `TriliumNext/Trilium` About 뒤에 한글을 붙였다. `zadam/trilium`과 다른 저장소다. 라이선스 AGPL-3.0, 홈페이지 `https://triliumnotes.org`, 기본 브랜치 main, 포크 2611, 이슈 590, 워처 278, 푸시 시각 `2026-11-02T03:00:10Z`다. eli5 파싱은 설치 4, 사용 4, 특징 4, 한계 4다. 사용자 설치는 릴리스 바이너리와 서버 문서다. 기여용 pnpm은 넣지 않았다.
+- `linkwarden/linkwarden` About 뒤에 한글을 붙였다. 라이선스 AGPL-3.0, 홈페이지 `https://linkwarden.app`, 기본 브랜치 main, 포크 884, 이슈 697, 워처 47, 푸시 시각 `2026-10-26T02:39:35Z`다. eli5 파싱은 설치 2, 사용 4, 특징 4, 한계 4다. README에 설치 명령이 없어 클라우드와 설치 문서만 적었다.
+- `data-goblin/claude-code-filetree` About는 비어 한국어만 채웠다. `data-goblin/fileblade`와 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 64, 이슈 0, 워처 1, 푸시 시각 `2026-11-01T19:25:04Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 `claude plugin marketplace add`와 `claude plugin install`이다.
+- `wheresryan22/anatomy` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://skills.wheresryan.sh/anatomy`, 기본 브랜치 main, 포크 1990, 이슈 71, 워처 63, 푸시 시각 `2026-10-18T20:20:24Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 `npx skills add wheresryan22/anatomy -g`다. 샌드박스 해제 설정은 넣지 않았다.
+- `hugohe3/ppt-master` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 `https://hugohe3.github.io/ppt-master-examples/`, 기본 브랜치 main, 포크 5653, 이슈 1, 워처 134, 푸시 시각 `2026-10-30T06:05:44Z`다. eli5 파싱은 설치 5, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 클론과 `pip install -r requirements.txt`다. 키 이름, 프로모션 코드, 제휴 링크는 넣지 않았다.
+- 이 창의 GitHub 별표는 앱에 모두 있었다. 새 행은 넣지 않았다.
+- 정적 번역표는 780개에서 787개로 늘었다. 반영은 7건, 빈 설명 2건, README 저장 7건, 한글 README 캐시 0건이다. 적용 함수가 쓴 뒤 14건을 다시 읽어 공백 0과 유지 7건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 115개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.

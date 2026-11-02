@@ -1854,4 +1854,34 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-11-02 오후에 추가된 Star 5개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["SaarthurR/atticus-mac", "Fast, free voice assistant for your Mac. No API key: runs on your Claude Pro or Max plan. Sends background agents for big jobs, remembers you and learns your shortcuts. Hold ⌃⌥Space and talk.", "맥용으로 빠르고 무료인 음성 비서입니다. API 키 없이 Claude Pro나 Max 요금제로 돌리고, 큰 일은 백그라운드 에이전트에 맡기며, 사용자를 기억하고 단축을 익힙니다. ⌃⌥Space를 누른 채 말하면 됩니다."],
+      ["TriliumNext/Trilium", "Build your personal knowledge base with Trilium Notes", "Trilium Notes로 개인 지식 창고를 만듭니다."],
+      ["linkwarden/linkwarden", "⚡️⚡️⚡️ Self-hosted collaborative bookmark manager to collect, read, annotate, and fully preserve what matters, all in one place.", "직접 호스팅하는 협업 북마크 관리자입니다. 중요한 것을 한곳에서 모으고, 읽고, 주석을 달고, 그대로 보존합니다."],
+      ["wheresryan22/anatomy", "An agent skill for creating detailed, interactive isometric illustrations of real-world machines and complex systems. Generates polished SVGs with optional WebGL shaders and 3D effects.", "실제 기계와 복잡한 시스템을 자세하고 상호작용하는 등각 그림으로 만드는 에이전트 스킬입니다. 다듬은 SVG와, 선택하면 WebGL 셰이더와 3D 효과를 만듭니다."],
+      ["hugohe3/ppt-master", "AI turns documents or topics into real, native PowerPoint decks—with native shapes, transitions and animations, data-backed charts and tables on demand, audio narration from speaker notes, and support for your own .pptx templates. · by Hugo He", "AI가 문서나 주제를 진짜 네이티브 파워포인트로 바꿉니다. 네이티브 도형, 전환, 애니메이션, 필요할 때의 데이터 차트와 표, 발표자 노트 음성 내레이션, 자기 .pptx 템플릿을 지원합니다. Hugo He가 만들었습니다."],
+    ];
+    assert.equal(cases.length, 5);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
+
+  it("2026-11-02 오후에 About가 비어 있는 Star 2개는 한국어만 채운다", () => {
+    const cases = [
+      ["anthropics/claude-code-playground", "Anthropic DevRel이 모아 둔 Claude Code 설정, 스킬, 데모 놀이터입니다."],
+      ["data-goblin/claude-code-filetree", "Claude가 무엇을 하는지, 파일의 어디를 다루는지 보여주는 Claude Code용 IDE 스타일 파일 트리입니다."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, korean] of cases) {
+      assert.equal(withKoreanTranslation(repo, null, null), korean, repo);
+      assert.equal(withKoreanTranslation(repo, "", null), korean, repo);
+    }
+  });
 });
