@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 143건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 143);
+test("대상 149건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 149);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 143);
+  assert.equal(new Set(ids).size, 149);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1141,6 +1141,48 @@ test("어제와 오늘 추가된 모드·데스크톱·트렌딩 7건의 제목�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 7);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("어제와 오늘 추가된 툴·블로그·PHP 6건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "efcc8d79-5efe-467d-886e-5430eb4e4a5b": {
+      title: "오프라인 비서부터 TV 광고 차단까지 무료 툴 7개",
+      tags: ["툴", "에이전트"],
+      raw: "유료 앱을 대체하는 무료 오픈소스 툴 7개를 정리했습니다.",
+    },
+    "41ac7224-d4e6-481a-8c33-781af874b37d": {
+      title: "긴 영어 영상을 한국어로 요약하는 playback-notes",
+      tags: ["스킬", "학습"],
+      raw: "정말 좋은 영상인데.. 100분 영어 강의는 부담스러우시죠?",
+    },
+    "45a3e438-d0fd-4a7d-a77c-e5da0809b235": {
+      title: "홈판을 베껴 하루 방문자 5만을 만든 블로그 네 가지",
+      tags: ["블로그", "SEO"],
+      raw: "블로그 제대로 시작한 지 딱 한 달.",
+    },
+    "1e50b2b7-05b9-42f5-b5b2-690805571e02": {
+      title: "서류 통과율을 올린 이력서 GPT 프롬프트 7개",
+      tags: ["프롬프트", "콘텐츠"],
+      raw: "이력서 서류 탈락만 23번.",
+    },
+    "44212830-fcb1-4122-8e8e-bee4892aca4f": {
+      title: "제품 소개 화면을 다듬는 무료 스킬 Stageshow",
+      tags: ["디자인", "스킬"],
+      raw: "이런 스킬은 정말 귀하죠.",
+    },
+    "30aaf2e6-42a9-4d81-9e32-e187c62b887d": {
+      title: "패치 없는 PHP 5 그누보드를 8.4로 옮기는 순서",
+      tags: ["보안", "클로드"],
+      raw: "PHP 5.x · 7.x, CentOS 7.x 이전 버전으로 운영하는 사이트라면 지금 꼭 보세요. 패치를 마친 분도 계시겠지만, OS나 버전 문제로 골머리를 썩이고 계신 분들께 도움이 되었으면 합니다.",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 6);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);

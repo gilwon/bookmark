@@ -868,6 +868,42 @@ export const TARGETS = [
     tags: ["툴", "에이전트"],
     phrase: "OpenMausBot",
   },
+  {
+    id: "efcc8d79-5efe-467d-886e-5430eb4e4a5b",
+    title: "오프라인 비서부터 TV 광고 차단까지 무료 툴 7개",
+    tags: ["툴", "에이전트"],
+    phrase: "cleanyourtv",
+  },
+  {
+    id: "41ac7224-d4e6-481a-8c33-781af874b37d",
+    title: "긴 영어 영상을 한국어로 요약하는 playback-notes",
+    tags: ["스킬", "학습"],
+    phrase: "AgwaB/playback-notes",
+  },
+  {
+    id: "45a3e438-d0fd-4a7d-a77c-e5da0809b235",
+    title: "홈판을 베껴 하루 방문자 5만을 만든 블로그 네 가지",
+    tags: ["블로그", "SEO"],
+    phrase: "애드포스트",
+  },
+  {
+    id: "1e50b2b7-05b9-42f5-b5b2-690805571e02",
+    title: "서류 통과율을 올린 이력서 GPT 프롬프트 7개",
+    tags: ["프롬프트", "콘텐츠"],
+    phrase: "서류 탈락만 23번",
+  },
+  {
+    id: "44212830-fcb1-4122-8e8e-bee4892aca4f",
+    title: "제품 소개 화면을 다듬는 무료 스킬 Stageshow",
+    tags: ["디자인", "스킬"],
+    phrase: "benjitaylor/skills",
+  },
+  {
+    id: "30aaf2e6-42a9-4d81-9e32-e187c62b887d",
+    title: "패치 없는 PHP 5 그누보드를 8.4로 옮기는 순서",
+    tags: ["보안", "클로드"],
+    phrase: "PHP2Shell",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
