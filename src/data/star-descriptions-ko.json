@@ -795,5 +795,7 @@
   "miurla/morphic": "생성형 화면이 있는 AI 검색 엔진입니다.",
   "OpnForm/OpnForm": "보기 좋은 오픈소스 폼 빌더입니다.",
   "puckeditor/puck": "React용 비주얼 편집기입니다.",
-  "vercel/next-forge": "Next.js 앱을 위한 운영 수준 Turborepo 템플릿입니다."
+  "vercel/next-forge": "Next.js 앱을 위한 운영 수준 Turborepo 템플릿입니다.",
+  "AgwaB/playback-notes": "보거나 들은 것을 근거가 붙은 읽기 쉬운 보고로 바꿉니다. Claude Code, Codex, pi용 스킬입니다.",
+  "rlaope/deepseek-bot": "deepseek-harness를 위한 에이전트 기억과 메시지 게이트웨이입니다."
 }
