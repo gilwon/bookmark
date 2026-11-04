@@ -904,6 +904,12 @@ export const TARGETS = [
     tags: ["보안", "클로드"],
     phrase: "PHP2Shell",
   },
+  {
+    id: "60062851-9fb9-4211-b518-bc908dfff2e7",
+    title: "서버비 없이 웹을 올리는 무료 스택 4가지",
+    tags: ["툴", "설정"],
+    phrase: "Groble",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");
