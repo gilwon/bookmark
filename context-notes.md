@@ -2758,6 +2758,17 @@
 - 정적 번역표는 797개에서 799개로 늘었다. 반영은 2건, 빈 설명 0건, README 저장 2건, 한글 README 캐시 0건이다. 적용 뒤 12건을 다시 읽어 공백 0과 유지 10건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 117개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-05 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-11-05 기준 어제·오늘 창은 `created_at >= 2026-11-03T15:00:00Z`다. 운영 행은 5건이다. 2026-11-04에 반영한 2건은 한글 설명, eli5, README가 있어 유지했다. 설명 길이는 playback-notes 185, deepseek-bot 102다.
+- 새로 들어온 3건은 `created_at`이 `2026-11-04T23:21:37.466Z`다. 영문 About 2건 뒤에 한글을 붙였고, 빈 About 1건은 한국어만 채웠다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 끝 공백은 없었다.
+- `GwonHyeok/kakao-banner-studio` About는 비어 있어 한국어만 넣었다. 라이선스 없음, 홈페이지 없음, 기본 브랜치 main, 포크 3, 이슈 0, 워처 0, 푸시 시각 `2026-11-03T13:49:46Z`다. README 한글이 1046자라 `detail_fetched_at`은 `2026-11-04T23:31:03.270Z`이고 `detail_json`을 채웠다. eli5 파싱은 설치 4, 사용 4, 특징 3, 한계 2다. 설치는 Releases의 dmg를 Applications로 옮기고 네트워크 확장과 로컬 인증서를 허용하는 단계다. 서명 신원, 프로비저닝 경로, 공증 자격은 넣지 않았다.
+- `govijr/terminal-mac` About 뒤에 한글을 붙였다. `govijr/terminal-phone`과 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 90, 이슈 2, 워처 2, 푸시 시각 `2026-11-03T12:34:41Z`다. README는 영문이라 `detail_fetched_at`과 `detail_json`은 비웠다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 공식 curl이다. 클릭, 입력, 키 명령과 테스트의 샌드박스 해제는 넣지 않았다.
+- `sheprd-labs/sheprd` About 뒤에 한글을 붙였다. `herdrdev/herdr`, `devswha/herdr-web-ui`, `penso/herdr-gpui`, `JinJieBeWater/herdr-t3`와 다른 저장소다. README는 Herdr와 무관한 프로젝트라고 적고, Homebrew 토큰은 `herdr-gpui`다. 라이선스 Apache-2.0, 홈페이지 `https://sheprd-labs.github.io/sheprd/`, 기본 브랜치 main, 포크 178, 이슈 138, 워처 2, 푸시 시각 `2026-11-04T23:12:22Z`다. README는 영문이라 `detail_fetched_at`과 `detail_json`은 비웠다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 Homebrew, Linux curl, Windows PowerShell이다. 제거 스크립트, Nix 설정, Git 권한 복구 절차, 성능 측정 값은 넣지 않았다.
+- 이 창의 GitHub 별표는 `GwonHyeok/kakao-banner-studio`, `govijr/terminal-mac`이고 앱에 모두 있었다. `sheprd-labs/sheprd`는 별표 시각이 창보다 이전이고 앱에는 이 창에 들어왔다. 새 행은 넣지 않았다.
+- 정적 번역표는 799개에서 802개로 늘었다. 반영은 3건, 빈 설명 1건, README 저장 3건, 한글 README 캐시 1건이다. 적용 뒤 5건을 다시 읽어 공백 0과 유지 2건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 119개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.

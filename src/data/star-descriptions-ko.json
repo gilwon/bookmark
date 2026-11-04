@@ -797,5 +797,8 @@
   "puckeditor/puck": "React용 비주얼 편집기입니다.",
   "vercel/next-forge": "Next.js 앱을 위한 운영 수준 Turborepo 템플릿입니다.",
   "AgwaB/playback-notes": "보거나 들은 것을 근거가 붙은 읽기 쉬운 보고로 바꿉니다. Claude Code, Codex, pi용 스킬입니다.",
-  "rlaope/deepseek-bot": "deepseek-harness를 위한 에이전트 기억과 메시지 게이트웨이입니다."
+  "rlaope/deepseek-bot": "deepseek-harness를 위한 에이전트 기억과 메시지 게이트웨이입니다.",
+  "GwonHyeok/kakao-banner-studio": "Mac용 카카오톡 채팅 목록 하단에 원하는 배너를 표시하는 비공식 앱입니다. 광고 영역을 비워 두거나 내 이미지와 커뮤니티 배너를 표시할 수 있습니다.",
+  "govijr/terminal-mac": "터미널 안에서 macOS 전체를 실행합니다.",
+  "sheprd-labs/sheprd": "macOS, Linux, Windows용 Herdr 네이티브 클라이언트입니다. Rust와 GPUI로 만들었고, 로컬 Herdr 데몬으로 터미널 세션, 작업 공간, Git 워크트리, 에이전트 활동을 봅니다."
 }

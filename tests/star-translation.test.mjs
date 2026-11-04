@@ -1922,4 +1922,25 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-11-05에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["govijr/terminal-mac", "Entire MacOS running in your terminal.", "터미널 안에서 macOS 전체를 실행합니다."],
+      ["sheprd-labs/sheprd", "Native client for Herdr on macOS, Linux, and Windows, built with Rust and GPUI. View terminal sessions, workspaces, Git worktrees, and agent activity through your local Herdr daemon.", "macOS, Linux, Windows용 Herdr 네이티브 클라이언트입니다. Rust와 GPUI로 만들었고, 로컬 Herdr 데몬으로 터미널 세션, 작업 공간, Git 워크트리, 에이전트 활동을 봅니다."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
+
+  it("2026-11-05에 About가 비어 있는 kakao-banner-studio는 한국어만 채운다", () => {
+    const korean = "Mac용 카카오톡 채팅 목록 하단에 원하는 배너를 표시하는 비공식 앱입니다. 광고 영역을 비워 두거나 내 이미지와 커뮤니티 배너를 표시할 수 있습니다.";
+    assert.equal(withKoreanTranslation("GwonHyeok/kakao-banner-studio", null, null), korean);
+    assert.equal(withKoreanTranslation("GwonHyeok/kakao-banner-studio", "", null), korean);
+  });
 });
