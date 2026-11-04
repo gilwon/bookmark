@@ -1885,6 +1885,20 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-11-05 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-11-04부터 2026-11-05 아침까지 운영 Star 5건 확인. 한글 또는 eli5가 없는 항목 3건
+- [x] 2026-11-04에 반영한 playback-notes와 deepseek-bot은 한글 설명, eli5, README가 있어 유지
+- [x] 영문 About 2건 뒤에 한글을 붙임. 빈 About 1건은 한국어만 채움
+- [x] kakao-banner-studio 설치는 dmg를 Applications로 옮기고 네트워크 확장과 로컬 인증서를 허용. 서명 경로와 공증 자격은 넣지 않음
+- [x] terminal-mac 설치 첫 펜스는 공식 curl. 클릭과 입력 명령, 테스트용 샌드박스 해제는 넣지 않음
+- [x] sheprd 설치 첫 펜스는 Homebrew, Linux curl, Windows PowerShell. 제거 스크립트와 Git 권한 복구 절차는 넣지 않음
+- [x] kakao-banner-studio README는 한글이라 detail_fetched_at과 detail_json을 채움. 나머지 2건 README는 영문이라 비움
+- [x] 매핑 799개에서 802개. 회귀 테스트 119개 통과
+- [x] 운영 반영 3건, 빈 설명 1건, README 저장 3건, 한글 README 캐시 1건
+- [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 
