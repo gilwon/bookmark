@@ -1907,4 +1907,19 @@ describe("Star 설명 번역", () => {
       );
     }
   });
+
+  it("2026-11-04에 추가된 Star 2개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["AgwaB/playback-notes", "Readable reports from anything you watch or listen to—with the evidence attached. A skill for Claude Code, Codex and pi.", "보거나 들은 것을 근거가 붙은 읽기 쉬운 보고로 바꿉니다. Claude Code, Codex, pi용 스킬입니다."],
+      ["rlaope/deepseek-bot", "The agentic memory & message gateway for deepseek-harness", "deepseek-harness를 위한 에이전트 기억과 메시지 게이트웨이입니다."],
+    ];
+    assert.equal(cases.length, 2);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });

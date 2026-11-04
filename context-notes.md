@@ -2748,6 +2748,16 @@
 - 정적 번역표는 787개에서 797개로 늘었다. 반영은 10건, 빈 설명 0건, README 저장 10건, 한글 README 캐시 0건이다. 적용 뒤 22건을 다시 읽어 공백 0과 유지 12건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 116개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-04 어제·오늘 Star 한글 설명 메모
+
+- 한국 시간 2026-11-04 기준 어제·오늘 창은 `created_at >= 2026-11-02T15:00:00Z`다. 운영 행은 12건이다. 2026-11-03에 반영한 10건은 한글 설명, eli5, README가 있어 유지했다. 설명 길이는 stack-diagram 141, next-forge 92, OpnForm 55, morphic 73, puck 48, dsh-superagent-prototype 62, cloud-mail 147, herdr-t3 170, assistant-ui 81, CludeGods 373이다.
+- 새로 들어온 2건은 `created_at`이 `2026-11-04T00:48:10.001Z`다. 영문 About 2건 뒤에 한글을 붙였다. 빈 About는 없었다. 가져온 README는 `readme_md`에, 한국어 eli5는 `readme_md_ko`에 넣었다. 2건 모두 영문 README라 `detail_fetched_at`과 `detail_json`은 비웠다. 끝 공백은 없었다.
+- `AgwaB/playback-notes` About 뒤에 한글을 붙였다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 main, 포크 4, 이슈 1, 워처 0, 푸시 시각 `2026-11-03T08:23:16Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 `npx skills add AgwaB/playback-notes -g`와 `npm ci`다. Node.js는 24.15 이상의 24.x 또는 26 이상이고 Node 25는 지원하지 않는다. 선택 도구 설치와 로컬 전사 모델 주소는 넣지 않았다.
+- `rlaope/deepseek-bot` About 뒤에 한글을 붙였다. `rlaope/oh-my-hermes`, `deepseek-ai/dsh-superagent-prototype`과 다른 저장소다. 라이선스 MIT, 홈페이지 없음, 기본 브랜치 master, 포크 22, 이슈 3, 워처 3, 푸시 시각 `2026-11-03T17:45:31Z`다. eli5 파싱은 설치 3, 사용 4, 특징 4, 한계 4다. 설치 첫 펜스는 공식 curl과 `dsh`, `dsh gateway setup`이다. 에이전트에게 맡기는 붙여넣기와 키 이름, 자격 파일 경로는 넣지 않았다. README는 DeepSeek와 무관한 독립 프로젝트라고 적는다.
+- 이 창의 GitHub 별표는 `AgwaB/playback-notes`, `rlaope/deepseek-bot`, `maillab/cloud-mail`이고 앱에 모두 있었다. 새 행은 넣지 않았다.
+- 정적 번역표는 797개에서 799개로 늘었다. 반영은 2건, 빈 설명 0건, README 저장 2건, 한글 README 캐시 0건이다. 적용 뒤 12건을 다시 읽어 공백 0과 유지 10건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
+- 테스트는 117개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.
