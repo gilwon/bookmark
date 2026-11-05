@@ -1,5 +1,4 @@
-// 심팀장 자료실 목록의 조회와 검색을 제공한다.
-import guides from "@/data/shim-guides.json";
+// 심팀장 자료실 검색과 출처 상수를 제공한다.
 
 export const SHIM_GUIDES_SOURCE = "https://shimteamjjang.vercel.app/";
 
@@ -11,16 +10,6 @@ export type ShimGuide = {
   order: number;
   sourceUrl: string;
 };
-
-const catalog = guides as ShimGuide[];
-
-export function listShimGuides(): ShimGuide[] {
-  return [...catalog];
-}
-
-export function getShimGuide(slug: string): ShimGuide | undefined {
-  return catalog.find((guide) => guide.slug === slug);
-}
 
 export function filterShimGuides(items: ShimGuide[], filters: { query?: string } = {}): ShimGuide[] {
   const normalize = (text: string) => text.toLowerCase().replace(/\s+/gu, "");

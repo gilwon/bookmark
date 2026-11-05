@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { extractShimMarkdown, parseShimIndex } from "../scripts/fetch-shim-guides.mjs";
+import { extractShimMarkdown, mergeShimCatalog, parseShimIndex } from "../scripts/fetch-shim-guides.mjs";
 
 const MOVE_URL = "https://shimteamjjang.vercel.app/move";
 
@@ -80,4 +80,77 @@ test("본문은 wrap만 남기고 복사 버튼 없이 코드, 이미지, 링크
 
 test(".wrap이 없으면 실패한다", () => {
   assert.throws(() => extractShimMarkdown("<article><p>없음</p></article>", MOVE_URL));
+});
+
+test("병합은 저장 본문과 제목을 유지하고 새 홈 카드만 기다리며 네트워크를 쓰지 않는다", () => {
+  const calls = [];
+  const original = globalThis.fetch;
+  globalThis.fetch = async (...args) => {
+    calls.push(args);
+    throw new Error("네트워크를 호출하면 안 됩니다.");
+  };
+  const savedBody = "저장된 본문 그대로";
+  const home = [
+    {
+      slug: "rea",
+      title: "홈 제목",
+      episode: "1편",
+      summary: "홈 요약",
+      order: 7,
+      sourceUrl: "https://shimteamjjang.vercel.app/rea",
+    },
+    {
+      slug: "fresh",
+      title: "새 제목",
+      episode: "2편",
+      summary: "새 요약",
+      order: 8,
+      sourceUrl: "https://shimteamjjang.vercel.app/fresh",
+    },
+  ];
+  const saved = [
+    {
+      slug: "rea",
+      title: "저장 제목",
+      episode: "64편",
+      summary: "저장 요약",
+      order: 9,
+      sourceUrl: "https://shimteamjjang.vercel.app/rea?kept=1",
+    },
+    {
+      slug: "old",
+      title: "옛 제목",
+      episode: "3편",
+      summary: "옛 요약",
+      order: 4,
+      sourceUrl: "https://shimteamjjang.vercel.app/old",
+    },
+  ];
+  try {
+    const merged = mergeShimCatalog(home, saved, { rea: savedBody, old: "옛 본문" });
+    assert.equal(calls.length, 0);
+    assert.equal(merged.guides[0].slug, "rea");
+    assert.equal(merged.guides[0].title, "저장 제목");
+    assert.equal(merged.guides[0].episode, "64편");
+    assert.equal(merged.guides[0].summary, "저장 요약");
+    assert.equal(merged.guides[0].sourceUrl, "https://shimteamjjang.vercel.app/rea?kept=1");
+    assert.equal(merged.guides[0].order, 0);
+    assert.equal(merged.bodies.rea, savedBody);
+    assert.equal(merged.pending.some((guide) => guide.slug === "rea"), false);
+    assert.equal(merged.pending.length, 1);
+    assert.equal(merged.pending[0].slug, "fresh");
+    assert.equal(merged.pending[0].title, "새 제목");
+    assert.equal(merged.guides[1].slug, "fresh");
+    assert.equal(merged.guides[1].title, "새 제목");
+    assert.equal(merged.guides[1].order, 1);
+    assert.equal(merged.guides[2].slug, "old");
+    assert.equal(merged.guides[2].title, "옛 제목");
+    assert.equal(merged.guides[2].order, 2);
+    assert.equal(merged.bodies.old, "옛 본문");
+    assert.equal(merged.pending.some((guide) => guide.slug === "old"), false);
+    assert.equal(saved[0].order, 9);
+    assert.equal(saved[0].title, "저장 제목");
+  } finally {
+    globalThis.fetch = original;
+  }
 });
