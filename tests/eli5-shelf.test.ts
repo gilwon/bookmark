@@ -9,9 +9,9 @@ import { filterEli5Shelf, getEli5Shelf, listEli5Shelf } from "../src/lib/eli5-sh
 
 const items = listEli5Shelf();
 
-test("목록은 49건이고 id가 고유하며 date 내림차순 title 순이다", () => {
-  assert.equal(items.length, 49);
-  assert.equal(new Set(items.map((item) => item.id)).size, 49);
+test("목록은 50건이고 id가 고유하며 date 내림차순 title 순이다", () => {
+  assert.equal(items.length, 50);
+  assert.equal(new Set(items.map((item) => item.id)).size, 50);
   for (const item of items) assert.match(item.id, /^[A-Za-z0-9-]+$/);
   for (let i = 1; i < items.length; i++) {
     const a = items[i - 1];

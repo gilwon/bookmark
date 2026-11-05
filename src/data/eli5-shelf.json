@@ -29,6 +29,21 @@
     "sourceUrl": "https://claude.ai/artifact/4tB2YhRDVikvZQ4ZTeqF76"
   },
   {
+    "id": "2TTe8BKTdpCq9MLJBcjvJj",
+    "title": "ReUI 그림 설명서",
+    "repo": "keenthemes/reui",
+    "repoUrl": "https://github.com/keenthemes/reui",
+    "summary": "shadcn/ui용 무료 React 컴포넌트를 복사해 쓰는 레지스트리",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "도구",
+      "MCP"
+    ],
+    "date": "2026-11-05",
+    "sourceUrl": "https://claude.ai/artifact/2TTe8BKTdpCq9MLJBcjvJj"
+  },
+  {
     "id": "V9u1ank2STgtBbxKBKixHW",
     "title": "Marketing Skills 서랍장",
     "repo": "coreyhaines31/marketingskills",
