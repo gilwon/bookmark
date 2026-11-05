@@ -1,0 +1,707 @@
+[
+  {
+    "id": "QrMzccRCxSmLt1vNoMmVH7",
+    "title": "Claude Code Game Studios",
+    "repo": "Donchitos/Claude-Code-Game-Studios",
+    "repoUrl": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+    "summary": "Claude Code를 49명 에이전트 게임 스튜디오로 바꾸는 템플릿",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "Claude Code",
+      "프레임워크"
+    ],
+    "date": "2026-11-05",
+    "sourceUrl": "https://claude.ai/artifact/QrMzccRCxSmLt1vNoMmVH7"
+  },
+  {
+    "id": "4tB2YhRDVikvZQ4ZTeqF76",
+    "title": "Continue 그림 설명서",
+    "repo": "continuedev/continue",
+    "repoUrl": "https://github.com/continuedev/continue",
+    "summary": "VS Code·JetBrains·CLI용 오픈소스 코딩 에이전트, 2.0.0으로 유지보수 종료",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-11-05",
+    "sourceUrl": "https://claude.ai/artifact/4tB2YhRDVikvZQ4ZTeqF76"
+  },
+  {
+    "id": "V9u1ank2STgtBbxKBKixHW",
+    "title": "Marketing Skills 서랍장",
+    "repo": "coreyhaines31/marketingskills",
+    "repoUrl": "https://github.com/coreyhaines31/marketingskills",
+    "summary": "AI 에이전트에 마케팅 업무 매뉴얼 53개를 넣어주는 스킬 모음",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-11-03",
+    "sourceUrl": "https://claude.ai/artifact/V9u1ank2STgtBbxKBKixHW"
+  },
+  {
+    "id": "GMqx32Bfm4yyGMbgPx8Hfm",
+    "title": "PPT Master 작업대",
+    "repo": "hugohe3/ppt-master",
+    "repoUrl": "https://github.com/hugohe3/ppt-master",
+    "summary": "문서를 편집 가능한 네이티브 PPTX로 바꿔주는 AI 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "도구",
+      "Claude Code"
+    ],
+    "date": "2026-11-02",
+    "sourceUrl": "https://claude.ai/artifact/GMqx32Bfm4yyGMbgPx8Hfm"
+  },
+  {
+    "id": "56tADnqVsWBCWtUnBS9KBQ",
+    "title": "agent-desktop 그림 설명서",
+    "repo": "vercel-labs/agent-desktop",
+    "repoUrl": "https://github.com/vercel-labs/agent-desktop",
+    "summary": "AI가 OS 접근성 트리로 데스크톱 앱을 번호로 조작하게 하는 CLI",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-11-01",
+    "sourceUrl": "https://claude.ai/artifact/56tADnqVsWBCWtUnBS9KBQ"
+  },
+  {
+    "id": "3di69Z26B3GYoHvexHYScb",
+    "title": "AI 웹사이트 클로너 설명서",
+    "repo": "JCodesMore/ai-website-cloner-template",
+    "repoUrl": "https://github.com/JCodesMore/ai-website-cloner-template",
+    "summary": "사이트 주소를 주면 AI가 Next.js 코드로 다시 짓는 템플릿",
+    "kind": "설명",
+    "tags": [
+      "Claude Code",
+      "스킬",
+      "에이전트"
+    ],
+    "date": "2026-10-31",
+    "sourceUrl": "https://claude.ai/artifact/3di69Z26B3GYoHvexHYScb"
+  },
+  {
+    "id": "DyeGXtrZ6ejoSprkKXdcc6",
+    "title": "Dify 그림 설명서",
+    "repo": "langgenius/dify",
+    "repoUrl": "https://github.com/langgenius/dify",
+    "summary": "블록을 이어 AI 챗봇·워크플로를 만드는 오픈소스 LLM 앱 플랫폼",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "프레임워크",
+      "도구"
+    ],
+    "date": "2026-10-31",
+    "sourceUrl": "https://claude.ai/artifact/DyeGXtrZ6ejoSprkKXdcc6"
+  },
+  {
+    "id": "NcpJfSN6Lc4Moh8dFKRkRR",
+    "title": "MarkItDown 그림 설명서",
+    "repo": "microsoft/markitdown",
+    "repoUrl": "https://github.com/microsoft/markitdown",
+    "summary": "Word·Excel·PDF 등을 AI용 마크다운으로 바꾸는 Python 도구",
+    "kind": "설명",
+    "tags": [
+      "도구",
+      "MCP"
+    ],
+    "date": "2026-10-31",
+    "sourceUrl": "https://claude.ai/artifact/NcpJfSN6Lc4Moh8dFKRkRR"
+  },
+  {
+    "id": "L8hdfW8CfnmkwAeHsXNSxX",
+    "title": "OpenIDEA 그림 설명서",
+    "repo": "l0ng-ai/openidea",
+    "repoUrl": "https://github.com/l0ng-ai/openidea",
+    "summary": "IntelliJ 사용감을 그대로 Rust로 가볍게 다시 만든 무료 IDE",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-10-31",
+    "sourceUrl": "https://claude.ai/artifact/L8hdfW8CfnmkwAeHsXNSxX"
+  },
+  {
+    "id": "C7yEy6yXJG2D7PspMLUQrC",
+    "title": "notch-toast 그림 설명서",
+    "repo": "Devsethi3/notch-toast",
+    "repoUrl": "https://github.com/Devsethi3/notch-toast",
+    "summary": "화면 위 노치에 알림을 하나씩 띄우는 React 토스트 라이브러리",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "도구"
+    ],
+    "date": "2026-10-30",
+    "sourceUrl": "https://claude.ai/artifact/C7yEy6yXJG2D7PspMLUQrC"
+  },
+  {
+    "id": "4pqunVH59BpPNFabEdCbVw",
+    "title": "Ovis 그림 설명서",
+    "repo": "devswha/ovis",
+    "repoUrl": "https://github.com/devswha/ovis",
+    "summary": "Claude Code·Codex를 휴대폰에서 다루는 herdr 플러그인",
+    "kind": "설명",
+    "tags": [
+      "Claude Code",
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-30",
+    "sourceUrl": "https://claude.ai/artifact/4pqunVH59BpPNFabEdCbVw"
+  },
+  {
+    "id": "PHpC7dQJrq5TNfMyZQQU5x",
+    "title": "vue-charts 그림 설명서",
+    "repo": "unovue/vue-charts",
+    "repoUrl": "https://github.com/unovue/vue-charts",
+    "summary": "Recharts를 Vue 3로 옮긴 블록 조립식 차트 라이브러리(vccs)",
+    "kind": "설명",
+    "tags": [
+      "프레임워크",
+      "디자인"
+    ],
+    "date": "2026-10-30",
+    "sourceUrl": "https://claude.ai/artifact/PHpC7dQJrq5TNfMyZQQU5x"
+  },
+  {
+    "id": "RPVBH9dDnnTTZRHpR5zEfY",
+    "title": "Agent Formal Verify",
+    "repo": "michael-denyer/agent-formal-verify",
+    "repoUrl": "https://github.com/michael-denyer/agent-formal-verify",
+    "summary": "TLA+·Lean·Kani로 코드의 위험 부분을 형식 검증하는 에이전트 플러그인",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code",
+      "도구"
+    ],
+    "date": "2026-10-28",
+    "sourceUrl": "https://claude.ai/artifact/RPVBH9dDnnTTZRHpR5zEfY"
+  },
+  {
+    "id": "SBhvg3T7kKqEs97H4RZah2",
+    "title": "Proof Skills",
+    "repo": "opum-ai/proof-skills",
+    "repoUrl": "https://github.com/opum-ai/proof-skills",
+    "summary": "TLA+·Lean으로 동시성·상태 버그를 찾아 고치는 Claude Code 스킬 묶음",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code",
+      "도구"
+    ],
+    "date": "2026-10-28",
+    "sourceUrl": "https://claude.ai/artifact/SBhvg3T7kKqEs97H4RZah2"
+  },
+  {
+    "id": "LkxWUZ4opoK6VyAn5i3EaP",
+    "title": "Reason 코딩 에이전트 설명서",
+    "repo": "Reason (Reason Machines)",
+    "repoUrl": "",
+    "summary": "이슈를 맡기면 증거 영상과 함께 PR을 올리는 클라우드 코딩 에이전트",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-28",
+    "sourceUrl": "https://claude.ai/artifact/LkxWUZ4opoK6VyAn5i3EaP"
+  },
+  {
+    "id": "64KJPstVmNMywQ9h8xfv5b",
+    "title": "Ruflo 그림 설명서",
+    "repo": "ruvnet/ruflo",
+    "repoUrl": "https://github.com/ruvnet/ruflo",
+    "summary": "Claude Code·Codex에 팀·기억·도구를 붙이는 에이전트 하네스",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "Claude Code",
+      "MCP"
+    ],
+    "date": "2026-10-28",
+    "sourceUrl": "https://claude.ai/artifact/64KJPstVmNMywQ9h8xfv5b"
+  },
+  {
+    "id": "KrwTxGAtKbSZHfVYDtLi1Q",
+    "title": "AI 회사 차리기 설명서",
+    "repo": "TOKTOKHAN-DEV/agent-company",
+    "repoUrl": "https://github.com/TOKTOKHAN-DEV/agent-company",
+    "summary": "AI 에이전트 팀을 위한 기억·규칙·사람 검수 내장 모노레포 템플릿",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "Claude Code",
+      "메모리"
+    ],
+    "date": "2026-10-27",
+    "sourceUrl": "https://claude.ai/artifact/KrwTxGAtKbSZHfVYDtLi1Q"
+  },
+  {
+    "id": "31CetgAJH1KrMrCcxSZzm3",
+    "title": "OpenBot 쉽게 보기",
+    "repo": "nightly-labs/openbot",
+    "repoUrl": "https://github.com/nightly-labs/openbot",
+    "summary": "여러 코딩 AI를 팀원처럼 상주시켜 일을 나눠 맡기는 로컬 데스크톱 앱",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-27",
+    "sourceUrl": "https://claude.ai/artifact/31CetgAJH1KrMrCcxSZzm3"
+  },
+  {
+    "id": "Dnk8YCsmBc6UQYWmCB2nyb",
+    "title": "SkillSpector 쉽게 보기",
+    "repo": "NVIDIA/SkillSpector",
+    "repoUrl": "https://github.com/NVIDIA/SkillSpector",
+    "summary": "에이전트 스킬을 설치 전에 정적·LLM 분석으로 검사하는 보안 스캐너",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "도구",
+      "MCP"
+    ],
+    "date": "2026-10-27",
+    "sourceUrl": "https://claude.ai/artifact/Dnk8YCsmBc6UQYWmCB2nyb"
+  },
+  {
+    "id": "7X1sZsVX5wNbJWr1XEjWZW",
+    "title": "ThinkRail 쉽게 보기",
+    "repo": "JetBrains/thinkrail",
+    "repoUrl": "https://github.com/JetBrains/thinkrail",
+    "summary": "pi 코딩 에이전트를 워크트리별로 병렬 실행하는 경량 에이전틱 IDE",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-27",
+    "sourceUrl": "https://claude.ai/artifact/7X1sZsVX5wNbJWr1XEjWZW"
+  },
+  {
+    "id": "Hu22WyHdVnwL7gi4yn3n9J",
+    "title": "보안 탐정단 스킬",
+    "repo": "cloudflare/security-audit-skill",
+    "repoUrl": "https://github.com/cloudflare/security-audit-skill",
+    "summary": "코딩 에이전트가 6단계로 보안 취약점을 찾고 교차 검증하는 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "에이전트",
+      "Claude Code"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/Hu22WyHdVnwL7gi4yn3n9J"
+  },
+  {
+    "id": "VFt8S9Up4rH4zC3FChgRyd",
+    "title": "claude-howto 그림 설명서",
+    "repo": "luongnv89/claude-howto",
+    "repoUrl": "https://github.com/luongnv89/claude-howto",
+    "summary": "Claude Code 기능을 그림과 복붙 템플릿으로 배우는 학습 가이드",
+    "kind": "설명",
+    "tags": [
+      "Claude Code",
+      "스킬",
+      "도구"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/VFt8S9Up4rH4zC3FChgRyd"
+  },
+  {
+    "id": "NqsNr3CaLYRKVndhws3HEJ",
+    "title": "Flue 쉽게 보기",
+    "repo": "withastro/flue",
+    "repoUrl": "https://github.com/withastro/flue",
+    "summary": "Astro 팀이 만든 TypeScript 에이전트 하네스·샌드박스 프레임워크",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "프레임워크"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/NqsNr3CaLYRKVndhws3HEJ"
+  },
+  {
+    "id": "TuEcnT2JgJRyNreeGarxF2",
+    "title": "Hallmark 쉽게 보기",
+    "repo": "Nutlope/hallmark",
+    "repoUrl": "https://github.com/Nutlope/hallmark",
+    "summary": "AI 티 나는 디자인을 막아주는 Claude Code·Cursor·Codex용 디자인 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "디자인",
+      "Claude Code"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/TuEcnT2JgJRyNreeGarxF2"
+  },
+  {
+    "id": "KGEh3dfSJ3pcd1XSqHhvZ6",
+    "title": "Impeccable 빨간펜",
+    "repo": "pbakaus/impeccable",
+    "repoUrl": "https://github.com/pbakaus/impeccable",
+    "summary": "AI 코딩 도구에 디자인 규칙과 자동 채점기를 붙여주는 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "디자인",
+      "Claude Code"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/KGEh3dfSJ3pcd1XSqHhvZ6"
+  },
+  {
+    "id": "98UnPSd7Gv1vNGRvD5svgp",
+    "title": "Odoo 그림 설명서",
+    "repo": "odoo/odoo",
+    "repoUrl": "https://github.com/odoo/odoo",
+    "summary": "업무 앱을 블록처럼 조립하는 오픈소스 ERP, 사용법과 설치법",
+    "kind": "설명",
+    "tags": [
+      "프레임워크",
+      "도구"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/98UnPSd7Gv1vNGRvD5svgp"
+  },
+  {
+    "id": "SFRsZJK4BpVDtYEZkuMGEd",
+    "title": "OpenShell 그림 설명서",
+    "repo": "NVIDIA/OpenShell",
+    "repoUrl": "https://github.com/NVIDIA/OpenShell",
+    "summary": "AI 에이전트를 샌드박스에 가두고 정책대로만 움직이게 하는 런타임",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-26",
+    "sourceUrl": "https://claude.ai/artifact/SFRsZJK4BpVDtYEZkuMGEd"
+  },
+  {
+    "id": "2WfJbFL5TmduuRH3w5PUss",
+    "title": "직무별 플러그인 가방",
+    "repo": "anthropics/knowledge-work-plugins",
+    "repoUrl": "https://github.com/anthropics/knowledge-work-plugins",
+    "summary": "Claude에 직무별 스킬·커넥터를 묶어 주는 Anthropic 공식 플러그인 모음",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "MCP",
+      "Claude Code"
+    ],
+    "date": "2026-10-24",
+    "sourceUrl": "https://claude.ai/artifact/2WfJbFL5TmduuRH3w5PUss"
+  },
+  {
+    "id": "Ad5pi1Tf7gzsiRLVFva14i",
+    "title": "취업 코치 스킬 설명서",
+    "repo": "wing0828/ai-job-search-kr",
+    "repoUrl": "https://github.com/wing0828/ai-job-search-kr",
+    "summary": "한국 채용시장용 이력서·자소서·면접 준비를 돕는 Claude 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-24",
+    "sourceUrl": "https://claude.ai/artifact/Ad5pi1Tf7gzsiRLVFva14i"
+  },
+  {
+    "id": "f1fb69f8-2b3b-4893-8267-f26b6f0bb3f6",
+    "title": "법령 MCP 그림 안내",
+    "repo": "chrisryugj/korean-law-mcp",
+    "repoUrl": "",
+    "summary": "AI가 법제처 API로 법령·판례 원문을 직접 찾게 하는 MCP",
+    "kind": "설명",
+    "tags": [
+      "MCP",
+      "도구"
+    ],
+    "date": "2026-10-22",
+    "sourceUrl": "https://claude.ai/code/artifact/f1fb69f8-2b3b-4893-8267-f26b6f0bb3f6"
+  },
+  {
+    "id": "f841dbac-1ec2-4f21-87c6-9799f748e560",
+    "title": "Replica 스킬 그림 설명서",
+    "repo": "Jakeschincariol/replica-skill",
+    "repoUrl": "https://github.com/Jakeschincariol/replica-skill",
+    "summary": "남의 앱을 관찰해 새로 만들고 출시까지 돕는 스킬 11개 묶음",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-22",
+    "sourceUrl": "https://claude.ai/code/artifact/f841dbac-1ec2-4f21-87c6-9799f748e560"
+  },
+  {
+    "id": "f31fe82c-6689-4e78-bfe0-8cbb55aad068",
+    "title": "llm-wiki-kit 그림 설명서",
+    "repo": "DHKIM0207/llm-wiki-kit",
+    "repoUrl": "https://github.com/DHKIM0207/llm-wiki-kit",
+    "summary": "AI가 Obsidian 볼트에 지식 위키를 정리해 주는 플러그인",
+    "kind": "설명",
+    "tags": [
+      "메모리",
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-21",
+    "sourceUrl": "https://claude.ai/code/artifact/f31fe82c-6689-4e78-bfe0-8cbb55aad068"
+  },
+  {
+    "id": "20783d12-93b7-43bd-aefe-433c801365ea",
+    "title": "펜팟 그림책",
+    "repo": "penpot/penpot",
+    "repoUrl": "https://github.com/penpot/penpot",
+    "summary": "직접 설치도 되는 무료 오픈소스 협업 디자인 도구",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "도구"
+    ],
+    "date": "2026-10-20",
+    "sourceUrl": "https://claude.ai/code/artifact/20783d12-93b7-43bd-aefe-433c801365ea"
+  },
+  {
+    "id": "9d17987b-a8e4-4c2f-922b-b1cd40b2bf4b",
+    "title": "SolidCraft 쉽게 보기",
+    "repo": "tangency-labs/solidcraft",
+    "repoUrl": "https://github.com/tangency-labs/solidcraft",
+    "summary": "숫자로 치수를 바꾸면 모양이 다시 만들어지는 오픈소스 CAD",
+    "kind": "설명",
+    "tags": [
+      "도구",
+      "MCP",
+      "디자인"
+    ],
+    "date": "2026-10-20",
+    "sourceUrl": "https://claude.ai/code/artifact/9d17987b-a8e4-4c2f-922b-b1cd40b2bf4b"
+  },
+  {
+    "id": "b5071a4d-ca1f-4b72-baf7-11cd8d6e023b",
+    "title": "에이전트 스킬 3종 비교",
+    "repo": "mattpocock/skills · addyosmani/agent-skills · cursor/plugins",
+    "repoUrl": "https://github.com/mattpocock/skills",
+    "summary": "AI 코딩 도우미용 스킬 모음 세 가지의 장단점과 설치법 비교",
+    "kind": "비교",
+    "tags": [
+      "스킬",
+      "에이전트",
+      "Claude Code"
+    ],
+    "date": "2026-10-19",
+    "sourceUrl": "https://claude.ai/code/artifact/b5071a4d-ca1f-4b72-baf7-11cd8d6e023b"
+  },
+  {
+    "id": "543db329-a2f8-469c-9ee5-9672e52b16b8",
+    "title": "Astro 그림 설명서",
+    "repo": "withastro/astro",
+    "repoUrl": "https://github.com/withastro/astro",
+    "summary": "아일랜드 구조로 가벼운 HTML 사이트를 만드는 웹 프레임워크",
+    "kind": "설명",
+    "tags": [
+      "프레임워크"
+    ],
+    "date": "2026-10-19",
+    "sourceUrl": "https://claude.ai/code/artifact/543db329-a2f8-469c-9ee5-9672e52b16b8"
+  },
+  {
+    "id": "c89e589c-0936-4751-a140-3db0539c42f3",
+    "title": "cstack 그림 설명서",
+    "repo": "yulmucoffee/cstack",
+    "repoUrl": "https://github.com/yulmucoffee/cstack",
+    "summary": "검사관 둘이 직접 실행해 확인한 문제만 알려주는 코드 리뷰 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-18",
+    "sourceUrl": "https://claude.ai/code/artifact/c89e589c-0936-4751-a140-3db0539c42f3"
+  },
+  {
+    "id": "bcc517b0-be47-47db-8c76-1612ce234836",
+    "title": "cstack과 pstack 비교",
+    "repo": "yulmucoffee/cstack · cursor/plugins",
+    "repoUrl": "https://github.com/yulmucoffee/cstack",
+    "summary": "개발 전반용 pstack과 증거 기반 리뷰용 cstack 비교",
+    "kind": "비교",
+    "tags": [
+      "스킬",
+      "에이전트",
+      "Claude Code"
+    ],
+    "date": "2026-10-18",
+    "sourceUrl": "https://claude.ai/code/artifact/bcc517b0-be47-47db-8c76-1612ce234836"
+  },
+  {
+    "id": "7e0b2747-24cf-4117-a8ca-7832c38de148",
+    "title": "better-claude 장난감 상자",
+    "repo": "midudev/better-claude",
+    "repoUrl": "https://github.com/midudev/better-claude",
+    "summary": "이미지 미리보기·사용량 표시·자동 커밋 Claude Code 플러그인 3종",
+    "kind": "설명",
+    "tags": [
+      "Claude Code",
+      "도구"
+    ],
+    "date": "2026-10-17",
+    "sourceUrl": "https://claude.ai/code/artifact/7e0b2747-24cf-4117-a8ca-7832c38de148"
+  },
+  {
+    "id": "59365203-5fe8-425d-ac2a-f8bd54a51026",
+    "title": "Muxin 그림 설명서",
+    "repo": "LumaryLabsLLC/muxin",
+    "repoUrl": "https://github.com/LumaryLabsLLC/muxin",
+    "summary": "여러 컴퓨터와 AI 작업을 앱 하나로 관리하는 도구",
+    "kind": "설명",
+    "tags": [
+      "도구",
+      "MCP",
+      "에이전트"
+    ],
+    "date": "2026-10-17",
+    "sourceUrl": "https://claude.ai/code/artifact/59365203-5fe8-425d-ac2a-f8bd54a51026"
+  },
+  {
+    "id": "13efdf33-9143-41e8-b91b-04c0d50a5a11",
+    "title": "Munder Difflin 그림 설명서",
+    "repo": "HarnessMD/munder-difflin",
+    "repoUrl": "https://github.com/HarnessMD/munder-difflin",
+    "summary": "AI 코딩 도구 여러 개를 한 팀처럼 일하게 하는 데스크톱 앱",
+    "kind": "설명",
+    "tags": [
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-10-16",
+    "sourceUrl": "https://claude.ai/code/artifact/13efdf33-9143-41e8-b91b-04c0d50a5a11"
+  },
+  {
+    "id": "8a66f6c5-f7d2-49c1-a4c2-006fa2c2c205",
+    "title": "pstack 그림 설명서",
+    "repo": "cursor/plugins (pstack)",
+    "repoUrl": "https://github.com/cursor/plugins/tree/main/pstack",
+    "summary": "AI가 코드를 적게, 제대로 쓰게 하는 Cursor 플러그인",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "에이전트"
+    ],
+    "date": "2026-10-16",
+    "sourceUrl": "https://claude.ai/code/artifact/8a66f6c5-f7d2-49c1-a4c2-006fa2c2c205"
+  },
+  {
+    "id": "dd392bc6-0d09-4a5a-b112-bc9cf8c9e905",
+    "title": "데모 영상 공장",
+    "repo": "chacha95/demo-video-creator",
+    "repoUrl": "https://github.com/chacha95/demo-video-creator",
+    "summary": "웹사이트 주소로 1분짜리 제품 홍보 영상을 만드는 Claude Code 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-09",
+    "sourceUrl": "https://claude.ai/code/artifact/dd392bc6-0d09-4a5a-b112-bc9cf8c9e905"
+  },
+  {
+    "id": "b37bb88f-7613-434d-9230-da9222c27a24",
+    "title": "Hindsight 쉬운 설명",
+    "repo": "vectorize-io/hindsight",
+    "repoUrl": "https://github.com/vectorize-io/hindsight",
+    "summary": "AI 에이전트가 대화를 기억하게 하는 오픈소스 기억 서버",
+    "kind": "설명",
+    "tags": [
+      "메모리",
+      "에이전트"
+    ],
+    "date": "2026-10-08",
+    "sourceUrl": "https://claude.ai/code/artifact/b37bb88f-7613-434d-9230-da9222c27a24"
+  },
+  {
+    "id": "4aee2fd4-48e1-4ed1-b633-1ae96ef14785",
+    "title": "OptMem 대 claude-mem",
+    "repo": "VictorTaelin/OptMem · thedotmack/claude-mem",
+    "repoUrl": "https://github.com/VictorTaelin/OptMem",
+    "summary": "AI가 직접 적는 OptMem과 자동 기록하는 claude-mem 비교",
+    "kind": "비교",
+    "tags": [
+      "메모리",
+      "Claude Code"
+    ],
+    "date": "2026-10-07",
+    "sourceUrl": "https://claude.ai/code/artifact/4aee2fd4-48e1-4ed1-b633-1ae96ef14785"
+  },
+  {
+    "id": "0acd5af4-af72-473e-9fdb-1bf404ae5804",
+    "title": "OptMem 쉬운 설명",
+    "repo": "VictorTaelin/OptMem",
+    "repoUrl": "https://github.com/VictorTaelin/OptMem",
+    "summary": "AI 에이전트의 기억을 파일에 저장하는 Python 도구",
+    "kind": "설명",
+    "tags": [
+      "메모리",
+      "도구"
+    ],
+    "date": "2026-10-07",
+    "sourceUrl": "https://claude.ai/code/artifact/0acd5af4-af72-473e-9fdb-1bf404ae5804"
+  },
+  {
+    "id": "a41a1323-3fbb-43e8-8ff1-d20fcf86aa94",
+    "title": "STE100 스킬 그림 설명",
+    "repo": "danyuchn/asd-ste100-skill",
+    "repoUrl": "https://github.com/danyuchn/asd-ste100-skill",
+    "summary": "AI용 영어 문장을 ASD-STE100 규칙으로 단순하게 고치는 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-10-04",
+    "sourceUrl": "https://claude.ai/code/artifact/a41a1323-3fbb-43e8-8ff1-d20fcf86aa94"
+  },
+  {
+    "id": "7bc5e097-22ad-44dc-ba95-c2cd3d1c5ed7",
+    "title": "Claude Mods 쉽게 보기",
+    "repo": "Claude Mods",
+    "repoUrl": "",
+    "summary": "Claude Code 화면에 패널·상태줄 등 기능을 붙이는 작은 프로그램",
+    "kind": "설명",
+    "tags": [
+      "Claude Code",
+      "도구"
+    ],
+    "date": "2026-10-02",
+    "sourceUrl": "https://claude.ai/code/artifact/7bc5e097-22ad-44dc-ba95-c2cd3d1c5ed7"
+  },
+  {
+    "id": "22dd813f-2005-4322-a2a3-c18873dc634d",
+    "title": "feature-skill 그림 설명",
+    "repo": "DEV-asdf-516/feature-skill",
+    "repoUrl": "https://github.com/DEV-asdf-516/feature-skill",
+    "summary": "여러 AI가 역할을 나눠 큰 기능을 설계·구현·검사하는 스킬",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "에이전트",
+      "Claude Code"
+    ],
+    "date": "2026-10-01",
+    "sourceUrl": "https://claude.ai/code/artifact/22dd813f-2005-4322-a2a3-c18873dc634d"
+  }
+]
