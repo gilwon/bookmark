@@ -16,6 +16,7 @@ import {
   Laptop,
   LayoutDashboard,
   Library,
+  Lightbulb,
   LogOut,
   Menu,
   MessageSquareText,
@@ -64,6 +65,7 @@ export const navSections = [
       { href: "/stars", label: "Stars", icon: GitFork },
       { href: "/github-links", label: "GitHub 링크", icon: Github },
       { href: "/skills", label: "스킬", icon: GitBranch },
+      { href: "/eli5-shelf", label: "eli5 설명서", icon: Lightbulb },
     ],
   },
   {
