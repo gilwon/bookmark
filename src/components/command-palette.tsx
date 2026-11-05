@@ -14,6 +14,7 @@ import {
   Bookmark,
   BookmarkCheck,
   MessageSquareText,
+  NotebookText,
   PenLine,
   Search,
   Sparkles,
@@ -235,6 +236,13 @@ export function CommandPalette() {
         keywords: "yeongseon archive 신영선 자료실 영선 아카이브",
         icon: <Archive className="h-4 w-4" />,
         run: go("/yeongseon-archive"),
+      },
+      {
+        id: "nav-trendcore-lab",
+        label: "스킬공유자료실",
+        keywords: "trendcore lab 트렌드코어 스킬공유자료실",
+        icon: <NotebookText className="h-4 w-4" />,
+        run: go("/trendcore-lab"),
       },
       {
         id: "nav-search",

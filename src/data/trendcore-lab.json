@@ -1,0 +1,943 @@
+[
+  {
+    "slug": "first-steps",
+    "title": "그림으로 따라 하는 블로그 첫걸음",
+    "summary": "글감 찾기 → 주제 고르기 → 글 한 편 쓰기, 그림 보고 그대로 6단계",
+    "number": "기초첫걸음",
+    "category": "기초첫걸음",
+    "tags": [
+      "기본 3단계 + 응용 3단계"
+    ],
+    "publishedAt": "2026-10-13T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/first-steps"
+  },
+  {
+    "slug": "058",
+    "title": "촬영 0번·편집 0번, 조회수 백만 비밀 폴더",
+    "summary": "베테랑 모션 디자이너 규칙을 클로드에게 주는 법",
+    "number": "#058",
+    "category": "꿀팁",
+    "tags": [
+      "지금 인기",
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/058"
+  },
+  {
+    "slug": "074",
+    "title": "클로드에 SNS 채널 통째로 맡기기",
+    "summary": "업리카(Uplika) 연결 순서 + 복사용 프롬프트",
+    "number": "#074",
+    "category": "꿀팁",
+    "tags": [
+      "NEW",
+      "단계 8개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-11-04T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/074"
+  },
+  {
+    "slug": "073",
+    "title": "클로드에 꼭 연결할 커넥터 5개",
+    "summary": "퍼플렉시티·파이어크롤·컨텍스트7·플레이라이트·컴포지오",
+    "number": "#073",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 15분"
+    ],
+    "publishedAt": "2026-11-04T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/073"
+  },
+  {
+    "slug": "072",
+    "title": "클로드에 PDF 그대로 올리면 토큰이 줄줄",
+    "summary": "마이크로소프트 무료 도구 마크잇다운",
+    "number": "#072",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-11-03T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/072"
+  },
+  {
+    "slug": "071",
+    "title": "클로드가 인스타 팀을 통째로",
+    "summary": "인스타 스킬 13개 2탄, 바로 써먹을 4개",
+    "number": "#071",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-11-02T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/071"
+  },
+  {
+    "slug": "070",
+    "title": "클로드 영상 효과음, 무료 도구 3개로 프로처럼",
+    "summary": "설치 + 한글 사용법",
+    "number": "#070",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-11-01T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/070"
+  },
+  {
+    "slug": "069",
+    "title": "해외에서 '불법 코드'라 불리는 클로드 명령어 5개",
+    "summary": "설치 + 한글 사용법",
+    "number": "#069",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-31T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/069"
+  },
+  {
+    "slug": "068",
+    "title": "클로드 스킬 전체 1위",
+    "summary": "파인드 스킬 설치 + 같이 깔면 좋은 스킬 8개",
+    "number": "#068",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 7분"
+    ],
+    "publishedAt": "2026-10-31T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/068"
+  },
+  {
+    "slug": "067",
+    "title": "마케팅팀 하나를 통째로",
+    "summary": "클로드 마케팅 스킬 52개 설치 + 한글 가이드",
+    "number": "#067",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-31T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/067"
+  },
+  {
+    "slug": "066",
+    "title": "매달 나가던 구독료 이제 0원",
+    "summary": "유료 프로그램을 통째로 대신하는 무료 종결 프로그램",
+    "number": "#066",
+    "category": "꿀팁",
+    "tags": [
+      "단계 8개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-30T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/066"
+  },
+  {
+    "slug": "065",
+    "title": "깃허브에서 제일 뜨는 AI 오픈소스 TOP10",
+    "summary": "열 개 주소 + 클로드에게 설치 맡기는 법",
+    "number": "#065",
+    "category": "꿀팁",
+    "tags": [
+      "단계 10개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/065"
+  },
+  {
+    "slug": "064",
+    "title": "릴스 공장 세팅 프롬프트",
+    "summary": "레퍼런스 분석부터 원고·촬영·편집까지 클로드에게 맡기기",
+    "number": "#064",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/064"
+  },
+  {
+    "slug": "063",
+    "title": "클로드 한도 왜 이렇게 빨리 차요?",
+    "summary": "같은 요금제로 오래 쓰는 다섯 가지",
+    "number": "#063",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 5분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/063"
+  },
+  {
+    "slug": "062",
+    "title": "클로드 디자인 촌스러움 끝",
+    "summary": "디자인 스킬·자료 8개 설치하고 언제 쓰는지",
+    "number": "#062",
+    "category": "꿀팁",
+    "tags": [
+      "단계 8개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/062"
+  },
+  {
+    "slug": "061",
+    "title": "사진 한 장이 작품으로",
+    "summary": "GPT 이미지 비밀 프롬프트 5개 + 안 나올 때 붙이는 한 줄",
+    "number": "#061",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개",
+      "약 3분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/061"
+  },
+  {
+    "slug": "060",
+    "title": "클로드 하던 작업을 코덱스가 그대로",
+    "summary": "AI 메모리 윈도우 설치 + 이어받기 쓰는 법",
+    "number": "#060",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 7분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/060"
+  },
+  {
+    "slug": "059",
+    "title": "클로드 비밀 치트키 5개",
+    "summary": "질문 앞에 붙이는 한 단어와 실제 답변 비교",
+    "number": "#059",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-27T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/059"
+  },
+  {
+    "slug": "057",
+    "title": "클로드 디자인 대신 쓰는 무료 오픈 디자인",
+    "summary": "설치부터 클로드 코드 연결까지",
+    "number": "#057",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-26T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/057"
+  },
+  {
+    "slug": "056",
+    "title": "어도비 대신 쓰는 무료 앱, 클로드가 직접 조작",
+    "summary": "아트크래프트 설치부터 클로드 연결까지",
+    "number": "#056",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-25T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/056"
+  },
+  {
+    "slug": "055",
+    "title": "클로드 토큰 아끼는 도구 2개",
+    "summary": "헤드룸·태스크 옵저버 설치하고 쓰는 법",
+    "number": "#055",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-21T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/055"
+  },
+  {
+    "slug": "054",
+    "title": "클로드 워터마크",
+    "summary": "지우는 세팅법과 앞으로의 대응 가이드",
+    "number": "#054",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-20T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/054"
+  },
+  {
+    "slug": "053",
+    "title": "2026 개발 도구 TOP 8",
+    "summary": "클로드에게 말 한 번으로 설치하고 쓰는 법",
+    "number": "#053",
+    "category": "꿀팁",
+    "tags": [
+      "단계 8개",
+      "약 12분"
+    ],
+    "publishedAt": "2026-10-19T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/053"
+  },
+  {
+    "slug": "052",
+    "title": "클로드 인스타 스킬",
+    "summary": "명령어 4줄로 터진 릴스 찾기부터 계획·대본·캡션까지",
+    "number": "#052",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-18T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/052"
+  },
+  {
+    "slug": "work30",
+    "title": "반복 업무를 줄이는 클로드 활용 30가지",
+    "summary": "메일·회의록·매출 분석·카드뉴스 초안까지, 복사해서 바로 쓰는 프롬프트 30개",
+    "number": "가이드",
+    "category": "가이드",
+    "tags": [
+      "레시피 30개",
+      "PDF 34쪽"
+    ],
+    "publishedAt": "2026-10-18T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/work30"
+  },
+  {
+    "slug": "050",
+    "title": "클로드가 영상 편집까지",
+    "summary": "내 사진 한 장으로 레퍼런스 영상 그대로 만들기",
+    "number": "#050",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-17T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/050"
+  },
+  {
+    "slug": "049",
+    "title": "구글이 공개한 AI 툴 15가지 총정리",
+    "summary": "영상 5개는 사용법·복붙 프롬프트까지",
+    "number": "#049",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-15T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/049"
+  },
+  {
+    "slug": "048",
+    "title": "내 아이디어 재판 걸기",
+    "summary": "법정 스킬 설치 + 쓰는 법 + 판결 읽는 법",
+    "number": "#048",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 7분"
+    ],
+    "publishedAt": "2026-10-14T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/048"
+  },
+  {
+    "slug": "047",
+    "title": "클로드 100개 싸움 붙이기",
+    "summary": "아레나 스킬 설치 + 쓰는 법",
+    "number": "#047",
+    "category": "꿀팁",
+    "tags": [
+      "단계 2개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-13T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/047"
+  },
+  {
+    "slug": "046",
+    "title": "클로드 코드가 멍청할 때",
+    "summary": "깃허브 별 22만 개 CLAUDE.md 파일 하나로 고치기",
+    "number": "#046",
+    "category": "꿀팁",
+    "tags": [
+      "단계 2개",
+      "약 5분"
+    ],
+    "publishedAt": "2026-10-13T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/046"
+  },
+  {
+    "slug": "045",
+    "title": "클로드에 꼭 붙일 도구 3개",
+    "summary": "문서 찾기 Context7 · 웹 조사 GPT Researcher · AI 작업 연결 LangGraph",
+    "number": "#045",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-13T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/045"
+  },
+  {
+    "slug": "043",
+    "title": "내 개인정보 싹 지우기",
+    "summary": "챗GPT가 찾고, 요청서 쓰고, 매주 독촉까지",
+    "number": "#043",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-12T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/043"
+  },
+  {
+    "slug": "042",
+    "title": "세컨드브레인 만들기",
+    "summary": "클로드가 내 자료를 다 기억하게 하는 법",
+    "number": "#042",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-11T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/042"
+  },
+  {
+    "slug": "kaltoe",
+    "title": "이거 알면 칼퇴",
+    "summary": "회사 일 대신해 주는 무료 AI 5개 쉬운 사용법",
+    "number": "#041",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-10T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/kaltoe"
+  },
+  {
+    "slug": "040",
+    "title": "클로드한테 유튜브 공부시키기",
+    "summary": "자막 추출 스킬 · 제미나이 무료 키 · 채널 자동 분석 스킬",
+    "number": "#040",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-10T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/040"
+  },
+  {
+    "slug": "039",
+    "title": "깃허브 별 28만 개 AI 코딩 스킬",
+    "summary": "mattpocock/skills 설치 + 써먹는 순서",
+    "number": "#039",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 5분"
+    ],
+    "publishedAt": "2026-10-10T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/039"
+  },
+  {
+    "slug": "038",
+    "title": "클링(Kling) 4.0 출시 소식",
+    "summary": "사진 넣었더니 30초 영화가 되는 법, 공식 예시 8개 따라 하기",
+    "number": "#038",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 5분"
+    ],
+    "publishedAt": "2026-10-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/038"
+  },
+  {
+    "slug": "037",
+    "title": "인스타그램 AI 직원 13명",
+    "summary": "instagram-agent-skill 설치 + 명령어 13개 + 써먹는 순서",
+    "number": "#037",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/037"
+  },
+  {
+    "slug": "036",
+    "title": "촬영 없이 제품 광고 영상 만들기",
+    "summary": "오픈몽타주(OpenMontage) 설치 + 영상 AI 연결 + 실제 프롬프트",
+    "number": "#036",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 7분"
+    ],
+    "publishedAt": "2026-10-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/036"
+  },
+  {
+    "slug": "035",
+    "title": "텐센트·클라우드플레어가 공짜로 푼 도구 3종",
+    "summary": "위노라 · 시큐리티 오딧 스킬 · 브라우저스킬 설치법",
+    "number": "#035",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-08T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/035"
+  },
+  {
+    "slug": "034",
+    "title": "그록봇(Grok Bot) 한눈에 보기",
+    "summary": "\"50달러가 5,273달러\" 글의 진실 + 진짜 쓸 곳",
+    "number": "#034",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 4분"
+    ],
+    "publishedAt": "2026-10-08T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/034"
+  },
+  {
+    "slug": "033",
+    "title": "클로드 코드에 기억력 달기",
+    "summary": "클로드 멤 설치 두 줄 + 쓰는 법",
+    "number": "#033",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/033"
+  },
+  {
+    "slug": "032",
+    "title": "AI 티 지우는 디자인 스킬",
+    "summary": "임페커블 설치 한 줄 + 전체 명령어 24개",
+    "number": "#032",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/032"
+  },
+  {
+    "slug": "031",
+    "title": "클로드가 프로그램을 대신 누르게",
+    "summary": "CLI 애니씽 설치 명령어 + 리모컨 고르기",
+    "number": "#031",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/031"
+  },
+  {
+    "slug": "030",
+    "title": "챗GPT 라이브로 영어 회화",
+    "summary": "켜는 법 + 바로 말하는 공부 문장 5개",
+    "number": "#030",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/030"
+  },
+  {
+    "slug": "029",
+    "title": "내 셀카를 1985년 사진관 사진으로",
+    "summary": "80년대 AI 사진 프롬프트(한국어·영어)",
+    "number": "#029",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 6분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/029"
+  },
+  {
+    "slug": "028",
+    "title": "클로드 디자인 시작하는 순서",
+    "summary": "시안 받기부터 시제품·공유까지",
+    "number": "#028",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/028"
+  },
+  {
+    "slug": "027",
+    "title": "내 AI가 멍청해졌을까?",
+    "summary": "너프벤치 사이트 주소 + 성적표 보는 법",
+    "number": "#027",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 5분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/027"
+  },
+  {
+    "slug": "026",
+    "title": "새 코덱스 CLI 윈도우 설치",
+    "summary": "명령어 한 줄 + 챗GPT 로그인 + /agents",
+    "number": "#026",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/026"
+  },
+  {
+    "slug": "025",
+    "title": "클로드 코드 화면을 말로 바꾸기",
+    "summary": "모드(Mods) 첫 모드 만드는 문장",
+    "number": "#025",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 8분"
+    ],
+    "publishedAt": "2026-10-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/025"
+  },
+  {
+    "slug": "024",
+    "title": "클로드에게 신의 눈",
+    "summary": "에이전트 리치 설치 문장 + 연결 순서",
+    "number": "#024",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-10-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/024"
+  },
+  {
+    "slug": "023",
+    "title": "클로드 코드 0원으로 쓰는 법",
+    "summary": "프리 LLM API 설치부터 연결까지",
+    "number": "#023",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개",
+      "약 15분"
+    ],
+    "publishedAt": "2026-10-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/023"
+  },
+  {
+    "slug": "022",
+    "title": "가게 신메뉴 영상, 구글 플로우로 직접",
+    "summary": "실제 프롬프트 원문 + 화면 순서",
+    "number": "#022",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개",
+      "약 20분"
+    ],
+    "publishedAt": "2026-10-04T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/022"
+  },
+  {
+    "slug": "021",
+    "title": "레코들리 설치·사용법",
+    "summary": "클릭하면 확대되는 데모 영상, 무료로",
+    "number": "#021",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 15분"
+    ],
+    "publishedAt": "2026-10-04T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/021"
+  },
+  {
+    "slug": "020",
+    "title": "모션 그래픽 프롬프트 뽑는 법",
+    "summary": "캡처 3장 → 클로드 → 구글 플로우",
+    "number": "#020",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개"
+    ],
+    "publishedAt": "2026-09-20T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/020"
+  },
+  {
+    "slug": "019",
+    "title": "클로드 코드로 만들어 파는 네 가지",
+    "summary": "숫자로 먼저 보고 정한다",
+    "number": "#019",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-13T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/019"
+  },
+  {
+    "slug": "018",
+    "title": "클로드에게 자동화를 시킨다?",
+    "summary": "Agent Reach로 첫 자료 수집하기",
+    "number": "#018",
+    "category": "꿀팁",
+    "tags": [],
+    "publishedAt": "2026-09-12T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/018"
+  },
+  {
+    "slug": "017",
+    "title": "클로드한테 유튜브 보는 눈 달기",
+    "summary": "영상 스킬 · 제미나이 무료 키 · 에이전트 예시",
+    "number": "#017",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-11T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/017"
+  },
+  {
+    "slug": "016",
+    "title": "챗지피티 공부 명령어 4개",
+    "summary": "주제 앞에 붙이기만 하면 되는 단어",
+    "number": "#016",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개"
+    ],
+    "publishedAt": "2026-09-10T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/016"
+  },
+  {
+    "slug": "015",
+    "title": "미니맥스 H3",
+    "summary": "소라보다 순위 높은 공개 영상 모델, 오늘 바로 써보는 법",
+    "number": "#015",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개"
+    ],
+    "publishedAt": "2026-09-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/015"
+  },
+  {
+    "slug": "014",
+    "title": "클로드 코드 쓰면 무조건 깔아야 할 3개",
+    "summary": "ECC · Context7 · Strix 설치 한 장",
+    "number": "#014",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-08T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/014"
+  },
+  {
+    "slug": "013",
+    "title": "코드 짜기 전에 먼저 쓰는 파일",
+    "summary": "intent.md + /intent 스킬",
+    "number": "#013",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/013"
+  },
+  {
+    "slug": "012",
+    "title": "한 줄이 완성 프롬프트로",
+    "summary": "/prompt-spec 스킬 파일 1개",
+    "number": "#012",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/012"
+  },
+  {
+    "slug": "011",
+    "title": "클로드 코드 레벨 테스트 4단계",
+    "summary": "세팅 파일 4개 복붙",
+    "number": "#011",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/011"
+  },
+  {
+    "slug": "010",
+    "title": "클로드 코드 숨은 명령어 5개",
+    "summary": "그리고 전체 목록",
+    "number": "#010",
+    "category": "꿀팁",
+    "tags": [
+      "단계 7개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/010"
+  },
+  {
+    "slug": "009",
+    "title": "하버드 교수의 AI 활용법",
+    "summary": "죽은 천재 부활 프롬프트",
+    "number": "#009",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/009"
+  },
+  {
+    "slug": "008",
+    "title": "AI PPT가 촌스러운 진짜 이유",
+    "summary": "디자인 시스템 문서 만들기",
+    "number": "#008",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/008"
+  },
+  {
+    "slug": "007",
+    "title": "스타 7만 기억 툴 claude-mem",
+    "summary": "깔아봤더니 반전 + 수동 기억 설계법",
+    "number": "#007",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/007"
+  },
+  {
+    "slug": "006",
+    "title": "옵시디언 × 클로드",
+    "summary": "클로드에 \"제2의 뇌\" 달아주기",
+    "number": "#006",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-05T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/006"
+  },
+  {
+    "slug": "i005",
+    "title": "GPT-6 아스트라 등장",
+    "summary": "\"AGI 시대에 오신 걸 환영합니다\"",
+    "number": "#005",
+    "category": "정보",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-05T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/i005"
+  },
+  {
+    "slug": "i004",
+    "title": "AI한테 \"100만원 벌어와\" 시켰더니, 3,700만원",
+    "summary": "",
+    "number": "#004",
+    "category": "정보",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-05T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/i004"
+  },
+  {
+    "slug": "003",
+    "title": "루플로",
+    "summary": "에이전트 60개를 지휘하는 도구",
+    "number": "#003",
+    "category": "꿀팁",
+    "tags": [
+      "단계 3개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/003"
+  },
+  {
+    "slug": "002",
+    "title": "클로드 디자인 스킬, 무조건 깔아야 하는 5개",
+    "summary": "",
+    "number": "#002",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/002"
+  },
+  {
+    "slug": "001",
+    "title": "클로드 코드, 무조건 깔아야 하는 5개",
+    "summary": "",
+    "number": "#001",
+    "category": "꿀팁",
+    "tags": [
+      "단계 5개"
+    ],
+    "publishedAt": "2026-09-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/001"
+  }
+]
