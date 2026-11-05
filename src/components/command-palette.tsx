@@ -11,6 +11,7 @@ import {
   GitFork,
   LayoutDashboard,
   Library,
+  Lightbulb,
   Bookmark,
   BookmarkCheck,
   MessageSquareText,
@@ -173,6 +174,13 @@ export function CommandPalette() {
         keywords: "stars 스타",
         icon: <GitFork className="h-4 w-4" />,
         run: go("/stars"),
+      },
+      {
+        id: "nav-eli5-shelf",
+        label: "eli5 설명서",
+        keywords: "eli5 설명서 shelf 그림 설명",
+        icon: <Lightbulb className="h-4 w-4" />,
+        run: go("/eli5-shelf"),
       },
       {
         id: "nav-pages",
