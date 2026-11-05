@@ -20,6 +20,7 @@ import {
   Menu,
   MessageSquareText,
   Moon,
+  NotebookText,
   PenLine,
   Search,
   Sparkles,
@@ -75,6 +76,7 @@ export const navSections = [
       { href: "/sdk-guides", label: "김스듴 가이드", icon: BookOpen },
       { href: "/shim-guides", label: "심팀장 자료실", icon: Library },
       { href: "/yeongseon-archive", label: "신영선 자료실", icon: Archive },
+      { href: "/trendcore-lab", label: "스킬공유자료실", icon: NotebookText },
     ],
   },
 ] as const;
