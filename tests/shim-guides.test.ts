@@ -2,7 +2,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getShimGuideBody } from "../src/lib/shim-guide-body";
-import { filterShimGuides, getShimGuide, listShimGuides } from "../src/lib/shim-guides";
+import { getShimGuide, listShimGuides } from "../src/lib/shim-guides-catalog";
+import { filterShimGuides } from "../src/lib/shim-guides";
 
 const ADDED_SLUGS = [
   "ruflo",

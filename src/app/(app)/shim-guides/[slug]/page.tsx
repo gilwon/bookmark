@@ -6,7 +6,7 @@ import { GuideBody } from "@/components/sdk-guides/guide-body";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getShimGuideBody } from "@/lib/shim-guide-body";
-import { getShimGuide } from "@/lib/shim-guides";
+import { getShimGuide } from "@/lib/shim-guides-catalog";
 import { cn } from "@/lib/utils";
 
 export default async function ShimGuidePage({ params }: { params: Promise<{ slug: string }> }) {

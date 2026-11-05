@@ -5,7 +5,13 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import * as cheerio from "cheerio";
 import TurndownService from "turndown";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+function resolveDataRoot() {
+  const fromFile = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+  if (existsSync(resolve(fromFile, "src/data/shim-guides.json"))) return fromFile;
+  return process.cwd();
+}
+
+const root = resolveDataRoot();
 const guidesPath = resolve(root, "src/data/shim-guides.json");
 const bodiesPath = resolve(root, "src/data/shim-guide-bodies.json");
 const ORIGIN = "https://shimteamjjang.vercel.app";
@@ -240,24 +246,22 @@ function readSavedJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
-// 이미 받은 본문은 다시 받지 않는다. 홈 카드 요약이 달라도 저장한 제목과 요약을 덮지 않는다.
-async function main() {
-  const savedGuides = readSavedJson(guidesPath);
-  const savedBodies = readSavedJson(bodiesPath);
+function savedGuideList(savedGuides) {
+  return Array.isArray(savedGuides) ? savedGuides : [];
+}
+
+function savedBodyMap(savedBodies) {
+  if (!savedBodies || typeof savedBodies !== "object" || Array.isArray(savedBodies)) return {};
+  return savedBodies;
+}
+
+/** 저장된 제목과 본문은 유지하고 order만 홈 순서로 다시 매긴다. 본문이 없는 홈 카드만 pending이다. */
+export function mergeShimCatalog(homeGuides, savedGuides, savedBodies) {
   const previousBySlug = new Map();
-  if (Array.isArray(savedGuides)) {
-    for (const guide of savedGuides) {
-      if (guide && typeof guide.slug === "string") previousBySlug.set(guide.slug, guide);
-    }
+  for (const guide of savedGuideList(savedGuides)) {
+    if (guide && typeof guide.slug === "string") previousBySlug.set(guide.slug, guide);
   }
-  const previousBodies =
-    savedBodies && typeof savedBodies === "object" && !Array.isArray(savedBodies) ? savedBodies : {};
-
-  const homeGuides = parseShimIndex(await fetchHtml(HOME_URL));
-  if (homeGuides.length === 0) {
-    throw new Error("홈 카드가 없습니다.");
-  }
-
+  const previousBodies = savedBodyMap(savedBodies);
   const homeSlugs = new Set(homeGuides.map((guide) => guide.slug));
   const guides = homeGuides.map((home, index) => {
     const previous = previousBySlug.get(home.slug);
@@ -274,18 +278,16 @@ async function main() {
     }
     return { ...home, order: index };
   });
-  if (Array.isArray(savedGuides)) {
-    for (const guide of savedGuides) {
-      if (!guide || typeof guide.slug !== "string" || homeSlugs.has(guide.slug)) continue;
-      guides.push({
-        slug: guide.slug,
-        title: guide.title,
-        episode: guide.episode,
-        summary: guide.summary,
-        order: guides.length,
-        sourceUrl: guide.sourceUrl,
-      });
-    }
+  for (const guide of savedGuideList(savedGuides)) {
+    if (!guide || typeof guide.slug !== "string" || homeSlugs.has(guide.slug)) continue;
+    guides.push({
+      slug: guide.slug,
+      title: guide.title,
+      episode: guide.episode,
+      summary: guide.summary,
+      order: guides.length,
+      sourceUrl: guide.sourceUrl,
+    });
   }
 
   const bodies = {};
@@ -296,8 +298,22 @@ async function main() {
       bodies[guide.slug] = savedBody;
       continue;
     }
-    pending.push(guide);
+    if (homeSlugs.has(guide.slug)) pending.push(guide);
   }
+  return { guides, bodies, pending };
+}
+
+let syncing = null;
+
+async function performSync() {
+  const savedGuides = readSavedJson(guidesPath);
+  const savedBodies = readSavedJson(bodiesPath);
+  const homeGuides = parseShimIndex(await fetchHtml(HOME_URL));
+  if (homeGuides.length === 0) {
+    throw new Error("홈 카드가 없습니다.");
+  }
+  const { guides, bodies, pending } = mergeShimCatalog(homeGuides, savedGuides, savedBodies);
+  const added = [];
   for (let index = 0; index < pending.length; index += 1) {
     if (index > 0) await pause(200);
     const guide = pending[index];
@@ -307,6 +323,7 @@ async function main() {
     const hit = forbiddenHit(markdown);
     if (hit) throw new Error(`${guide.slug} 본문에 금지 구절이 있습니다. ${hit}`);
     bodies[guide.slug] = markdown;
+    added.push(guide.slug);
   }
 
   const ordered = {};
@@ -318,6 +335,21 @@ async function main() {
   }
   writeFileSync(guidesPath, `${JSON.stringify(guides, null, 2)}\n`);
   writeFileSync(bodiesPath, `${JSON.stringify(ordered, null, 2)}\n`);
+  return { added, total: guides.length };
+}
+
+/** 홈 카드와 저장 목록을 맞춘다. 이미 진행 중이면 그 약속을 다시 쓴다. */
+export function syncShimGuides() {
+  if (syncing) return syncing;
+  const run = performSync().finally(() => {
+    if (syncing === run) syncing = null;
+  });
+  syncing = run;
+  return run;
+}
+
+async function main() {
+  await syncShimGuides();
 }
 
 function launchedDirectly() {
