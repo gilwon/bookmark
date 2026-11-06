@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { extractShimMarkdown, mergeShimCatalog, parseShimIndex } from "../scripts/fetch-shim-guides.mjs";
+import { extractShimMarkdown, mergeShimCatalog, parseShimIndex, renderCatalogFiles } from "../scripts/fetch-shim-guides.mjs";
 
 const MOVE_URL = "https://shimteamjjang.vercel.app/move";
 
@@ -153,4 +153,23 @@ test("병합은 저장 본문과 제목을 유지하고 새 홈 카드만 기다
   } finally {
     globalThis.fetch = original;
   }
+});
+
+test("목록 파일 문자열은 두 칸 들여쓰기와 끝 줄바꿈이다", () => {
+  const guides = [
+    {
+      slug: "rea",
+      title: "저장 제목",
+      episode: "64편",
+      summary: "저장 요약",
+      order: 0,
+      sourceUrl: "https://shimteamjjang.vercel.app/rea",
+    },
+  ];
+  const bodies = { rea: "본문" };
+  const rendered = renderCatalogFiles(guides, bodies);
+  assert.equal(rendered.guides, `${JSON.stringify(guides, null, 2)}\n`);
+  assert.equal(rendered.bodies, `${JSON.stringify(bodies, null, 2)}\n`);
+  const changed = renderCatalogFiles([{ ...guides[0], order: 1 }], bodies);
+  assert.equal(changed.guides === rendered.guides, false);
 });

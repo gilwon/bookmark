@@ -317,7 +317,6 @@ async function performSync() {
   for (let index = 0; index < pending.length; index += 1) {
     if (index > 0) await pause(200);
     const guide = pending[index];
-    console.error(`${index + 1}/${pending.length} ${guide.slug}`);
     const markdown = extractShimMarkdown(await fetchHtml(guide.sourceUrl), guide.sourceUrl).trim();
     if (!markdown) throw new Error(`${guide.slug} 본문이 비어 있습니다.`);
     const hit = forbiddenHit(markdown);
@@ -333,9 +332,25 @@ async function performSync() {
     }
     ordered[guide.slug] = bodies[guide.slug];
   }
-  writeFileSync(guidesPath, `${JSON.stringify(guides, null, 2)}\n`);
-  writeFileSync(bodiesPath, `${JSON.stringify(ordered, null, 2)}\n`);
+  const rendered = renderCatalogFiles(guides, ordered);
+  if (readTextIfExists(guidesPath) !== rendered.guides || readTextIfExists(bodiesPath) !== rendered.bodies) {
+    writeFileSync(guidesPath, rendered.guides);
+    writeFileSync(bodiesPath, rendered.bodies);
+  }
   return { added, total: guides.length };
+}
+
+/** 목록과 본문을 디스크에 쓰는 문자열로 만든다. */
+export function renderCatalogFiles(guides, bodies) {
+  return {
+    guides: `${JSON.stringify(guides, null, 2)}\n`,
+    bodies: `${JSON.stringify(bodies, null, 2)}\n`,
+  };
+}
+
+function readTextIfExists(path) {
+  if (!existsSync(path)) return null;
+  return readFileSync(path, "utf8");
 }
 
 /** 홈 카드와 저장 목록을 맞춘다. 이미 진행 중이면 그 약속을 다시 쓴다. */
