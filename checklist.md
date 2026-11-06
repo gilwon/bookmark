@@ -1899,6 +1899,20 @@
 - [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
 - [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
 
+# 2026-11-06 어제·오늘 Star 한글 설명
+
+- [x] 한국 시간 2026-11-05부터 2026-11-06 아침까지 운영 Star 6건 확인. 한글 또는 eli5가 없는 항목 3건
+- [x] 2026-11-05에 반영한 sheprd, kakao-banner-studio, terminal-mac은 한글 설명, eli5, README가 있어 유지
+- [x] 영문 About 3건 뒤에 한글을 붙임. 빈 About는 없음
+- [x] craft-anything 설치 첫 펜스는 공식 git clone과 cargo 명령. 격리 속성 제거, Gatekeeper를 피하는 터미널 다운로드, 디스어셈블 절차, 재현 명령 예제는 넣지 않음
+- [x] reui 설치 첫 펜스는 npx shadcn add 세 줄. MCP 설치 절차는 넣지 않음
+- [x] continue README에는 설치 명령이 없어 명령을 만들지 않음. 저장소는 읽기 전용
+- [x] 세 README는 영문이라 detail_fetched_at과 detail_json은 비움
+- [x] 매핑 802개에서 805개. 회귀 테스트 120개 통과
+- [x] 운영 반영 3건, 빈 설명 0건, README 저장 3건, 한글 README 캐시 0건
+- [x] 이 창의 GitHub 별표는 앱에 모두 있어 새 행을 넣지 않음
+- [x] 재조회 시 어제·오늘 추가분 한글 없는 항목 0개, eli5 없는 항목 0개
+
 <!-- 짐코딩 아티클 전체 Pages 이관 체크리스트 -->
 # 짐코딩 아티클 전체 Pages 이관
 

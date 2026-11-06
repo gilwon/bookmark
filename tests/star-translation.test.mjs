@@ -1943,4 +1943,20 @@ describe("Star 설명 번역", () => {
     assert.equal(withKoreanTranslation("GwonHyeok/kakao-banner-studio", null, null), korean);
     assert.equal(withKoreanTranslation("GwonHyeok/kakao-banner-studio", "", null), korean);
   });
+
+  it("2026-11-06에 추가된 Star 3개에 한국어 설명을 병기한다", () => {
+    const cases = [
+      ["storytold/craft-anything", "Craft Anything: understand how any software works, and craft your own.", "소프트웨어가 어떻게 동작하는지 이해하고 자기 것을 만듭니다."],
+      ["keenthemes/reui", "Design-forward shadcn kit for interfaces that stand out. 1000+ free patterns!", "눈에 띄는 인터페이스를 위한 shadcn 키트입니다. 무료 패턴이 1,000개보다 많습니다."],
+      ["continuedev/continue", "open-source coding agent", "오픈소스 코딩 에이전트입니다."],
+    ];
+    assert.equal(cases.length, 3);
+    for (const [repo, description, korean] of cases) {
+      assert.equal(
+        withKoreanTranslation(repo, description, null),
+        `${description}\n\n${korean}`,
+        repo
+      );
+    }
+  });
 });
