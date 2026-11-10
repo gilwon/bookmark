@@ -1,5 +1,135 @@
 [
   {
+    "id": "PuwGkwSnXYDTgr6ndk5LEa",
+    "title": "anthropics/claude-quickstarts 쉬운 설명서",
+    "repo": "anthropics/claude-quickstarts",
+    "repoUrl": "https://github.com/anthropics/claude-quickstarts",
+    "summary": "Claude API로 앱을 빠르게 시작하는 견본 프로젝트 모음 레포",
+    "kind": "설명",
+    "tags": [
+      "프레임워크",
+      "에이전트"
+    ],
+    "date": "2026-11-11",
+    "sourceUrl": "https://claude.ai/artifact/PuwGkwSnXYDTgr6ndk5LEa"
+  },
+  {
+    "id": "ButhyuXQ5XeQ46uLyVLPs1",
+    "title": "anthropics/skills 쉬운 설명서",
+    "repo": "anthropics/skills",
+    "repoUrl": "https://github.com/anthropics/skills",
+    "summary": "Claude에게 주는 일 잘하는 법 카드(스킬) 예제 모음 레포",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "Claude Code"
+    ],
+    "date": "2026-11-11",
+    "sourceUrl": "https://claude.ai/artifact/ButhyuXQ5XeQ46uLyVLPs1"
+  },
+  {
+    "id": "9iurzxT79Evxco9mpUgEPb",
+    "title": "garrytan/gbrain 쉬운 설명서",
+    "repo": "garrytan/gbrain",
+    "repoUrl": "https://github.com/garrytan/gbrain",
+    "summary": "AI 에이전트가 출처와 함께 기억을 저장·검색하는 메모리 도구",
+    "kind": "설명",
+    "tags": [
+      "메모리",
+      "에이전트",
+      "도구"
+    ],
+    "date": "2026-11-11",
+    "sourceUrl": "https://claude.ai/artifact/9iurzxT79Evxco9mpUgEPb"
+  },
+  {
+    "id": "XEfBsovSa2a7a6fC2hr2sd",
+    "title": "Astro 쉬운 설명",
+    "repo": "withastro/astro",
+    "repoUrl": "https://github.com/withastro/astro",
+    "summary": "글 중심 웹사이트를 가볍게 만드는 웹 프레임워크",
+    "kind": "설명",
+    "tags": [
+      "프레임워크",
+      "도구"
+    ],
+    "date": "2026-11-10",
+    "sourceUrl": "https://claude.ai/artifact/XEfBsovSa2a7a6fC2hr2sd"
+  },
+  {
+    "id": "Jzza8bu9GtZaN5UwaDmerV",
+    "title": "Astryx 그림 설명서 — 메타의 UI 블록 상자",
+    "repo": "meta/astryx",
+    "repoUrl": "https://github.com/meta/astryx",
+    "summary": "메타가 공개한 React 19용 디자인 시스템(UI 부품·테마·CLI)",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "프레임워크",
+      "도구"
+    ],
+    "date": "2026-11-09",
+    "sourceUrl": "https://claude.ai/artifact/Jzza8bu9GtZaN5UwaDmerV"
+  },
+  {
+    "id": "35cx2Fg64L1hBEUKCSV7Ka",
+    "title": "billion-context 그림 설명서 — 긴 대화를 접어 두는 중간 관리자",
+    "repo": "ranxianglei/billion-context",
+    "repoUrl": "https://github.com/ranxianglei/billion-context",
+    "summary": "코딩 에이전트의 긴 대화를 요약으로 접어 주는 컨텍스트 압축 프록시",
+    "kind": "설명",
+    "tags": [
+      "메모리",
+      "도구",
+      "Claude Code"
+    ],
+    "date": "2026-11-09",
+    "sourceUrl": "https://claude.ai/artifact/35cx2Fg64L1hBEUKCSV7Ka"
+  },
+  {
+    "id": "GntWtMBxz8D238rPxmDjUz",
+    "title": "PanelUI 그림 설명서 — 휴대폰 앱용 부품 상자",
+    "repo": "panel-ui/PanelUI",
+    "repoUrl": "https://github.com/panel-ui/PanelUI",
+    "summary": "Expo·React Native 앱용 UI 부품 143개와 웹용 부품 모음",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "프레임워크",
+      "도구"
+    ],
+    "date": "2026-11-09",
+    "sourceUrl": "https://claude.ai/artifact/GntWtMBxz8D238rPxmDjUz"
+  },
+  {
+    "id": "Sm23d3iAhRzwTrdgbBP3Zi",
+    "title": "Prestige UI 그림 설명서 — 움직이는 웹 부품 20개",
+    "repo": "vora-aryan/Prestige-UI",
+    "repoUrl": "https://github.com/vora-aryan/Prestige-UI",
+    "summary": "Tailwind·Motion으로 만든 애니메이션 React 부품 20종 모음",
+    "kind": "설명",
+    "tags": [
+      "디자인",
+      "도구"
+    ],
+    "date": "2026-11-09",
+    "sourceUrl": "https://claude.ai/artifact/Sm23d3iAhRzwTrdgbBP3Zi"
+  },
+  {
+    "id": "51a50884-9404-4358-b1c5-e1ca6862b405",
+    "title": "Circle 그림 설명서",
+    "repo": "ln-dev7/circle",
+    "repoUrl": "https://github.com/ln-dev7/circle",
+    "summary": "Linear를 닮은 일 관리 화면 Next.js 템플릿",
+    "kind": "설명",
+    "tags": [
+      "프레임워크",
+      "디자인"
+    ],
+    "date": "2026-11-06",
+    "sourceUrl": "https://claude.ai/artifact/B5kHBM7jJbFoeZcPDqe7JC"
+  },
+  {
     "id": "QrMzccRCxSmLt1vNoMmVH7",
     "title": "Claude Code Game Studios",
     "repo": "Donchitos/Claude-Code-Game-Studios",
