@@ -1,9 +1,21 @@
-// 심팀장 자료실 68건의 순서, 검색, 본문 주소를 검증한다.
+// 심팀장 자료실 77건의 순서, 검색, 본문 주소를 검증한다.
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getShimGuideBody } from "../src/lib/shim-guide-body";
 import { getShimGuide, listShimGuides } from "../src/lib/shim-guides-catalog";
 import { filterShimGuides } from "../src/lib/shim-guides";
+
+const NEW_SLUGS = [
+  "gamestudio",
+  "plugins25",
+  "trending",
+  "designskills",
+  "agents",
+  "cutedit",
+  "advisor",
+  "checkup",
+  "stageshow",
+];
 
 const ADDED_SLUGS = [
   "ruflo",
@@ -26,6 +38,15 @@ const ADDED_SLUGS = [
 
 // 추가 16건 본문 첫 이미지에 실제로 있는 alt. 페이지 문구를 바꾸지 않는다.
 const ADDED_HEADER_ALT: Record<string, string> = {
+  gamestudio: "심팀장님 캐릭터",
+  plugins25: "심팀장님 캐릭터",
+  trending: "심팀장님 캐릭터",
+  designskills: "심팀장님 캐릭터",
+  agents: "심팀장님 캐릭터",
+  cutedit: "심팀장님 캐릭터",
+  advisor: "심팀장님 캐릭터",
+  checkup: "심팀장님 캐릭터",
+  stageshow: "심팀장님 캐릭터",
   ruflo: "심팀장님 캐릭터",
   arena: "심팀장님 캐릭터",
   timemachine: "심팀장님 캐릭터",
@@ -53,25 +74,31 @@ const FORBIDDEN_BODY_SNIPPETS = [
   "og-weekend.png",
 ];
 
-test("자료 68건은 사이트 순서와 고유한 주소, 정해진 키만 가진다", () => {
+test("자료 77건은 사이트 순서와 고유한 주소, 정해진 키만 가진다", () => {
   const guides = listShimGuides();
-  assert.equal(guides.length, 68);
-  assert.equal(new Set(guides.map((guide) => guide.slug)).size, 68);
-  assert.equal(new Set(guides.map((guide) => guide.sourceUrl)).size, 68);
+  assert.equal(guides.length, 77);
+  assert.equal(new Set(guides.map((guide) => guide.slug)).size, 77);
+  assert.equal(new Set(guides.map((guide) => guide.sourceUrl)).size, 77);
   guides.forEach((guide, index) => {
     assert.equal(guide.order, index);
     assert.equal(guide.sourceUrl, `https://shimteamjjang.vercel.app/${guide.slug}`);
     assert.deepEqual(Object.keys(guide), ["slug", "title", "episode", "summary", "order", "sourceUrl"]);
   });
   assert.deepEqual(
-    guides.slice(0, 16).map((guide) => guide.slug),
+    guides.slice(0, NEW_SLUGS.length).map((guide) => guide.slug),
+    NEW_SLUGS
+  );
+  assert.deepEqual(
+    guides.slice(NEW_SLUGS.length, NEW_SLUGS.length + ADDED_SLUGS.length).map((guide) => guide.slug),
     ADDED_SLUGS
   );
-  assert.equal(guides[0].slug, "ruflo");
-  assert.equal(guides[0].episode, "80편");
-  assert.equal(guides[0].title, "클로드 코드에 AI 개발팀 붙이는 루플로");
-  assert.equal(guides[16].slug, "rea");
-  assert.equal(guides[16].episode, "64편");
+  assert.equal(guides[0].slug, "gamestudio");
+  assert.equal(guides[0].episode, "95편");
+  assert.equal(guides[0].title, "게임 만드는 깃허브 5개 한 장 정리");
+  assert.equal(guides[9].slug, "ruflo");
+  assert.equal(guides[9].episode, "80편");
+  assert.equal(guides[25].slug, "rea");
+  assert.equal(guides[25].episode, "64편");
   assert.equal(guides[guides.length - 1].slug, "aicheatkey");
   assert.equal(guides[guides.length - 1].episode, "1편");
   assert.equal(guides.find((guide) => guide.slug === "erase")?.episode, "미게시");
@@ -89,7 +116,7 @@ test("검색은 대소문자와 공백을 무시하고 빈 검색은 순서를 �
       (guide) => guide.slug === "weekend"
     )
   );
-  assert.equal(filterShimGuides(guides, { query: "   " }).length, 68);
+  assert.equal(filterShimGuides(guides, { query: "   " }).length, 77);
   assert.deepEqual(
     filterShimGuides(guides, { query: "" }).map((guide) => guide.slug),
     guides.map((guide) => guide.slug)
@@ -98,14 +125,14 @@ test("검색은 대소문자와 공백을 무시하고 빈 검색은 순서를 �
   assert.deepEqual(guides, before);
 });
 
-test("68개 본문은 비어 있지 않고 캐릭터 이미지만 남긴다", () => {
+test("77개 본문은 비어 있지 않고 캐릭터 이미지만 남긴다", () => {
   const guides = listShimGuides();
   const origin = "https://shimteamjjang.vercel.app";
   for (const guide of guides) {
     const body = getShimGuideBody(guide.slug);
     assert.equal(typeof body, "string", guide.slug);
     assert.ok(body && body.trim() !== "", guide.slug);
-    if (ADDED_SLUGS.includes(guide.slug)) {
+    if (NEW_SLUGS.includes(guide.slug) || ADDED_SLUGS.includes(guide.slug)) {
       const alt = ADDED_HEADER_ALT[guide.slug];
       assert.equal(body?.includes(`![${alt}](${origin}/team.png)`), true, guide.slug);
       assert.equal(body?.includes("<button"), false, guide.slug);
