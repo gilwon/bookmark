@@ -10,7 +10,7 @@ const guidesPath = resolve(root, "src/data/trendcore-lab.json");
 const bodiesPath = resolve(root, "src/data/trendcore-lab-bodies.json");
 const ORIGIN = "https://www.trendcore.co.kr";
 const LAB_URL = `${ORIGIN}/lab`;
-const EXPECTED_COUNT = 74;
+const EXPECTED_COUNT = 79;
 const CATEGORY_WORDS = new Set(["정보", "꿀팁", "기초첫걸음", "가이드"]);
 const DATE_PATTERN = /(\d{1,2})월\s*(\d{1,2})일/;
 
@@ -415,7 +415,7 @@ async function main() {
   if (guides.length !== EXPECTED_COUNT) {
     const first = guides[0]?.slug ?? "";
     const last = guides.at(-1)?.slug ?? "";
-    throw new Error(`고유 카드가 74가 아닙니다. 실제 ${guides.length}개. 앞 ${first} 뒤 ${last}`);
+    throw new Error(`고유 카드가 ${EXPECTED_COUNT}가 아닙니다. 실제 ${guides.length}개. 앞 ${first} 뒤 ${last}`);
   }
   const slugs = new Set();
   for (const guide of guides) {

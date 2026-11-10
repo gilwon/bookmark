@@ -26,13 +26,78 @@
     "sourceUrl": "https://www.trendcore.co.kr/guide/058"
   },
   {
+    "slug": "079",
+    "title": "구글 엘리펀트 골드피시 모델",
+    "summary": "한 문장 설치 + 계획·검토·승인 쓰는 법",
+    "number": "#079",
+    "category": "꿀팁",
+    "tags": [
+      "NEW",
+      "단계 6개",
+      "약 12분"
+    ],
+    "publishedAt": "2026-11-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/079"
+  },
+  {
+    "slug": "078",
+    "title": "카톡 말고 파일 옮기기",
+    "summary": "상황별 도구 4개 받는 곳·쓰는 법·해결법",
+    "number": "#078",
+    "category": "꿀팁",
+    "tags": [
+      "단계 4개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-11-09T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/078"
+  },
+  {
+    "slug": "077",
+    "title": "클로드 코드 플러그인 TOP5",
+    "summary": "한 문장 설치 + 바로 쓰는 법",
+    "number": "#077",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 12분"
+    ],
+    "publishedAt": "2026-11-08T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/077"
+  },
+  {
+    "slug": "076",
+    "title": "클로드로 영상 편집 자동화",
+    "summary": "도구 4개 설치부터 촬영본 자동 편집까지",
+    "number": "#076",
+    "category": "꿀팁",
+    "tags": [
+      "단계 6개",
+      "약 15분"
+    ],
+    "publishedAt": "2026-11-07T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/076"
+  },
+  {
+    "slug": "075",
+    "title": "챗GPT 마케팅 플러그인 TOP5",
+    "summary": "설치 순서 + 바로 쓰는 문장",
+    "number": "#075",
+    "category": "꿀팁",
+    "tags": [
+      "단계 11개",
+      "약 10분"
+    ],
+    "publishedAt": "2026-11-06T00:00:00.000Z",
+    "sourceUrl": "https://www.trendcore.co.kr/guide/075"
+  },
+  {
     "slug": "074",
     "title": "클로드에 SNS 채널 통째로 맡기기",
     "summary": "업리카(Uplika) 연결 순서 + 복사용 프롬프트",
     "number": "#074",
     "category": "꿀팁",
     "tags": [
-      "NEW",
       "단계 8개",
       "약 10분"
     ],
