@@ -910,6 +910,48 @@ export const TARGETS = [
     tags: ["툴", "설정"],
     phrase: "Groble",
   },
+  {
+    id: "3be3c123-3759-454c-a6fb-d7a4159def8c",
+    title: "홈 폴더 큰 용량을 트리맵으로 보는 프롬프트",
+    tags: ["프롬프트", "클로드"],
+    phrase: "지워도 안전함",
+  },
+  {
+    id: "be00d707-bc53-4340-8e06-e4459d3fa39d",
+    title: "엑스코드를 열지 않고 아이폰 앱을 빌드하는 플러그인",
+    tags: ["클로드", "툴"],
+    phrase: "xcode@claude-plugins-official",
+  },
+  {
+    id: "687f1264-cdcf-43c4-9b72-091e4ed1b55e",
+    title: "손그림·점액·유리로 개성 내는 컴포넌트 8곳",
+    tags: ["디자인", "툴"],
+    phrase: "PlopUI",
+  },
+  {
+    id: "5e4bf33e-d184-47a0-9968-19fa9e777574",
+    title: "없어진 파일 지침을 찾는 닥터 감사",
+    tags: ["클로드", "설정"],
+    phrase: "v2.1.283",
+  },
+  {
+    id: "1928eb1c-ded5-404f-8d21-f3bdb375899e",
+    title: "토큰 사용과 덮어쓴 설정을 보여주는 /stack",
+    tags: ["클로드", "설정"],
+    phrase: "공식 문서에 누락된",
+  },
+  {
+    id: "45a73b90-72c5-434a-8a9d-059a559ffaaa",
+    title: "수첩·액체·스케치로 고르는 UI 라이브러리 7곳",
+    tags: ["디자인", "툴"],
+    phrase: "rareui.com",
+  },
+  {
+    id: "b90b503c-7c96-4ef9-98f4-2470af32d2f9",
+    title: "계획을 끝까지 캐묻는 맷 포콕 스킬 묶음",
+    tags: ["클로드", "스킬"],
+    phrase: "/wait-what",
+  },
 ];
 
 const envPath = resolve(root, ".env.local");

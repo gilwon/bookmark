@@ -21,10 +21,10 @@ test("스크립트 첫 줄은 한글 역할 주석이다", () => {
   );
 });
 
-test("대상 150건은 id가 겹치지 않고 태그는 2~3개다", () => {
-  assert.equal(TARGETS.length, 150);
+test("대상 157건은 id가 겹치지 않고 태그는 2~3개다", () => {
+  assert.equal(TARGETS.length, 157);
   const ids = TARGETS.map((item) => item.id);
-  assert.equal(new Set(ids).size, 150);
+  assert.equal(new Set(ids).size, 157);
   for (const item of TARGETS) {
     assert.equal(item.id.length, 36);
     assert.ok(item.title.trim().length > 0, item.id);
@@ -1200,6 +1200,53 @@ test("어제 추가된 서버비 0원 스택 1건의 제목과 태그를 정한�
   };
   const found = TARGETS.filter((item) => item.id in expected);
   assert.equal(found.length, 1);
+  for (const item of found) {
+    assert.equal(item.title, expected[item.id].title);
+    assert.deepEqual(item.tags, expected[item.id].tags);
+    assert.notEqual(item.title, expected[item.id].raw);
+  }
+});
+
+test("저번주와 이번주 추가된 용량·플러그인·스킬 7건의 제목과 태그를 정한다", () => {
+  const expected = {
+    "3be3c123-3759-454c-a6fb-d7a4159def8c": {
+      title: "홈 폴더 큰 용량을 트리맵으로 보는 프롬프트",
+      tags: ["프롬프트", "클로드"],
+      raw: "문의",
+    },
+    "be00d707-bc53-4340-8e06-e4459d3fa39d": {
+      title: "엑스코드를 열지 않고 아이폰 앱을 빌드하는 플러그인",
+      tags: ["클로드", "툴"],
+      raw: "Apple이 방금 Claude Code 안에 Xcode를 통합했습니다.",
+    },
+    "687f1264-cdcf-43c4-9b72-091e4ed1b55e": {
+      title: "손그림·점액·유리로 개성 내는 컴포넌트 8곳",
+      tags: ["디자인", "툴"],
+      raw: "몇몇 유명 컴포넌트 라이브러리는 추천하지 않겠음, 최근에 본 소수지만 개성이 강한 컴포넌트 라이브러리들, 손그림 종이, 스티커, 점액, Agent 작업대 등등, vibecoding으로 차별화하려면 이런 걸 써봐:",
+    },
+    "5e4bf33e-d184-47a0-9968-19fa9e777574": {
+      title: "없어진 파일 지침을 찾는 닥터 감사",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code에 같은 수정을 계속 설명하고 계신가요? 프로젝트 지침끼리 충돌하거나, 이미 없어진 파일·명령이 지침에 남아 있는지도 살펴보세요. /doctor prompt-audit로 지침 파일을 점검하고 수정 제안을 받을 수 있어요. 11월 9일 공식 문서 기준의 활용 팁입니다.",
+    },
+    "1928eb1c-ded5-404f-8d21-f3bdb375899e": {
+      title: "토큰 사용과 덮어쓴 설정을 보여주는 /stack",
+      tags: ["클로드", "설정"],
+      raw: "Claude Code 사용자라면 누구나 /stack을 설치해야 합니다.",
+    },
+    "45a73b90-72c5-434a-8a9d-059a559ffaaa": {
+      title: "수첩·액체·스케치로 고르는 UI 라이브러리 7곳",
+      tags: ["디자인", "툴"],
+      raw: "당신의 웹페이지 UI가 형편없는 이유는 당신의 실력이 부족해서가 아니라, 이런 컴포넌트 라이브러리를 제대로 활용하지 않았기 때문이야!",
+    },
+    "b90b503c-7c96-4ef9-98f4-2470af32d2f9": {
+      title: "계획을 끝까지 캐묻는 맷 포콕 스킬 묶음",
+      tags: ["클로드", "스킬"],
+      raw: "깃허브 별 31만개 받은 AI 스킬 묶음",
+    },
+  };
+  const found = TARGETS.filter((item) => item.id in expected);
+  assert.equal(found.length, 7);
   for (const item of found) {
     assert.equal(item.title, expected[item.id].title);
     assert.deepEqual(item.tags, expected[item.id].tags);
