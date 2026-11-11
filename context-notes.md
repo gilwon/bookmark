@@ -2780,6 +2780,20 @@
 - 정적 번역표는 802개에서 805개로 늘었다. 반영은 3건, 빈 설명 0건, README 저장 3건, 한글 README 캐시 0건이다. 적용 뒤 6건을 다시 읽어 공백 0과 유지 3건 불변을 확인했다. 이어서 한 창 재조회도 한글과 eli5 공백 0건이다.
 - 테스트는 120개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
 
+## 2026-11-11 저번주·이번주 Star 한글 설명 메모
+
+- 한국 시간 2026-11-11 기준 저번주·이번주 창은 `created_at >= 2026-11-01T15:00:00Z`다. 운영 행은 65건이다. 이미 한글 설명과 eli5가 있는 30건은 유지했다. 한글과 eli5가 없던 35건만 반영했다.
+- 한글 설명이 이미 있어 매핑 키를 만들지 않은 4건은 `byungjunjang/slop-rewrite` 56, `Canine89/damagochi` 59, `EngChooN/ai-office` 83, `pblsketch/ieumoffice` 164다. 설명 길이는 그대로다. `ieumoffice`는 `pblsketch/openoffice`와 다른 저장소다.
+- 빈 About 4건은 한국어만 채웠다. `basdotio/bas-guard`, `didalscjf96-netizen/bot-housekeeping-skill`, `didalscjf96-netizen/usage-saver-skill`, `kargulstudio/statsnap`다. `statsnap`은 `kargulstudio`의 다른 Next 스타터와 다르고, 라이선스 없음, 홈페이지 `https://statsnap-kargul.vercel.app`다.
+- 영문 또는 중문 About 27건 뒤에 한글을 붙였다. `1Panel-dev/1Panel`은 불 이모지와 중문을 유지한다. `ranxianglei/billion-context`는 영문 뒤 중문을 유지한다. `GyulyVGC/sniffnet`은 탐정 이모지를 유지한다. 끝 공백은 없었다.
+- 가져온 README는 `readme_md`가 비어 있던 35건에만 넣었다. 한국어 eli5는 `readme_md_ko`다. 한글 README 6건만 `detail_fetched_at` `2026-11-11T00:12:53.681Z`와 `detail_json`을 넣었다. `slop-rewrite`, `damagochi`, `bot-housekeeping-skill`, `usage-saver-skill`, `agentdeck`, `ieumoffice`다. `ai-office` README는 영문이라 상세를 비웠다. 나머지 28건도 영문 README라 상세를 비웠다.
+- `e2e-inc/e2e`는 `tester-army/e2e`와 다르다. `anthropics/claude-quickstarts`는 playground, skills, cookbooks와 다르다. `Anil-matcha/suparagent`는 open-duet, open-dots와 다르다. `OpenMontageInc/OpenMontage`의 클론 주소는 README에 적힌 `calesthio/OpenMontage.git`이다. `NVIDIA/auto-ontology`는 OpenShell과 다르다.
+- `jakeparkcolde/agentdeck` GitHub SPDX는 NOASSERTION이고 배지는 MIT다. `ranxianglei/billion-context` SPDX는 NOASSERTION이고 README 라이선스 절은 MIT다. `1Panel` 기본 브랜치는 `dev-v2`, `dbeaver`는 `devel`, `Maccy`와 `billion-context`는 `master`다.
+- eli5는 README에 있는 설치와 사용만 적었다. Stroq는 `npx @stroq/cli`만 설치 펜스에 두고 attack 명령은 넣지 않았다. bas-guard는 check와 전역 설치만 두고 검사 범위와 curl 설치는 넣지 않았다. credential-enclave는 앱 설치 안내가 아니라 소스라고만 적고 키 계층과 증명 비교 명령은 넣지 않았다. crypto-claude-desk는 setup과 BTC 시세 예시까지만 적고 주문과 잔고 절차는 넣지 않았다. 1Panel은 빠른 시작 스크립트와 브라우저로 연다는 문장만 두고 자격 조회는 넣지 않았다. Openbar, ai-office, ieumoffice의 공증 우회 클릭과 quarantine 명령은 넣지 않았다. dual-brain과 OpenMontage의 에이전트 붙여넣기 블록은 넣지 않았다. sniffnet은 트래픽을 보는 사용만 적었다.
+- 이 창의 GitHub 별표는 54건이고 앱에 모두 있었다. 새 행은 넣지 않았다.
+- 정적 번역표는 805개에서 836개로 늘었다. 반영은 35건, 빈 설명 4건, README 저장 35건, 기존 README 유지 0건, 한글 README 상세 6건이다. 적용 뒤 65건을 다시 읽어 한글 공백 0, eli5 공백 0, 유지 30건 해시 불변을 확인했다. 독립 재조회도 같았다.
+- 테스트는 122개 통과다. 로그인한 Stars 화면은 열지 않았고, 운영 DB 설명과 eli5 문단 파싱으로 확인했다. 푸시하지 않았다.
+
 ## 김스듴 가이드 메뉴 추가 (2026-10-28)
 
 - 원본 https://sdk-kim-builds.com/guides/ 에서 71건, 페이지당 30건, 3페이지를 확인했다.
