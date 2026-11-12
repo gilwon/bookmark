@@ -1,5 +1,19 @@
 [
   {
+    "id": "EUMuxq1UCpqV6CHJ1cTAvU",
+    "title": "Pake 그림 설명서",
+    "repo": "tw93/Pake",
+    "repoUrl": "https://github.com/tw93/Pake",
+    "summary": "웹사이트 주소 하나를 데스크톱 앱으로 포장해 주는 가벼운 도구",
+    "kind": "설명",
+    "tags": [
+      "도구",
+      "프레임워크"
+    ],
+    "date": "2026-11-12",
+    "sourceUrl": "https://claude.ai/artifact/EUMuxq1UCpqV6CHJ1cTAvU"
+  },
+  {
     "id": "PuwGkwSnXYDTgr6ndk5LEa",
     "title": "anthropics/claude-quickstarts 쉬운 설명서",
     "repo": "anthropics/claude-quickstarts",
@@ -41,6 +55,20 @@
     ],
     "date": "2026-11-11",
     "sourceUrl": "https://claude.ai/artifact/9iurzxT79Evxco9mpUgEPb"
+  },
+  {
+    "id": "MJN5Jm6tbaMNdbgsYNznPg",
+    "title": "whosup 쉬운 설명",
+    "repo": "fivetaku/whosup",
+    "repoUrl": "https://github.com/fivetaku/whosup",
+    "summary": "코딩 에이전트 상태를 브라우저 한 장에 모아 보여주는 herdr 플러그인",
+    "kind": "설명",
+    "tags": [
+      "도구",
+      "Claude Code"
+    ],
+    "date": "2026-11-11",
+    "sourceUrl": "https://claude.ai/artifact/MJN5Jm6tbaMNdbgsYNznPg"
   },
   {
     "id": "XEfBsovSa2a7a6fC2hr2sd",
