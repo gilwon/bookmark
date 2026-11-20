@@ -1,5 +1,7 @@
 // 등록된 Star의 다섯 살 설명 HTML.
 import { auth } from "@/lib/auth";
+import { getEli5Shelf } from "@/lib/eli5-shelf";
+import { getEli5ShelfBody } from "@/lib/eli5-shelf-doc";
 import { buildStarEli5Html, eli5Brief } from "@/lib/star-eli5";
 import {
   applyEli5Korean,
@@ -17,6 +19,14 @@ export const dynamic = "force-dynamic";
 type Ctx = { params: Promise<{ id: string }> };
 
 const textHeaders = { "content-type": "text/plain; charset=utf-8" };
+const htmlHeaders = {
+  "content-type": "text/html; charset=utf-8",
+  "cache-control": "private, no-store",
+  "content-security-policy":
+    "default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
+  "x-frame-options": "SAMEORIGIN",
+  "referrer-policy": "no-referrer",
+};
 
 /** 로그인한 소유자에게만 다섯 살 설명 문서를 준다. */
 export async function GET(_req: Request, ctx: Ctx) {
@@ -36,6 +46,13 @@ export async function GET(_req: Request, ctx: Ctx) {
       status: 404,
       headers: textHeaders,
     });
+  }
+
+  const repo = row.repoFullName.toLowerCase();
+  const guideId = `star-guide-${repo.replace("/", "--").replace(/[._]/g, "-")}`;
+  if (getEli5Shelf(guideId)?.repo.toLowerCase() === repo) {
+    const guide = getEli5ShelfBody(guideId);
+    if (guide !== undefined) return new Response(guide, { headers: htmlHeaders });
   }
 
   const source = {
@@ -75,15 +92,5 @@ export async function GET(_req: Request, ctx: Ctx) {
     await store.updateStar(id, userId, { readmeMdKo: markdown }).catch(() => {});
   }
 
-  return new Response(html, {
-    status: 200,
-    headers: {
-      "content-type": "text/html; charset=utf-8",
-      "cache-control": "private, no-store",
-      "content-security-policy":
-        "default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'",
-      "x-frame-options": "SAMEORIGIN",
-      "referrer-policy": "no-referrer",
-    },
-  });
+  return new Response(html, { headers: htmlHeaders });
 }
