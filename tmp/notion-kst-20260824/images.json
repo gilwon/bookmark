@@ -1,0 +1,74 @@
+[
+  {
+    "page": "dashboard",
+    "index": 1,
+    "id": "0e4cfd65-7a1d-4686-9e08-5317d8fb372e",
+    "name": "소비_대시보드.png",
+    "path": "images/dash-01-0e4cfd65.png",
+    "bytes": 174993
+  },
+  {
+    "page": "dashboard",
+    "index": 2,
+    "id": "d4bcf748-c4d3-4a92-ac1a-0878820280f1",
+    "name": "구독_대시보드.png",
+    "path": "images/dash-02-d4bcf748.png",
+    "bytes": 217558
+  },
+  {
+    "page": "dashboard",
+    "index": 3,
+    "id": "40a94f62-256d-4530-bea8-0bf06f40fa27",
+    "name": "저축_대시보드.png",
+    "path": "images/dash-03-40a94f62.png",
+    "bytes": 188759
+  },
+  {
+    "page": "dashboard",
+    "index": 4,
+    "id": "c575eb46-c3a5-42a5-a815-cb30157e650c",
+    "name": "투자_대시보드.png",
+    "path": "images/dash-04-c575eb46.png",
+    "bytes": 220602
+  },
+  {
+    "page": "dashboard",
+    "index": 5,
+    "id": "2abd5c08-43ee-4c3f-a115-b6f3f0d00938",
+    "name": "순자산_대시보드.png",
+    "path": "images/dash-05-2abd5c08.png",
+    "bytes": 205498
+  },
+  {
+    "page": "dashboard",
+    "index": 6,
+    "id": "8ba753d0-6202-454d-9ab2-c016146ea22c",
+    "name": "종합_대시보드.png",
+    "path": "images/dash-06-8ba753d0.png",
+    "bytes": 177572
+  },
+  {
+    "page": "plugin",
+    "index": 1,
+    "id": "df240553-bde8-4e16-a35c-11d8a93c0d69",
+    "name": "image.png",
+    "path": "images/plugin-01-df240553.png",
+    "bytes": 283650
+  },
+  {
+    "page": "plugin",
+    "index": 2,
+    "id": "75bdb69d-fd2b-4b5f-86bf-b95fdb5436a7",
+    "name": "image.png",
+    "path": "images/plugin-02-75bdb69d.png",
+    "bytes": 131468
+  },
+  {
+    "page": "plugin",
+    "index": 3,
+    "id": "6f57c8b6-5360-47e9-8e5d-06f1be4c9451",
+    "name": "image.png",
+    "path": "images/plugin-03-6f57c8b6.png",
+    "bytes": 69244
+  }
+]
