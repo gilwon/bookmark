@@ -1,5 +1,358 @@
 [
   {
+    "id": "star-guide-bitwarden--agent-access",
+    "title": "agent-access 그림 설명서",
+    "repo": "bitwarden/agent-access",
+    "repoUrl": "https://github.com/bitwarden/agent-access",
+    "summary": "AI 도우미가 연결을 승인받은 뒤 필요한 열쇠만 빌려 쓰게 돕는 도구예요.",
+    "kind": "설명",
+    "tags": [
+      "에이전트"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/bitwarden/agent-access#installation"
+  },
+  {
+    "id": "star-guide-microsoft--ai-agents-for-beginners",
+    "title": "ai-agents-for-beginners 그림 설명서",
+    "repo": "microsoft/ai-agents-for-beginners",
+    "repoUrl": "https://github.com/microsoft/ai-agents-for-beginners",
+    "summary": "부탁받은 일을 작은 순서로 나누고 필요한 도구를 골라 쓰는 AI 도우미를 만드는 수업이에요.",
+    "kind": "설명",
+    "tags": [
+      "에이전트"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/microsoft/ai-agents-for-beginners/blob/main/00-course-setup/README.md"
+  },
+  {
+    "id": "star-guide-microsoft--ai-for-beginners",
+    "title": "AI-For-Beginners 그림 설명서",
+    "repo": "microsoft/AI-For-Beginners",
+    "repoUrl": "https://github.com/microsoft/AI-For-Beginners",
+    "summary": "컴퓨터에게 사진을 보여 주고 무엇이 찍혔는지 맞히는 연습을 시켜요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/microsoft/AI-For-Beginners#getting-started"
+  },
+  {
+    "id": "star-guide-getarcaneapp--arcane",
+    "title": "arcane 그림 설명서",
+    "repo": "getarcaneapp/arcane",
+    "repoUrl": "https://github.com/getarcaneapp/arcane",
+    "summary": "내 서버에 켜진 프로그램을 한 화면에서 살펴볼 수 있어요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://getarcane.app/docs/get-started/installation"
+  },
+  {
+    "id": "star-guide-kargulstudio--assetora",
+    "title": "assetora 그림 설명서",
+    "repo": "kargulstudio/assetora",
+    "repoUrl": "https://github.com/kargulstudio/assetora",
+    "summary": "가짜 집 거래 장부에서 원하는 판매 기록을 찾아볼 수 있어요.",
+    "kind": "설명",
+    "tags": [
+      "디자인"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/kargulstudio/assetora#run-it"
+  },
+  {
+    "id": "star-guide-gnuboard--g7",
+    "title": "g7 그림 설명서",
+    "repo": "gnuboard/g7",
+    "repoUrl": "https://github.com/gnuboard/g7",
+    "summary": "게시판 같은 기능을 골라 붙이며 내 웹사이트를 만들 수 있어요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/gnuboard/g7#quick-start"
+  },
+  {
+    "id": "star-guide-handsonllm--hands-on-large-language-models",
+    "title": "Hands-On-Large-Language-Models 그림 설명서",
+    "repo": "HandsOnLLM/Hands-On-Large-Language-Models",
+    "repoUrl": "https://github.com/HandsOnLLM/Hands-On-Large-Language-Models",
+    "summary": "글을 읽고 답을 쓰는 AI가 글자를 어떻게 다루는지 직접 실험해 보는 책의 실습 자료예요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/HandsOnLLM/Hands-On-Large-Language-Models#table-of-contents"
+  },
+  {
+    "id": "star-guide-isaaceryn--humanizer-ko",
+    "title": "humanizer-ko 그림 설명서",
+    "repo": "IsaacEryn/humanizer-ko",
+    "repoUrl": "https://github.com/IsaacEryn/humanizer-ko",
+    "summary": "한국어 초안에서 말투가 섞이거나 딱딱하게 쓰인 문장을 다듬어 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/IsaacEryn/humanizer-ko#설치"
+  },
+  {
+    "id": "star-guide-s1dashu--ip-as-logo-skill",
+    "title": "ip-as-logo-skill 그림 설명서",
+    "repo": "s1dashu/ip-as-logo-skill",
+    "repoUrl": "https://github.com/s1dashu/ip-as-logo-skill",
+    "summary": "원하는 색과 분위기를 말하면 AI가 브랜드를 나타낼 둥근 캐릭터 그림을 만들어 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "디자인"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/s1dashu/ip-as-logo-skill#install"
+  },
+  {
+    "id": "star-guide-janhq--jan",
+    "title": "jan 그림 설명서",
+    "repo": "janhq/jan",
+    "repoUrl": "https://github.com/janhq/jan",
+    "summary": "처음에 대화 도우미를 내려받으면 인터넷 없이 내 컴퓨터에서 질문할 수 있어요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/janhq/jan#installation"
+  },
+  {
+    "id": "star-guide-libracoder--kiri",
+    "title": "kiri 그림 설명서",
+    "repo": "libracoder/kiri",
+    "repoUrl": "https://github.com/libracoder/kiri",
+    "summary": "프로그램을 따로 만든 작업 상자 안에서 켤 수 있게 해 주는 도구예요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/libracoder/kiri#install"
+  },
+  {
+    "id": "star-guide-jellybrick--korean-prose-skill",
+    "title": "korean-prose-skill 그림 설명서",
+    "repo": "JellyBrick/korean-prose-skill",
+    "repoUrl": "https://github.com/JellyBrick/korean-prose-skill",
+    "summary": "글이 어디에 쓰이는지 살펴보고, 그 자리에 어울리는 한국어로 다듬어 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/JellyBrick/korean-prose-skill#설치"
+  },
+  {
+    "id": "star-guide-daleseo--korean-skills",
+    "title": "korean-skills 그림 설명서",
+    "repo": "DaleSeo/korean-skills",
+    "repoUrl": "https://github.com/DaleSeo/korean-skills",
+    "summary": "내 글에서 말투, 맞춤법, 표기 중 필요한 부분을 골라 점검해요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/DaleSeo/korean-skills#빠른-시작"
+  },
+  {
+    "id": "star-guide-gokumohandas--made-with-ml",
+    "title": "Made-With-ML 그림 설명서",
+    "repo": "GokuMohandas/Made-With-ML",
+    "repoUrl": "https://github.com/GokuMohandas/Made-With-ML",
+    "summary": "예시를 보고 답을 익힌 프로그램을 만들고, 다른 사람도 써 볼 수 있게 내놓는 수업이에요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/GokuMohandas/Made-With-ML#set-up"
+  },
+  {
+    "id": "star-guide-shadcn-labs--mdxcn",
+    "title": "mdxcn 그림 설명서",
+    "repo": "shadcn-labs/mdxcn",
+    "repoUrl": "https://github.com/shadcn-labs/mdxcn",
+    "summary": "글 속에 안내 상자나 표를 끼워 읽기 쉬운 문서를 만들어요.",
+    "kind": "설명",
+    "tags": [
+      "디자인"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://mdxcn.dev/docs/installation"
+  },
+  {
+    "id": "star-guide-microsoft--ml-for-beginners",
+    "title": "ML-For-Beginners 그림 설명서",
+    "repo": "microsoft/ML-For-Beginners",
+    "repoUrl": "https://github.com/microsoft/ML-For-Beginners",
+    "summary": "지난 장터의 호박 값을 보고 다음 호박 값을 맞히는 법을 배워요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/microsoft/ML-For-Beginners#getting-started"
+  },
+  {
+    "id": "star-guide-baksohyeon--mogui-ade-orchestrator",
+    "title": "mogui-ADE-orchestrator 그림 설명서",
+    "repo": "baksohyeon/mogui-ADE-orchestrator",
+    "repoUrl": "https://github.com/baksohyeon/mogui-ADE-orchestrator",
+    "summary": "여러 코딩 도우미에게 할 일을 나눠 주고 한곳에서 결과를 확인해요.",
+    "kind": "설명",
+    "tags": [
+      "에이전트"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/baksohyeon/mogui-ADE-orchestrator#quickstart"
+  },
+  {
+    "id": "star-guide-karpathy--nn-zero-to-hero",
+    "title": "nn-zero-to-hero 그림 설명서",
+    "repo": "karpathy/nn-zero-to-hero",
+    "repoUrl": "https://github.com/karpathy/nn-zero-to-hero",
+    "summary": "틀린 만큼 숫자를 조금씩 고쳐 다음 글자를 맞히는 작은 프로그램을 만드는 강의예요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/karpathy/nn-zero-to-hero"
+  },
+  {
+    "id": "star-guide-n8n-io--nod",
+    "title": "nod 그림 설명서",
+    "repo": "n8n-io/nod",
+    "repoUrl": "https://github.com/n8n-io/nod",
+    "summary": "자료를 주면 비교하거나 정리해 주고, 중요한 일을 맡기면 먼저 확인해요.",
+    "kind": "설명",
+    "tags": [
+      "에이전트"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://nod.n8n.io/docs/get-started/install-desktop/"
+  },
+  {
+    "id": "star-guide-seungyub-jeon--pickle-runner",
+    "title": "pickle-runner 그림 설명서",
+    "repo": "Seungyub-Jeon/pickle-runner",
+    "repoUrl": "https://github.com/Seungyub-Jeon/pickle-runner",
+    "summary": "피클에 보낸 부탁을 내 맥에서 처리하고 결과를 돌려주는 도구예요.",
+    "kind": "설명",
+    "tags": [
+      "에이전트"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/Seungyub-Jeon/pickle-runner#빠른-시작"
+  },
+  {
+    "id": "star-guide-hah23255--pm-claude-skills",
+    "title": "pm-claude-skills 그림 설명서",
+    "repo": "hah23255/pm-claude-skills",
+    "repoUrl": "https://github.com/hah23255/pm-claude-skills",
+    "summary": "새 일을 맡았을 때 무엇부터 챙겨야 할지 순서대로 정리해 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/hah23255/pm-claude-skills#-quick-start"
+  },
+  {
+    "id": "star-guide-daniel-kim-9way--ppt-design",
+    "title": "ppt-design 그림 설명서",
+    "repo": "daniel-kim-9way/ppt-design",
+    "repoUrl": "https://github.com/daniel-kim-9way/ppt-design",
+    "summary": "발표할 내용을 주면 같은 색과 글꼴로 꾸민 슬라이드를 만들어 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬",
+      "디자인"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/daniel-kim-9way/ppt-design#설치"
+  },
+  {
+    "id": "star-guide-coderblackcat--product-manager-skills",
+    "title": "Product-Manager-Skills 그림 설명서",
+    "repo": "coderblackcat/Product-Manager-Skills",
+    "repoUrl": "https://github.com/coderblackcat/Product-Manager-Skills",
+    "summary": "새로 온 손님이 왜 떠나는지 궁금할 때, 무엇을 물어볼지 정리해 줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/coderblackcat/Product-Manager-Skills#get-started"
+  },
+  {
+    "id": "star-guide-nirdiamant--rag-techniques",
+    "title": "RAG_Techniques 그림 설명서",
+    "repo": "NirDiamant/RAG_Techniques",
+    "repoUrl": "https://github.com/NirDiamant/RAG_Techniques",
+    "summary": "AI가 질문에 답하기 전에 참고할 글을 잘 고르는 법을 비교하는 실습 모음이에요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/NirDiamant/RAG_Techniques#getting-started"
+  },
+  {
+    "id": "star-guide-rgronet--rgro-note",
+    "title": "rgro-note 그림 설명서",
+    "repo": "rgronet/rgro-note",
+    "repoUrl": "https://github.com/rgronet/rgro-note",
+    "summary": "브라우저에 쓴 메모가 글 파일로 저장돼 나중에 다시 찾을 수 있어요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/rgronet/rgro-note/blob/HEAD/INSTALL.md"
+  },
+  {
+    "id": "star-guide-previtlab--suno-lyrics-skill",
+    "title": "suno-lyrics-skill 그림 설명서",
+    "repo": "previtlab/suno-lyrics-skill",
+    "repoUrl": "https://github.com/previtlab/suno-lyrics-skill",
+    "summary": "떠오르는 장면을 노랫말과 곡 설명으로 바꿔 Suno에 넣을 수 있게 도와줘요.",
+    "kind": "설명",
+    "tags": [
+      "스킬"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/previtlab/suno-lyrics-skill"
+  },
+  {
+    "id": "star-guide-yetanotherbrowser--yab",
+    "title": "yab 그림 설명서",
+    "repo": "yetanotherbrowser/yab",
+    "repoUrl": "https://github.com/yetanotherbrowser/yab",
+    "summary": "열어 둔 웹페이지를 한쪽에 모아 두고 필요할 때 꺼내 보는 브라우저예요.",
+    "kind": "설명",
+    "tags": [
+      "도구"
+    ],
+    "date": "2026-11-20",
+    "sourceUrl": "https://github.com/yetanotherbrowser/yab#yab"
+  },
+  {
     "id": "EUMuxq1UCpqV6CHJ1cTAvU",
     "title": "Pake 그림 설명서",
     "repo": "tw93/Pake",

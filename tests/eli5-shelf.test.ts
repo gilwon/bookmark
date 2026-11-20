@@ -9,9 +9,8 @@ import { filterEli5Shelf, getEli5Shelf, listEli5Shelf } from "../src/lib/eli5-sh
 
 const items = listEli5Shelf();
 
-test("목록은 61건이고 id가 고유하며 date 내림차순 title 순이다", () => {
-  assert.equal(items.length, 61);
-  assert.equal(new Set(items.map((item) => item.id)).size, 61);
+test("목록에서 id가 고유하며 date 내림차순 title 순이다", () => {
+  assert.equal(new Set(items.map((item) => item.id)).size, items.length);
   for (const item of items) assert.match(item.id, /^[A-Za-z0-9-]+$/);
   for (let i = 1; i < items.length; i++) {
     const a = items[i - 1];
@@ -28,6 +27,22 @@ test("제외 제목 문서는 없고 모든 목록 id에 본문이 있다", () =
     assert.ok(getEli5ShelfBody(item.id), item.id);
   }
   assert.equal(Object.keys(bodies).length, items.length);
+});
+
+test("Stars 설명서 27개는 작동 그림과 설치·사용을 담은 한국어 독립 문서다", () => {
+  const starGuides = items.filter((item) => item.id.startsWith("star-guide-"));
+  assert.equal(starGuides.length, 27);
+  assert.ok(starGuides.some((item) => item.repo === "libracoder/kiri"));
+  for (const item of starGuides) {
+    assert.equal(item.id, `star-guide-${item.repo.toLowerCase().replace("/", "--").replace(/[._]/g, "-")}`);
+    const body = getEli5ShelfBody(item.id);
+    assert.ok(body, item.id);
+    assert.match(body, /<html\b[^>]*\blang="ko"/i, item.id);
+    assert.match(body, /data-eli5-diagram\b/i, item.id);
+    assert.match(body, /<section\b[^>]*\bid="install"/i, item.id);
+    assert.match(body, /<section\b[^>]*\bid="usage"/i, item.id);
+    assert.doesNotMatch(body, /<(?:script|iframe|link|object|embed)\b|\bsrc(?:set)?\s*=\s*["'](?!data:)|@import\b/i, item.id);
+  }
 });
 
 test("필터는 검색어, 종류, 태그를 조합한다", () => {
