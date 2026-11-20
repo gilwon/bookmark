@@ -2,6 +2,7 @@
 import { auth } from "@/lib/auth";
 import { getEli5Shelf } from "@/lib/eli5-shelf";
 import { getEli5ShelfBody } from "@/lib/eli5-shelf-doc";
+import { getClaudeStarGuide, renderClaudeStarGuide } from "@/lib/star-claude-eli5";
 import { buildStarEli5Html, eli5Brief } from "@/lib/star-eli5";
 import {
   applyEli5Korean,
@@ -46,6 +47,11 @@ export async function GET(_req: Request, ctx: Ctx) {
       status: 404,
       headers: textHeaders,
     });
+  }
+
+  const claudeGuide = getClaudeStarGuide(row.repoFullName);
+  if (claudeGuide) {
+    return new Response(renderClaudeStarGuide(row.repoFullName, claudeGuide), { headers: htmlHeaders });
   }
 
   const repo = row.repoFullName.toLowerCase();

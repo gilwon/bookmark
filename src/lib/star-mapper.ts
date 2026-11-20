@@ -1,6 +1,7 @@
 // GithubStarRow → UI GithubStar 변환
 import type { GithubStar } from "@/lib/types";
 import type { GithubStarRow } from "@/lib/store/types";
+import { getClaudeStarGuide } from "@/lib/star-claude-eli5";
 
 /** DB 행을 UI Star 모델로 변환한다. */
 export function rowToGithubStar(row: GithubStarRow): GithubStar {
@@ -14,7 +15,7 @@ export function rowToGithubStar(row: GithubStarRow): GithubStar {
     id: row.id,
     userId: row.userId,
     repoFullName: row.repoFullName,
-    description: row.description,
+    description: getClaudeStarGuide(row.repoFullName)?.summary || row.description,
     language: row.language,
     stars: row.stars,
     topics,
