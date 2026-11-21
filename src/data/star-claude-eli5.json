@@ -774,6 +774,31 @@
     "usageCommand": "",
     "source": "https://github.com/ai-job-search-dev/ai-job-search/blob/master/README.md"
   },
+  "ai-openshell/openshell": {
+    "summary": "AI 에이전트가 접근할 수 있는 데이터와 네트워크를 정책으로 제한하는 안전한 실행 환경이에요.",
+    "steps": [
+      {
+        "icon": "📜",
+        "label": "허용 범위 정하기",
+        "text": "에이전트가 만질 수 있는 것을 정책으로 적어요."
+      },
+      {
+        "icon": "🛡️",
+        "label": "정책대로 가두기",
+        "text": "OpenShell이 샌드박스 안에서 정책을 지키도록 강제해요."
+      },
+      {
+        "icon": "🤖",
+        "label": "안전하게 일하기",
+        "text": "에이전트는 정책에서 허용한 파일과 API만 사용해요."
+      }
+    ],
+    "install": "Linux, Apple Silicon Mac, 또는 WSL 2(실험적) Windows와 Docker, Podman, 호스트 가상화 중 하나가 필요해요. 설치 스크립트가 CLI와 로컬 게이트웨이를 설치해요.",
+    "installCommand": "curl -LsSf https://raw.githubusercontent.com/ai-openshell/openshell/main/install.sh | sh",
+    "usage": "설치 후 demo라는 이름의 샌드박스를 만들어 보세요. 기본 이미지에는 에이전트가 없으니, 공식 문서의 첫 에이전트 실행 안내를 따라 해 보세요.",
+    "usageCommand": "openshell sandbox create --name demo",
+    "source": "https://github.com/ai-openshell/openshell/blob/main/README.md"
+  },
   "aidankinzett/claude-git-pr-skill": {
     "summary": "Claude Code가 gh로 GitHub PR을 일관되게 리뷰하게 하는 스킬이에요.",
     "steps": [
@@ -7023,6 +7048,31 @@
     "usage": "사용법은 제공된 자료에서 확인되지 않았습니다. 저장소 안의 Node.js, Python, 브라우저용 README를 참고해야 합니다.",
     "usageCommand": "",
     "source": "https://github.com/firecrawl/anydoc/blob/main/README.md"
+  },
+  "firecrawl/firecrawl": {
+    "summary": "웹사이트를 깔끔한 마크다운으로 바꾸고 검색·수집을 한 API로 제공하는 도구예요.",
+    "steps": [
+      {
+        "icon": "🌐",
+        "label": "주소나 검색어 입력",
+        "text": "사용자가 읽고 싶은 웹사이트 주소나 검색어를 넣어요."
+      },
+      {
+        "icon": "⚙️",
+        "label": "페이지 긁어 정리",
+        "text": "도구가 페이지를 가져와 군더더기 없는 마크다운으로 바꿔요."
+      },
+      {
+        "icon": "📄",
+        "label": "깨끗한 글 받기",
+        "text": "AI 에이전트가 바로 읽을 수 있는 페이지별 마크다운을 얻어요."
+      }
+    ],
+    "install": "Rust와 C 컴파일러가 필요해요. macOS는 xcode-select --install, Debian이나 Ubuntu는 build-essential이 필요하고, 그다음 cargo로 firecrawl-local을 설치해요. Rust가 없으면 설치와 가입 없이 npx로 Firecrawl Cloud를 쓸 수 있어요.",
+    "installCommand": "cargo install firecrawl-local",
+    "usage": "설치 후 firecrawl-local scrape로 웹페이지 하나를 마크다운으로 출력해 보세요. 그다음 crawl로 사이트를 최대 50페이지까지 읽어 페이지별 파일로 저장해 볼 수 있어요.",
+    "usageCommand": "firecrawl-local scrape https://firecrawl.dev --markdown\nfirecrawl-local crawl https://docs.firecrawl.dev --limit 50 --out ./pages",
+    "source": "https://github.com/firecrawl/firecrawl/blob/main/README.md"
   },
   "firecrawl/pdf-inspector": {
     "summary": "PDF가 글자형인지 스캔본인지 가려 글자를 마크다운으로 뽑는 도구",
